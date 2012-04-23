@@ -25,6 +25,10 @@
 .UIMaskWorkspace .UIForumPortlet .UIMovePostForm .NodeLabel {
 	line-height: 20px;
 }
+
+.UIMaskWorkspace .UIForumPortlet .UIMovePostForm .ShowHiddenConten table {
+	table-layout: fixed;
+}
 /**************************** UIQuickSearchForm **************************/
 .UIForumPortlet .UIQuickSearchForm .SearchForm {
 	padding: 2px 10px 0px 0px;

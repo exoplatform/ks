@@ -81,7 +81,7 @@
 												++t;
 												if(forums.size() < 1) {iconClass = "SmallGrayPlus false"; isShow = "false";}
 										%>
-											<div class="Node $iconClass">
+											<div class="Node $iconClass ClearFix">
 												<div class="ParentCheckBox" onclick='eXo.forum.UIForumPortlet.checkedNode(this);' style="float:left; padding-top:4px;"><%uicomponent.renderChild(category.getId())%></div>
 											 	<div class="Icon CategoryNormalIcon"><span></span></div>	
 											 	<div class="NodeLabel" onclick='eXo.forum.UIForumPortlet.showTreeNode(this,"$isShow");'>
