@@ -47,11 +47,6 @@
 	 border-top: none;
 }
 
-.UIAnswersPortlet .UIFAQSettingForm .UIAction {
-	 background: #F7F7F7;
-	 padding: 6px 0px 10px 0px;
-}
-
 .UIAnswersPortlet .UIFAQSettingForm .UITabPane .UITabContentContainer .UITabContent {
 	 border: none;
 	 height: auto;

@@ -154,8 +154,8 @@
 									<% } else {%>
 											<div class="EditTempLateContent">
 												<div class="TextContent ClearFix">
-													<div class="FloatLeft"><label for="<%=uiform.FIELD_USEAJAX_CHECKBOX;%>"><%=uiform.getLabel(uiform.FIELD_USEAJAX_CHECKBOX);%>:&nbsp; &nbsp;</label></div>
-													<div class="FloatLeft" style="padding-top:3px">
+													<div class="FL"><label for="<%=uiform.FIELD_USEAJAX_CHECKBOX;%>"><%=uiform.getLabel(uiform.FIELD_USEAJAX_CHECKBOX);%>:&nbsp; &nbsp;</label></div>
+													<div class="FL" style="padding-top:3px">
                             <%tabconten.renderChild(uiform.FIELD_USEAJAX_CHECKBOX);%>
 													</div>
 												</div>

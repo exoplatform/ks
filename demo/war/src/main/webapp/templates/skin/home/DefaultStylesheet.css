@@ -695,14 +695,6 @@ p, h1, h2, h3, h4, h5, h6 {
 	width: 108px;
 }
 
-.FL {
-	float: left;
-}
-
-.FR {
-	float: right;
-}
-
 .UIKsHomepage .KSHomeContainer .TxtLinkIcon {
 	color:#565759;
 	display:block;
