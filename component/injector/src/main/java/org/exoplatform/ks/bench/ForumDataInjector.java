@@ -57,8 +57,8 @@ public class ForumDataInjector extends DataInjector {
   private static final String ARRAY_SPLIT = ",";
   
   private static final String UNDER_SCORE = "_";
-  
-  private static final String SIXTEEN_CHARACTERS = "asdfghjklzxcvbnm";
+
+  private static final String PREFIX_ID = "datainjectorprefixid";
 
   private ForumService       forumService;
   
@@ -309,9 +309,8 @@ public class ForumDataInjector extends DataInjector {
     try {
       for (int i = 0; i < cateQu; i++) {
         Category category = new Category();
-        String id = generateId(prefix, Utils.CATEGORY, i);
-        category.setId(id);
-        category.setCategoryName(id);
+        category.setId(generateParam(prefix, Utils.CATEGORY, i, true));
+        category.setCategoryName(generateParam(prefix, "Category", i, false));
         category.setCategoryOrder(i);
         category.setCreatedDate(new Date());
         category.setDescription(randomWords(10));
@@ -331,9 +330,8 @@ public class ForumDataInjector extends DataInjector {
     try {
       for (int i = 0; i < forumQu; i++) {
         Forum forum = new Forum();
-        String id = generateId(prefix, Utils.FORUM, i);
-        forum.setId(id);
-        forum.setForumName(id);
+        forum.setId(generateParam(prefix, Utils.FORUM, i, true));
+        forum.setForumName(generateParam(prefix, Utils.FORUM, i, false));
         forum.setCreatedDate(new Date());
         forum.setDescription(randomWords(10));        
         forum.setForumOrder(i);
@@ -351,15 +349,12 @@ public class ForumDataInjector extends DataInjector {
     try {
       for (int i = 0; i < topicQu; i++) {
         Topic topic = new Topic();
-        String id = generateId(prefix, Utils.TOPIC,i);
-        topic.setId(id);
-        topic.setTopicName(id);
+        topic.setId(generateParam(prefix, Utils.TOPIC, i, true));
+        topic.setTopicName(generateParam(prefix, Utils.TOPIC, i, false));
         topic.setCreatedDate(new Date());
         topic.setDescription(randomWords(10));
-        topic.setOwner("root");
-        String[] users = {"root"};
-        topic.setCanPost(users);
-        topic.setCanView(users);
+        topic.setOwner(randomUser());
+        topic.setCanPost(new String[] { "" });
         topic.setIcon(ForumDataRandom.getClassIcon());
         result.add(topic);
       }
@@ -372,13 +367,10 @@ public class ForumDataInjector extends DataInjector {
   private List<Post> generatePosts(String prefix, int postQu) {
     List<Post> result = new ArrayList<Post>();
     for (int i = 0; i < postQu; i++) {
-
       Post post = new Post();
-      String id = generateId(prefix, Utils.POST, i);
-      post.setId(id);
-      post.setName(id);
-      String content = randomParagraphs(5);
-      post.setMessage(content);
+      post.setId(generateParam(prefix, Utils.POST, i, true));
+      post.setName(generateParam(prefix, Utils.POST, i, false));
+      post.setMessage(randomParagraphs(5));
       post.setOwner(randomUser());
       post.setIcon(ForumDataRandom.getClassIcon());
       result.add(post);
@@ -386,15 +378,15 @@ public class ForumDataInjector extends DataInjector {
     return result;
   }
   
-  private String generateId(String prefix, String entity, int order) {
+  private String generateParam(String prefix, String entity, int order, boolean isId) {
     StringBuilder sb = new StringBuilder();
-    sb.append(entity)
-      .append(UNDER_SCORE)
-      .append(prefix)
-      .append(UNDER_SCORE)
-      .append(SIXTEEN_CHARACTERS)
-      .append(UNDER_SCORE)
-      .append(order);
+    sb.append(entity);
+    if (isId) {
+      sb.append(PREFIX_ID).append(UNDER_SCORE);
+    } else {
+      sb.append(UNDER_SCORE).append(prefix).append(UNDER_SCORE);
+    }
+    sb.append(order);
     return sb.toString();
   }
   
@@ -404,19 +396,19 @@ public class ForumDataInjector extends DataInjector {
     List<String> result = new ArrayList<String>();
     switch (entity) {
     case CATEGORY:
-      nodeType = "exo:forumCategory";
+      nodeType = Utils.TYPE_CATEGORY;
       break;
     case FORUM:
-      nodeType = "exo:forum";
+      nodeType = Utils.TYPE_FORUM;
       break;
     case TOPIC:
-      nodeType = "exo:topic";
+      nodeType = Utils.TYPE_TOPIC;
       break;
     case POST:
-      nodeType = "exo:post";
+      nodeType = Utils.EXO_POST;
       break;
     case ATTACHMENT:
-      nodeType = "exo:forumResource";
+      nodeType = Utils.EXO_FORUM_RESOURCE;
       break;
     default:
       break;
@@ -425,9 +417,9 @@ public class ForumDataInjector extends DataInjector {
     sb.append(dataLocation.getForumCategoriesLocation())
       .append("//element(*,")
       .append(nodeType)
-      .append(")[jcr:like(exo:name,'")
+      .append(")[jcr:like(").append(Utils.EXO_NAME).append(",'")
       .append(prefix)
-      .append("') or jcr:like(exo:fileName,'")
+      .append("') or jcr:like(").append(Utils.EXO_FILE_NAME).append("'")
       .append(prefix)
       .append("')]");
     try {
@@ -440,43 +432,14 @@ public class ForumDataInjector extends DataInjector {
     }
     return result;
   }
-  
-//  private List<Integer> getTotalItemQu(List<String> preQu, List<Integer> itemQu) {
-//    List<Integer> result = new ArrayList<Integer>();
-//    List<String> addedCats = new ArrayList<String>();
-//    List<String> addedFors = new ArrayList<String>();
-//    List<String> addedTops = new ArrayList<String>();
-//    List<String> addedPoss = new ArrayList<String>();
-//    addedCats = search(preQu.get(0));
-//    if (addedCats.size() > 0) {
-//      addedFors = search(preQu.get(1), addedCats.get(0));
-//      if (addedFors.size() > 0) {
-//        addedTops = search(preQu.get(2), addedFors.get(0));
-//
-//        if (addedTops.size() > 0) {
-//          addedPoss = search(preQu.get(3), addedTops.get(0));
-//        }
-//      }
-//    }
-//    result.add(calculateItemQu(addedCats.size(), itemQu.get(0)));
-//    result.add(calculateItemQu(addedFors.size(), itemQu.get(1)));
-//    result.add(calculateItemQu(addedTops.size(), itemQu.get(2)));
-//    result.add(calculateItemQu(addedPoss.size(), itemQu.get(3)));
-//    return result;
-//  }
-  
-//  private int calculateItemQu(int existing, int input) {
-//    return (existing == input) ? existing : existing + input;
-//  }
 
   private List<ForumAttachment> generateAttachments(String prefix, int quantity, int capacity) throws Exception {
     List<ForumAttachment> listAttachments = new ArrayList<ForumAttachment>();
     String rs = createTextResource(capacity);    
     for (int i = 0; i < quantity; i++) {
-      String attId = generateId(prefix, Utils.ATTACHMENT, i);
       BufferAttachment att = new BufferAttachment();
-      att.setId(attId);
-      att.setName(attId);
+      att.setId(generateParam(prefix, Utils.ATTACHMENT, i, true));
+      att.setName(generateParam(prefix, Utils.ATTACHMENT, i, false));
       att.setInputStream(new ByteArrayInputStream(rs.getBytes("UTF-8")));
       att.setMimeType("text/plain");
       long fileSize = (long) capacity * 1024;

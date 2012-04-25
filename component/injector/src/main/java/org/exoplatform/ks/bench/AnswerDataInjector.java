@@ -342,6 +342,7 @@ public class AnswerDataInjector extends DataInjector {
     question.setQuestion(name);
     question.setAuthor(randomUser());
     question.setCategoryId(catId);
+    question.setCategoryPath(catId);
     question.setDetail(getStringResource(info));
     question.setEmail("noreply@exoplatform.com");
     question.setLanguage("English");
