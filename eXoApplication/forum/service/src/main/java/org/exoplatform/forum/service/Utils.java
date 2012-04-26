@@ -25,8 +25,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.jcr.RepositoryException;
 import javax.jcr.Value;
 
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.services.organization.User;
 
 /**
@@ -36,6 +41,8 @@ import org.exoplatform.services.organization.User;
  * Jun 2, 2008 - 3:33:33 AM  
  */
 public class Utils implements ForumNodeTypes {
+  
+  private final static Log   LOG                   = ExoLogger.getLogger(Utils.class);
 
   public final static String TYPE_CATEGORY         = "exo:forumCategory".intern();
 
@@ -89,7 +96,10 @@ public class Utils implements ForumNodeTypes {
 
   public static final String DELETED               = "_deleted".intern();
 
-  public static final String CACHE_REPO_NAME               = "repositoryName".intern();
+  public static final String CACHE_REPO_NAME       = "repositoryName".intern();
+  
+  public static final String DEFAULT_TEMANT_NAME   = Long.toHexString(System.currentTimeMillis() 
+                                                                      + System.identityHashCode("currentTenant"));
 
   // Type Modify
   public static final int    CLOSE                 = 1;
@@ -475,5 +485,26 @@ public class Utils implements ForumNodeTypes {
         return true;
     }
     return false;
+  }
+  
+  static public String getCurrentTenantName() {
+    RepositoryService repositoryService = (RepositoryService) ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(RepositoryService.class);
+    try {
+      return repositoryService.getCurrentRepository().getConfiguration().getName();
+    } catch (RepositoryException e) {
+      if (LOG.isDebugEnabled()) {
+        LOG.debug("Can not get current repository", e);
+      }
+    }
+    return DEFAULT_TEMANT_NAME;
+  }
+
+  static public List<String> getOnlineUserByTenantName(Map<String, List<String>> onlineUserMap) {
+    List<String> onlinUsers = new ArrayList<String>();
+    String currentTenant = getCurrentTenantName();
+    if (onlineUserMap != null && onlineUserMap.get(currentTenant) != null) {
+      onlinUsers.addAll(onlineUserMap.get(currentTenant));
+    }
+    return onlinUsers;
   }
 }

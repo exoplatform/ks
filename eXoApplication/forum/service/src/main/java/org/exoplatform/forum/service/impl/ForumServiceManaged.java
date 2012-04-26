@@ -43,13 +43,13 @@ public class ForumServiceManaged implements ManagementAware {
   @Managed
   @ManagedDescription("list of currently connected users")
   public List<String> getOnlineUsers() throws Exception {
-    return forumService.onlineUserList_;
+    return forumService.getOnlineUsers();
   }
 
   @Managed
   @ManagedDescription("number of currently connected users")
   public int countOnlineUsers() throws Exception {
-    return forumService.onlineUserList_.size();
+    return getOnlineUsers().size();
   }
 
   @Managed
