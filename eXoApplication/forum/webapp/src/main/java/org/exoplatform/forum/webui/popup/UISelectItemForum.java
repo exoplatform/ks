@@ -17,26 +17,28 @@
 package org.exoplatform.forum.webui.popup;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.forum.ForumUtils;
 import org.exoplatform.forum.service.ForumLinkData;
-import org.exoplatform.forum.service.ForumService;
 import org.exoplatform.forum.service.Utils;
 import org.exoplatform.forum.webui.BaseForumForm;
 import org.exoplatform.forum.webui.UIForumLinks;
 import org.exoplatform.forum.webui.UIForumPortlet;
+import org.exoplatform.ks.common.UserHelper;
+import org.exoplatform.services.organization.Group;
+import org.exoplatform.social.core.space.SpaceUtils;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
-import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.form.input.UICheckBoxInput;
 
 /**
@@ -61,6 +63,9 @@ public class UISelectItemForum extends BaseForumForm implements UIPopupComponent
   private Map<String, List<ForumLinkData>> mapListTopic     = new HashMap<String, List<ForumLinkData>>();
 
   private List<String>                     listIdIsSelected = new ArrayList<String>();
+  
+  private String                           userId           = null;
+  private String                           categorySpId     = "forumCategoryspaces";
 
   public UISelectItemForum() {
   }
@@ -72,16 +77,69 @@ public class UISelectItemForum extends BaseForumForm implements UIPopupComponent
   }
 
   public void setForumLinks(List<String> listIds) throws Exception {
-    UIForumLinks uiForumLinks = getAncestorOfType(UIForumPortlet.class).getChild(UIForumLinks.class);
+    UIForumPortlet forumPortlet = getAncestorOfType(UIForumPortlet.class);
+    UIForumLinks uiForumLinks = forumPortlet.getChild(UIForumLinks.class);
     listIdIsSelected = new ArrayList<String>();
     listIdIsSelected.addAll(listIds);
-    if (uiForumLinks != null) {
-      this.forumLinks = uiForumLinks.getForumLinks();
+    if (ForumUtils.isEmpty(forumPortlet.getCategorySpaceId()) && uiForumLinks != null) {
+      forumLinks = uiForumLinks.getForumLinks();
+    } else {
+      categorySpId = forumPortlet.getCategorySpaceId();
     }
-    if (this.forumLinks == null || this.forumLinks.size() <= 0) {
-      ForumService forumService = (ForumService) ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(ForumService.class);
-      this.forumLinks = forumService.getAllLink(ForumUtils.EMPTY_STR, ForumUtils.EMPTY_STR);
+    if (forumLinks == null || forumLinks.size() <= 0) {
+      if (getForumService().getCategory(categorySpId) != null) {
+        forumLinks = new ArrayList<ForumLinkData>();
+        StringBuilder strQueryCate = new StringBuilder();
+        strQueryCate.append("[").append(Utils.EXO_ID).append("!='").append(categorySpId).append("']");
+        forumLinks.addAll(getForumService().getAllLink(strQueryCate.toString(), ForumUtils.EMPTY_STR));
+        String strQuryForum = getQueryForum();
+        if (!ForumUtils.isEmpty(strQuryForum)) {
+          strQueryCate = new StringBuilder();
+          strQueryCate.append("[").append(Utils.EXO_ID).append("='").append(categorySpId).append("']");
+          forumLinks.addAll(getForumService().getAllLink(strQueryCate.toString(), strQuryForum));
+        }
+      } else {
+        forumLinks.addAll(getForumService().getAllLink(ForumUtils.EMPTY_STR, ForumUtils.EMPTY_STR));
+      }
     }
+  }
+
+  @SuppressWarnings("unchecked")
+  private List<String> getGroupSpaceOfUser(String userId) {
+    List<String> groupId = new ArrayList<String>();
+    try {
+      Collection<Group> groups = UserHelper.getOrganizationService().getGroupHandler().findGroupsOfUser(userId);
+      for (Group group : groups) {
+        if (group.getId().indexOf(SpaceUtils.SPACE_GROUP) >= 0) {
+          groupId.add(group.getGroupName());
+        }
+      }
+    } catch (Exception e) {
+      log.warn("The method findGroupsOfUser() cannot access the database.");
+    }
+    return groupId;
+  }
+
+  private String getQueryForum() {
+    if (!ForumUtils.isEmpty(userId)) {
+      StringBuilder queryForum = new StringBuilder("[");
+      List<String> groupIds = getGroupSpaceOfUser(userId);
+      for (String groupId : groupIds) {
+        if (queryForum.length() > 10) {
+          queryForum.append(" or ");
+        }
+        queryForum.append("(jcr:like(@" + Utils.EXO_ID + ",'%" + groupId + "%'))");
+      }
+      queryForum.append("]");
+      if (groupIds.size() > 0) {
+        return queryForum.toString();
+      }
+    }
+    return null;
+  }
+
+  public void setUserId(String userId) {
+    this.userId = userId;
   }
 
   protected List<ForumLinkData> getForumLinks() throws Exception {

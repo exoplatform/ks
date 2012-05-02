@@ -905,6 +905,7 @@ public class UIModeratorManagementForm extends BaseForumForm implements UIPopupC
     public void onEvent(Event<UIModeratorManagementForm> event, UIModeratorManagementForm uiForm, String userId) throws Exception {
       UIPopupContainer popupContainer = uiForm.getAncestorOfType(UIPopupContainer.class);
       UISelectItemForum selectItemForum = openPopup(popupContainer, UISelectItemForum.class, 400, 0);
+      selectItemForum.setUserId(uiForm.userProfile.getUserId());
       selectItemForum.setForumLinks(uiForm.setListForumIds());
     }
   }
