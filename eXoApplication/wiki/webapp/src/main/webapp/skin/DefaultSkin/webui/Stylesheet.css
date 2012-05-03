@@ -1686,6 +1686,13 @@ table.UIFormGrid div.Id {
   outline: none;
 }
 
+*+html .UIWikiPortlet .UITemplateSettingForm .UIGrid a {
+	text-indent: 0px;
+	font-size: 0px;
+	line-height: 0;
+}
+
+
 .UIWikiPortlet .UIWikiTemplateForm .UIGrid .EditTemplateIcon { 
   background:url(background/EditTemplateIcon.gif) no-repeat left center;
 }
