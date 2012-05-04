@@ -502,7 +502,9 @@ public class UIWikiPermissionForm extends UIWikiForm implements UIPopupComponent
       if (Scope.WIKI.equals(scope)) {
         WikiService wikiService = uiWikiPermissionForm.getApplicationComponent(WikiService.class);
         WikiPageParams pageParams = Utils.getCurrentWikiPageParams();
-        wikiService.setWikiPermission(pageParams.getType(), pageParams.getOwner(), uiWikiPermissionForm.permissionEntries);        
+        wikiService.setWikiPermission(pageParams.getType(), pageParams.getOwner(), uiWikiPermissionForm.permissionEntries);
+        
+        uiWikiPermissionForm.setPermission(wikiService.getWikiPermission(pageParams.getType(), pageParams.getOwner()));
         event.getRequestContext()
              .getUIApplication()
              .addMessage(new ApplicationMessage("UIWikiPermissionForm.msg.Save-permission-setting-success",
