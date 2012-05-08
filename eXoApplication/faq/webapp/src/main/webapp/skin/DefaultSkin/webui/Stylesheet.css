@@ -2087,6 +2087,16 @@
 
 .UIAnswersPortlet .UIAddCategoryForm .textarea{
 	height: 55px;
+	width: 204px;
+	margin: 0px;
+}
+
+.UIAnswersPortlet .UIAddCategoryForm .UIFormGrid .FieldLabel{
+	padding: 4px 0px;
+}
+
+.UIAnswersPortlet .UIAddCategoryForm .UIFormGrid .FieldComponent{
+	white-space: nowrap;
 }
 
 .UIAnswersPortlet .UIRightClickPopupMenu a{
@@ -2292,7 +2302,7 @@
 }
 
 .UIAnswersPortlet .UIAddCategoryForm #moderator {
-	width: 200px;
+	width: 198px;
 	height: 14px;
 }
 
