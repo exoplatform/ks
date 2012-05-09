@@ -1,9 +1,14 @@
 package org.exoplatform.wiki.resolver;
 
+import org.apache.commons.lang.StringUtils;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.portal.config.UserPortalConfigService;
+import org.exoplatform.portal.config.model.Page;
 import org.exoplatform.portal.config.model.PortalConfig;
 import org.exoplatform.portal.mop.user.UserNode;
 import org.exoplatform.portal.pom.config.Utils;
 import org.exoplatform.services.organization.OrganizationService;
+import org.exoplatform.services.security.ConversationState;
 import org.exoplatform.wiki.service.WikiPageParams;
 
 public class URLResolver extends Resolver{
@@ -12,6 +17,8 @@ public class URLResolver extends Resolver{
     this.orgSerivce = orgSerivce ;
   }
   public WikiPageParams extractPageParams(String requestURL, UserNode portalUserNode) throws Exception {
+    UserPortalConfigService configService = (UserPortalConfigService) ExoContainerContext.getCurrentContainer()
+                                                                                         .getComponentInstanceOfType(UserPortalConfigService.class);
     WikiPageParams params = new WikiPageParams() ;
     String wikiPageName;
     if (portalUserNode == null) {
@@ -20,7 +27,6 @@ public class URLResolver extends Resolver{
       wikiPageName = portalUserNode.getURI();
     }
     String uri = extractURI(requestURL, wikiPageName) ; 
-    if (uri == null) return params ;
     if(uri.indexOf("/") > 0) {
       String[] array = uri.split("/") ;      
       if(array[0].equals(PortalConfig.USER_TYPE)) {
@@ -57,10 +63,14 @@ public class URLResolver extends Resolver{
             params.setPageId(WikiPageParams.WIKI_HOME) ;
           }
         }
-      } else if(array[0].equals(PortalConfig.PORTAL_TYPE)) {
-        params.setType(PortalConfig.PORTAL_TYPE)  ;
-        params.setOwner(extractPortalOwner(requestURL, wikiPageName)) ;
-        params.setPageId(array[1]) ;
+      } else if (array[0].equals(PortalConfig.PORTAL_TYPE)) {
+        params.setType(PortalConfig.PORTAL_TYPE);
+        params.setOwner(array[1]);
+        if (array.length >= 3) {
+          params.setPageId(array[2]);
+        } else {
+          params.setPageId(WikiPageParams.WIKI_HOME);
+        }
       }
     }else{
       if (portalUserNode != null && portalUserNode.getPageRef() != null
@@ -70,7 +80,8 @@ public class URLResolver extends Resolver{
         params.setOwner(components[1]);
       } else {
         params.setType(PortalConfig.PORTAL_TYPE);
-        params.setOwner(extractPortalOwner(requestURL, wikiPageName));
+        Page page = configService.getPage(portalUserNode.getPageRef(), ConversationState.getCurrent().getIdentity().getUserId());
+        params.setOwner(page.getOwnerId());
       }
       if (uri.length() > 0)
         params.setPageId(uri);
@@ -82,7 +93,7 @@ public class URLResolver extends Resolver{
   }
 
   private String extractURI(String url, String wikiPageName) throws Exception{
-    String uri = null;
+    String uri = StringUtils.EMPTY;
     String sign1 = "/" + wikiPageName + "/";
     String sign2 = "/" + wikiPageName;
     if(url.indexOf(sign1) < 0){
@@ -96,15 +107,6 @@ public class URLResolver extends Resolver{
     if(uri != null && uri.length() > 0 && (uri.lastIndexOf("/") + 1) == uri.length()) 
       uri = uri.substring(0, uri.lastIndexOf("/")) ;
     return uri ;
-  }
-  
-  private String extractPortalOwner(String url, String wikiPageName) throws Exception{
-    String sign = "/" + wikiPageName;
-    if(url.indexOf(sign) > 0){
-      String temp = url.substring(0, url.indexOf(sign)) ;
-      return temp.substring(temp.lastIndexOf("/") + 1) ;
-    }
-    return null ;
   }
 
 }

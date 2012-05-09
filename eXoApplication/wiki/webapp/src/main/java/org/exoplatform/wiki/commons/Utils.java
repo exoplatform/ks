@@ -30,14 +30,14 @@ import javax.portlet.PortletPreferences;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringUtils;
 import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.RootContainer;
 import org.exoplatform.portal.application.PortalRequestContext;
 import org.exoplatform.portal.config.UserACL;
-import org.exoplatform.portal.config.model.PortalConfig;
+import org.exoplatform.portal.mop.SiteKey;
+import org.exoplatform.portal.mop.user.UserNode;
 import org.exoplatform.portal.webui.portal.UIPortal;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.jcr.access.AccessControlEntry;
@@ -124,12 +124,13 @@ public class Utils {
   
   public static String getURLFromParams(WikiPageParams params) throws Exception {
     PortalRequestContext portalRequestContext = Util.getPortalRequestContext();
-    String requestURL = portalRequestContext.getRequest().getRequestURL().toString();
+    String requestURL = portalRequestContext.getControllerContext().getRequest().getRequestURL().toString();
     String portalURI = portalRequestContext.getPortalURI();
     String domainURL = requestURL.substring(0, requestURL.indexOf(portalURI));
-
     UIPortal uiPortal = Util.getUIPortal();
-    String pageNodeSelected = uiPortal.getSelectedUserNode().getURI();
+    SiteKey siteKey = uiPortal.getSiteKey();
+    UserNode userNode = uiPortal.getSelectedUserNode();
+    String pageNodeSelected = userNode.getURI();
     StringBuilder sb = new StringBuilder(domainURL);
     sb.append(portalURI);
     sb.append(pageNodeSelected);
@@ -137,7 +138,7 @@ public class Utils {
     if (params == null) {
       return sb.toString();
     }
-    if (params.getType() != null && !PortalConfig.PORTAL_TYPE.equalsIgnoreCase(params.getType())) {
+    if (!siteKey.getType().getName().equals(params.getType()) || !siteKey.getName().equals(params.getOwner())) {
       sb.append(params.getType().toLowerCase());
       sb.append("/");
       sb.append(org.exoplatform.wiki.utils.Utils.validateWikiOwner(params.getType(), params.getOwner()));
