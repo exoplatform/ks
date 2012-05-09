@@ -607,7 +607,8 @@ Object.extend(XWiki, {
       this.isInitialized = true;
       document.fire("xwiki:dom:loading");
 
-      this.makeRenderingErrorsExpandable();
+      // Not used since not ajax support
+      //this.makeRenderingErrorsExpandable();
       this.fixLinksTargetAttribute();
       this.insertSectionEditLinks();
       this.insertCreatePageFromTemplateModalBoxes();

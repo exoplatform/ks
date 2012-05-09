@@ -289,18 +289,18 @@ UIWikiPortlet.prototype.makeRenderingErrorsExpandable = function (uicomponentId)
   var uicomponent = document.getElementById(uicomponentId);
   var DOMUtil = eXo.core.DOMUtil;
   if(uicomponent) {
-  	var renderingErrors = DOMUtil.findDescendantsByClass(uicomponent,"div","xwikirenderingerror" );
+  	var renderingErrors = DOMUtil.findDescendantsByClass(uicomponent,"span","xwikirenderingerror" );
     for (i=0;i<renderingErrors.length;i++) {
     var renderingError = renderingErrors[i];
     var descriptionError = renderingError.nextSibling;
     if (descriptionError.innerHTML !== "" && DOMUtil.hasClass(descriptionError,"xwikirenderingerrordescription")) {
       renderingError.style.cursor="pointer";            
     	eXo.core.EventManager.addEvent(renderingError,"click",function(event){
-    		if(!DOMUtil.hasClass(descriptionError,"hidden")) {
-          descriptionError.className += ' ' + "hidden";
+    		if(!DOMUtil.hasClass(this.nextSibling,"hidden")) {
+    		  this.nextSibling.className += ' ' + "hidden";
         }
         else {
-            DOMUtil.removeClass(descriptionError, "hidden");
+            DOMUtil.removeClass(this.nextSibling, "hidden");
           }
         });
       }
