@@ -103,7 +103,7 @@ public class PagePermissionActionComponent extends AbstractEventActionComponent 
         IDType idType = IDType.USER;
         if (key.indexOf(":") > 0) {
           idType = IDType.MEMBERSHIP;
-        } else if (key.indexOf("/") > 0) {
+        } else if (key.indexOf("/") == 0) {
           idType = IDType.GROUP;
         }
         permissionEntry.setIdType(idType);
