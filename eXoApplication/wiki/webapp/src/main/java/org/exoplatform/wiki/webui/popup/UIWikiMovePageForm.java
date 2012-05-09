@@ -78,7 +78,7 @@ public class UIWikiMovePageForm extends UIForm implements UIPopupComponent {
     initURLSb.append("/wiki/tree/").append(TREETYPE.ALL.toString());
     StringBuilder childrenURLSb = new StringBuilder(Utils.getCurrentRestURL());
     childrenURLSb.append("/wiki/tree/").append(TREETYPE.CHILDREN.toString());
-    uiTree.init(initURLSb.toString(), childrenURLSb.toString(), getInitParam(), eventComponent);
+    uiTree.init(initURLSb.toString(), childrenURLSb.toString(), getInitParam(), eventComponent, false);
   }  
   
   static public class CloseActionListener extends EventListener<UIWikiMovePageForm> {

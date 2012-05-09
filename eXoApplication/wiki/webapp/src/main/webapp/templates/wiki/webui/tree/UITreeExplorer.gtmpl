@@ -14,14 +14,22 @@
  String initURL = uicomponent.initURL;
  String childrenURL = uicomponent.childrenURL;
  String actionClassName = uicomponent.SELECT_NODE;
- boolean isEvent = uicomponent.getEventComponent().getType().equals(EVENTTYPE.EVENT);
+ boolean isRenderLink = uicomponent.isRenderLink;
+ String baseLink = uicomponent.getBaseLink();
+ 
+ boolean isEvent = false;
+ if (uicomponent.getEventComponent() != null) {
+   isEvent = uicomponent.getEventComponent().getType().equals(EVENTTYPE.EVENT);
+ }
  String action = uicomponent.event(uicomponent.SELECT_NODE); 
  if (!isEvent){
    action = uicomponent.url(uicomponent.SELECT_NODE);
  } 
  rcontext.getJavascriptManager().importJavascript('eXo.wiki.UITreeExplorer', '/wiki/javascript/') ;
- if (initParam!=null)
- 	rcontext.getJavascriptManager().addJavascript("eXo.wiki.UITreeExplorer.init('" + uicomponent.id  +"','"+ initParam + "',true);"); 
+ if (initParam!=null) {
+ 	rcontext.getJavascriptManager()
+ 	  .addJavascript("eXo.wiki.UITreeExplorer.init('" + uicomponent.id  +"','"+ initParam + "',true," + isRenderLink + ",'" + baseLink + "');");
+ } 
 %>
 	 <div class="UITreeExplorer" id="$uicomponent.id">	 
 		 <div>
