@@ -35,8 +35,6 @@ import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.event.EventListener;
-import org.exoplatform.webui.form.UIFormInputWithActions;
-import org.exoplatform.webui.form.UIFormInputWithActions.ActionData;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.input.UICheckBoxInput;
 import org.exoplatform.webui.organization.UIGroupMembershipSelector;
@@ -52,6 +50,8 @@ import org.exoplatform.wiki.service.WikiPageParams;
 import org.exoplatform.wiki.service.WikiService;
 import org.exoplatform.wiki.webui.UIWikiPortlet.PopupLevel;
 import org.exoplatform.wiki.webui.core.UIWikiForm;
+import org.exoplatform.wiki.webui.form.UIFormInputWithActions;
+import org.exoplatform.wiki.webui.form.UIFormInputWithActions.ActionData;
 
 /**
  * Created by The eXo Platform SAS
@@ -149,7 +149,12 @@ public class UIWikiPermissionForm extends UIWikiForm implements UIPopupComponent
     for (int i = 0; i < actionNames.length; ++i) {
       action = new ActionData();
       action.setActionListener(actionNames[i]);
-      action.setActionType(ActionData.TYPE_ICON);
+      if (i < actionNames.length - 1) {
+        action.setActionType(ActionData.TYPE_ICON);
+      } else {
+        action.setActionType(ActionData.TYPE_BUTTON);
+      }
+      
       action.setActionName(actionNames[i]);
       action.setCssIconClass(actionIcons[i]);
       actions.add(action);
