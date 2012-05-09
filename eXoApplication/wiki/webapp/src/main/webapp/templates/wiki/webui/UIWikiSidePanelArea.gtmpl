@@ -5,10 +5,10 @@
 <div class="UIWikiSidePanelArea" id="$uicomponent.id">
   <div class="BarTit ClearFix">
   <% 
-  	 String closeLink= uicomponent.getParent().event(UIWikiPageEditForm.CLOSE);
-   %>
+  	String closeLink= uicomponent.getParent().event(UIWikiPageEditForm.CLOSE);
+  %>
     <a href="$closeLink" class="CloseButton"><span></span></a>
-     <%=uicomponent.getSyntaxName()%>
+    <%=_ctx.appRes("UIWikiSidePanelArea.label.Help-title");%>
   </div>
   <div class="Content">
   <% if (uicomponent.getHtmlOutput()!=null) {%>
@@ -17,7 +17,7 @@
     <a href="<%=uicomponent.getSyntaxFullPageUrl()%>" onclick="window.open('<%=uicomponent.getSyntaxFullPageUrl()%>','notation_help','width=1000, height=580, resizable, scrollbars'); return false;">
   	<%=_ctx.appRes("UIWikiSidePanelArea.label.More");%></a>
   <%} else {%>
-  	<%=_ctx.appRes("UIWikiSidePanelArea.label.None-help-content");%></a>  	
+  	<%=_ctx.appRes("UIWikiSidePanelArea.label.None-help-content");%>
   <%} %>
 	</div>
 </div>
