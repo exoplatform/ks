@@ -82,6 +82,7 @@ function getModule(params) {
     addDependency(new Project("org.xwiki.commons", "xwiki-commons-script", "jar",  "${org.xwiki.platform.version}")).
     addDependency(new Project("org.xwiki.commons", "xwiki-commons-legacy-component", "jar",  "${org.xwiki.platform.version}")).
     addDependency(new Project("org.xwiki.rendering", "xwiki-rendering-api", "jar",  "${org.xwiki.platform.version}")).
+    addDependency(new Project("org.hibernate", "hibernate-validator", "jar",  "${hibernate-validator.version}")).
     addDependency(new Project("org.xwiki.rendering", "xwiki-rendering-syntax-wikimodel", "jar",  "${org.xwiki.platform.version}")).
     addDependency(new Project("org.xwiki.rendering", "xwiki-rendering-syntax-xwiki2", "jar",  "${org.xwiki.platform.version}")).
     addDependency(new Project("org.xwiki.rendering", "xwiki-rendering-syntax-xhtml", "jar",  "${org.xwiki.platform.version}")).
