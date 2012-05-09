@@ -73,6 +73,7 @@ public class UIWikiSettingContainer extends UIExtensionContainer implements UIPo
     UIWikiPortlet wikiPortlet = getAncestorOfType(UIWikiPortlet.class);
     HashMap<String, Object> extContext = wikiPortlet.getUIExtContext();
     if (checkModificationContext(extContext)) {
+      activeItem = null;
       UIExtensionManager manager = getApplicationComponent(UIExtensionManager.class);
       List<UIExtension> extensions = manager.getUIExtensions(EXTENSION_TYPE);
       if (!items.isEmpty()) {
@@ -82,12 +83,14 @@ public class UIWikiSettingContainer extends UIExtensionContainer implements UIPo
         for (int i = 0; i < extensions.size(); i++) {
           UIComponent component = manager.addUIExtension(extensions.get(i), extContext, this);
           items.add(component.getId());
-          if (activeItem == null && i == 0) {
+          if (activeItem == null) {
             setActiveItem(component.getId());
           }
         }
       }
     }
+    // To prevent active component from being hidden
+    getChildById(activeItem).setRendered(true);
     super.processRender(context);
   }
   
