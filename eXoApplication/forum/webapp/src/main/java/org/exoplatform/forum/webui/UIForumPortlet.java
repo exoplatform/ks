@@ -110,6 +110,7 @@ public class UIForumPortlet extends UIPortletApplication {
   private boolean useAjax = true;
   private int dayForumNewPost = 0;
   private String linkUserInfo = "";
+  private String spaceGroupId = null;
   private List<String>invisibleForums = new ArrayList<String>();
   private List<String>invisibleCategories = new ArrayList<String>();
   private List<Watch> listWatches = null;
@@ -203,6 +204,7 @@ public class UIForumPortlet extends UIPortletApplication {
         String url = pref.getValue("SPACE_URL", null);
         SpaceService sService = (SpaceService) PortalContainer.getInstance().getComponentInstanceOfType(SpaceService.class);
         Space space = sService.getSpaceByUrl(url) ;
+        spaceGroupId = space.getGroupId();
         String forumId = Utils.FORUM_SPACE_ID_PREFIX + space.getId();
         return forumId ;
       }
@@ -362,6 +364,10 @@ public class UIForumPortlet extends UIPortletApplication {
 
   public int getDayForumNewPost(){
     return dayForumNewPost;
+  }
+
+  public String getSpaceGroupId() {
+    return spaceGroupId;
   }
 
   public void renderPopupMessages() throws Exception {

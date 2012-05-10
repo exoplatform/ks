@@ -16,6 +16,15 @@
  */
 package org.exoplatform.ks.common.webui;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import org.exoplatform.commons.utils.ListAccessImpl;
+import org.exoplatform.commons.utils.SerializablePageList;
+import org.exoplatform.services.organization.MembershipHandler;
+import org.exoplatform.services.organization.OrganizationService;
+import org.exoplatform.services.organization.User;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
@@ -44,9 +53,37 @@ import org.exoplatform.webui.organization.account.UIUserSelector;
    * */
 public class UIUserSelect extends UIUserSelector {
   private String permisionType;
-  
+  private String spaceGroupId = null;
+
   public UIUserSelect() throws Exception {
     super();
+  }
+
+  @SuppressWarnings({ "unchecked", "deprecation" })
+  @Override
+  public void processRender(WebuiRequestContext context) throws Exception {
+    if (spaceGroupId != null && spaceGroupId.length() > 0 && uiIterator_ != null) {
+      OrganizationService service = getApplicationComponent(OrganizationService.class);
+      List<User> results = new CopyOnWriteArrayList<User>();
+      results.addAll(uiIterator_.getPageList().getAll());
+      // remove if user doesn't exist in selected group
+      MembershipHandler memberShipHandler = service.getMembershipHandler();
+      for (User user : results) {
+        if (memberShipHandler.findMembershipsByUserAndGroup(user.getUserName(), spaceGroupId).size() == 0) {
+          results.remove(user);
+        }
+      }
+      uiIterator_.setPageList(new SerializablePageList<User>(new ListAccessImpl<User>(User.class, results), 10));
+    }
+    super.processRender(context);
+  }
+  
+  public String getSpaceGroupId() {
+    return spaceGroupId;
+  }
+
+  public void setSpaceGroupId(String spaceGroupId) {
+    this.spaceGroupId = spaceGroupId;
   }
 
   public String getPermisionType() {

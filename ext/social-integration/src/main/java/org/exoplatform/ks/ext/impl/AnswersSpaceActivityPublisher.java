@@ -16,9 +16,12 @@
  */
 package org.exoplatform.ks.ext.impl;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.faq.service.Answer;
 import org.exoplatform.faq.service.Comment;
@@ -93,8 +96,8 @@ public class AnswersSpaceActivityPublisher extends AnswerEventListener {
       Identity userIdentity = identityM.getOrCreateIdentity(OrganizationIdentityProvider.NAME, answer.getResponseBy());
       Activity activity = new Activity();
       activity.setUserId(userIdentity.getId());
-      activity.setTitle(msg);
-      activity.setBody(body);
+      activity.setTitle(StringEscapeUtils.unescapeHtml(msg));
+      activity.setBody(StringEscapeUtils.unescapeHtml(ForumTransformHTML.cleanHtmlCode(body, (List<String>) Collections.EMPTY_LIST)));
       activity.setType(SPACE_APP_ID);
       Map<String, String> params = new HashMap<String, String>();
       params.put(QUESTION_ID_KEY, questionId);

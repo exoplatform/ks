@@ -54,6 +54,7 @@ import org.exoplatform.webui.form.UIFormInputInfo;
 )
 public class UIAnswersPortlet extends UIPortletApplication {
   private boolean isFirstTime = true;
+  private String  spaceGroupId = null;
   /**
    * ui component for displaying message when changing mode.
    */
@@ -78,6 +79,7 @@ public class UIAnswersPortlet extends UIPortletApplication {
         String url = pref.getValue("SPACE_URL", null);
         SpaceService sService = (SpaceService) PortalContainer.getInstance().getComponentInstanceOfType(SpaceService.class);
         Space space = sService.getSpaceByUrl(url) ;
+        spaceGroupId = space.getGroupId();
         String categoryId = Utils.CATE_SPACE_ID_PREFIX + space.getId();
         FAQService service = (FAQService)PortalContainer.getInstance().getComponentInstanceOfType(FAQService.class);
         if(service.getCategoryById(categoryId) != null) return categoryId ;
@@ -87,6 +89,10 @@ public class UIAnswersPortlet extends UIPortletApplication {
       return null;
     }
 
+  }
+
+  public String getSpaceGroupId() {
+    return spaceGroupId;
   }
 
   public void processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {

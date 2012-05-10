@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ks.ext.impl.ForumTransformHTML;
 import org.exoplatform.forum.service.Category;
@@ -130,8 +131,8 @@ public class ForumSpaceActivityPublisher extends ForumEventListener {
         Identity userIdentity = identityM.getOrCreateIdentity(OrganizationIdentityProvider.NAME, post.getOwner());
         Activity activity = new Activity();
         activity.setUserId(userIdentity.getId());
-        activity.setTitle(msg);
-        activity.setBody(body);
+        activity.setTitle(StringEscapeUtils.unescapeHtml(msg));
+        activity.setBody(StringEscapeUtils.unescapeHtml(body));
         activity.setType(FORUM_APP_ID);
         Map<String, String> templateParams = new HashMap<String, String>();
         templateParams.put(FORUM_ID_KEY, forumId);
@@ -179,8 +180,8 @@ public class ForumSpaceActivityPublisher extends ForumEventListener {
         
         Activity activity = new Activity();
         activity.setUserId(userIdentity.getId());
-        activity.setTitle(msg);
-        activity.setBody(body);
+        activity.setTitle(StringEscapeUtils.unescapeHtml(msg));
+        activity.setBody(StringEscapeUtils.unescapeHtml(body));
         activity.setType(FORUM_APP_ID);
         
         Map<String, String> params = new HashMap<String, String>();
@@ -229,8 +230,8 @@ public class ForumSpaceActivityPublisher extends ForumEventListener {
         
         Activity activity = new Activity();
         activity.setUserId(userIdentity.getId());
-        activity.setTitle(msg);
-        activity.setBody(body);
+        activity.setTitle(StringEscapeUtils.unescapeHtml(msg));
+        activity.setBody(StringEscapeUtils.unescapeHtml(body));
         activity.setType(FORUM_APP_ID);
         Map<String, String> templateParams = new HashMap<String, String>();
         templateParams.put(FORUM_ID_KEY, forumId);
@@ -277,8 +278,8 @@ public class ForumSpaceActivityPublisher extends ForumEventListener {
         
         Activity activity = new Activity();
         activity.setUserId(userIdentity.getId());
-        activity.setTitle(msg);
-        activity.setBody(body);
+        activity.setTitle(StringEscapeUtils.unescapeHtml(msg));
+        activity.setBody(StringEscapeUtils.unescapeHtml(body));
         activity.setType(FORUM_APP_ID);
         
         Map<String, String> params = new HashMap<String, String>();

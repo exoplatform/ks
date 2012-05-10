@@ -399,7 +399,7 @@ public class UICategoryForm extends BaseUIForm implements UIPopupComponent, UISe
 			}
 			uiGroupSelector.getAncestorOfType(UIPopupWindow.class).setRendered(true);
 			uiGroupSelector.setType(type) ;
-			uiGroupSelector.setSelectedGroups(null) ;
+			uiGroupSelector.setSpaceGroupId(categoryForm.getAncestorOfType(UIForumPortlet.class).getSpaceGroupId()) ;
 			uiGroupSelector.setComponent(categoryForm, new String[]{param}) ;
 			uiGroupSelector.getChild(UITree.class).setId(UIGroupSelector.TREE_GROUP_ID);
 			uiGroupSelector.getChild(org.exoplatform.webui.core.UIBreadcumbs.class).setId(UIGroupSelector.BREADCUMB_GROUP_ID);
@@ -495,6 +495,7 @@ public class UICategoryForm extends BaseUIForm implements UIPopupComponent, UISe
 			uiUserSelector.setShowSearch(true);
 			uiUserSelector.setShowSearchUser(true);
 			uiUserSelector.setShowSearchGroup(false);
+			uiUserSelector.setSpaceGroupId(categoryForm.getAncestorOfType(UIForumPortlet.class).getSpaceGroupId());
 			uiPopupWindow.setUIComponent(uiUserSelector);
 			uiPopupWindow.setShow(true);
 			uiPopupWindow.setWindowSize(740, 400);

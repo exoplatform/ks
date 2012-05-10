@@ -801,7 +801,7 @@ public class UITopicForm extends BaseForumForm implements UISelector {
 					uiGroupSelector = openPopup(popupContainer, UIGroupSelector.class, "GroupSelector", 600, 0) ;
 				}
 				uiGroupSelector.setType(array[1]) ;
-				uiGroupSelector.setSelectedGroups(null) ;
+				uiGroupSelector.setSpaceGroupId(uiTopicForm.getAncestorOfType(UIForumPortlet.class).getSpaceGroupId()) ;
 				uiGroupSelector.setComponent(uiTopicForm, new String[]{childId}) ;
 				uiGroupSelector.getChild(UITree.class).setId(UIGroupSelector.TREE_GROUP_ID);
 				uiGroupSelector.getChild(org.exoplatform.webui.core.UIBreadcumbs.class).setId(UIGroupSelector.BREADCUMB_GROUP_ID);
@@ -887,6 +887,7 @@ public class UITopicForm extends BaseForumForm implements UISelector {
 			uiUserSelector.setShowSearch(true);
 			uiUserSelector.setShowSearchUser(true);
 			uiUserSelector.setShowSearchGroup(false);
+			uiUserSelector.setSpaceGroupId(topicForm.getAncestorOfType(UIForumPortlet.class).getSpaceGroupId());
 			uiPopupWindow.setUIComponent(uiUserSelector);
 			uiPopupWindow.setShow(true);
 			uiPopupWindow.setWindowSize(740, 400);
