@@ -382,11 +382,12 @@ public class ForumDataInjector extends DataInjector {
     StringBuilder sb = new StringBuilder();
     sb.append(entity);
     if (isId) {
-      sb.append(PREFIX_ID).append(UNDER_SCORE);
+      sb.append(PREFIX_ID).append(UNDER_SCORE)
+        .append(prefix.replace(" ", "").replace("-", "_"));
     } else {
-      sb.append(UNDER_SCORE).append(prefix).append(UNDER_SCORE);
+      sb.append(UNDER_SCORE).append(prefix);
     }
-    sb.append(order);
+    sb.append(UNDER_SCORE).append(order);
     return sb.toString();
   }
   
@@ -419,7 +420,7 @@ public class ForumDataInjector extends DataInjector {
       .append(nodeType)
       .append(")[jcr:like(").append(Utils.EXO_NAME).append(",'")
       .append(prefix)
-      .append("') or jcr:like(").append(Utils.EXO_FILE_NAME).append("'")
+      .append("') or jcr:like(").append(Utils.EXO_FILE_NAME).append(",'")
       .append(prefix)
       .append("')]");
     try {
