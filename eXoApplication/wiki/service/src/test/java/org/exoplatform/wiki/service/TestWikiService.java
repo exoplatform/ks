@@ -94,6 +94,7 @@ public class TestWikiService extends AbstractMOWTestcase {
     model.save() ;
     
     assertNotNull(wService.getPageById(PortalConfig.GROUP_TYPE, "platform/users", "testGetGroupPageById-001")) ;    
+    assertNull(wService.getPageById(PortalConfig.GROUP_TYPE, "unknown", "WikiHome"));    
     
   }
   
@@ -113,7 +114,8 @@ public class TestWikiService extends AbstractMOWTestcase {
     wikiHomePage.addWikiPage(wikipage);
     model.save() ;
     
-    assertNotNull(wService.getPageById(PortalConfig.USER_TYPE, "john", "testGetUserPageById-001")) ;    
+    assertNotNull(wService.getPageById(PortalConfig.USER_TYPE, "john", "testGetUserPageById-001")) ;
+    assertNull(wService.getPageById(PortalConfig.USER_TYPE, "unknown", "WikiHome"));
     
   }
   

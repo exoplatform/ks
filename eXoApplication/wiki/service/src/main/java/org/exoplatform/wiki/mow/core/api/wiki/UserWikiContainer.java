@@ -28,6 +28,7 @@ import org.chromattic.api.annotations.PrimaryType;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.ks.common.CommonUtils;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.wiki.mow.api.WikiNodeType;
 import org.exoplatform.wiki.mow.core.api.WikiStoreImpl;
 
@@ -48,6 +49,15 @@ public abstract class UserWikiContainer extends WikiContainer<UserWiki> {
                                                                                          .getComponentInstanceOfType(NodeHierarchyCreator.class);    
     wikiOwner = validateWikiOwner(wikiOwner);
     if(wikiOwner == null){
+      return null;
+    }
+    OrganizationService organizationService = (OrganizationService) ExoContainerContext.getCurrentContainer()
+                                                                                       .getComponentInstanceOfType(OrganizationService.class);
+    try {
+      if (organizationService.getUserHandler().findUserByName(wikiOwner) == null) {
+        return null;
+      }
+    } catch (Exception ex) {
       return null;
     }
     ChromatticSession session = getMultiWiki().getSession();

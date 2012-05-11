@@ -25,6 +25,8 @@ import org.chromattic.api.UndeclaredRepositoryException;
 import org.chromattic.api.annotations.MappedBy;
 import org.chromattic.api.annotations.OneToOne;
 import org.chromattic.api.annotations.PrimaryType;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.wiki.mow.api.WikiNodeType;
 import org.exoplatform.wiki.mow.core.api.WikiStoreImpl;
 
@@ -44,6 +46,15 @@ public abstract class GroupWikiContainer extends WikiContainer<GroupWiki> {
     //Group wikis is stored in /Groups/$wikiOwner/ApplicationData/eXoWiki/WikiHome
     wikiOwner = validateWikiOwner(wikiOwner);
     if(wikiOwner == null){
+      return null;
+    }
+    OrganizationService organizationService = (OrganizationService) ExoContainerContext.getCurrentContainer()
+                                                                                       .getComponentInstanceOfType(OrganizationService.class);
+    try {
+      if (organizationService.getGroupHandler().findGroupById(wikiOwner) == null) {
+        return null;
+      }
+    } catch (Exception ex) {
       return null;
     }
     ChromatticSession session = getMultiWiki().getSession();
