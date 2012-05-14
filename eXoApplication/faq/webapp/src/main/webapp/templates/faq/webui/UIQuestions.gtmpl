@@ -499,19 +499,8 @@
                                 
                                 <!-- action of this question -->
                                 <div class="UIFAQPopupCategory" id="UIPopupQuestion$questionIndex" style="display:none;">
-                                  <div class="UIRightClickPopupMenu UIContextMenuContainer" style="display:block;">
-                                    <div>
+                                  <div class="UIRightClickPopupMenu UIContextMenuContainer">
               
-                                      <div class="TopLeftRightClickPopupMenu">
-                                        <div class="TopRightRightClickPopupMenu">
-                                          <div class="TopCenterRightClickPopupMenu"><span></span></div>
-                                          <div class="RightClickCustomItem" style="display:none;"><span></span></div>
-                                        </div>
-                                      </div>
-                                      
-                                      <div class="MiddleLeftRightClickPopupMenu">
-                                        <div class="MiddleRightRightClickPopupMenu">
-                                          <div class="UIRightPopupMenuContainer">
                                             <%
                                               String iconView = "" ;
                                               for(viewAction in questionActions) {
@@ -532,11 +521,12 @@
                                                 } else {
                                                   linkView = uicomponent.event(viewAction, qId);
                                                 }
-                                                String itemLabelView = _ctx.appRes("UIQuestions.action." + viewAction);                                                       
+                                                String itemLabelView = _ctx.appRes("UIQuestions.action." + viewAction); 
+                                                      
                                             %>
 
-                                                <div onclick="$linkView" class="MenuItem $lockFunction">
-                                                  <a class="ItemIcon $iconView" href="javascript:void(0);">$itemLabelView</a>
+                                                <div class="MenuItem $lockFunction" onmousedown="$linkView" onkeydown="$linkView">
+                                                  <a class="ItemIcon $iconView" href="$linkView" > $itemLabelView</a>
                                                 </div>
                                             <%
                                               }
@@ -545,21 +535,10 @@
                                                 String itemLabelView = _ctx.appRes("UIQuestions.action.EditQuestion");
                                                 String linkView = uicomponent.event("EditQuestion", qId);                                       
                                             %>
-                                              <div onclick="$linkView" class="MenuItem">
-                                                <a class="ItemIcon Edit" href="javascript:void(0);">$itemLabelView</a>
+                                              <div class="MenuItem" onmousedown="$linkView" onkeydown="$linkView">
+                                                <a class="ItemIcon Edit" href="$linkView">$itemLabelView</a>
                                               </div>
                                             <%}%>
-                                          </div>
-                                        </div>
-                                      </div>
-                                            
-                                      <div class="BottomLeftRightClickPopupMenu">
-                                        <div class="BottomRightRightClickPopupMenu">
-                                          <div class="BottomCenterRightClickPopupMenu"><span></span></div>
-                                        </div>
-                                      </div>
-                                      
-                                    </div>
                                   </div>
                                 </div>
                                 <!-- finish action of this question -->
