@@ -23,6 +23,7 @@ import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.lifecycle.Lifecycle;
 import org.exoplatform.wiki.mow.core.api.wiki.PageImpl;
 import org.exoplatform.wiki.rendering.RenderingService;
+import org.exoplatform.wiki.service.WikiContext;
 import org.exoplatform.wiki.service.WikiService;
 import org.exoplatform.wiki.utils.Utils;
 import org.xwiki.rendering.syntax.Syntax;
@@ -68,7 +69,10 @@ public class UIWikiSidePanelArea extends UIContainer {
   public void processRender(WebuiRequestContext context) throws Exception {
     RenderingService renderingService = (RenderingService) PortalContainer.getComponent(RenderingService.class);
     WikiService wikiService = (WikiService) PortalContainer.getComponent(WikiService.class);
-    String syntaxId = org.exoplatform.wiki.commons.Utils.getDefaultSyntax(); 
+    String syntaxId = org.exoplatform.wiki.commons.Utils.getDefaultSyntax();
+    
+    UIWikiPortlet wikiPortlet = getAncestorOfType(UIWikiPortlet.class);
+    WikiContext wikiContext= org.exoplatform.wiki.commons.Utils.setUpWikiContext(wikiPortlet);
     
     PageImpl syntaxHelpPage = wikiService.getHelpSyntaxPage(syntaxId);
     this.syntaxName = syntaxId.replace("/", " ").toUpperCase();
@@ -76,7 +80,8 @@ public class UIWikiSidePanelArea extends UIContainer {
       String markup = syntaxHelpPage.getContent().getText();
       this.htmlOutput = renderingService.render(markup, syntaxId, Syntax.XHTML_1_0.toIdString(), false);
       this.syntaxFullPageUrl = "/" + PortalContainer.getInstance().getRestContextName() + "/wiki/help/"
-          + syntaxId.replace("/", Utils.SLASH).replace(".", Utils.DOT);
+          + syntaxId.replace("/", Utils.SLASH).replace(".", Utils.DOT)
+          + "?portalUrl=" + wikiContext.getPortalURL();
     } else {
       this.htmlOutput = null;
     }

@@ -40,10 +40,10 @@ import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriBuilderException;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
@@ -52,10 +52,10 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.common.http.HTTPStatus;
 import org.exoplatform.commons.utils.MimeTypeResolver;
-import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ks.common.image.ResizeImageService;
+import org.exoplatform.portal.config.model.PortalConfig;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.services.rest.impl.EnvironmentContext;
@@ -90,8 +90,8 @@ import org.exoplatform.wiki.service.search.TitleSearchResult;
 import org.exoplatform.wiki.service.search.WikiSearchData;
 import org.exoplatform.wiki.tree.JsonNodeData;
 import org.exoplatform.wiki.tree.TreeNode;
-import org.exoplatform.wiki.tree.WikiTreeNode;
 import org.exoplatform.wiki.tree.TreeNode.TREETYPE;
+import org.exoplatform.wiki.tree.WikiTreeNode;
 import org.exoplatform.wiki.tree.utils.TreeUtils;
 import org.exoplatform.wiki.utils.Utils;
 import org.xwiki.context.Execution;
@@ -718,6 +718,7 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
    * The syntax id have to replaced all special characters: 
    *  Character '/' have to replace to "SLASH"
    *  Character '.' have to replace to "DOT"
+   * TODO: This function will be added the parameter "portalUrl" in the next version of wiki
    *
    * Sample:
    * "confluence/1.0" will be replaced to "confluenceSLASH1DOT0"
@@ -739,9 +740,23 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
       }
       Page fullHelpPage = (Page) page.getChildPages().values().iterator().next();
       
+      // Build wiki context
+      EnvironmentContext env = EnvironmentContext.getCurrent();
+      HttpServletRequest request = (HttpServletRequest) env.get(HttpServletRequest.class);
+      String portalUrl = request.getParameter("portalUrl");
+      if (StringUtils.isEmpty(portalUrl)) {
+        RenderingService renderingService = (RenderingService) ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(RenderingService.class);
+        Execution ec = ((RenderingServiceImpl) renderingService).getExecution();
+        if (ec.getContext() == null) {
+          ec.setContext(new ExecutionContext());
+        }
+        WikiContext wikiContext = new WikiContext();
+        wikiContext.setPortalURL(portalUrl);
+        wikiContext.setType(PortalConfig.PORTAL_TYPE);
+        ec.getContext().setProperty(WikiContext.WIKICONTEXT, wikiContext);
+      }
+      
       // Get help page body
-      ExoContainer container = ExoContainerContext.getCurrentContainer();
-      RenderingService renderingService = (RenderingService) container.getComponentInstanceOfType(RenderingService.class);
       String body = renderingService.render(fullHelpPage.getContent().getText(), fullHelpPage.getSyntax(), Syntax.XHTML_1_0.toIdString(), false);
       
       // Create javascript to load css
