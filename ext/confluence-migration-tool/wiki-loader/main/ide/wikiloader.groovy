@@ -160,7 +160,8 @@ public class WikiLoader {
          }
          if (creator != null)
             wikipage.setOwner(creator);
-    
+         wikipage.checkin();
+         wikipage.checkout();
          System.out.println("WikiLoaderService created page : " + path + "/" + pageName + " on demand of " + creator);
      
          return wikipage.getName();
