@@ -104,6 +104,7 @@ import org.exoplatform.forum.service.conf.ForumInitialDataPlugin;
 import org.exoplatform.forum.service.conf.PostData;
 import org.exoplatform.forum.service.conf.StatisticEventListener;
 import org.exoplatform.forum.service.conf.TopicData;
+import org.exoplatform.forum.service.user.AutoPruneJob;
 import org.exoplatform.ks.common.CommonUtils;
 import org.exoplatform.ks.common.UserHelper;
 import org.exoplatform.ks.common.conf.RoleRulesPlugin;
@@ -6941,13 +6942,12 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
   private void addOrRemoveSchedule(PruneSetting pSetting) throws Exception{
     Calendar cal = new GregorianCalendar();
     PeriodInfo periodInfo = new PeriodInfo(cal.getTime(), null, -1, (pSetting.getPeriodTime() * 86400000)); // pSetting.getPeriodTime() return value
-    Class clazz = Class.forName("org.exoplatform.forum.service.user.AutoPruneJob");
-    JobInfo info = new JobInfo(pSetting.getId(), KNOWLEDGE_SUITE_FORUM_JOBS, clazz);
+    JobInfo info = new JobInfo(pSetting.getId(), KNOWLEDGE_SUITE_FORUM_JOBS, AutoPruneJob.class);
     ExoContainer container = ExoContainerContext.getCurrentContainer();
     JobSchedulerService schedulerService = (JobSchedulerService) container.getComponentInstanceOfType(JobSchedulerService.class);
     schedulerService.removeJob(info);
     if (pSetting.isActive()) {
-      info = new JobInfo(pSetting.getId(), KNOWLEDGE_SUITE_FORUM_JOBS, clazz);
+      info = new JobInfo(pSetting.getId(), KNOWLEDGE_SUITE_FORUM_JOBS, AutoPruneJob.class);
       info.setDescription(pSetting.getForumPath());
       RepositoryService repositoryService = (RepositoryService) ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(RepositoryService.class);
       String repoName = repositoryService.getCurrentRepository().getConfiguration().getName();
@@ -6979,7 +6979,7 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
             queryLastTopic(sProvider, forumN.getPath());
           }
         } catch (Exception e) {
-          log.warn("Failed to run prune on a forum", e); 
+          log.warn("Failed to save new value last post date in forum", e); 
         }
       }
       // update last run for prune setting

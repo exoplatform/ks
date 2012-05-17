@@ -30,6 +30,7 @@ import org.exoplatform.forum.service.ForumStatistic;
 import org.exoplatform.forum.service.JCRPageList;
 import org.exoplatform.forum.service.MessageBuilder;
 import org.exoplatform.forum.service.Post;
+import org.exoplatform.forum.service.PruneSetting;
 import org.exoplatform.forum.service.Tag;
 import org.exoplatform.forum.service.Topic;
 import org.exoplatform.forum.service.TopicType;
@@ -285,7 +286,7 @@ public class TestForumService extends ForumServiceTestCase {
     forumService_.saveCategory(cat, true);
     Forum forum = createdForum();
     forumService_.saveForum(cat.getId(), forum, true);
-
+    forum = forumService_.getForum(cat.getId(), forum.getId());
     List<String> listTopicId = new ArrayList<String>();
     // add 10 Topics
     List<Topic> list = new ArrayList<Topic>();
@@ -334,8 +335,7 @@ public class TestForumService extends ForumServiceTestCase {
     pagelist = forumService_.getPageTopicByUser("Owner", true, "");
     assertEquals(pagelist.getAvailable(), 10);
 
-    // auto prune
-    // set 5 topics for old
+    // set 5 topics have last post is 2 days.
     Calendar cal = Calendar.getInstance();
     cal.setTimeInMillis(cal.getTimeInMillis() - 2 * 86400000);
     Node topicNode;
@@ -344,10 +344,25 @@ public class TestForumService extends ForumServiceTestCase {
       topicNode.setProperty(ForumNodeTypes.EXO_LAST_POST_DATE, cal);
       topicNode.save();
     }
-
+    // get topics by last post days. Example with 1 day.
     listTopic = forumService_.getAllTopicsOld(1, forum.getPath());
     assertEquals("Failed to run auto prune. List topic has size not equals 5.", listTopic.size(), 5);
-
+    
+    // run autoPrune
+    PruneSetting pSetting = forumService_.getPruneSetting(forum.getPath());
+    // active the pruning this forum.
+    pSetting.setActive(true);
+    // prune for topics have last post more than 1 day.
+    pSetting.setInActiveDay(1);
+    forumService_.runPrune(pSetting);
+    // check topics pruned.
+    // After pruned, the topics is active is 11 - 5 = 6.
+    StringBuilder queryBuilder = new StringBuilder();
+    // @exo:isActive = 'true'
+    queryBuilder.append("@").append(ForumNodeTypes.EXO_IS_ACTIVE).append("='true'");
+    int size = forumService_.getTopicList(cat.getId(), forum.getId(), queryBuilder.toString(), "", 20).getAll().size();
+    assertEquals("Failed to run autoPrun topics, the size of topics active not equals 6.", size, 6);
+    
     // move Topic
     // move topic from forum to forum 1
     Forum forum1 = createdForum();

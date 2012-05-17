@@ -17,7 +17,6 @@
 
 package org.exoplatform.forum.service.rest;
 
-import org.exoplatform.commons.chromattic.ChromatticManager;
 import org.exoplatform.component.test.AbstractKernelTest;
 import org.exoplatform.component.test.ConfigurationUnit;
 import org.exoplatform.component.test.ConfiguredBy;
@@ -37,6 +36,7 @@ import org.exoplatform.services.rest.impl.ResourceBinder;
 @ConfiguredBy({
   @ConfigurationUnit(scope = ContainerScope.PORTAL, path = "conf/exo.portal.component.test.jcr-configuration.xml"),
   @ConfigurationUnit(scope = ContainerScope.PORTAL, path = "conf/exo.portal.component.identity-configuration.xml"),
+  @ConfigurationUnit(scope = ContainerScope.PORTAL, path = "conf/exo.portal.component.portal-configuration1.xml"), 
   @ConfigurationUnit(scope = ContainerScope.PORTAL, path = "conf/rest/exo.ks.webservice.test-configuration.xml"),
   @ConfigurationUnit(scope = ContainerScope.PORTAL, path = "conf/rest/exo.portal.component.portal-configuration1.xml"),
   @ConfigurationUnit(scope = ContainerScope.PORTAL, path = "conf/rest/exo.portal.component.portal-configuration2.xml")
@@ -53,11 +53,8 @@ public abstract class BaseTest extends AbstractKernelTest {
   
   protected OrganizationService  orgService;
  
-  protected ChromatticManager chromatticManager;
-
-  public void setUp() throws Exception {
+  public BaseTest() {
     container = PortalContainer.getInstance();
-    chromatticManager = (ChromatticManager)container.getComponentInstanceOfType(ChromatticManager.class);
     orgService = (OrganizationService) container.getComponentInstanceOfType(OrganizationService.class);
     binder = (ResourceBinder) container.getComponentInstanceOfType(ResourceBinder.class);
     requestHandler = (RequestHandlerImpl) container.getComponentInstanceOfType(RequestHandlerImpl.class);
@@ -65,6 +62,9 @@ public abstract class BaseTest extends AbstractKernelTest {
     providers = ProviderBinder.getInstance();
     ApplicationContextImpl.setCurrent(new ApplicationContextImpl(null, null, providers));
     binder.clear();
+  }
+
+  public void setUp() throws Exception {
   }
   
   protected void start() {
@@ -78,24 +78,24 @@ public abstract class BaseTest extends AbstractKernelTest {
   public void tearDown() throws Exception {
   }
 
-  public boolean registry(Object resource) throws Exception {
-//    container.registerComponentInstance(resource);
-    return binder.bind(resource);
+  public void registry(Object resource) {
+    try {
+      binder.addResource(resource, null);
+    } catch (Exception e) {
+      log.debug("Can not add resource for class: " + resource.getClass());
+    }
   }
 
-  public boolean registry(Class<?> resourceClass) throws Exception {
-//    container.registerComponentImplementation(resourceClass.getName(), resourceClass);
-    return binder.bind(resourceClass);
+  public void registry(Class<?> resourceClass) throws Exception {
+    binder.addResource(resourceClass, null);
   }
 
-  public boolean unregistry(Object resource) {
-//    container.unregisterComponentByInstance(resource);
-    return binder.unbind(resource.getClass());
+  public void unregistry(Object resource) {
+    binder.removeResource(resource.getClass());
   }
 
-  public boolean unregistry(Class<?> resourceClass) {
-//    container.unregisterComponent(resourceClass.getName());
-    return binder.unbind(resourceClass);
+  public void unregistry(Class<?> resourceClass) {
+    binder.removeResource(resourceClass);
   }
 
 }
