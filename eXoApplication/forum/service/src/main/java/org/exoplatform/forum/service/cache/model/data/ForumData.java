@@ -110,4 +110,9 @@ public class ForumData implements CachedData<Forum> {
     return forum;
 
   }
+
+  public String getPath() {
+    return path;
+  }
+  
 }

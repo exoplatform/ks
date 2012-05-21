@@ -6,6 +6,8 @@ import org.exoplatform.forum.service.cache.loader.ServiceContext;
 import org.exoplatform.forum.service.cache.model.*;
 import org.exoplatform.forum.service.cache.model.data.*;
 import org.exoplatform.forum.service.cache.model.key.*;
+import org.exoplatform.forum.service.cache.model.selector.ForumPathSelector;
+import org.exoplatform.forum.service.cache.model.selector.ScopeCacheSelector;
 import org.exoplatform.forum.service.impl.JCRDataStorage;
 import org.exoplatform.ks.common.conf.RoleRulesPlugin;
 import org.exoplatform.ks.common.jcr.KSDataLocation;
@@ -308,7 +310,7 @@ public class CachedDataStorage implements DataStorage, Startable {
     if (!isNew) {
       categoryData.put(new CategoryKey(category), new CategoryData(category));
     }
-    categoryList.clearCache();
+    categoryList.select(new ScopeCacheSelector<CategoryListKey, ListCategoryData>());
   }
 
   public void saveModOfCategory(List<String> moderatorCate, String userId, boolean isAdd) {
@@ -329,7 +331,7 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   public Category removeCategory(String categoryId) throws Exception {
     categoryData.remove(new CategoryKey(categoryId));
-    categoryList.clearCache();
+    categoryList.select(new ScopeCacheSelector<CategoryListKey, ListCategoryData>());
     return storage.removeCategory(categoryId);  
   }
 
@@ -379,30 +381,33 @@ public class CachedDataStorage implements DataStorage, Startable {
   public void modifyForum(Forum forum, int type) throws Exception {
     storage.modifyForum(forum, type);
     forumData.put(new ForumKey(forum), new ForumData(forum));
-    forumList.clearCache();
+    forumList.select(new ScopeCacheSelector<ForumListKey, ListForumData>());
   }
 
   public void saveForum(String categoryId, Forum forum, boolean isNew) throws Exception {
     storage.saveForum(categoryId, forum, isNew);
     forumData.put(new ForumKey(forum), new ForumData(forum));
-    forumList.clearCache();
+    forumList.select(new ScopeCacheSelector<ForumListKey, ListForumData>());
   }
 
   public void saveModerateOfForums(List<String> forumPaths, String userName, boolean isDelete) throws Exception {
-    forumData.clearCache();
-    forumList.clearCache();
+    forumData.select(new ForumPathSelector(forumPaths.toArray(new String[]{}), forumData));
+    //forumData.clearCache();
+    forumList.select(new ScopeCacheSelector<ForumListKey, ListForumData>());
     storage.saveModerateOfForums(forumPaths, userName, isDelete);
   }
 
   public Forum removeForum(String categoryId, String forumId) throws Exception {
     forumData.remove(new ForumKey(categoryId, forumId));
-    forumList.clearCache();
+    forumList.select(new ScopeCacheSelector<ForumListKey, ListForumData>());
     return storage.removeForum(categoryId, forumId);
   }
 
   public void moveForum(List<Forum> forums, String destCategoryPath) throws Exception {
-    forumData.clearCache();
-    forumList.clearCache();
+    for (Forum forum : forums) {
+      forumData.remove(new ForumKey(forum));
+    }
+    forumList.select(new ScopeCacheSelector<ForumListKey, ListForumData>());
     storage.moveForum(forums, destCategoryPath);
   }
 
@@ -795,7 +800,7 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   public void removeWatch(int watchType, String path, String values) throws Exception {
     storage.removeWatch(watchType, path, values);
-    watchListData.clearCache();
+    watchListData.select(new ScopeCacheSelector());
   }
 
   public void updateEmailWatch(List<String> listNodeId, String newEmailAdd, String userId) throws Exception {
@@ -857,8 +862,8 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   public void importXML(String nodePath, ByteArrayInputStream bis, int typeImport) throws Exception {
     storage.importXML(nodePath, bis, typeImport);
-    forumList.clearCache();
-    forumData.clearCache();
+    forumList.select(new ScopeCacheSelector());
+    forumData.select(new ScopeCacheSelector());
   }
 
   public void updateTopicAccess(String userId, String topicId) {
@@ -963,10 +968,10 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   public void calculateDeletedGroup(String groupId, String groupName) throws Exception {
     storage.calculateDeletedGroup(groupId, groupName);
-    forumData.clearCache();
-    forumList.clearCache();
-    categoryData.clearCache();
-    categoryList.clearCache();
+    forumData.select(new ScopeCacheSelector<ForumKey, ForumData>());
+    forumList.select(new ScopeCacheSelector<ForumListKey, ListForumData>());
+    categoryData.select(new ScopeCacheSelector<CategoryKey, CategoryData>());
+    categoryList.select(new ScopeCacheSelector<CategoryListKey, ListCategoryData>());
   }
 
   public void initDataPlugin() throws Exception {
