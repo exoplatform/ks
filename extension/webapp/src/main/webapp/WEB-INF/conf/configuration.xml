@@ -18,6 +18,7 @@
 
   <!--forum core services  -->
   <import>war:/ks-extension/ks/forum/forum-configuration.xml</import>
+  <import>war:/ks-extension/ks/forum/cache-configuration.xml</import>
     
   <!-- builtin BBCodes  -->
   <import>war:/ks-extension/ks/forum/bbcodes-configuration.xml</import>

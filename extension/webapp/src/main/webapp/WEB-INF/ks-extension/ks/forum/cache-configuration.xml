@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2003-2011 eXo Platform SAS.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<configuration
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.exoplatform.org/xml/ns/kernel_1_2.xsd http://www.exoplatform.org/xml/ns/kernel_1_2.xsd"
+    xmlns="http://www.exoplatform.org/xml/ns/kernel_1_2.xsd">
+
+  <external-component-plugins>
+    <target-component>org.exoplatform.services.cache.CacheService</target-component>
+    <component-plugin>
+      <name>addExoCacheConfig</name>
+      <set-method>addExoCacheConfig</set-method>
+      <type>org.exoplatform.services.cache.ExoCacheConfigPlugin</type>
+      <description></description>
+      <init-params>
+
+        <!-- Categories -->
+        <object-param>
+          <name>CategoryData</name>
+          <description></description>
+          <object type="org.exoplatform.services.cache.ExoCacheConfig">
+            <field name="name"><string>CategoryData</string></field>
+            <field name="maxSize"><int>${cache.exo.forum.CategoryData.Capacity:10}</int></field>
+            <field name="liveTime"><long>${cache.exo.forum.CategoryData.TimeToLive:-1}</long></field>
+            <field name="implementation"><string>org.exoplatform.services.cache.concurrent.ConcurrentFIFOExoCache</string></field>
+          </object>
+        </object-param>
+        <object-param>
+          <name>CategoryList</name>
+          <description></description>
+          <object type="org.exoplatform.services.cache.ExoCacheConfig">
+            <field name="name"><string>CategoryList</string></field>
+            <field name="maxSize"><int>${cache.exo.forum.CategoryList.Capacity:5}</int></field>
+            <field name="liveTime"><long>${cache.exo.forum.CategoryList.TimeToLive:-1}</long></field>
+            <field name="implementation"><string>org.exoplatform.services.cache.concurrent.ConcurrentFIFOExoCache</string></field>
+          </object>
+        </object-param>
+
+        <!-- Forums -->
+        <object-param>
+          <name>ForumData</name>
+          <description></description>
+          <object type="org.exoplatform.services.cache.ExoCacheConfig">
+            <field name="name"><string>ForumData</string></field>
+            <field name="maxSize"><int>${cache.exo.forum.ForumData.Capacity:150}</int></field>
+            <field name="liveTime"><long>${cache.exo.forum.ForumData.TimeToLive:-1}</long></field>
+            <field name="implementation"><string>org.exoplatform.services.cache.concurrent.ConcurrentFIFOExoCache</string></field>
+          </object>
+        </object-param>
+        <object-param>
+          <name>ForumList</name>
+          <description></description>
+          <object type="org.exoplatform.services.cache.ExoCacheConfig">
+            <field name="name"><string>ForumList</string></field>
+            <field name="maxSize"><int>${cache.exo.forum.ForumList.Capacity:30}</int></field>
+            <field name="liveTime"><long>${cache.exo.forum.ForumList.TimeToLive:-1}</long></field>
+            <field name="implementation"><string>org.exoplatform.services.cache.concurrent.ConcurrentFIFOExoCache</string></field>
+          </object>
+        </object-param>
+
+        <!-- Topics -->
+        <object-param>
+          <name>TopicData</name>
+          <description></description>
+          <object type="org.exoplatform.services.cache.ExoCacheConfig">
+            <field name="name"><string>TopicData</string></field>
+            <field name="maxSize"><int>${cache.exo.forum.TopicData.Capacity:500}</int></field>
+            <field name="liveTime"><long>${cache.exo.forum.TopicData.TimeToLive:-1}</long></field>
+            <field name="implementation"><string>org.exoplatform.services.cache.concurrent.ConcurrentFIFOExoCache</string></field>
+          </object>
+        </object-param>
+        <!--<object-param>
+          <name>TopicList</name>
+          <description></description>
+          <object type="org.exoplatform.services.cache.ExoCacheConfig">
+            <field name="name"><string>TopicList</string></field>
+            <field name="maxSize"><int>${cache.exo.forum.TopicList.Capacity}</int></field>
+            <field name="liveTime"><long>${cache.exo.forum.TopicList.TimeToLive}</long></field>
+            <field name="implementation"><string>org.exoplatform.services.cache.concurrent.ConcurrentFIFOExoCache</string></field>
+          </object>
+        </object-param>-->
+
+        <!-- Watches -->
+        <object-param>
+          <name>WatchListData</name>
+          <description></description>
+          <object type="org.exoplatform.services.cache.ExoCacheConfig">
+            <field name="name"><string>WatchListData</string></field>
+            <field name="maxSize"><int>${cache.exo.forum.WatchListData.Capacity:300}</int></field>
+            <field name="liveTime"><long>${cache.exo.forum.WatchListData.TimeToLive:-1}</long></field>
+            <field name="implementation"><string>org.exoplatform.services.cache.concurrent.ConcurrentFIFOExoCache</string></field>
+          </object>
+        </object-param>
+
+        <!-- Links -->
+        <object-param>
+          <name>LinkListData</name>
+          <description></description>
+          <object type="org.exoplatform.services.cache.ExoCacheConfig">
+            <field name="name"><string>LinkListData</string></field>
+            <field name="maxSize"><int>${cache.exo.forum.LinkListData.Capacity:150}</int></field>
+            <field name="liveTime"><long>${cache.exo.forum.LinkListData.TimeToLive:-1}</long></field>
+            <field name="implementation"><string>org.exoplatform.services.cache.concurrent.ConcurrentFIFOExoCache</string></field>
+          </object>
+        </object-param>
+
+        <!-- ObjectNameData -->
+        <object-param>
+          <name>ObjectNameData</name>
+          <description></description>
+          <object type="org.exoplatform.services.cache.ExoCacheConfig">
+            <field name="name"><string>ObjectNameData</string></field>
+            <field name="maxSize"><int>${cache.exo.forum.ObjectNameData.Capacity:500}</int></field>
+            <field name="liveTime"><long>${cache.exo.forum.ObjectNameData.TimeToLive:-1}</long></field>
+            <field name="implementation"><string>org.exoplatform.services.cache.concurrent.ConcurrentFIFOExoCache</string></field>
+          </object>
+        </object-param>
+
+        <!-- MiscData -->
+        <object-param>
+          <name>MiscData</name>
+          <description></description>
+          <object type="org.exoplatform.services.cache.ExoCacheConfig">
+            <field name="name"><string>MiscData</string></field>
+            <field name="maxSize"><int>${cache.exo.forum.MiscData.Capacity:600}</int></field>
+            <field name="liveTime"><long>${cache.exo.forum.MiscData.TimeToLive:-1}</long></field>
+            <field name="implementation"><string>org.exoplatform.services.cache.concurrent.ConcurrentFIFOExoCache</string></field>
+          </object>
+        </object-param>
+
+      </init-params>
+    </component-plugin>
+  </external-component-plugins>
+
+</configuration>
