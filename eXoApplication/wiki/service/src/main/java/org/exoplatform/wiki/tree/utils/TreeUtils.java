@@ -47,29 +47,46 @@ import org.exoplatform.wiki.utils.Utils;
  */
 public class TreeUtils {
   
-  public static TreeNode getDescendants(WikiPageParams params, HashMap<String, Object> context) throws Exception {
+  /**
+   * Create a tree node with a given {@link WikiPageParams}
+   * 
+   * @param params is the wiki page parameters
+   * @return <code>TreeNode</code>
+   * @throws Exception
+   */
+  public static TreeNode getTreeNode(WikiPageParams params) throws Exception {
     Object wikiObject = Utils.getObjectFromParams(params);
     if (wikiObject instanceof WikiHome) {
       WikiHome wikiHome = (WikiHome) wikiObject;
       WikiHomeTreeNode wikiHomeNode = new WikiHomeTreeNode(wikiHome);
-      wikiHomeNode.pushDescendants(context);
       return wikiHomeNode;
     } else if (wikiObject instanceof Page) {
       PageImpl page = (PageImpl) wikiObject;
       PageTreeNode pageNode = new PageTreeNode(page);
-      pageNode.pushDescendants(context);
       return pageNode;
     } else if (wikiObject instanceof Wiki) {
       Wiki wiki = (Wiki) wikiObject;
       WikiTreeNode wikiNode = new WikiTreeNode(wiki);
-      wikiNode.pushDescendants(context);
       return wikiNode;
     } else if (wikiObject instanceof String) {
       SpaceTreeNode spaceNode = new SpaceTreeNode((String) wikiObject);
-      spaceNode.pushDescendants(context);
       return spaceNode;
     }
     return new TreeNode();
+  }
+  
+  /**
+   * Create a tree node contain all its descendant with a given {@link WikiPageParams} 
+   * 
+   * @param params is the wiki page parameters
+   * @param context is the page tree context
+   * @return <code>TreeNode</code>
+   * @throws Exception
+   */
+  public static TreeNode getDescendants(WikiPageParams params, HashMap<String, Object> context) throws Exception {
+    TreeNode treeNode = getTreeNode(params);
+    treeNode.pushDescendants(context);
+    return treeNode;
   }
   
   public static List<JsonNodeData> tranformToJson(TreeNode treeNode, HashMap<String, Object> context) throws Exception {

@@ -184,7 +184,7 @@ public class TestMacroRendering extends AbstractRenderingTestCase {
                      .append("    <a class=\"SelectNode\" style=\"display:none\" href=\"http://localhost:8080/portal/classic/\" ></a>")
                      .append("    <div class=\"NodeGroup\">")
                      .append("      <script type=\"text/javascript\">")
-                     .append("        function initTree(){eXo.wiki.UITreeExplorer.init(\"PageTree123\",\"?path=portal/classic/rootPage&excerpt=false&depth=\",false );}")
+                     .append("        function initTree(){eXo.wiki.UITreeExplorer.init(\"PageTree123\",\"?path=portal/classic/rootPage&excerpt=false&depth=1\",false );}")
                      .append("        var isInIFrame = (window.location != window.parent.location) ? true : false;")
                      .append("        if (isInIFrame) {")
                      .append("          if (window.attachEvent) {window.attachEvent('onload', initTree);}")

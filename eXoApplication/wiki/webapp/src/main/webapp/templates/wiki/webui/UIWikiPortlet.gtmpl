@@ -20,6 +20,7 @@
   jsmanager.addJavascript("eXo.wiki.UIWikiAjaxRequest.init('" + uicomponent.WIKI_PORTLET_ACTION_PREFIX + "', '" + uicomponent.VIEW_PAGE_ACTION + "');");  
   jsmanager.addJavascript("eXo.wiki.UIWikiPortlet.init('"+uicomponent.id+ "', '" + changeModeLinkId + "');");
   jsmanager.addJavascript("eXo.wiki.UIWikiPortlet.keepSessionAlive(" + uicomponent.isKeepSessionAlive() + ");");
+  jsmanager.addJavascript("eXo.wiki.UITreeExplorer.loading ='" + _ctx.appRes("UITreeExplorer.label.loading") +"' ;");
 %>
 <script type="text/javascript"> 
   if(!eXo.env.rest){

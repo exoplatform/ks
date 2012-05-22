@@ -70,7 +70,7 @@ public class PageTreeMacroParameters {
    * @param depth depth of children to set
    * @throws MacroExecutionException if parameter is not empty and not a number
    */
-  @PropertyDescription("Start depth of children. If not specified, no limit is applied")
+  @PropertyDescription("Start depth of children. If not specified, first level is applied")
   public void setStartDepth(String depth) throws MacroExecutionException {
     MacroUtils.validateNumberParam(depth);
     this.startDepth = depth;

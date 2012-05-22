@@ -17,7 +17,6 @@
 package org.exoplatform.wiki.rendering.macro.pagetree;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -91,6 +90,9 @@ public class PageTreeMacro extends AbstractMacro<PageTreeMacroParameters> {
     String documentName = parameters.getRoot();
     String startDepth = parameters.getStartDepth();
     excerpt = parameters.isExcerpt();
+    if (StringUtils.isEmpty(startDepth)) {
+      startDepth = "1";
+    }
     WikiPageParams params = markupContextManager.getMarkupContext(documentName, ResourceType.DOCUMENT);
     if (StringUtils.EMPTY.equals(documentName)) {
       WikiContext wikiContext = getWikiContext();
@@ -131,10 +133,7 @@ public class PageTreeMacro extends AbstractMacro<PageTreeMacroParameters> {
   private Block generateTree(WikiPageParams params, String startDepth) throws Exception {
     StringBuilder treeSb = new StringBuilder();
     StringBuilder initSb = new StringBuilder();
-    HashMap<String, Object> context = new HashMap<String, Object>();
-    context.put(TreeNode.DEPTH, startDepth);
-    context.put(TreeNode.SHOW_EXCERPT, excerpt);
-    TreeNode node = TreeUtils.getDescendants(params, context);      
+    TreeNode node = TreeUtils.getTreeNode(params);
     WikiContext wikiContext = getWikiContext();   
     String treeID = "PageTree"+ wikiContext.getPageTreeId();
     String treeRestURI = wikiContext.getTreeRestURI();

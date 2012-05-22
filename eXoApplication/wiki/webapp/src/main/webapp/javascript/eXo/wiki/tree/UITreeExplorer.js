@@ -98,12 +98,23 @@ UITreeExplorer.prototype.render = function(param, element, isFullRender) {
   var http = eXo.wiki.UITreeExplorer.getHTTPObject();  
   var restURL = url + param;
 
-  http.open("GET", restURL, true);
+  http.open("GET", restURL, true); 
+  
+  var childBlock = document.createElement("div");
+  if (me.innerDoc) {
+    childBlock = me.innerDoc.createElement("div");
+    me.innerDoc = null;
+  }
+  childBlock.className = "NodeGroup";
+  childBlock.innerHTML = me.loading;
+  node.appendChild(childBlock);
+  
   http.onreadystatechange = function() {
     if (http.readyState == 4) {
-      me.renderTreeNodes(node, http.responseText);      
+      me.renderTreeNodes(childBlock, http.responseText);      
     }
   }
+  
   http.send("");
   element.className = "CollapseIcon";
 };
@@ -123,23 +134,16 @@ UITreeExplorer.prototype.getHTTPObject = function() {
   return false;
 };
 
-UITreeExplorer.prototype.renderTreeNodes = function(parentNode, responseText) {
+UITreeExplorer.prototype.renderTreeNodes = function(node, responseText) {
   var me = eXo.wiki.UITreeExplorer;
   var dataList = JSON.parse(responseText);
   var resultLength = dataList.jsonList.length;
 
-  var childBlock = document.createElement("div");
-  if (me.innerDoc) {
-    childBlock = me.innerDoc.createElement("div");
-    me.innerDoc = null;
-  }
-  childBlock.className = "NodeGroup";
   var str = "";
   for ( var i = 0; i < resultLength; i++) {
     str += me.buildNode(dataList.jsonList[i]);
   }
-  childBlock.innerHTML = str;
-  parentNode.appendChild(childBlock);
+  node.innerHTML = str;
 }
 
 UITreeExplorer.prototype.buildHierachyNode = function(data){
