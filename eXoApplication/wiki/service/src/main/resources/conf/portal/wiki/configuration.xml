@@ -300,4 +300,6 @@
     </component-plugin>    
   </external-component-plugins>
   
+  <import>jar:/conf/portal/wiki/cache-configuration.xml</import>
+  
 </configuration>

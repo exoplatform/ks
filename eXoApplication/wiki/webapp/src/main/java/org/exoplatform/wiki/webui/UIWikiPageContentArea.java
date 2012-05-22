@@ -29,7 +29,8 @@ import org.exoplatform.wiki.mow.api.WikiNodeType;
 import org.exoplatform.wiki.mow.core.api.wiki.AttachmentImpl;
 import org.exoplatform.wiki.mow.core.api.wiki.PageImpl;
 import org.exoplatform.wiki.rendering.RenderingService;
-import org.exoplatform.wiki.service.PermissionType;
+import org.exoplatform.wiki.rendering.cache.PageRenderingCacheService;
+import org.exoplatform.wiki.service.WikiPageParams;
 import org.exoplatform.wiki.webui.core.UIWikiContainer;
 import org.xwiki.rendering.converter.ConversionException;
 import org.xwiki.rendering.syntax.Syntax;
@@ -75,10 +76,9 @@ public class UIWikiPageContentArea extends UIWikiContainer {
     try{
     // Render current content
     if (currentMode.equals(WikiMode.VIEW)) {
-        contentDisplay.setHtmlOutput(renderingService.render(wikipage.getContent().getText(),
-                                                             wikipage.getSyntax(),
-                                                             Syntax.XHTML_1_0.toIdString(),
-                                                             wikipage.hasPermission(PermissionType.EDITPAGE)));
+        PageRenderingCacheService renderingCacheService = getApplicationComponent(PageRenderingCacheService.class);
+        WikiPageParams param = Utils.getCurrentWikiPageParams();
+        contentDisplay.setHtmlOutput(renderingCacheService.getRenderedContent(param, Syntax.XHTML_1_0.toIdString()));
     }
     if (currentMode.equals(WikiMode.HELP)) {
         contentDisplay.setHtmlOutput(renderingService.render(wikipage.getContent().getText(),
