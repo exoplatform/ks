@@ -4410,7 +4410,7 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
   }
 
   public void saveLastPostIdRead(String userId, String[] lastReadPostOfForum, String[] lastReadPostOfTopic) throws Exception {
-    SessionProvider sProvider = CommonUtils.createSystemProvider();
+    SessionProvider sProvider = SessionProvider.createSystemProvider();
     Node profileHome = getUserProfileHome(sProvider);
     try {
       Node profileNode = profileHome.getNode(userId);
@@ -4419,6 +4419,8 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
       profileHome.save();
     } catch (Exception e) {
       log.error("Failed to save last post id read.", e);
+    } finally {
+      sProvider.close();
     }
   }
 
