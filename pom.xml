@@ -452,6 +452,7 @@
     <module>web</module>
     <module>eXoApplication</module>
     <module>extension</module>
+    <module>extras</module>
     <module>demo</module>
     <module>docs</module>
     <module>testsuite</module>
