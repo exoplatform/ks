@@ -143,6 +143,7 @@ import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
+import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedOutput;
 
 /**
@@ -7291,24 +7292,28 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
       Node node;
       for (String id : cateIds) {
         node = getNodeById(sProvider, id, Utils.CATEGORY);
-        entries.addAll(categoryUpdated(node));
+        if(node != null){
+          entries.addAll(categoryUpdated(node));
+        }
       }
       List<String> forumIds = reader.list("exo:forumIds", new ArrayList<String>());
       for (String id : forumIds) {
         node = getNodeById(sProvider, id, Utils.FORUM);
-        if (cateIds.contains(node.getParent().getName()))
-          continue;
-        entries.addAll(forumUpdated(node));
+        if (node != null && !cateIds.contains(node.getParent().getName())){
+          entries.addAll(forumUpdated(node));
+        }
       }
       List<String> topicIds = reader.list("exo:topicIds", new ArrayList<String>());
       for (String id : topicIds) {
         node = getNodeById(sProvider, id, Utils.TOPIC);
-        if (forumIds.contains(node.getParent().getName()))
-          continue;
-        entries.addAll(topicUpdated(node));
+        if (node != null && !forumIds.contains(node.getParent().getName())){
+          entries.addAll(topicUpdated(node));
+        }
       }
-    } catch (Exception e) {
-      log.error("Can not create feed data for user: " + userId, e);
+    } catch (PathNotFoundException e){
+      log.info(String.format("User %s doesn't subscribe anything.", userId));
+    } catch (RepositoryException e) {
+      log.info("Can not create feed data for user: " + userId, e);
     }
 
     try {
@@ -7328,7 +7333,7 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
       s = StringUtils.replace(s, "ST[CDATA[", "<![CDATA[");
       s = StringUtils.replace(s, "END]]", "]]>");
       return new ByteArrayInputStream(s.getBytes());
-    } catch (Exception e) {
+    } catch (FeedException e) {
       log.error("Can not create RSS for user: " + userId, e);
       return new ByteArrayInputStream(("Can not create RSS for user: " + userId + "<br/>" + e).getBytes());
     }
