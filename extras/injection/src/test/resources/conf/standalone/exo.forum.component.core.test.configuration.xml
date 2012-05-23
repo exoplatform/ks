@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2003-2011 eXo Platform SAS.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<configuration
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.exoplatform.org/xml/ns/kernel_1_2.xsd http://www.exoplatform.org/xml/ns/kernel_1_2.xsd"
+   xmlns="http://www.exoplatform.org/xml/ns/kernel_1_2.xsd">
+
+   <component>
+     <type>org.exoplatform.services.scheduler.impl.QuartzSheduler</type>
+   </component>
+   
+   <component>
+      <type>org.exoplatform.services.scheduler.QueueTasks</type>
+   </component>
+   
+  <component>
+    <type>org.exoplatform.services.bench.DataInjectorService</type>
+  </component>
+
+  <component>
+    <type>org.exoplatform.forum.extras.injection.ProfileInjector</type>
+  </component>
+
+  <component>
+    <type>org.exoplatform.forum.extras.injection.CategoryInjector</type>
+  </component>
+  
+    <component>
+    <type>org.exoplatform.forum.extras.injection.ForumInjector</type>
+  </component>
+
+  <component>
+    <type>org.exoplatform.forum.extras.injection.TopicInjector</type>
+  </component>
+  
+  <component>
+    <type>org.exoplatform.forum.extras.injection.PostInjector</type>
+  </component>
+
+  <component>
+    <type>org.exoplatform.forum.extras.injection.AttachmentInjector</type>
+  </component>
+
+  <component>
+    <type>org.exoplatform.services.jcr.ext.app.ThreadLocalSessionProviderService</type>
+  </component>
+  
+  <component>
+    <key>org.exoplatform.forum.service.ForumService</key>
+    <type>org.exoplatform.forum.service.impl.ForumServiceImpl</type>
+  </component>
+  
+  <component>
+    <key>org.exoplatform.forum.service.DataStorage</key>
+    <type>org.exoplatform.forum.service.impl.JCRDataStorage</type>
+  </component>  
+
+  <component>
+    <key>org.exoplatform.ks.common.jcr.KSDataLocation</key>
+    <type>org.exoplatform.ks.common.jcr.KSDataLocation</type>
+    <description>Holds JCR storage location for KS data</description>
+    <init-params>
+      <value-param>
+        <name>workspace</name>
+        <description>workspace for KS data</description>
+        <value>portal-test</value>
+      </value-param>
+    </init-params>
+  </component>
+  
+   <component>
+    <key>org.exoplatform.forum.service.ForumStatisticsService</key>
+    <type>org.exoplatform.forum.service.impl.ForumStatisticsServiceImpl</type>
+  </component> 
+    
+  <component>
+    <key>org.exoplatform.services.scheduler.JobSchedulerService</key>
+    <type>org.exoplatform.services.scheduler.impl.JobSchedulerServiceImpl</type>
+  </component>
+  
+ 
+  <component>
+    <key>org.exoplatform.services.jdbc.DataSourceProvider</key>
+    <type>org.exoplatform.services.jdbc.impl.DataSourceProviderImpl</type>
+  </component>
+
+  <external-component-plugins>
+    <target-component>org.exoplatform.services.organization.OrganizationService</target-component>
+    <!--Forum user listener-->
+    <component-plugin>
+      <name>forum.user.event.listener</name>
+      <set-method>addListenerPlugin</set-method>
+      <type>org.exoplatform.forum.service.conf.ForumUserListener</type>
+      <description>creates a profile in forum for each new user and calculate info when deleted user.</description>
+      <init-params>
+        <properties-param>
+          <name>user.profile.setting</name>
+          <description>set default user profile</description>
+          <property name="timeZone" value="GMT" />
+          <property name="shortDateFormat" value="MM/dd/yyyy" />
+          <property name="longDateFormat" value="DDD,MMM dd,yyyy" />
+          <property name="timeFormat" value="hh:mm a" />
+          <property name="maxTopic" value="10" />
+          <property name="maxPost" value="10" />
+          <property name="isShowForumJump" value="true" />
+        </properties-param>
+      </init-params>
+    </component-plugin>
+    <!--Forum group listener-->
+    <component-plugin>
+      <name>forum.group.event.listener </name>
+      <set-method>addListenerPlugin </set-method>
+      <type>org.exoplatform.forum.service.conf.ForumGroupListener</type>
+      <description>Remove the forums in spaces and remove group storage in categories/forums/topics</description>
+    </component-plugin>
+  </external-component-plugins>
+  
+  <external-component-plugins>
+    <target-component>org.exoplatform.services.jcr.RepositoryService</target-component>
+    <component-plugin>
+      <name>add.nodeType</name>
+      <set-method>addPlugin</set-method>
+      <type>org.exoplatform.services.jcr.impl.AddNodeTypePlugin</type>
+      <init-params>
+        <values-param>
+          <name>autoCreatedInNewRepository</name>
+          <description>Node types configuration file</description>
+          <value>jar:/conf/portal/forum-nodetypes.xml</value>
+          <value>jar:/conf/portal/faq-nodetypes.xml</value>
+          <value>jar:/conf/portal/poll-nodetypes.xml</value>
+          <value>jar:/conf/portal/bbcode-nodetypes.xml</value>
+        </values-param>
+      </init-params>
+    </component-plugin>
+  </external-component-plugins>
+</configuration>
