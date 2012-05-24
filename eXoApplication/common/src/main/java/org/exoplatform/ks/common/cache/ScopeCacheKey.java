@@ -1,4 +1,4 @@
-package org.exoplatform.forum.service.cache.model;
+package org.exoplatform.ks.common.cache;
 
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.jcr.RepositoryService;

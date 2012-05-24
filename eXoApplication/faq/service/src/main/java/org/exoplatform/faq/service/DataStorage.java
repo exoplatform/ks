@@ -19,11 +19,14 @@ package org.exoplatform.faq.service;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.jcr.Node;
 
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.ks.common.NotifyInfo;
+import org.exoplatform.ks.common.jcr.KSDataLocation;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 
 /**
  * Created by The eXo Platform SAS
@@ -32,6 +35,8 @@ import org.exoplatform.ks.common.NotifyInfo;
  * Oct 18, 2009  
  */
 public interface DataStorage {
+
+  void init(KSDataLocation location);
 
   void addPlugin(ComponentPlugin plugin) throws Exception;
 
@@ -56,6 +61,8 @@ public interface DataStorage {
   void saveUserAvatar(String userId, FileAttachment fileAttachment) throws Exception;
 
   void setDefaultAvatar(String userName) throws Exception;
+
+  void reInitQuestionNodeListeners() throws Exception;
 
   boolean initRootCategory() throws Exception;
 
@@ -137,6 +144,10 @@ public interface DataStorage {
 
   List<Category> getAllCategories() throws Exception;
 
+  Object readQuestionProperty(String questionId, String propertyName, Class returnType) throws Exception;
+
+  Object readCategoryProperty(String categoryId, String propertyName, Class returnType) throws Exception;
+  
   long existingCategories() throws Exception;
 
   Node getCategoryNodeById(String categoryId) throws Exception;
@@ -214,6 +225,8 @@ public interface DataStorage {
 
   List<String> getQuestionContents(List<String> paths) throws Exception;
 
+  Map<String, String> getRelationQuestion(List<String> paths) throws Exception;
+
   // will be remove
   Node getQuestionNodeById(String path) throws Exception;
 
@@ -223,7 +236,16 @@ public interface DataStorage {
 
   CategoryInfo getCategoryInfo(String categoryPath, List<String> categoryIdScoped) throws Exception;
 
+  void reCalculateInfoOfQuestion(String absPathOfProp) throws Exception;
+
   void updateQuestionRelatives(String questionPath, String[] relatives) throws Exception;
 
-  public void calculateDeletedUser(String userName) throws Exception;
+  void calculateDeletedUser(String userName) throws Exception;
+
+  InputStream createAnswerRSS(String cateId) throws Exception;
+
+  Comment[] getComments(String questionId) throws Exception;
+
+  Node getFAQServiceHome(SessionProvider sProvider) throws Exception;
+  
 }

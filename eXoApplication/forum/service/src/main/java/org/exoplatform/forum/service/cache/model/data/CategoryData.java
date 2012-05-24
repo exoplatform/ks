@@ -1,7 +1,7 @@
 package org.exoplatform.forum.service.cache.model.data;
 
 import org.exoplatform.forum.service.Category;
-import org.exoplatform.forum.service.cache.model.CachedData;
+import org.exoplatform.ks.common.cache.CachedData;
 
 import java.util.Date;
 

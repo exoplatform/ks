@@ -1,7 +1,7 @@
-package org.exoplatform.forum.service.cache.model;
+package org.exoplatform.ks.common.cache;
 
-import org.exoplatform.forum.service.cache.loader.CacheLoader;
-import org.exoplatform.forum.service.cache.loader.ServiceContext;
+import org.exoplatform.ks.common.cache.loader.CacheLoader;
+import org.exoplatform.ks.common.cache.loader.ServiceContext;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cache.future.FutureExoCache;
@@ -21,7 +21,9 @@ public enum CacheType {
   WATCH_LIST_DATA("WatchListData"),
   LINK_LIST_DATA("LinkListData"),
   OBJECT_NAME_DATA("ObjectNameData"),
-  MISC_DATA("MiscData")
+  MISC_DATA("MiscData"),
+  
+  FAQ_MARKUP("FaqMarkup")
 
   ;
   

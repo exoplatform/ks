@@ -93,6 +93,16 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>javax.portlet</groupId>
+      <artifactId>portlet-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.webui.portal</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.exoplatform.commons</groupId>
       <artifactId>exo.platform.commons.testing</artifactId>
       <version>${org.exoplatform.commons.version}</version>

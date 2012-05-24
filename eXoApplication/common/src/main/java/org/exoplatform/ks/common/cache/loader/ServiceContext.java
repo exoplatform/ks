@@ -15,31 +15,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.exoplatform.forum.service.cache.loader;
-
-import org.exoplatform.forum.service.cache.model.ScopeCacheKey;
-import org.exoplatform.services.cache.future.Loader;
-
-import java.io.Serializable;
+package org.exoplatform.ks.common.cache.loader;
 
 /**
- * Used by FutureCache to execute the ServiceContext.
+ * Kind of closure.
  *
  * @author <a href="mailto:alain.defrance@exoplatform.com">Alain Defrance</a>
  * @version $Revision$
  */
-public class CacheLoader<K extends ScopeCacheKey, V extends Serializable> implements Loader<K, V, ServiceContext<V>> {
+public interface ServiceContext<V> {
 
   /**
-   * Execute the context.
+   * Contains the code which allow to get the data from storage.
    *
-   * @param cacheContext
-   * @param key
-   * @return
-   * @throws Exception
+   * @return the data
    */
-  public V retrieve(final ServiceContext<V> cacheContext, final K key) throws Exception {
-    return cacheContext.execute();
-  }
-  
+  V execute();
 }

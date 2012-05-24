@@ -1,6 +1,4 @@
-package org.exoplatform.forum.service.cache.model;
-
-import org.exoplatform.forum.service.Post;
+package org.exoplatform.ks.common.cache;
 
 import java.io.Serializable;
 

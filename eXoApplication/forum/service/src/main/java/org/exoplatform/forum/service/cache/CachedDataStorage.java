@@ -2,13 +2,14 @@ package org.exoplatform.forum.service.cache;
 
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.forum.service.*;
-import org.exoplatform.forum.service.cache.loader.ServiceContext;
-import org.exoplatform.forum.service.cache.model.*;
+import org.exoplatform.ks.common.cache.loader.ServiceContext;
 import org.exoplatform.forum.service.cache.model.data.*;
 import org.exoplatform.forum.service.cache.model.key.*;
 import org.exoplatform.forum.service.cache.model.selector.ForumPathSelector;
-import org.exoplatform.forum.service.cache.model.selector.ScopeCacheSelector;
+import org.exoplatform.ks.common.cache.selector.ScopeCacheSelector;
 import org.exoplatform.forum.service.impl.JCRDataStorage;
+import org.exoplatform.ks.common.cache.CacheType;
+import org.exoplatform.ks.common.cache.CachedData;
 import org.exoplatform.ks.common.conf.RoleRulesPlugin;
 import org.exoplatform.ks.common.jcr.KSDataLocation;
 import org.exoplatform.management.annotations.Managed;

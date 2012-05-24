@@ -126,7 +126,7 @@ public class JCRDataStorage implements DataStorage, FAQNodeTypes {
 
   private KSDataLocation          dataLocator;
 
-  public JCRDataStorage(KSDataLocation dataLocator) throws Exception {
+  public void init(KSDataLocation dataLocator) {
     this.dataLocator = dataLocator;
     sessionManager = dataLocator.getSessionManager();
   }
@@ -3662,7 +3662,7 @@ public class JCRDataStorage implements DataStorage, FAQNodeTypes {
     return entry;
   }
 
-  protected Node getFAQServiceHome(SessionProvider sProvider) throws Exception {
+  public Node getFAQServiceHome(SessionProvider sProvider) throws Exception {
     String path = dataLocator.getFaqHomeLocation();
     return sessionManager.getSession(sProvider).getRootNode().getNode(path);
   }
