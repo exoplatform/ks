@@ -42,7 +42,7 @@ h2. Service
 | void savePost(String categoryId, String forumId, String topicId, Post post, boolean isNew, String defaultEmailContent) | topicId the topic id; post the post; isNew is the new; categoryId the category id; forumId the forum id |  | This method should: 1. Check the user permission 2. Check the madatory field of the post 3. Save the post data into the database 4. Invalidate the TopicView data cache |
 | void modifyPost(List<Post> posts, int type) |  |  |  |
 | Post removePost(String categoryId, String forumId, String topicId, String postId) | @param sProvider is the SessionProvider \\ @param categoryId the category id \\ @param forumId the forum id \\ @param topicId the topic id \\ @param postId the post id | @return the post | Removes the post. | 
-| movePost(String{noformat}[]{noformat} postPaths, String destTopicPath, boolean isCreatNewTopic, String mailContent, String link) | @param sProvider is the SessionProvider \\ @param posts the posts \\ @param destTopicPath the dest topic path |  | Move post. |
+| movePost(String\[\] postPaths, String destTopicPath, boolean isCreatNewTopic, String mailContent, String link) | @param sProvider is the SessionProvider \\ @param posts the posts \\ @param destTopicPath the dest topic path |  | Move post. |
 | Poll getPoll(String categoryId, String forumId, String topicId) | @param sProvider is the SessionProvider \\ @param categoryId the category id \\ @param forumId the forum id \\ @param topicId the topic id | @return the poll | Gets the poll. |
 | void savePoll(String categoryId, String forumId, String topicId, Poll poll, boolean isNew, boolean isVote) | @param sProvider is the SessionProvider \\ @param categoryId the category id \\ @param forumId the forum id \\ @param topicId the topic id \\ @param poll the poll \\ @param isNew is the new \\ @param isVote is the vote |  | Save poll |
 | Poll removePoll(String categoryId, String forumId, String topicId) | @param sProvider is the SessionProvider \\ @param categoryId the category id \\ @param forumId the forum id \\ @param topicId the topic id | @return the poll | Removes the poll. | 
@@ -57,7 +57,7 @@ h2. Service
 | List<String> getAllTagName(String strQuery, String userAndTopicId) |  |  |  |
 | List<String> getTagNameInTopic(String userAndTopicId) |  |  |  |
 | List<Tag> getAllTags() |  | @return the tags | Gets the tags. | 
-| List<Tag> getMyTagInTopic(String{noformat}[]{noformat} tagIds) | @param tagIds the list tag id of user tag in topic. | @return the tags by user add in topic | Gets the tags by user. |
+| List<Tag> getMyTagInTopic(String\[\] tagIds) | @param tagIds the list tag id of user tag in topic. | @return the tags by user add in topic | Gets the tags by user. |
 | JCRPageList getTopicByMyTag(String userIdAndtagId, String strOrderBy) | @param userIdAndtagId the user id and tag id (userId:tagId) \\ @param strOrderBy the topic order by | @return the topics by tag of user tag | Gets the topics by tag. |
 | void saveTag(Tag newTag) | @param newTag the new tag |  | Save tag. | 
 | void saveUserProfile(UserProfile userProfile, boolean isOption, boolean isBan) | @param sProvider is the SessionProvider \\ @param userProfile the user profile \\ @param isOption is the option \\ @param isBan is the ban |  | Save user profile. |
@@ -67,7 +67,7 @@ h2. Service
 | UserProfile getUserInfo(String userName) | @param sProvider is the SessionProvider \\ @param userName the user name | @return the user info | Gets the user info. | 
 | List<String> getUserModerator(String userName, boolean isModeCate) |  |  |  |
 | void saveUserBookmark(String userName, String bookMark, boolean isNew) | @param sProvider is the SessionProvider \\ @param userName the user name \\ @param bookMark the book mark \\ @param isNew is the new |  | Save user bookmark | 
-| void saveLastPostIdRead(String userId, String{noformat}[]{noformat} lastReadPostOfForum, String{noformat}[]{noformat} lastReadPostOfTopic) |  |  |  |
+| void saveLastPostIdRead(String userId, String\[\] lastReadPostOfForum, String\[\] lastReadPostOfTopic) |  |  |  |
 | void saveCollapsedCategories(String userName, String categoryId, boolean isAdd) | @param sProvider is the SessionProvider \\ @param userName the user name \\ @param categoryId the book mark \\ @param isNew is the new |  | Save user collapCategories. | 
 | JCRPageList getPageListUserProfile() | @param sProvider is the SessionProvider | @return the page list user profile | Gets the page list user profile. | 
 | List<ForumSearch> getQuickSearch(String textQuery, String type, String pathQuery, String userId, List<String> listCateIds, List<String> listForumIds, List<String> forumIdsOfModerator) | @param sProvider is the SessionProvider \\ @param textQuery the text query \\ @param type is type user and type object(forum, topic and post) \\ @param pathQuery the path query \\ @param forumIdsOfModerator TODO | @return the quick search | Gets the quick search. |
@@ -92,7 +92,7 @@ h2. Service
 | void saveForumSubscription(ForumSubscription forumSubscription, String userId) |  |  |  |
 | void addWatch(int watchType, String path, List<String> values, String currentUser) |  |  |  |
 | void removeWatch(int watchType, String path, String values) |  |  |  |
-| List<ForumSearch> getJobWattingForModerator(String{noformat}[]{noformat} paths) |  |  |  |
+| List<ForumSearch> getJobWattingForModerator(String\[\] paths) |  |  |  |
 | int getJobWattingForModeratorByUser(String userId) |  |  |  |
 | SendMessageInfo getMessageInfo(String name) |  |  |  |
 | Iterator<SendMessageInfo> getPendingMessages() |  |  |  |

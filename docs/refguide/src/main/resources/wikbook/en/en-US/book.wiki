@@ -77,6 +77,3 @@ h2. Internal API {anchor:id=KSref.DeveloperReference.InternalAPI}
 
 h2. FAQ Template Configuration {anchor:id=KSref.DeveloperReference.FAQTemplateConfiguration}
 {include:document="template-configuration-plugin.wiki"}
-
-
-

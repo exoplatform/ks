@@ -6,7 +6,7 @@ The template configuration plug-in is configured in the _templates-configuration
 
 In details:
 
-At the run time of the FAQ Service, _FAQService_ component is called, then _templates-configuration.xml_ file is executed. The component-plugin named _addTemplatePlugin_ will be referred to _org.exoplatform.faq.service.TemplatePlugin- to execute some objects and create default data for the *Forum* application.
+At runtime of the FAQ Service, _FAQService_ component is called, then the _templates-configuration.xml_ file is executed. The component-plugin named _addTemplatePlugin_ will be referred to _org.exoplatform.faq.service.TemplatePlugin- to execute some objects and create the default data for the *Forum* application.
 
 {code:xml}
 <external-component-plugins>
@@ -36,7 +36,7 @@ The properties of template configuration plug-in are defined in _init-params_ ta
     </init-params>
 {code}
 
-|*Name* | *Description* | *Value*
+||Name || Description || Value||
 |*viewerTemplate* | Path of file template | war:/ks-extension/ks/faq/templates/ FAQViewerPortlet.gtmpl
 
 
@@ -45,20 +45,20 @@ You can use two ways to change the template FAQ viewer:
 * By using Plug-in
 * By using *edit mode* to edit template
 
-h2. Using Plug-in {anchor:id=KSref.FAQTemplateConfiguration.Plugin}
-* *Step 1*: Create a file named *_FAQViewerPortlet.gtmpl_*. The content of the file is the template of the FAQ viewer.
+h2. Use Plug-in {anchor:id=KSref.FAQTemplateConfiguration.Plugin}
+*1.* Create a file named *_FAQViewerPortlet.gtmpl_*. The content of the file is the template of the FAQ viewer.
 
-* *Step 2*: Copy this file and paste into _ks-extension/WEB-INF/ks-extension/ks/faq/templates/_ that is in the *webapps* folder of the server (tomcat, jboss).
+*2.* Copy this file and paste into _ks-extension/WEB-INF/ks-extension/ks/faq/templates/_ that is in the *webapps* folder of the server (tomcat, jboss).
 
-* *Step 3*: When the server runs, _FAQViewerPortlet.gtmpl_ will initialize the template of the FAQ viewer.
+*3.* When the server runs, _FAQViewerPortlet.gtmpl_ will initialize the template of the FAQ viewer.
 
 h2. By using Edit Mode {anchor:id=KSref.FAQTemplateConfiguration.UsingEditMode}
 
-* *Step 1*: Run the server and open the FAQ Portlet.
+*1.* Run the server and open the FAQ Portlet.
 
-* *Step 2*: Go to *edit mode* and open the *Edit Template* tab.
+*2.* Go to *edit mode* and open the *Edit Template* tab.
 
-* *Step 3*: Edit the content of *text-area-input* and click *Save*.    
+*3.* Edit the content of *text-area-input* and click *Save*.
 
 
 h1. API provided by the UIComponent (UIViewer.java) {anchor:id=KSref.FAQTemplateConfiguration.APIsProvidedByUIComponent}
@@ -68,8 +68,8 @@ h1. API provided by the UIComponent (UIViewer.java) {anchor:id=KSref.FAQTemplate
 
 ||Function name || Param || Return || Description||
 |*getCategoryInfo* | Empty | CategoryInfo object | Get the object *CategoryInfo*|
-|*arrangeList* |{{ (List< String > list)}}: List of path | A new list is arranged | Arrange a list of path|
-|*render* | {{(String)}}: The content of answers or comments | A new string is converted by function render | Render the content of answers or comments|
+|*arrangeList* |{{ (List< String > list)}}: List of path | A new list is arranged | Arrange a list of path.|
+|*render* | {{(String)}}: The content of answers or comments | A new string is converted by function render | Render the content of answers or comments.|
 
 * The *CategoryInfo* class:{anchor:id=Category-info}
 {code}
@@ -83,12 +83,12 @@ h1. API provided by the UIComponent (UIViewer.java) {anchor:id=KSref.FAQTemplate
 ...
 {code}
 ||Param|| Type || Description ||
-|*id*|{{String}}| The jcr node name of the category node|
-|*path*|{{String}}| The jcr node path of the category node|
-|*name*|{{String}}|The name of the category|
+|*id*|{{String}}| The jcr node name of the category node.|
+|*path*|{{String}}| The jcr node path of the category node.|
+|*name*|{{String}}|The name of the category.|
 |*pathName*|{{List<String> }}|The path to the category includes a list of category names.|
-|*questionInfos*|{{List<QuestionInfo>}}| The list of *QuestionInfo* object|
-|*subCateInfos*|{{List<SubCategoryInfo>}}|The list of *SubCategoryInfo* object|
+|*questionInfos*|{{List<QuestionInfo>}}| The list of *QuestionInfo* object.|
+|*subCateInfos*|{{List<SubCategoryInfo>}}|The list of *SubCategoryInfo* object.|
 
 * The *QuestionInfo* class:
 {code}
@@ -101,10 +101,10 @@ h1. API provided by the UIComponent (UIViewer.java) {anchor:id=KSref.FAQTemplate
 {code}
 
 ||Param|| Type || Description ||
-|*id*| {{String}} | The jcr node name of the question node|
-|*question*| {{String}}|The content of the question|
-|*details*| {{String}} |The question details|
-|*answers*| {{List<String>}} |The list of the answers for the question|
+|*id*| {{String}} | The jcr node name of the question node.|
+|*question*| {{String}}|The content of the question.|
+|*details*| {{String}} |The question details.|
+|*answers*| {{List<String>}} |The list of answers for the question.|
 
 * The *SubCategoryInfo* class:
-The params of this class are the same as the CategoryInfo class. See [here|#Category-info] for more information.
+The params of this class are the same as those of the CategoryInfo class. See [here|#Category-info] for more information.

@@ -32,7 +32,7 @@ To register an event on a {{DOM node}}.
 * *Parameter*
 || Name || Type || Description ||
 | *obj* | {{DOM node}} | The element on which events need to be installed. |
-| *type* | {{string}} | To represent the event type. |
+| *type* | {{string}} | TRepresent the event type. |
 | *fn* | {{function}} | The Javascript function. |
 
 
@@ -54,7 +54,7 @@ To remove events which have been attached on the {{DOM node}}.
 * *Parameter*
 || Name || Type || Description ||
 | *obj* | {{DOM node}} | A node with events which need to be removed. |
-| *type* | {{string}} | To represent the event type. |
+| *type* | {{string}} | Represent the event type. |
 | *fn* | {{function}} | The Javascript function. |
 
 
@@ -78,7 +78,7 @@ To get which mouse button was pressed by the user.
 
 * *Return*
 || Type || Description ||
-| {{integer}} | To indicate which mouse button was pressed or released. |
+| {{integer}} | Indicate which mouse button was pressed or released. |
 
 * *Example*
 To check which mouse button has been clicked, you can do:
@@ -129,7 +129,7 @@ To get the HTML element on which the event took place by the class selector.
 
 * *Parameter*
 || Name || Type || Description ||
-| *evt* |  {{object}} | Event object |
+| *evt* |  {{object}} | Event object. |
 | *className* | {{string}} | The class stylesheet selector. |
 
 * *Return*
@@ -162,7 +162,7 @@ To get the HTML element the event took place on by the tag name.
 
 * *Parameter*
 || Name || Type || Description ||
-| *evt* | {{object}} | Event object |
+| *evt* | {{object}} | Event object. |
 | *tagName* | {{string}} | Name of HTML tag. |
 
 * *Return*
@@ -381,7 +381,7 @@ To create a link based on the user's setting (with Ajax or not).
 * *Parameter*
 || Name || Type || Description ||
 | *cpId* | {{string}} | The id of UI component. |
-| *isAjax* | {{boolean}} | To check if the developer uses Ajax or not. |
+| *isAjax* | {{boolean}} | Check if the developer uses Ajax or not. |
 
 * *Example*
 To create a link for a component, do as follows:
@@ -414,7 +414,7 @@ h1. Javascript Framework of Answers & FAQ
 *attach*
 
 * *Description*
-To initialize data, then set up and process functions when the user clicks the category item.
+To initialize data and set up and process functions when the user clicks the category item.
 
 * *Prototype*
 {code} eXo.faq.DragDrop.attach = function(evt) {code}

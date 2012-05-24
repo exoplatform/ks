@@ -1,19 +1,19 @@
 h1. Init data {anchor:id=KSref.InitDataConfiguration.InitData}
 
 || Application || Component || Description ||
-| *Forum* | {{KSDataLocation, ForumServiceImpl}} | To initialize default data of the Forum portlet. |
-| *Answers* | {{KSDataLocation, AnswerServiceImpl}} | To initialize default data of the Answers portlet. |
-| *Polls* | {{KSDataLocation, PollServiceImpl}} | To initialize default data of the Polls portlet. |
+| *Forum* | {{KSDataLocation, ForumServiceImpl}} | Initialize the default data of the Forum portlet. |
+| *Answers* | {{KSDataLocation, AnswerServiceImpl}} | Initialize the default data of the Answers portlet. |
+| *Polls* | {{KSDataLocation, PollServiceImpl}} | Initialize the default data of the Polls portlet. |
 
 The Init data plug-in is used to define the default data in the _.xml_ file. It includes nodes (node of jcr). 
 
-When the component _org.exoplatform.services.jcr.config.RepositoryServiceConfiguration_ is initialized, the component _org.exoplatform.services.jcr.impl.config.RepositoryServiceConfigurationPlugin_ will be get and the function _addConfig_ is called. Then, the _/ks-extension/jcr/repository-configuration.xml_ file is loaded and the component _org.exoplatform.ks.common.jcr.KSDataLocation_ will be initialized. Next, the _setLocation_ function is called, setting up the workspace and repository for KS. After that, the _addPlugin_ function will be run, generating the DataLocation (some parent nodes) for KS.
+When the _org.exoplatform.services.jcr.config.RepositoryServiceConfiguration_ component is initialized, the _org.exoplatform.services.jcr.impl.config.RepositoryServiceConfigurationPlugin_ component will be got and the _addConfig_ function is called. Then, the _/ks-extension/jcr/repository\-configuration.xml_ file is loaded and the _org.exoplatform.ks.common.jcr.KSDataLocation_ component will be initialized. Next, the _setLocation_ function is called, setting up the workspace and repository for eXo Knowledge. After that, the _addPlugin_ function will be run, generating the DataLocation (some parent nodes) for the Knowledge function.
 
 h1. Configuration {anchor:id=KSref.InitDataConfiguration.Configuration} 
 
 h2. Initialize the conf-part for loading _repository-configuration.xml_ {anchor:id=KSref.InitDataConfiguration.InitializeConf-partForLoading_repository-configuration.xml_}
 
-When the server starts, the _jcr-configuration.xml_ file is initialized. The component-plugin named addConfig will be referred to org.exoplatform.services.jcr.impl.config.RepositoryServiceConfigurationPlugin to load the _war:/ks-extension/jcr/repository-configuration.xml_ file.
+When the server starts, the _jcr\-configuration.xml_ file is initialized. The component-plugin named addConfig will be referred to org.exoplatform.services.jcr.impl.config.RepositoryServiceConfigurationPlugin to load the _war:/ks-extension/jcr/repository\-configuration.xml_ file.
 
 {code:xml}
  <component-plugin>
@@ -35,19 +35,19 @@ When the server starts, the _jcr-configuration.xml_ file is initialized. The com
 {code}
 
 * In which:
-|*Name*|*Set-method*| *Type *| *Description* 
-| *RepositoryService ConfigurationPlugin* |addConfig|org.exoplatform.services. jcr.impl.config.Repository ServiceConfigurationPlugin | To read configuration of JCR data to initialize data
+||Name||Set-method|| Type || Description ||
+| *RepositoryService ConfigurationPlugin* |addConfig|org.exoplatform.services. jcr.impl.config.Repository ServiceConfigurationPlugin | Read the configuration of the JCR data to initialize data.|
 
 * Init-params
 
-|*Name*|*Possible value*| *Default value* | *Description* 
-| *conf-path* | {{string}} |war:/ks-extension/jcr/ repository- configuration.xml|The path to the _repository-configuration.xml_ file
+||Name||Possible value|| Default value || Description||
+| *conf-path* | {{string}} |war:/ks-extension/jcr/ repository-configuration.xml|The path to the _repository\-configuration.xml_ file.|
 
-h2. Initialize workspace name and repository name in _storage-configuration.xml_ {anchor:id=KSref.InitDataConfiguration.InitializeWorkspaceName&RepositoryName}
+h2. Initialize workspace name and repository name in _storage\-configuration.xml_ {anchor:id=KSref.InitDataConfiguration.InitializeWorkspaceName&RepositoryName}
 
 In details:
 
-Once the _war:/ks-extension/jcr/repository-configuration.xml_ file has been initialized, the server will load the _storage-configuration.xml_ file, and the _setLocation_ function in the _org.exoplatform.ks.common.conf.DataLocationPlugin_ component will run.
+Once the _war:/ks-extension/jcr/repository\-configuration.xml_ file has been initialized, the server will load the _storage\-configuration.xml_ file, and the _setLocation_ function in the _org.exoplatform.ks.common.conf.DataLocationPlugin_ component will run.
 
 {code:xml}
   <external-component-plugins>
@@ -74,8 +74,8 @@ Once the _war:/ks-extension/jcr/repository-configuration.xml_ file has been init
 
 In which, 
 || Value-param || Possible value || Default value || Description ||
-| *repository* | {{string}} | {{repository}} | The JCR repository for KS data. |
-| *workspace* | {{string}} | {{knowledge}} | The workspace for KS data. |
+| *repository* | {{string}} | {{repository}} | The JCR repository for the Knowledge data. |
+| *workspace* | {{string}} | {{knowledge}} | The workspace for the Knowledge data. |
 
 h2. Initialize data {anchor:id=KSref.InitDataConfiguration.InitializeData}
 
@@ -100,13 +100,14 @@ Once the workspace name and repository name are registered, the server will load
           <field name="jcrPaths">
             <collection type="java.util.ArrayList">
                 <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">
                     <field name="alias"><string>eXoApplications</string></field>
                     <field name="path"><string>/exo:applications</string></field>
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.
+                          HierarchyConfig$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -120,14 +121,14 @@ Once the workspace name and repository name are registered, the server will load
                 </value>
 
                 <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>ksUserAvatar</string></field>
                     <field name="path"><string>/exo:applications/ksUserAvatar</string></field> 
                     <field name="nodeType"><string>nt:unstructured</string></field> 
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -141,14 +142,14 @@ Once the workspace name and repository name are registered, the server will load
                 </value> 
 
                 <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>ForumService</string></field>
                     <field name="path"><string>/exo:applications/ForumService</string></field> 
                     <field name="nodeType"><string>exo:forumHome</string></field> 
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -162,14 +163,14 @@ Once the workspace name and repository name are registered, the server will load
                 </value>
 
                 <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>ForumSystem</string></field>
                    <field name="path"><string>/exo:applications/ForumService/ForumSystem</string></field> 
                     <field name="nodeType"><string>exo:forumSystem</string></field> 
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -183,14 +184,14 @@ Once the workspace name and repository name are registered, the server will load
                 </value> 
 
                 <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>UserProfileHome</string></field> 
                     <field name="path"><string>/exo:applications/ForumService/ForumSystem/UserProfileHome</string></field> 
                     <field name="nodeType"><string>exo:userProfileHome</string></field> 
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -204,14 +205,14 @@ Once the workspace name and repository name are registered, the server will load
                 </value> 
 
                 <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>StatisticHome</string></field> 
                     <field name="path"><string>/exo:applications/ForumService/ForumSystem/StatisticHome</string></field> 
                     <field name="nodeType"><string>exo:statisticHome</string></field> 
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -225,14 +226,14 @@ Once the workspace name and repository name are registered, the server will load
                 </value> 
 
                  <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>forumStatistic</string></field> 
                     <field name="path"><string>/exo:applications/ForumService/ForumSystem/StatisticHome/forumStatistic</string></field> 
                     <field name="nodeType"><string>exo:forumStatistic</string></field> 
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -246,14 +247,14 @@ Once the workspace name and repository name are registered, the server will load
                 </value>
  
                 <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>AdministrationHome</string></field>
                     <field name="path"><string>/exo:applications/ForumService/ForumSystem/AdministrationHome</string></field> 
                     <field name="nodeType"><string>exo:administrationHome</string></field> 
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -267,14 +268,14 @@ Once the workspace name and repository name are registered, the server will load
                 </value> 
 
                 <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>BanIPHome</string></field> 
                    <field name="path"><string>/exo:applications/ForumService/ForumSystem/BanIPHome</string></field> 
                     <field name="nodeType"><string>exo:banIPHome</string></field> 
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -288,14 +289,16 @@ Once the workspace name and repository name are registered, the server will load
                 </value> 
 
                 <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>forumBanIP</string></field>
-                    <field name="path"><string>/exo:applications/ForumService/ForumSystem/BanIPHome/forumBanIP</string></field> 
+                    <field name="path">
+                    <string>/exo:applications/ForumService/ForumSystem/BanIPHome/forumBanIP</string>
+                    </field>
                     <field name="nodeType"><string>exo:banIP</string></field> 
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -309,14 +312,14 @@ Once the workspace name and repository name are registered, the server will load
                 </value> 
 
                  <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>ForumData</string></field>
                     <field name="path"><string>/exo:applications/ForumService/ForumData</string></field> 
                     <field name="nodeType"><string>exo:forumData</string></field> 
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -330,14 +333,14 @@ Once the workspace name and repository name are registered, the server will load
                 </value> 
 
                 <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>TopicTypeHome</string></field> 
                     <field name="path"><string>/exo:applications/ForumService/ForumData/TopicTypeHome</string></field> 
                     <field name="nodeType"><string>exo:topicTypeHome</string></field> 
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -351,14 +354,14 @@ Once the workspace name and repository name are registered, the server will load
                 </value> 
 
                 <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>CategoryHome</string></field>
                     <field name="path"><string>/exo:applications/ForumService/ForumData/CategoryHome</string></field> 
                     <field name="nodeType"><string>exo:categoryHome</string></field> 
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -372,14 +375,14 @@ Once the workspace name and repository name are registered, the server will load
                 </value> 
 
                 <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>TagHome</string></field>
                     <field name="path"><string>/exo:applications/ForumService/ForumData/TagHome</string></field> 
                     <field name="nodeType"><string>exo:tagHome</string></field> 
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -393,14 +396,14 @@ Once the workspace name and repository name are registered, the server will load
                 </value> 
 
                 <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>forumBBCode</string></field>
                     <field name="path"><string>/exo:applications/ForumService/ForumData/forumBBCode</string></field> 
                     <field name="nodeType"><string>exo:forumBBCodeHome</string></field> 
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -414,14 +417,14 @@ Once the workspace name and repository name are registered, the server will load
                 </value> 
 
                 <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>faqApp</string></field>
                     <field name="path"><string>/exo:applications/faqApp</string></field> 
                     <field name="nodeType"><string>exo:faqHome</string></field> 
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -435,14 +438,14 @@ Once the workspace name and repository name are registered, the server will load
                 </value> 
 
                  <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>settingHome</string></field> 
                    <field name="path"><string>/exo:applications/faqApp/settingHome</string></field> 
                     <field name="nodeType"><string>exo:faqSettingHome</string></field> 
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -455,14 +458,14 @@ Once the workspace name and repository name are registered, the server will load
                   </object>
                 </value> 
                  <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>userSettingHome</string></field> 
                    <field name="path"><string>/exo:applications/faqApp/settingHome/userSettingHome</string></field> 
                     <field name="nodeType"><string>exo:faqUserSettingHome</string></field> 
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -477,7 +480,7 @@ Once the workspace name and repository name are registered, the server will load
  
 
                    <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>categories</string></field>
                     <field name="path"><string>/exo:applications/faqApp/categories</string></field>
                     <field name="nodeType"><string>exo:faqCategory</string></field> 
@@ -489,7 +492,7 @@ Once the workspace name and repository name are registered, the server will load
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -503,14 +506,14 @@ Once the workspace name and repository name are registered, the server will load
                 </value> 
 
                 <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>templateHome</string></field>
                     <field name="path"><string>/exo:applications/faqApp/templateHome</string></field> 
                     <field name="nodeType"><string>exo:templateHome</string></field> 
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -524,14 +527,14 @@ Once the workspace name and repository name are registered, the server will load
                 </value> 
 
                 <value> 
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>eXoPolls</string></field>
                     <field name="path"><string>/exo:applications/eXoPolls</string></field> 
                     <field name="nodeType"><string>nt:unstructured</string></field> 
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                               <field name="identity"><string>*:/platform/administrators</string></field>
                               <field name="read"><string>true</string></field>
                               <field name="addNode"><string>true</string></field>
@@ -545,13 +548,13 @@ Once the workspace name and repository name are registered, the server will load
                 </value>
 
                 <value>
-                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath"> 
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$JcrPath">
                     <field name="alias"><string>groupsPath</string></field>
                     <field name="path"><string>/Groups</string></field>
                     <field name="permissions">
                       <collection type="java.util.ArrayList"> 
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                             <field name="identity"><string>*:/platform/administrators</string></field>
                             <field name="read"><string>true</string></field>
                             <field name="addNode"><string>true</string></field>
@@ -560,7 +563,7 @@ Once the workspace name and repository name are registered, the server will load
                           </object>
                         </value>
                         <value>
-                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission"> 
+                          <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.Hierarchy Config$Permission">
                             <field name="identity"><string>any</string></field>
                             <field name="read"><string>true</string></field>
                             <field name="addNode"><string>false</string></field>
@@ -573,7 +576,7 @@ Once the workspace name and repository name are registered, the server will load
                   </object>
                 </value>
  
-              </collection> 
+              </collection>
             </field>
           </object>
         </object-param>

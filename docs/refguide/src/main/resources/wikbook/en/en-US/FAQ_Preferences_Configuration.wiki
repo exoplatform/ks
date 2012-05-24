@@ -2,21 +2,15 @@ h1. Overview
 
 FAQ is configured mainly in two files:
 
-- Portlet preferences:
+* Portlet preferences: _/webapps/faq/WEB-INF/portlet.xml_
 
 
-* /webapps/faq/WEB-INF/portlet.xml
+* Services configuration: _WEB-INF/conf/ks-plugins-configuration.xml_
 
 
-- Services configuration: 
-
-
-* WEB-INF/conf/ks-plugins-configuration.xml 
-
-
-{info}
-For general KS configuration information, please refer to [KS Configuration| KS:KS Manual#Configuration] section.
-{info}
+{note}
+For general the Knowledge configuration information, please refer to the [Configuration|#KSref.Configuration] chapter.
+{note}
 
 
 h1. Portlet Preferences
@@ -25,21 +19,21 @@ FAQ portlet has preferences that you can configure to alter the behavior.
 
 At the runtime, you can use the portlet EDIT mode to set the preferences: 
 
-!DisplayMode.png!
+!images/DisplayMode.png|align="center"!
 
 Alternatively, you can configure the portlet in the _portet-preferences.xml_ file.
 
 || Preference name || Possible value || Default value || Description ||
-| *display* | {{approved}}, {{both}} | {{both}} | To indicate if only unapproved questions are hidden to normal users. |
-| *orderBy* | {{alphabet}}, {{created}} | {{alphabet}} | To specify the default sort order for questions. |
-| *orderType* | {{asc}}, {{desc}} | {{asc}} | To specify the default sort direction which is ascending or descending. |
+| *display* | {{approved}}, {{both}} | {{both}} | Indicate if only unapproved questions are hidden to normal users. |
+| *orderBy* | {{alphabet}}, {{created}} | {{alphabet}} | Specify the default sort order for questions. |
+| *orderType* | {{asc}}, {{desc}} | {{asc}} | Specify the default sort direction which is ascending or descending. |
 | *SendMailAddNewQuestion* | {{email notification template}} | {{blank}} | The template for email notifications when a new FAQ entry is added. A blank value will use the default template. |
 | *SendMailEditResponseQuestion* | {{email notification template}} | {{blank}} | The template for email notifications when a new FAQ entry is added. A blank value will use the default template. |
-| *enableVotesAndComments* | {{true}}, {{false}} | {{true}} | To enable or disable votes and comments. |
-| *enableAutomaticRSS* | {{true}}, {{false}} | {{true}} | To enable or disable the RSS feature. |
-| *isDiscussForum* | {{true}}, {{false}} | {{false}} | To enable or disable the discussion in forums. |
-| *pathNameCategoryForum* | {{any value}} | {{blank}} | To define the forum path which is used for discussion. A blank value means the forum path will be defined later in the FAQ portlet settings. |
-| *enableViewAvatar* |{{true}}, {{false}} | {{true}} | To enable or disable the avatar to be viewed. |
+| *enableVotesAndComments* | {{true}}, {{false}} | {{true}} | Enable or disable votes and comments. |
+| *enableAutomaticRSS* | {{true}}, {{false}} | {{true}} | Enable or disable the RSS feature. |
+| *isDiscussForum* | {{true}}, {{false}} | {{false}} | Enable or disable the discussion in forums. |
+| *pathNameCategoryForum* | {{any value}} | {{blank}} | Define the forum path which is used for discussion. A blank value means the forum path will be defined later in the FAQ portlet settings. |
+| *enableViewAvatar* |{{true}}, {{false}} | {{true}} | Dnable or disable the avatar to be viewed. |
 
 
 * Default Portlet Preferences

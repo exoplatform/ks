@@ -1,30 +1,30 @@
 h1. Overview {anchor:id=KSref.AnswerPortlet.Overview}
 
-|| *Portlet name* || War name || Description ||
+|| Portlet name || War name || Description ||
 | *AnswersPortlet* | faq.war | The Answers portlet is the application to create answers, to reply and manage questions. |
 
 h1. Portlet.xml {anchor:id=KSref.AnswerPortlet.AnswerPortletxml}
 
-* See the portlet.xml file in the project following this path: /webapps/faq/WEB-INF/portlet.xml
+* View the _portlet.xml_ file by following this path: _/webapps/faq/WEB-INF/portlet.xml_
 
 h1. Portlet Preferences {anchor:id=KSref.AnswerPortlet.AnswerPortletPreferences}
 
 The Answers portlet consists of preferences as follows:
 
 || Preference name || Possible value || Default value || Description ||
-| *enableViewAvatar* | {{true}}, {{false}} | {{true}} | To enable users to view the avatar of owner posting the question. |
-| *enableAutomaticRSS* | {{true}}, {{false}} | {{true}} | To enable users to get RSS automatically. |
-| *enableVotes AndComments* | {{true}}, {{false}} | {{true}} | To enable users to give votes and comments for the question.|
-| *enableAnonymous SubmitQuestion* | {{true}}, {{false}} | {{true}} | To enable anonymous users to submit questions. |
-| *display* | {{approved}}, {{both}} | {{both}} | To enable administrators to view unapproved questions in the questions list in UIQuestions. |
-| *SendMailAdd NewQuestion* | {{string}} | {{empty}} | To display the content of sent email when a new question is added. |
-| *SendMailEdit ResponseQuestion* | {{string}} | {{empty}} | To display the email content when a response is edited. |
-| *emailMoveQuestion* | {{string}} | {{empty}} | To display the email content when a question is moved. |
-| *orderBy* | {{alphabet}}, {{created}} | {{alphabet}} | To arrange questions in the alphabet or created date order. |
-| *orderType* | {{asc}}, {{desc}} | {{asc}} | To display questions in the ascending or descending order. |
-| *isDiscussForum* | {{true}}, {{false}} | {{false}} | To enable the DiscussQuestions function. |
-| *idNameCategoryForum* | {{CategoryName, {{ForumName}} | {{empty}} | To select categories and forums for the DiscussionQuestions function. |
-| *uploadFileSizeLimitMB* | {{integer}} | {{20}}| To set the maximum size of uploaded files in MB. |
+| *enableViewAvatar* | {{true}}, {{false}} | {{true}} | Enable users to view the avatar of owner posting the question. |
+| *enableAutomaticRSS* | {{true}}, {{false}} | {{true}} | Enable users to get RSS automatically. |
+| *enableVotes AndComments* | {{true}}, {{false}} | {{true}} | Enable users to give votes and comments for the question.|
+| *enableAnonymous SubmitQuestion* | {{true}}, {{false}} | {{true}} | Enable anonymous users to submit questions. |
+| *display* | {{approved}}, {{both}} | {{both}} | Enable administrators to view unapproved questions in the questions list in UIQuestions. |
+| *SendMailAdd NewQuestion* | {{string}} | {{empty}} | Display the content of sent email when a new question is added. |
+| *SendMailEdit ResponseQuestion* | {{string}} | {{empty}} | Display the email content when a response is edited. |
+| *emailMoveQuestion* | {{string}} | {{empty}} | Display the email content when a question is moved. |
+| *orderBy* | {{alphabet}}, {{created}} | {{alphabet}} | Arrange questions in the alphabet or created date order. |
+| *orderType* | {{asc}}, {{desc}} | {{asc}} | Display questions in the ascending or descending order. |
+| *isDiscussForum* | {{true}}, {{false}} | {{false}} | Enable the DiscussQuestions function. |
+| *idNameCategoryForum* | {{CategoryName, {{ForumName}} | {{empty}} | Select categories and forums for the DiscussionQuestions function. |
+| *uploadFileSizeLimitMB* | {{integer}} | {{20}}| Set the maximum size of uploaded files in MB. |
 
 
 
