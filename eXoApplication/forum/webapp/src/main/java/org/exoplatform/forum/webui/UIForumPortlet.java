@@ -788,7 +788,6 @@ public class UIForumPortlet extends UIPortletApplication {
         String cateId = null;
         int page = 0;
         if (path.indexOf(ForumUtils.SLASH) >= 0) {
-          path = path.substring(path.indexOf(Utils.CATEGORY));
           String[] arr = path.split(ForumUtils.SLASH);
           try {
             page = Integer.parseInt(arr[arr.length - 1]);
