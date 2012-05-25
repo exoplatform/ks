@@ -48,15 +48,9 @@ public abstract class FAQServiceTestCase extends FAQTestCase {
   protected SessionProvider sessionProvider;
   private static SessionProviderService sessionProviderService = null;
   
-  static {
-    // we do this in static to save a few cycles
+  public FAQServiceTestCase() throws Exception {    
     initContainer();
     initJCR();
-  }
-
-
-  
-  public FAQServiceTestCase() throws Exception {    
   }
   
   public void setUp() throws Exception {
