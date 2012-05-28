@@ -24,6 +24,7 @@ import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.ks.common.jcr.KSDataLocation;
 import org.exoplatform.management.jmx.annotations.NameTemplate;
 import org.exoplatform.management.jmx.annotations.Property;
+import org.exoplatform.poll.service.DataStorage;
 import org.exoplatform.poll.service.Poll;
 import org.exoplatform.poll.service.PollService;
 import org.exoplatform.poll.service.PollSummary;
@@ -34,15 +35,15 @@ import org.picocontainer.Startable;
 
 @NameTemplate(@Property(key = "service", value = "poll"))
 public class PollServiceImpl implements Startable, PollService {
-  private JCRDataStorage   storage_;
+  private DataStorage storage_;
 
   private KSDataLocation   dataLocator;
 
   private static final Log log = ExoLogger.getLogger(PollServiceImpl.class);
 
-  public PollServiceImpl(InitParams params, KSDataLocation locator, NodeHierarchyCreator nodeHierarchyCreator) throws Exception {
+  public PollServiceImpl(InitParams params, KSDataLocation locator, DataStorage storage) throws Exception {
     this.dataLocator = locator;
-    storage_ = new JCRDataStorage(nodeHierarchyCreator, dataLocator);
+    storage_ = storage;
   }
 
   public void addInitialDefaultDataPlugin(ComponentPlugin plugin) throws Exception {

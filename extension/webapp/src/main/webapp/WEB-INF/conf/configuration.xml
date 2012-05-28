@@ -45,7 +45,8 @@
   
   <!-- Poll core services -->
   <import>war:/ks-extension/ks/poll/poll-configuration.xml</import>
-  
+  <import>war:/ks-extension/ks/poll/cache-configuration.xml</import>
+
   
   
 </configuration>

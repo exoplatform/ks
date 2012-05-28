@@ -23,7 +23,11 @@ public enum CacheType {
   OBJECT_NAME_DATA("ObjectNameData"),
   MISC_DATA("MiscData"),
   
-  FAQ_MARKUP("FaqMarkup")
+  FAQ_MARKUP("FaqMarkup"),
+
+  POLL_DATA("PollData"),
+  POLL_LIST("PollList"),
+  POLL_SUMMARY_DATA("PollSummaryData")
 
   ;
   
