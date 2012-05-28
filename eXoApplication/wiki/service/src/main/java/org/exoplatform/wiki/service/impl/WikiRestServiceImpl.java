@@ -220,7 +220,6 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
                 creator = conversationState.getIdentity().getUserId();
               }
               att.setCreator(creator);
-              att.setPermission(page.getPermission());
             }
           }
         }

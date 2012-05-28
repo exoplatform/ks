@@ -54,7 +54,7 @@ public class PermissionImpl extends Permission {
         actions = new ArrayList<String>();
       }
       actions.add(ace.getPermission());
-      perm.put(ace.getIdentity(), actions.toArray(new String[5]));
+      perm.put(ace.getIdentity(), actions.toArray(new String[actions.size()]));
     }
     return perm;
   }

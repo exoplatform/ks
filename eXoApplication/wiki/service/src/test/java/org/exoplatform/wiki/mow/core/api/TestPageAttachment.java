@@ -17,6 +17,7 @@
 package org.exoplatform.wiki.mow.core.api;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import org.chromattic.ext.ntdef.Resource;
@@ -66,6 +67,46 @@ public class TestPageAttachment extends AbstractMOWTestcase {
     wikipage.setName("AddPageAttachment-002");
     wikiHomePage.addWikiPage(wikipage);
     wikipage.makeVersionable();
+  }
+  
+  public void testAttachmentPermission() throws Exception {
+    startSessionAs("demo");
+    Model model = mowService.getModel();
+    WikiStoreImpl wStore = (WikiStoreImpl) model.getWikiStore();
+    WikiContainer<PortalWiki> portalWikiContainer = wStore.getWikiContainer(WikiType.PORTAL);
+    PortalWiki wiki = portalWikiContainer.addWiki("classic");
+    WikiHome wikiHomePage = wiki.getWikiHome();
+    
+    // Create permission entries
+    HashMap<String, String[]> expectedPermissions = new HashMap<String, String[]>();
+    String[] permission = new String[] { 
+        org.exoplatform.services.jcr.access.PermissionType.READ,
+        org.exoplatform.services.jcr.access.PermissionType.SET_PROPERTY };
+    expectedPermissions.put("demo", permission);
+    
+    // Create new wiki page
+    PageImpl wikipage = wiki.createWikiPage();    
+    wikipage.setName("testAttachmentPermissionPage");
+    wikiHomePage.addWikiPage(wikipage);
+    wikipage.setOwner("demo");
+    wikipage.setPermission(expectedPermissions);
+    
+    // Create attachment
+    AttachmentImpl attachment0 = wikipage.createAttachment("AttachmentPermission.jpg", Resource.createPlainText("logo")) ;
+    attachment0.setCreator("demo");
+    AttachmentImpl attachment1 = wikipage.getAttachment("AttachmentPermission.jpg");
+    assertNotNull(attachment1);
+    
+    // Check if permission is correct
+    expectedPermissions.put("demo", org.exoplatform.services.jcr.access.PermissionType.ALL);
+    HashMap<String, String[]> altualPermissions = attachment1.getPermission();
+    for (String key : altualPermissions.keySet()) {
+      String[] expectPermission = expectedPermissions.get(key);
+      String[] actualPermission = altualPermissions.get(key);
+      for (int i = 0; i < actualPermission.length; i++) {
+        assertEquals(expectPermission[i], actualPermission[i]);
+      }
+    }
   }
   
   public void testGetPageAttachment() throws Exception{
