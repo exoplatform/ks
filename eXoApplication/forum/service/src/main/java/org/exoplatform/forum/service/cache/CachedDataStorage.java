@@ -11,11 +11,54 @@ import java.util.Map;
 import javax.jcr.NodeIterator;
 
 import org.exoplatform.container.component.ComponentPlugin;
-import org.exoplatform.forum.service.*;
+import org.exoplatform.forum.service.Category;
+import org.exoplatform.forum.service.DataStorage;
+import org.exoplatform.forum.service.Forum;
+import org.exoplatform.forum.service.ForumAdministration;
+import org.exoplatform.forum.service.ForumAttachment;
+import org.exoplatform.forum.service.ForumEventQuery;
+import org.exoplatform.forum.service.ForumLinkData;
+import org.exoplatform.forum.service.ForumPrivateMessage;
+import org.exoplatform.forum.service.ForumSearch;
+import org.exoplatform.forum.service.ForumStatistic;
+import org.exoplatform.forum.service.ForumSubscription;
+import org.exoplatform.forum.service.InitializeForumPlugin;
+import org.exoplatform.forum.service.JCRPageList;
+import org.exoplatform.forum.service.LazyPageList;
+import org.exoplatform.forum.service.MessageBuilder;
+import org.exoplatform.forum.service.Post;
+import org.exoplatform.forum.service.PruneSetting;
+import org.exoplatform.forum.service.SendMessageInfo;
+import org.exoplatform.forum.service.SortSettings;
+import org.exoplatform.forum.service.Tag;
+import org.exoplatform.forum.service.Topic;
+import org.exoplatform.forum.service.TopicType;
+import org.exoplatform.forum.service.UserProfile;
+import org.exoplatform.forum.service.Utils;
+import org.exoplatform.forum.service.Watch;
 import org.exoplatform.forum.service.cache.loader.ServiceContext;
-import org.exoplatform.forum.service.cache.model.*;
-import org.exoplatform.forum.service.cache.model.data.*;
-import org.exoplatform.forum.service.cache.model.key.*;
+import org.exoplatform.forum.service.cache.model.CacheType;
+import org.exoplatform.forum.service.cache.model.CachedData;
+import org.exoplatform.forum.service.cache.model.data.CategoryData;
+import org.exoplatform.forum.service.cache.model.data.ForumData;
+import org.exoplatform.forum.service.cache.model.data.LinkData;
+import org.exoplatform.forum.service.cache.model.data.ListCategoryData;
+import org.exoplatform.forum.service.cache.model.data.ListForumData;
+import org.exoplatform.forum.service.cache.model.data.ListLinkData;
+import org.exoplatform.forum.service.cache.model.data.ListWatchData;
+import org.exoplatform.forum.service.cache.model.data.PostData;
+import org.exoplatform.forum.service.cache.model.data.SimpleCacheData;
+import org.exoplatform.forum.service.cache.model.data.TagData;
+import org.exoplatform.forum.service.cache.model.data.TopicData;
+import org.exoplatform.forum.service.cache.model.data.WatchData;
+import org.exoplatform.forum.service.cache.model.key.CategoryKey;
+import org.exoplatform.forum.service.cache.model.key.CategoryListKey;
+import org.exoplatform.forum.service.cache.model.key.ForumKey;
+import org.exoplatform.forum.service.cache.model.key.ForumListKey;
+import org.exoplatform.forum.service.cache.model.key.LinkListKey;
+import org.exoplatform.forum.service.cache.model.key.ObjectNameKey;
+import org.exoplatform.forum.service.cache.model.key.SimpleCacheKey;
+import org.exoplatform.forum.service.cache.model.key.TopicKey;
 import org.exoplatform.forum.service.cache.model.selector.ForumPathSelector;
 import org.exoplatform.forum.service.cache.model.selector.ScopeCacheSelector;
 import org.exoplatform.forum.service.impl.JCRDataStorage;
@@ -66,6 +109,43 @@ public class CachedDataStorage implements DataStorage, Startable {
     this.service = service;
 
     
+  }
+  
+  private void clearForumCache(Forum forum, boolean isPutNewKey, boolean isSelectNewCachedObject) throws Exception {
+    if (isPutNewKey) {
+      forumData.put(new ForumKey(forum), new ForumData(forum));
+    } else {
+      forumData.remove(new ForumKey(forum));
+    }
+    if (isSelectNewCachedObject) {
+      forumList.select(new ScopeCacheSelector<ForumListKey, ListForumData>());
+    }
+  }
+
+  private void clearForumCache(String categoryId, String forumId, boolean isPutNewKey, boolean isSelectNewCachedObject) throws Exception {
+    Forum forum = getForum(categoryId, forumId);
+    if (forum != null) {
+      clearForumCache(forum, isPutNewKey, isSelectNewCachedObject);
+    }
+  }
+  
+  private void clearObjectCache(Forum forum, boolean isPutNewKey) throws Exception {
+    if (forum != null) {
+      ForumData forumData = new ForumData(forum);
+      String categoryId = forum.getCategoryId();
+      String forumId = forum.getId();
+      if (isPutNewKey) {
+        objectNameData.put(new ObjectNameKey(categoryId + "/" + forumId), forumData);
+        objectNameData.put(new ObjectNameKey(forumId, Utils.FORUM), forumData);
+      } else {
+        objectNameData.remove(new ObjectNameKey(categoryId + "/" + forumId));
+        objectNameData.remove(new ObjectNameKey(forumId, Utils.FORUM));
+      }
+    }
+  }
+  
+  private void clearObjectCache(String caategoryId, String forumId, boolean isPutNewKey) throws Exception {
+    clearObjectCache(getForum(caategoryId, forumId), isPutNewKey);
   }
 
   public void start() {
@@ -382,14 +462,14 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   public void modifyForum(Forum forum, int type) throws Exception {
     storage.modifyForum(forum, type);
-    forumData.put(new ForumKey(forum), new ForumData(forum));
-    forumList.select(new ScopeCacheSelector<ForumListKey, ListForumData>());
+    clearForumCache(forum, true, true);
+    clearObjectCache(forum, true);
   }
 
   public void saveForum(String categoryId, Forum forum, boolean isNew) throws Exception {
     storage.saveForum(categoryId, forum, isNew);
-    forumData.put(new ForumKey(forum), new ForumData(forum));
-    forumList.select(new ScopeCacheSelector<ForumListKey, ListForumData>());
+    clearForumCache(forum, true, true);
+    clearObjectCache(forum, true);
   }
 
   public void saveModerateOfForums(List<String> forumPaths, String userName, boolean isDelete) throws Exception {
@@ -397,17 +477,24 @@ public class CachedDataStorage implements DataStorage, Startable {
     //forumData.clearCache();
     forumList.select(new ScopeCacheSelector<ForumListKey, ListForumData>());
     storage.saveModerateOfForums(forumPaths, userName, isDelete);
+    String categoryId, forumId;
+    for (String forumPath : forumPaths) {
+      categoryId = forumPath.substring(0,forumPath.indexOf("/"));
+      forumId = forumPath.substring(forumPath.indexOf("/") + 1);
+      clearObjectCache(categoryId, forumId, true);
+    }
   }
 
   public Forum removeForum(String categoryId, String forumId) throws Exception {
-    forumData.remove(new ForumKey(categoryId, forumId));
-    forumList.select(new ScopeCacheSelector<ForumListKey, ListForumData>());
+    clearForumCache(categoryId, forumId, false, true);
+    clearObjectCache(categoryId, forumId, false);
     return storage.removeForum(categoryId, forumId);
   }
 
   public void moveForum(List<Forum> forums, String destCategoryPath) throws Exception {
     for (Forum forum : forums) {
-      forumData.remove(new ForumKey(forum));
+      clearForumCache(forum, false, false);
+      clearObjectCache(forum, false);
     }
     forumList.select(new ScopeCacheSelector<ForumListKey, ListForumData>());
     storage.moveForum(forums, destCategoryPath);
