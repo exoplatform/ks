@@ -873,6 +873,7 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
       catNode.setProperty(EXO_POSTER, category.getPoster());
 
       catNode.setProperty(EXO_VIEWER, category.getViewer());
+      category.setPath(catNode.getPath());
       catNode.save();
       try {
         if ((isNew && category.getModerators().length > 0) || !isNew) {
@@ -1389,6 +1390,7 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
       }
 
       forumNode.setProperty(EXO_VIEWER, forum.getViewer());
+      forum.setPath(forumNode.getPath());
       catNode.save();
 
       try {

@@ -1,5 +1,15 @@
 package org.exoplatform.forum.service.cache;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.jcr.NodeIterator;
+
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.forum.service.*;
 import org.exoplatform.forum.service.cache.loader.ServiceContext;
@@ -18,12 +28,6 @@ import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cache.future.FutureExoCache;
 import org.exoplatform.services.organization.User;
 import org.picocontainer.Startable;
-
-import javax.jcr.NodeIterator;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.util.*;
 
 /**
  * @author <a href="mailto:alain.defrance@exoplatform.com">Alain Defrance</a>
@@ -307,9 +311,7 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   public void saveCategory(Category category, boolean isNew) throws Exception {
     storage.saveCategory(category, isNew);
-    if (!isNew) {
-      categoryData.put(new CategoryKey(category), new CategoryData(category));
-    }
+    categoryData.put(new CategoryKey(category), new CategoryData(category));
     categoryList.select(new ScopeCacheSelector<CategoryListKey, ListCategoryData>());
   }
 

@@ -178,6 +178,16 @@ public class TestForumService extends ForumServiceTestCase {
   public void testCategory() throws Exception {
     String[] catIds = new String[] { getId(Utils.CATEGORY), getId(Utils.CATEGORY), getId(Utils.CATEGORY) };
 
+    // test case failed by KS-4422
+    String catId = getId(Utils.CATEGORY);
+    Category cat_ = createCategory(catId);
+    // check category existing
+    assertNull(String.format("The category has ID is %s existed.", catId), forumService_.getCategory(catId));
+    // save new category
+    forumService_.saveCategory(cat_, true);
+    // check again category existing
+    assertNotNull(String.format("The category has ID is %s not existing.", catId), forumService_.getCategory(catId));
+    
     // add category
     forumService_.saveCategory(createCategory(catIds[0]), true);
     forumService_.saveCategory(createCategory(catIds[1]), true);
@@ -186,7 +196,7 @@ public class TestForumService extends ForumServiceTestCase {
     assertNotNull("Category is null", category);
     // get categories
     List<Category> categories = forumService_.getCategories();
-    assertEquals(categories.size(), 3);
+    assertEquals(categories.size(), 4);
     // update category
     category.setCategoryName("ReName Category");
     forumService_.saveCategory(category, false);
@@ -197,6 +207,7 @@ public class TestForumService extends ForumServiceTestCase {
     for (int i = 0; i < 3; ++i) {
       forumService_.removeCategory(catIds[i]);
     }
+    forumService_.removeCategory(catId);
     categories = forumService_.getCategories();
     assertEquals("Size categories can not equals 0", categories.size(), 0);
   }
