@@ -1,15 +1,66 @@
 package org.exoplatform.forum.service.cache;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.jcr.NodeIterator;
+
 import org.exoplatform.container.component.ComponentPlugin;
-import org.exoplatform.forum.service.*;
-import org.exoplatform.ks.common.cache.loader.ServiceContext;
-import org.exoplatform.forum.service.cache.model.data.*;
-import org.exoplatform.forum.service.cache.model.key.*;
+import org.exoplatform.forum.service.Category;
+import org.exoplatform.forum.service.DataStorage;
+import org.exoplatform.forum.service.Forum;
+import org.exoplatform.forum.service.ForumAdministration;
+import org.exoplatform.forum.service.ForumAttachment;
+import org.exoplatform.forum.service.ForumEventQuery;
+import org.exoplatform.forum.service.ForumLinkData;
+import org.exoplatform.forum.service.ForumPrivateMessage;
+import org.exoplatform.forum.service.ForumSearch;
+import org.exoplatform.forum.service.ForumStatistic;
+import org.exoplatform.forum.service.ForumSubscription;
+import org.exoplatform.forum.service.InitializeForumPlugin;
+import org.exoplatform.forum.service.JCRPageList;
+import org.exoplatform.forum.service.LazyPageList;
+import org.exoplatform.forum.service.MessageBuilder;
+import org.exoplatform.forum.service.Post;
+import org.exoplatform.forum.service.PruneSetting;
+import org.exoplatform.forum.service.SendMessageInfo;
+import org.exoplatform.forum.service.SortSettings;
+import org.exoplatform.forum.service.Tag;
+import org.exoplatform.forum.service.Topic;
+import org.exoplatform.forum.service.TopicType;
+import org.exoplatform.forum.service.UserProfile;
+import org.exoplatform.forum.service.Watch;
+import org.exoplatform.forum.service.cache.model.data.CategoryData;
+import org.exoplatform.forum.service.cache.model.data.ForumData;
+import org.exoplatform.forum.service.cache.model.data.LinkData;
+import org.exoplatform.forum.service.cache.model.data.ListCategoryData;
+import org.exoplatform.forum.service.cache.model.data.ListForumData;
+import org.exoplatform.forum.service.cache.model.data.ListLinkData;
+import org.exoplatform.forum.service.cache.model.data.ListWatchData;
+import org.exoplatform.forum.service.cache.model.data.PostData;
+import org.exoplatform.forum.service.cache.model.data.SimpleCacheData;
+import org.exoplatform.forum.service.cache.model.data.TagData;
+import org.exoplatform.forum.service.cache.model.data.TopicData;
+import org.exoplatform.forum.service.cache.model.data.WatchData;
+import org.exoplatform.forum.service.cache.model.key.CategoryKey;
+import org.exoplatform.forum.service.cache.model.key.CategoryListKey;
+import org.exoplatform.forum.service.cache.model.key.ForumKey;
+import org.exoplatform.forum.service.cache.model.key.ForumListKey;
+import org.exoplatform.forum.service.cache.model.key.LinkListKey;
+import org.exoplatform.forum.service.cache.model.key.ObjectNameKey;
+import org.exoplatform.forum.service.cache.model.key.SimpleCacheKey;
+import org.exoplatform.forum.service.cache.model.key.TopicKey;
 import org.exoplatform.forum.service.cache.model.selector.ForumPathSelector;
-import org.exoplatform.ks.common.cache.selector.ScopeCacheSelector;
 import org.exoplatform.forum.service.impl.JCRDataStorage;
 import org.exoplatform.ks.common.cache.CacheType;
 import org.exoplatform.ks.common.cache.CachedData;
+import org.exoplatform.ks.common.cache.loader.ServiceContext;
+import org.exoplatform.ks.common.cache.selector.ScopeCacheSelector;
 import org.exoplatform.ks.common.conf.RoleRulesPlugin;
 import org.exoplatform.ks.common.jcr.KSDataLocation;
 import org.exoplatform.management.annotations.Managed;
@@ -19,12 +70,6 @@ import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cache.future.FutureExoCache;
 import org.exoplatform.services.organization.User;
 import org.picocontainer.Startable;
-
-import javax.jcr.NodeIterator;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.util.*;
 
 /**
  * @author <a href="mailto:alain.defrance@exoplatform.com">Alain Defrance</a>
@@ -308,9 +353,7 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   public void saveCategory(Category category, boolean isNew) throws Exception {
     storage.saveCategory(category, isNew);
-    if (!isNew) {
-      categoryData.put(new CategoryKey(category), new CategoryData(category));
-    }
+    categoryData.put(new CategoryKey(category), new CategoryData(category));
     categoryList.select(new ScopeCacheSelector<CategoryListKey, ListCategoryData>());
   }
 
