@@ -487,6 +487,66 @@ public class Utils implements ForumNodeTypes {
     return false;
   }
   
+  /**
+   * Get Category ID from path.
+   * @param path
+   * @return
+   * @since 2.3.0
+   */
+  public static String getCategoryId(String path) {
+    if (!Utils.isEmpty(path) && path.lastIndexOf(Utils.CATEGORY) != -1) {
+      String category = path.substring(path.lastIndexOf(Utils.CATEGORY));
+      if (category.indexOf("/") != -1) {
+        category = category.substring(0, category.indexOf("/"));
+      }
+      return category;
+    }
+    return null;
+  }
+
+  /**
+   * Get Category path.
+   * @param path
+   * @return
+   * @since 2.3.0
+   */
+  public static String getCategoryPath(String path) {
+    if (!Utils.isEmpty(path) && path.lastIndexOf(Utils.CATEGORY) != -1) {
+      return path.substring(0, path.lastIndexOf(Utils.CATEGORY) + getCategoryId(path).length());
+    }
+    return null;
+  }
+
+  /**
+   * Get Forum ID from path.
+   * @param path
+   * @return
+   * @since 2.3.0
+   */
+  public static String getForumId(String path) {
+    if (!Utils.isEmpty(path) && path.lastIndexOf(Utils.FORUM) != -1) {
+      String forumId = path.substring(path.lastIndexOf(Utils.FORUM));
+      if (forumId.indexOf("/") != -1) {
+        forumId = forumId.substring(0, forumId.indexOf("/"));
+      }
+      return forumId;
+    }
+    return null;
+  }
+
+  /**
+   * Get Forum path.
+   * @param path
+   * @return
+   * @since 2.3.0
+   */
+  public static String getForumPath(String path) {
+    if (!Utils.isEmpty(path) && path.lastIndexOf(Utils.FORUM) != -1) {
+      return path.substring(0, path.lastIndexOf(Utils.FORUM) + getForumId(path).length());
+    }
+    return null;
+  }
+  
   static public String getCurrentTenantName() {
     RepositoryService repositoryService = (RepositoryService) ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(RepositoryService.class);
     try {

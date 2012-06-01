@@ -116,22 +116,24 @@ public class CachedDataStorage implements DataStorage, Startable {
     
   }
   
-  private void clearForumCache(Forum forum, boolean isPutNewKey, boolean isSelectNewCachedObject) throws Exception {
+  private void clearForumCache(Forum forum, boolean isPutNewKey) throws Exception {
     if (isPutNewKey) {
       forumData.put(new ForumKey(forum), new ForumData(forum));
     } else {
       forumData.remove(new ForumKey(forum));
     }
-    if (isSelectNewCachedObject) {
-      forumList.select(new ScopeCacheSelector<ForumListKey, ListForumData>());
-    }
+    statistic = null;
   }
 
-  private void clearForumCache(String categoryId, String forumId, boolean isPutNewKey, boolean isSelectNewCachedObject) throws Exception {
+  private void clearForumCache(String categoryId, String forumId, boolean isPutNewKey) throws Exception {
     Forum forum = getForum(categoryId, forumId);
     if (forum != null) {
-      clearForumCache(forum, isPutNewKey, isSelectNewCachedObject);
+      clearForumCache(forum, isPutNewKey);
     }
+  }
+  
+  private void clearForumListCache() throws Exception {
+    forumList.select(new ScopeCacheSelector<ForumListKey, ListForumData>());
   }
   
   private void clearObjectCache(Forum forum, boolean isPutNewKey) throws Exception {
@@ -411,6 +413,8 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   public void calculateModerator(String nodePath, boolean isNew) throws Exception {
     storage.calculateModerator(nodePath, isNew);
+    clearForumCache(Utils.getCategoryId(nodePath), Utils.getForumId(nodePath), false);
+    clearForumListCache();
   }
 
   public void registerListenerForCategory(String path) throws Exception {
@@ -472,41 +476,40 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   public void modifyForum(Forum forum, int type) throws Exception {
     storage.modifyForum(forum, type);
-    clearForumCache(forum, true, true);
+    clearForumCache(forum, true);
+    clearForumListCache();
     clearObjectCache(forum, true);
   }
 
   public void saveForum(String categoryId, Forum forum, boolean isNew) throws Exception {
     storage.saveForum(categoryId, forum, isNew);
-    clearForumCache(forum, true, true);
+    clearForumCache(forum, true);
+    clearForumListCache();
     clearObjectCache(forum, true);
   }
 
   public void saveModerateOfForums(List<String> forumPaths, String userName, boolean isDelete) throws Exception {
-    forumData.select(new ForumPathSelector(forumPaths.toArray(new String[]{}), forumData));
-    //forumData.clearCache();
-    forumList.select(new ScopeCacheSelector<ForumListKey, ListForumData>());
     storage.saveModerateOfForums(forumPaths, userName, isDelete);
-    String categoryId, forumId;
+    forumData.select(new ForumPathSelector(forumPaths.toArray(new String[forumPaths.size()]), forumData));
+    clearForumListCache();
     for (String forumPath : forumPaths) {
-      categoryId = forumPath.substring(0,forumPath.indexOf("/"));
-      forumId = forumPath.substring(forumPath.indexOf("/") + 1);
-      clearObjectCache(categoryId, forumId, true);
+      clearObjectCache(Utils.getCategoryId(forumPath), Utils.getForumId(forumPath), true);
     }
   }
 
   public Forum removeForum(String categoryId, String forumId) throws Exception {
-    clearForumCache(categoryId, forumId, false, true);
+    clearForumCache(categoryId, forumId, false);
+    clearForumListCache();
     clearObjectCache(categoryId, forumId, false);
     return storage.removeForum(categoryId, forumId);
   }
 
   public void moveForum(List<Forum> forums, String destCategoryPath) throws Exception {
     for (Forum forum : forums) {
-      clearForumCache(forum, false, false);
+      clearForumCache(forum, false);
       clearObjectCache(forum, false);
     }
-    forumList.select(new ScopeCacheSelector<ForumListKey, ListForumData>());
+    clearForumListCache();
     storage.moveForum(forums, destCategoryPath);
   }
 
@@ -579,14 +582,26 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   public void saveTopic(String categoryId, String forumId, Topic topic, boolean isNew, boolean isMove, MessageBuilder messageBuilder) throws Exception {
     storage.saveTopic(categoryId, forumId, topic, isNew, isMove, messageBuilder);
+    clearForumCache(categoryId, forumId, false);
+    clearForumListCache();
   }
 
   public Topic removeTopic(String categoryId, String forumId, String topicId) {
+    try {
+      clearForumCache(categoryId, forumId, false);
+      clearForumListCache();
+    } catch (Exception e) {
+      LOG.error(e.getMessage(), e);
+    }
     return storage.removeTopic(categoryId, forumId, topicId);
   }
 
   public void moveTopic(List<Topic> topics, String destForumPath, String mailContent, String link) throws Exception {
     storage.moveTopic(topics, destForumPath, mailContent, link);
+    if (topics != null && topics.size() > 0) {
+      forumData.select(new ForumPathSelector(new String[] {Utils.getForumPath(topics.get(0).getPath()), destForumPath}, forumData));
+      clearForumListCache();
+    }
   }
 
   public long getLastReadIndex(String path, String isApproved, String isHidden, String userLogin) throws Exception {
@@ -615,6 +630,8 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   public void savePost(String categoryId, String forumId, String topicId, Post post, boolean isNew, MessageBuilder messageBuilder) throws Exception {
     storage.savePost(categoryId, forumId, topicId, post, isNew, messageBuilder);
+    clearForumCache(categoryId, forumId, false);
+    clearForumListCache();
   }
 
   public void modifyPost(List<Post> posts, int type) {
@@ -622,6 +639,12 @@ public class CachedDataStorage implements DataStorage, Startable {
   }
 
   public Post removePost(String categoryId, String forumId, String topicId, String postId) {
+    try {
+      clearForumCache(categoryId, forumId, false);
+      clearForumListCache();
+    } catch (Exception e) {
+      LOG.error(e.getMessage(), e);
+    }
     return storage.removePost(categoryId, forumId, topicId, postId);
   }
 
@@ -1126,6 +1149,8 @@ public class CachedDataStorage implements DataStorage, Startable {
   }
 
   public void movePost(String[] postPaths, String destTopicPath, boolean isCreatNewTopic, String mailContent, String link) throws Exception {
+    forumData.select(new ForumPathSelector(new String[] {Utils.getForumPath(postPaths[0]), Utils.getForumPath(destTopicPath)}, forumData));
+    clearForumListCache();
     storage.movePost(postPaths, destTopicPath, isCreatNewTopic, mailContent, link);
   }
 
