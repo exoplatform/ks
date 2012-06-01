@@ -1,14 +1,17 @@
 package org.exoplatform.forum.service.cache.model.data;
 
-import org.exoplatform.forum.service.Category;
-import org.exoplatform.ks.common.cache.CachedData;
-
 import java.util.Date;
+
+import org.exoplatform.forum.service.Category;
+import org.exoplatform.forum.service.Utils;
+import org.exoplatform.ks.common.cache.CachedData;
 
 /**
  * @author <a href="mailto:alain.defrance@exoplatform.com">Alain Defrance</a>
  */
 public class CategoryData implements CachedData<Category> {
+
+  private static final long serialVersionUID = 1L;
 
   public final static CategoryData NULL = new CategoryData(new Category());
 
@@ -69,7 +72,7 @@ public class CategoryData implements CachedData<Category> {
     category.setCategoryName(this.name);
     category.setDescription(this.description);
     category.setModerators(this.moderators);
-    category.setUserPrivate(this.userPrivate);
+    category.setUserPrivate(Utils.isEmpty(this.userPrivate) ? new String[] {} : this.userPrivate);
     category.setCreateTopicRole(this.createTopicRole);
     category.setViewer(this.viewer);
     category.setPoster(this.poster);
@@ -77,5 +80,9 @@ public class CategoryData implements CachedData<Category> {
     category.setEmailNotification(this.emailNotification);
     return category;
 
+  }
+  
+  public String getId() {
+    return this.id;
   }
 }
