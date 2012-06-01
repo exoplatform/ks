@@ -198,9 +198,8 @@ public class TestForumService extends ForumServiceTestCase {
     Category catTest = forumService_.getCategory(catId);
     // get userProfiles by jcr node:
     Node nodeCat = root_.getNode(dataLocation.getForumCategoriesLocation().concat("/").concat(catId));
-    PropertyReader reader = new PropertyReader(nodeCat);
-    String [] userProfiles = reader.strings(Utils.EXO_USER_PRIVATE);
-    assertEquals("Two objects userProfiles not same.", userProfiles.length, catTest.getUserPrivate().length);
+    int privateLength = nodeCat.getProperty(Utils.EXO_USER_PRIVATE).getValues().length;
+    assertEquals("Two objects userProfiles not same.", privateLength, catTest.getUserPrivate().length);
 
     // test save/update moderators of category
     List<String> categoriesId = new ArrayList<String>();

@@ -33,16 +33,16 @@ import org.exoplatform.services.cache.ObjectCacheInfo;
  */
 public class CategoryIdSelector extends ScopeCacheSelector<ScopeCacheKey, Object> {
 
-  private final List<String>                        cateIds;
+  private final List<String> cateIds;
 
   private final ExoCache<CategoryKey, CategoryData> selector;
 
   public CategoryIdSelector(List<String> cateIds, ExoCache<CategoryKey, CategoryData> selector) {
     if (cateIds == null) {
-
+      throw new NullPointerException();
     }
     if (selector == null) {
-
+      throw new NullPointerException();
     }
     this.cateIds = cateIds;
     this.selector = selector;
