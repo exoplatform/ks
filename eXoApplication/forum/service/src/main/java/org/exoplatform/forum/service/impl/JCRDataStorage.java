@@ -994,6 +994,7 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
           }
         }
         strModerators = Utils.getStringsInList(list);
+        System.out.println("\n\n=========>updateModeratorInForums " + list.toString());
         node.setProperty(EXO_MODERATORS, strModerators);
         node.setProperty(EXO_TEMP_MODERATORS, oldModeratoForums);
       }

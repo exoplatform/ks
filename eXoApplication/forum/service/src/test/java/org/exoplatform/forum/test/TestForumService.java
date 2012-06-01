@@ -38,6 +38,8 @@ import org.exoplatform.forum.service.UserProfile;
 import org.exoplatform.forum.service.Utils;
 import org.exoplatform.forum.service.Watch;
 import org.exoplatform.ks.bbcode.api.BBCode;
+import org.exoplatform.ks.common.jcr.KSDataLocation;
+import org.exoplatform.ks.common.jcr.PropertyReader;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.util.IdGenerator;
 
@@ -59,6 +61,8 @@ public class TestForumService extends ForumServiceTestCase {
   }
 
   private ForumService forumService_;
+  
+  private KSDataLocation dataLocation;
 
   private String       categoryId;
 
@@ -69,6 +73,7 @@ public class TestForumService extends ForumServiceTestCase {
   public void setUp() throws Exception {
     super.setUp();
     forumService_ = (ForumService) container.getComponentInstanceOfType(ForumService.class);
+    dataLocation = (KSDataLocation) container.getComponentInstanceOfType(KSDataLocation.class);
     SessionProviderService sessionProviderService = (SessionProviderService) container.getComponentInstanceOfType(SessionProviderService.class);
     sProvider = sessionProviderService.getSystemSessionProvider(null);
 
@@ -187,6 +192,22 @@ public class TestForumService extends ForumServiceTestCase {
     forumService_.saveCategory(cat_, true);
     // check again category existing
     assertNotNull(String.format("The category has ID is %s not existing.", catId), forumService_.getCategory(catId));
+    
+    // test case failed by KS-4427
+    // get category new created it same category cat_
+    Category catTest = forumService_.getCategory(catId);
+    // get userProfiles by jcr node:
+    Node nodeCat = root_.getNode(dataLocation.getForumCategoriesLocation().concat("/").concat(catId));
+    PropertyReader reader = new PropertyReader(nodeCat);
+    String [] userProfiles = reader.strings(Utils.EXO_USER_PRIVATE);
+    assertEquals("Two objects userProfiles not same.", userProfiles.length, catTest.getUserPrivate().length);
+
+    // test save/update moderators of category
+    List<String> categoriesId = new ArrayList<String>();
+    categoriesId.add(catId);
+    forumService_.saveModOfCategory(categoriesId, USER_DEMO, true);
+    catTest = forumService_.getCategory(catId);
+    assertEquals("The moderators of category not contanins user demo.", catTest.getModerators()[0], USER_DEMO);
     
     // add category
     forumService_.saveCategory(createCategory(catIds[0]), true);

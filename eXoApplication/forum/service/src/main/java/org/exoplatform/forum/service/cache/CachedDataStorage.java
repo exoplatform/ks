@@ -59,6 +59,7 @@ import org.exoplatform.forum.service.cache.model.key.LinkListKey;
 import org.exoplatform.forum.service.cache.model.key.ObjectNameKey;
 import org.exoplatform.forum.service.cache.model.key.SimpleCacheKey;
 import org.exoplatform.forum.service.cache.model.key.TopicKey;
+import org.exoplatform.forum.service.cache.model.selector.CategoryIdSelector;
 import org.exoplatform.forum.service.cache.model.selector.ForumPathSelector;
 import org.exoplatform.forum.service.cache.model.selector.ScopeCacheSelector;
 import org.exoplatform.forum.service.impl.JCRDataStorage;
@@ -69,6 +70,8 @@ import org.exoplatform.management.annotations.ManagedDescription;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cache.future.FutureExoCache;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.services.organization.User;
 import org.picocontainer.Startable;
 
@@ -76,6 +79,8 @@ import org.picocontainer.Startable;
  * @author <a href="mailto:alain.defrance@exoplatform.com">Alain Defrance</a>
  */
 public class CachedDataStorage implements DataStorage, Startable {
+
+  private static final Log LOG = ExoLogger.getLogger(CachedDataStorage.class);
 
   private DataStorage storage;
   private CacheService service;
@@ -261,7 +266,7 @@ public class CachedDataStorage implements DataStorage, Startable {
       try {
         out.add(getCategory(k.getId()));
       } catch (Exception e) {
-        e.printStackTrace();
+        LOG.error(e);
       }
     }
     return out;
@@ -397,6 +402,11 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   public void saveModOfCategory(List<String> moderatorCate, String userId, boolean isAdd) {
     storage.saveModOfCategory(moderatorCate, userId, isAdd);
+    try {
+      categoryData.select(new CategoryIdSelector(moderatorCate, categoryData));
+    } catch (Exception e) {
+      LOG.debug("Can not clear list categories in cached.", e);
+    } 
   }
 
   public void calculateModerator(String nodePath, boolean isNew) throws Exception {
