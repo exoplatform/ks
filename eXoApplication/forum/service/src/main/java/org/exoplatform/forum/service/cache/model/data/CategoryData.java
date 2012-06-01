@@ -72,12 +72,14 @@ public class CategoryData implements CachedData<Category> {
     category.setCategoryName(this.name);
     category.setDescription(this.description);
     category.setModerators(this.moderators);
-    category.setUserPrivate(Utils.isEmpty(this.userPrivate) ? new String[] {} : this.userPrivate);
     category.setCreateTopicRole(this.createTopicRole);
     category.setViewer(this.viewer);
     category.setPoster(this.poster);
     category.setForumCount(this.forumCount);
     category.setEmailNotification(this.emailNotification);
+    if (this.userPrivate != null) {
+      category.setUserPrivate(userPrivate);
+    }
     return category;
 
   }
