@@ -36,7 +36,7 @@ public class ForumPathSelector extends ScopeCacheSelector<ScopeCacheKey, Object>
     }
 
     ForumData data = forumData.get(key);
-    if (data == null) {
+    if (data == null || data == ForumData.NULL) {
       return false;
     } else {
       for (String path : paths) {

@@ -37,9 +37,7 @@ import org.exoplatform.forum.service.TopicType;
 import org.exoplatform.forum.service.UserProfile;
 import org.exoplatform.forum.service.Utils;
 import org.exoplatform.forum.service.Watch;
-import org.exoplatform.ks.bbcode.api.BBCode;
 import org.exoplatform.ks.common.jcr.KSDataLocation;
-import org.exoplatform.ks.common.jcr.PropertyReader;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.util.IdGenerator;
 
@@ -281,12 +279,13 @@ public class TestForumService extends ForumServiceTestCase {
     assertEquals(list.contains("demo"), true);
 
     // test moderator of category.
-    cat.setModerators(new String[] { "admin", "john" });
-    forumService_.saveCategory(cat, false);
+    list.clear();
+    list.add(catId);
+    forumService_.saveModOfCategory(list, USER_JOHN, true);
     forum = forumService_.getForum(catId, forumId);
     list.clear();
     list.addAll(Arrays.asList(forum.getModerators()));
-    // assertEquals("Forum in category can not content moderatort user admin", list.contains("admin"), true);
+    assertEquals("Forum in category can not content moderatort user admin", list.contains(USER_JOHN), true);
 
     // test moveForum, Move list Forum from Category 'cat' to Category 'cate'
 
@@ -328,9 +327,10 @@ public class TestForumService extends ForumServiceTestCase {
       listTopicId.add(topic.getId());
       forumService_.saveTopic(cat.getId(), forum.getId(), topic, true, false, new MessageBuilder());
     }
-    topic = list.get(8);
+    assertEquals(10, forumService_.getForum(cat.getId(), forum.getId()).getTopicCount());
 
     // get Topic - topic in position 8
+    topic = list.get(8);
     Topic topica = forumService_.getTopic(cat.getId(), forum.getId(), topic.getId(), "");
     assertNotNull(topica);
 
@@ -403,6 +403,8 @@ public class TestForumService extends ForumServiceTestCase {
     topics.add(topica);
     forumService_.moveTopic(topics, forum1.getPath(), "", "");
     assertNotNull("Failed to moved topic, topic is null.", forumService_.getTopic(cat.getId(), forum1.getId(), topica.getId(), ""));
+    assertEquals(10, forumService_.getForum(cat.getId(), forum.getId()).getTopicCount());
+    assertEquals(1, forumService_.getForum(cat.getId(), forum1.getId()).getTopicCount());
 
     // test remove Topic return Topic
     // remove id topic moved in list topicIds.
@@ -413,6 +415,7 @@ public class TestForumService extends ForumServiceTestCase {
     }
     List<Topic> topics2 = forumService_.getTopics(cat.getId(), forum.getId());
     assertEquals("Topics in forum failed to remove. List topic has size more than 1.", topics2.size(), 1);
+    assertEquals(1, forumService_.getForum(cat.getId(), forum.getId()).getTopicCount());
   }
 
   public void testTopicType() throws Exception {
@@ -441,6 +444,7 @@ public class TestForumService extends ForumServiceTestCase {
     }
     // getPost
     assertNotNull(forumService_.getPost(categoryId, forumId, topicId, posts.get(0).getId()));
+    assertEquals(25, forumService_.getTopic(categoryId, forumId, topicId, "").getPostCount());
 
     // get ListPost
     JCRPageList pagePosts = forumService_.getPosts(categoryId, forumId, topicId, "", "", "", "root");
@@ -469,6 +473,7 @@ public class TestForumService extends ForumServiceTestCase {
     // test remove Post return post
     assertNotNull(forumService_.removePost(categoryId, forumId, topicnew.getId(), newPost.getId()));
     assertNull(forumService_.getPost(categoryId, forumId, topicnew.getId(), newPost.getId()));
+    assertEquals(24, forumService_.getTopic(categoryId, forumId, topicId, "").getPostCount());
 
     // getViewPost
   }
@@ -935,17 +940,6 @@ public class TestForumService extends ForumServiceTestCase {
     forumAdministration.setHeaderSubject("");
     forumAdministration.setNotifyEmailContent("");
     return forumAdministration;
-  }
-
-  private BBCode createBBCode(String tag, String replacement, boolean isActive) {
-    BBCode bbCode = new BBCode();
-    bbCode.setTagName(tag);
-    bbCode.setActive(isActive);
-    bbCode.setDescription("Description!");
-    bbCode.setExample("[" + tag + "] text example [/" + tag + "]");
-    bbCode.setOption(false);
-    bbCode.setReplacement(replacement);
-    return bbCode;
   }
 
   private TopicType createTopicType(String name) {
