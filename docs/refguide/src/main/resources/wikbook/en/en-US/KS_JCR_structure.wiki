@@ -1,10 +1,38 @@
-eXo Knowledge is a JCR-based product, it uses JCR to store data.
-The root node of eXo Knowledge is exo:application which includes these child nodes: exo:forumHome, exo:faqHome.
-This chapter describes the structure of the main applications in eXo Collaboration via the following topics:
-* [Forum JCR structure|#KSref.JCRStructure.ForumJCRStructure]
-* [FAQ JCR structure|#KSref.JCRStructure.FAQJCRStructure]
-* [Poll JCR structure|#KSref.JCRStructure.PollJCRStructure]
-* [Wiki JCR structure|#KSref.JCRStructure.WikiJCRStructure]
+{docbook}
+<abstract>
+ <para>eXo Knowledge is a JCR-based product, it uses JCR to store data.</para>
+ <para>The root node of eXo Knowledge is <emphasis>exo:application</emphasis> which includes these child nodes: <emphasis>exo:forumHome</emphasis>, <emphasis>exo:faqHome</emphasis>.
+ </para>
+ <para>This chapter helps you further understand about the JCR structure of eXo Knowledge. It consists of the following main sections:</para>
+    <itemizedlist>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.JCRStructure.ForumJCRStructure">Forum JCR structure</link>
+          </emphasis> </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.JCRStructure.FAQJCRStructure">FAQ JCR structure</link>
+          </emphasis> </para>
+      </listitem>
+      <listitem>
+        <para>
+
+          <emphasis role="bold">
+            <link linkend="KSref.JCRStructure.PollJCRStructure">Poll JCR structure</link>
+          </emphasis> </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.JCRStructure.WikiJCR">Wiki JCR structure</link>
+          </emphasis> </para>
+      </listitem>
+    </itemizedlist>
+	</abstract>
+{docbook}
 
 h1. Forum JCR structure {anchor:id=KSref.JCRStructure.ForumJCRStructure}
 Forum is a JCR-based application. The Forum data are saved in eXo-JCR under the Forum Service data directory. The whole JCR structure of Forum can be visualized in the diagram below:

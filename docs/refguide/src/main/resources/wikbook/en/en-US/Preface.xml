@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<preface xml:id="KSRef.Prerequisites">
+	<title>Prerequisites</title>
+<abstract>
+        <itemizedlist>
+          <listitem>
+            <para>
+              <emphasis role="bold">
+                <ulink url="http://wiki.exoplatform.org/xwiki/bin/view/Portal/Portal%20Manual#HDevelopment">Portlets &amp; Gadgets</ulink>
+              </emphasis></para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis role="bold">
+                <ulink url="http://wiki.exoplatform.org/xwiki/bin/view/WS/">REST APIs</ulink>
+              </emphasis></para>
+          </listitem>
+        </itemizedlist>
+</abstract>
+</preface>
