@@ -1,12 +1,33 @@
-This chapter supplies you with the basic knowledge about overridden components, internal APIs implemented in eXo Knowledge. Also,
-you will know how to set up a default template for the FAQ portlet, and how to create a sample action extension in Wiki.
-
-In this chapter, there are the following main topics:
-
-* [Extension points|#KSref.DeveloperReference.ExtensionPoints]
-
-* [Internal API|#KSref.DeveloperReference.InternalAPI]
-
-* [FAQ Template Configuration|#KSref.DeveloperReference.FAQTemplateConfiguration]
-
-* [Extend actions over a wiki page from external jars|#KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars]
+{docbook}
+<abstract>
+ <para>This chapter supplies you with the basic knowledge about overridden components, internal APIs implemented in eXo Knowledge. Also,
+you will know how to set up a default template for the FAQ portlet, and how to create a sample action extension in Wiki.</para>
+<para>In this chapter, there are the following main topics:</para>
+    <itemizedlist>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.DeveloperReference.ExtensionPoints">Extension points</link>
+          </emphasis> </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.DeveloperReference.InternalAPI">Internal API</link>
+          </emphasis> </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.DeveloperReference.FAQTemplateConfiguration">FAQ Template Configuration</link>
+          </emphasis> </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars">Extend actions over a wiki page from external jars</link>
+          </emphasis> </para>
+      </listitem>
+    </itemizedlist>
+	</abstract>
+{docbook}

@@ -1,9 +1,24 @@
-This chapter provides you a comprehensive view about applications in eXo Knowledge, including:
-* [Portlets|#KSref.Applications.Portlets]
-* [Gadgets|#KSref.Applications.Gadgets]
-
-These applications are packaged as Web application archives (WARs).
-
-Also, you can specify the package of each portlet and gadget and its available preferences that allow you to extend the configuration choices for standard preferences.
-
+{docbook}
+<abstract>
+ <para>This chapter provides you a comprehensive view about applications in eXo Knowledge, including:</para>
+    <itemizedlist>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.Applications.Portlets">Portlets</link>
+          </emphasis> </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.Applications.Gadgets">Gadgets</link>
+          </emphasis> </para>
+      </listitem>
+    </itemizedlist>
+  <para>These applications are packaged as Web application archives (WARs).
+  </para>
+  <para>Also, you can specify the package of each portlet and gadget and its available preferences that allow you to extend the configuration choices for standard preferences.
+  </para>
+	</abstract>
+{docbook}
 
