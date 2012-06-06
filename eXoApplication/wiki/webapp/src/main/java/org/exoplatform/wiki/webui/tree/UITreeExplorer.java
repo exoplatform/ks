@@ -25,6 +25,7 @@ import org.exoplatform.webui.core.UIPortletApplication;
 import org.exoplatform.webui.core.lifecycle.Lifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.wiki.commons.Utils;
 
 /**
  * Created by The eXo Platform SAS
@@ -50,7 +51,9 @@ public class UITreeExplorer extends UIContainer {
   private String             childrenURL;
 
   private EventUIComponent   eventComponent;
-    
+  
+  private boolean            isRenderLink;
+  
   public UITreeExplorer() {
     super();
   }
@@ -58,11 +61,13 @@ public class UITreeExplorer extends UIContainer {
   public void init(String initURL,
                    String childrenURL,
                    String initParam,
-                   EventUIComponent eventComponent) throws Exception {
+                   EventUIComponent eventComponent,
+                   boolean isRenderLink) throws Exception {
     this.initURL = initURL;
     this.childrenURL = childrenURL;
     this.initParam = initParam;
     this.eventComponent = eventComponent;
+    this.isRenderLink = isRenderLink;
   }
 
   public String getInitURL() {
@@ -96,6 +101,14 @@ public class UITreeExplorer extends UIContainer {
   public void setEventComponent(EventUIComponent eventComponent) {
     this.eventComponent = eventComponent;
   }
+  
+  public boolean isRenderLink() {
+    return isRenderLink;
+  }
+
+  public String getBaseLink() throws Exception {
+    return Utils.getBaseUrl();
+  }
 
   static public class SelectNodeActionListener extends EventListener<UITreeExplorer> {
     public void execute(Event<UITreeExplorer> event) throws Exception {
@@ -117,5 +130,4 @@ public class UITreeExplorer extends UIContainer {
       }
     }
   }
-  
 }

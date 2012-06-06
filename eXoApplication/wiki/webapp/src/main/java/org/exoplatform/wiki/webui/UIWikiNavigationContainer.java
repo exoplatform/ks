@@ -25,9 +25,7 @@ import org.exoplatform.wiki.commons.Utils;
 import org.exoplatform.wiki.tree.TreeNode;
 import org.exoplatform.wiki.tree.TreeNode.TREETYPE;
 import org.exoplatform.wiki.webui.core.UIWikiForm;
-import org.exoplatform.wiki.webui.tree.EventUIComponent;
 import org.exoplatform.wiki.webui.tree.UITreeExplorer;
-import org.exoplatform.wiki.webui.tree.EventUIComponent.EVENTTYPE;
 
 /**
  * Created by The eXo Platform SAS
@@ -45,16 +43,12 @@ public class UIWikiNavigationContainer extends UIWikiForm {
     super();    
     this.accept_Modes = Arrays.asList(new WikiMode[] { WikiMode.VIEW, WikiMode.DELETEPAGE, WikiMode.VIEWREVISION, WikiMode.SHOWHISTORY,
         WikiMode.ADVANCEDSEARCH, WikiMode.PAGEINFO, WikiMode.COMPAREREVISION });
-    
-    EventUIComponent eventComponent = new EventUIComponent("UIWikiPortlet",
-                                                           UIWikiPortlet.REDIRECT_ACTION,
-                                                           EVENTTYPE.URL);
     UITreeExplorer uiTree = addChild(UITreeExplorer.class, null, null);
     StringBuilder initURLSb = new StringBuilder(Utils.getCurrentRestURL());
     initURLSb.append("/wiki/tree/").append(TREETYPE.ALL.toString());
     StringBuilder childrenURLSb = new StringBuilder(Utils.getCurrentRestURL());
     childrenURLSb.append("/wiki/tree/").append(TREETYPE.CHILDREN.toString());
-    uiTree.init(initURLSb.toString(), childrenURLSb.toString(), getInitParam(), eventComponent);
+    uiTree.init(initURLSb.toString(), childrenURLSb.toString(), getInitParam(), null, true);
     addChild(UIWikiRelatedPages.class, null, null);
   }
   
