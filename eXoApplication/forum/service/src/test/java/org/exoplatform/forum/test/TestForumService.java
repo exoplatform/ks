@@ -38,6 +38,7 @@ import org.exoplatform.forum.service.UserProfile;
 import org.exoplatform.forum.service.Utils;
 import org.exoplatform.forum.service.Watch;
 import org.exoplatform.ks.common.jcr.KSDataLocation;
+import org.exoplatform.ks.common.jcr.PropertyReader;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.util.IdGenerator;
 
@@ -196,7 +197,7 @@ public class TestForumService extends ForumServiceTestCase {
     Category catTest = forumService_.getCategory(catId);
     // get userProfiles by jcr node:
     Node nodeCat = root_.getNode(dataLocation.getForumCategoriesLocation().concat("/").concat(catId));
-    int privateLength = nodeCat.getProperty(Utils.EXO_USER_PRIVATE).getValues().length;
+    int privateLength = new PropertyReader(nodeCat).strings(Utils.EXO_USER_PRIVATE).length;
     assertEquals("Two objects userProfiles not same.", privateLength, catTest.getUserPrivate().length);
 
     // test save/update moderators of category
