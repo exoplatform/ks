@@ -63,6 +63,8 @@ public class UpgradeForumPlugin extends UpgradeProductPlugin {
 
   private static final String CATEGORY_SPACE_ID = Utils.CATEGORY + "spaces";
 
+  private static final String UNKNOW_VERSION    = "0";
+
   private String              newDomain         = "";
 
   private KSDataLocation      dataLocation;
@@ -75,40 +77,37 @@ public class UpgradeForumPlugin extends UpgradeProductPlugin {
   }
 
   public void processUpgrade(String oldVersion, String newVersion) {
-    log.info(String.format("\n\n -----------> Migrating data from %s to %s for Forum......\n\n", oldVersion, newVersion));
+    log.info(String.format("Migrating data from %s to %s for Forum......\n\n", oldVersion, newVersion));
     SessionProvider sProvider = SessionProvider.createSystemProvider();
     try {
       // register new nodeTypes
       log.info("\n\nRegister new nodeTypes...\n");
       UpgradeUtils.registerNodeTypes("jar:/conf/portal/forum-nodetypes.xml", ExtendedNodeTypeManager.IGNORE_IF_EXISTS);
       UpgradeUtils.registerNodeTypes("jar:/conf/portal/forum-migrate-nodetypes.xml", ExtendedNodeTypeManager.REPLACE_IF_EXISTS);
-      log.info("\n\nMigration forum data....\n");
       migrationForumData(sProvider, oldVersion, newVersion);
-      log.info("\n\nMigration space....\n");
       migrationSpaceOfPLF(sProvider, oldVersion, newVersion);
     } catch (Exception e) {
       log.warn("[UpgradeForumPlugin] Exception when migrate data for Forum.", e);
     } finally {
       sProvider.close();
     }
-    log.info("\n\n -----------> The end Forum Migration......\n\n");
+    log.info("The end Forum Migration......\n\n");
   }
 
   private void getNewDomain() {
-    log.info("\nGet new domain for migration forum datas...");
     try {
+      log.info("\nGet new domain for migration forum datas...");
       Properties props = new Properties(System.getProperties());
       newDomain = props.getProperty(NEW_DOAMIN_FORUM);
-      log.info("\nnewDomain: " + newDomain);
     } catch (Exception e) {
-      log.warn("Failed to get new domain in system configation. ", e);
+      log.warn("Failed to get new domain in system configation.... ");
     }
   }
 
   private void migrationForumData(SessionProvider sProvider, String oldVersion, String newVersion) throws Exception {
     // Migration 2.1.x to 2.2.3
     // properties new: exo:isWatting in nodetype: exo:post
-    if (oldVersion.indexOf("2.1.") > 0) {
+    if (oldVersion.indexOf("2.1.") > 0 || UNKNOW_VERSION.equals(oldVersion)) {
       log.info("[UpgradeForumPlugin] Start migrate forum data from " + oldVersion + " to " + newVersion);
       Node forumHome = getForumHomeNode(sProvider);
       NodeIterator pIter = getNodeIterator(sProvider, forumHome, Utils.EXO_POST, new StringBuilder(""));
@@ -155,7 +154,7 @@ public class UpgradeForumPlugin extends UpgradeProductPlugin {
   }
 
   private void migrationSpaceOfPLF(SessionProvider sProvider, String oldVersion, String newVersion) throws Exception {
-    if(oldVersion.indexOf("2.1.") > 0) {
+    if(oldVersion.indexOf("2.1.") > 0 || UNKNOW_VERSION.equals(oldVersion)) {
       log.info("[UpgradeForumPlugin] Start migrate forum data space in platform from version " + oldVersion + " to " + newVersion);
       Node forumHome = getForumHomeNode(sProvider);
       NodeIterator cIter = getOldAllNodeCateSpace(sProvider, forumHome);
@@ -165,7 +164,7 @@ public class UpgradeForumPlugin extends UpgradeProductPlugin {
         String[] permission;
         PropertyReader reader;
         String nodeName = null, fName;
-        Node newSpNode = getCatNSPNode(sProvider, false);
+        Node newSpNode = getCatNSPNode(sProvider);
         String newSpPath = newSpNode.getPath();
         log.info("\nPath of category Spaces: " + newSpPath);
         Session session = forumHome.getSession();
@@ -250,32 +249,22 @@ public class UpgradeForumPlugin extends UpgradeProductPlugin {
     return "";
   }
 
-  private boolean hasNodeInSP(SessionProvider sProvider, String id) {
-    try {
-      getCatNSPNode(sProvider, false).getNode(id); 
-    } catch (Exception e) {
-      return false;
-    }
-    return true;
+  private boolean hasNodeInSP(SessionProvider sProvider, String id) throws Exception {
+    Node categoryHome = getNodeByPath(dataLocation.getForumCategoriesLocation(), sProvider);
+    return categoryHome.hasNode(id);
   }
   
   private Node getForumHomeNode(SessionProvider sProvider) throws Exception {
     return getNodeByPath(dataLocation.getForumHomeLocation(), sProvider);
   }
 
-  private Node getCatNSPNode(SessionProvider sProvider, boolean isClear) throws Exception {
+  private Node getCatNSPNode(SessionProvider sProvider) throws Exception {
     Node categoryHome = getNodeByPath(dataLocation.getForumCategoriesLocation(), sProvider);
+    Session session = categoryHome.getSession();
     Node catNode = null;
     try {
       catNode = categoryHome.getNode(CATEGORY_SPACE_ID);
-      if (isClear) {
-        catNode.remove();
-        categoryHome.getSession().save();
-      }
     } catch (PathNotFoundException e) {
-      log.warn(String.format("Failed to get category node %s", CATEGORY_SPACE_ID), e);
-    }
-    if (catNode == null) {
       catNode = categoryHome.addNode(CATEGORY_SPACE_ID, Utils.EXO_FORUM_CATEGORY);
       catNode.setProperty(Utils.EXO_ID, CATEGORY_SPACE_ID);
       catNode.setProperty(Utils.EXO_OWNER, "");
@@ -286,22 +275,29 @@ public class UpgradeForumPlugin extends UpgradeProductPlugin {
       catNode.setProperty(Utils.EXO_MODIFIED_BY, "");
       catNode.setProperty(Utils.EXO_MODIFIED_DATE, GregorianCalendar.getInstance());
       catNode.setProperty(Utils.EXO_USER_PRIVATE, new String[]{""});
-      catNode.getSession().save();
+      session.save();
     }
     return catNode;
   }
 
   private NodeIterator getOldAllNodeCateSpace(SessionProvider sProvider, Node forumHome) throws Exception {
-    StringBuilder strQuery = new StringBuilder("[((@").append(Utils.EXO_NAME).append("='spaces') or (jcr:contains(@").append(Utils.EXO_USER_PRIVATE).append(", 'spaces'))) and (fn:name()!='").append(CATEGORY_SPACE_ID).append("')]");
+    StringBuilder strQuery = new StringBuilder("[((@").append(Utils.EXO_NAME).append("='spaces') or (jcr:contains(@")
+        .append(Utils.EXO_USER_PRIVATE).append(", 'spaces'))) and (@").append(Utils.EXO_ID).append("!='").append(CATEGORY_SPACE_ID).append("')]");
     return getNodeIterator(sProvider, forumHome, Utils.EXO_FORUM_CATEGORY, strQuery);
   }
 
   private NodeIterator getNodeIterator(SessionProvider sProvider, Node node, String nodeType, StringBuilder strQuery) throws Exception {
-    QueryManager qm = node.getSession().getWorkspace().getQueryManager();
-    StringBuilder pathQuery = new StringBuilder(Utils.JCR_ROOT).append(node.getPath()).append("//element(*,").append(nodeType).append(")").append(strQuery).append(" order by @").append(Utils.EXO_NAME).append(" descending");
-    Query query = qm.createQuery(pathQuery.toString(), Query.XPATH);
-    QueryResult result = query.execute();
-    return result.getNodes();
+    try {
+      StringBuilder pathQuery = new StringBuilder(Utils.JCR_ROOT).append(node.getPath()).append("//element(*,").append(nodeType).append(")").append(strQuery).append(" order by @").append(Utils.EXO_NAME).append(" descending");
+      strQuery = pathQuery;
+      QueryManager qm = node.getSession().getWorkspace().getQueryManager();
+      Query query = qm.createQuery(pathQuery.toString(), Query.XPATH);
+      QueryResult result = query.execute();
+      return result.getNodes();
+    } catch (Exception e) {
+      log.error(String.format("\n Get not by query %s is failed.", strQuery), e);
+      return null;
+    }
   }
 
   public Node getNodeByPath(String nodePath, SessionProvider sessionProvider) throws Exception {
