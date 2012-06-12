@@ -250,8 +250,8 @@ public class UpgradeForumPlugin extends UpgradeProductPlugin {
   }
 
   private boolean hasNodeInSP(SessionProvider sProvider, String id) throws Exception {
-    Node categoryHome = getNodeByPath(dataLocation.getForumCategoriesLocation(), sProvider);
-    return categoryHome.hasNode(id);
+    Node catNode = getCatNSPNode(sProvider);
+    return catNode.hasNode(id);
   }
   
   private Node getForumHomeNode(SessionProvider sProvider) throws Exception {
@@ -295,7 +295,7 @@ public class UpgradeForumPlugin extends UpgradeProductPlugin {
       QueryResult result = query.execute();
       return result.getNodes();
     } catch (Exception e) {
-      log.error(String.format("\n Get not by query %s is failed.", strQuery), e);
+      log.error(String.format("\n Get node iterator by query %s is failed.", strQuery), e);
       return null;
     }
   }
