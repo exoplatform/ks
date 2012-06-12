@@ -1,8 +1,3 @@
-
-h1. Prerequisites {anchor:id=KSref.Prerequisites}
-* [http://wiki.exoplatform.org/xwiki/bin/view/Portal/Portal%20Manual#HDevelopment| Portlets & Gadgets]
-* [http://wiki.exoplatform.org/xwiki/bin/view/WS/|REST APIs]
-
 h1. Applications {anchor:id=KSref.Applications}
 {include:document="Application.wiki"}
 h2. Portlets {anchor:id=KSref.Applications.Portlets}

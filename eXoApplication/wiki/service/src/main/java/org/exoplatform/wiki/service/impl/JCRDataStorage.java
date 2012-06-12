@@ -109,7 +109,9 @@ public class JCRDataStorage implements DataStorage{
     if (WikiNodeType.WIKI_ATTACHMENT_CONTENT.equals(type)) {
       // Transform to Attachment result
       type = WikiNodeType.WIKI_ATTACHMENT.toString();
-      excerpt = row.getValue("rep:excerpt(.)").getString();
+      if (row.getValue("rep:excerpt(.)") != null) {
+        excerpt = row.getValue("rep:excerpt(.)").getString();
+      }
       path = path.substring(0, path.lastIndexOf("/"));
       if(!path.endsWith(WikiNodeType.Definition.CONTENT)){
         AttachmentImpl searchAtt = (AttachmentImpl) Utils.getObject(path, WikiNodeType.WIKI_ATTACHMENT);

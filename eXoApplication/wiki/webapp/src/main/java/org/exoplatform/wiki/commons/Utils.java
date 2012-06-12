@@ -30,7 +30,6 @@ import javax.portlet.PortletPreferences;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringUtils;
 import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.PortalContainer;
@@ -143,7 +142,10 @@ public class Utils {
       sb.append(org.exoplatform.wiki.utils.Utils.validateWikiOwner(params.getType(), params.getOwner()));
       sb.append("/");
     }
-    sb.append(URLEncoder.encode(params.getPageId(), "UTF-8"));
+    
+    if (params.getPageId() != null) {
+      sb.append(URLEncoder.encode(params.getPageId(), "UTF-8"));
+    }
     return sb.toString();
   }
   
@@ -257,8 +259,15 @@ public class Utils {
     } else {
       wikiContext.setPageId(params.getPageId());
     }
+    wikiContext.setBaseUrl(getBaseUrl());
 
     return wikiContext;
+  }
+  
+  public static String getBaseUrl() throws Exception {
+    WikiPageParams params = getCurrentWikiPageParams();
+    params.setPageId(null);
+    return getURLFromParams(params);
   }
   
   public static String getCurrentWikiNodeUri() throws Exception {    

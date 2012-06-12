@@ -60,6 +60,8 @@ public class WikiContext extends WikiPageParams implements Cloneable, Serializab
   private String             syntax           = Syntax.XWIKI_2_0.toIdString();
   
   private String             restURI;
+  
+  private String             baseUrl;
 
   public String getPageTitle() {
     return pageTitle;
@@ -129,6 +131,14 @@ public class WikiContext extends WikiPageParams implements Cloneable, Serializab
 
   public void setSyntax(String syntax) {
     this.syntax = syntax;
+  }
+  
+  public String getBaseUrl() {
+    return baseUrl;
+  }
+
+  public void setBaseUrl(String baseUrl) {
+    this.baseUrl = baseUrl;
   }
 
   @Override
