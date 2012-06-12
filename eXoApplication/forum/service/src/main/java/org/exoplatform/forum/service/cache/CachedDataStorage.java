@@ -151,6 +151,16 @@ public class CachedDataStorage implements DataStorage, Startable {
     }
   }
   
+  private void clearObjectCache(Category category, boolean isNew) throws Exception {
+    
+    if (isNew) {
+      CategoryData categoryData = new CategoryData(category);
+      objectNameData.put(new ObjectNameKey(category.getId()), categoryData);
+    } else {
+      objectNameData.remove(new ObjectNameKey(category.getId()));
+    }
+  }
+  
   private void clearObjectCache(String caategoryId, String forumId, boolean isPutNewKey) throws Exception {
     clearObjectCache(getForum(caategoryId, forumId), isPutNewKey);
   }
@@ -400,6 +410,7 @@ public class CachedDataStorage implements DataStorage, Startable {
     storage.saveCategory(category, isNew);
     categoryData.put(new CategoryKey(category), new CategoryData(category));
     categoryList.select(new ScopeCacheSelector<CategoryListKey, ListCategoryData>());
+    clearObjectCache(category, isNew);
   }
 
   public void saveModOfCategory(List<String> moderatorCate, String userId, boolean isAdd) {
