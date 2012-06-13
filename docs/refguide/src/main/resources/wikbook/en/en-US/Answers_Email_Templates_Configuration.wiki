@@ -2,7 +2,7 @@ Answers is configured mainly in the file:
 - Portlet preferences: */webapps/faq/WEB-INF/portlet.xml*
 
 {info}
-For general information of eXo Knowledge configuration, refer to [eXo Knowledge Configuration| KS:KS Manual#Configuration] section.
+For general information of eXo Knowledge configuration, refer to [eXo Knowledge Configuration|#KSref.Configuration] section.
 {info}
 
 {docbook}
