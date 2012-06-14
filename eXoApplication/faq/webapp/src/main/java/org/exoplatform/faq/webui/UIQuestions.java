@@ -18,6 +18,7 @@ package org.exoplatform.faq.webui;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -281,29 +282,16 @@ public class UIQuestions extends UIContainer {
   }
 
   protected Answer[] getPageListAnswer(String questionId) throws Exception {
-    if (isSortAnswerUp != null) {
-      Answer[] answers = languageMap.get(language_).getAnswers();
-      Answer temp;
-      for (int i = 0; i < answers.length - 1; i++) {
-        for (int j = i + 1; j < answers.length; j++) {
-          if (isSortAnswerUp) {
-            if (answers[j].getMarkVotes() < answers[i].getMarkVotes()) {
-              temp = answers[i];
-              answers[i] = answers[j];
-              answers[j] = temp;
-            }
-          } else {
-            if (answers[j].getMarkVotes() > answers[i].getMarkVotes()) {
-              temp = answers[i];
-              answers[i] = answers[j];
-              answers[j] = temp;
-            }
-          }
-        }
-      }
-      return answers;
+    if (isSortAnswerUp == null) {
+      return languageMap.get(language_).getAnswers();
     }
-    return languageMap.get(language_).getAnswers();
+    Answer[] answers = languageMap.get(language_).getAnswers();
+    if (isSortAnswerUp) {
+      Arrays.sort(answers, new FAQUtils.VoteComparator(true));
+    } else {
+      Arrays.sort(answers, new FAQUtils.VoteComparator(false));
+    }
+    return answers;
   }
 
   protected Comment[] getPageListComment(String questionId) throws Exception {
@@ -759,10 +747,12 @@ public class UIQuestions extends UIContainer {
   static public class SortAnswerActionListener extends EventListener<UIQuestions> {
     public void execute(Event<UIQuestions> event) throws Exception {
       UIQuestions questions = event.getSource();
-      if (questions.isSortAnswerUp == null)
+      if (questions.isSortAnswerUp == null) {
         questions.isSortAnswerUp = false;
-      else
+      } else {
         questions.isSortAnswerUp = !questions.isSortAnswerUp;
+      }
+      questions.updateCurrentLanguage();
       event.getRequestContext().addUIComponentToUpdateByAjax(questions.getAncestorOfType(UIAnswersContainer.class));
     }
   }
