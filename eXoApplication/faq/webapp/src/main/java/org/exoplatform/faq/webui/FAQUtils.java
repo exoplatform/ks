@@ -24,6 +24,7 @@ import java.nio.channels.FileChannel;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -40,6 +41,7 @@ import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
+import org.exoplatform.faq.service.Answer;
 import org.exoplatform.faq.service.FAQService;
 import org.exoplatform.faq.service.FAQSetting;
 import org.exoplatform.faq.service.FileAttachment;
@@ -535,6 +537,31 @@ public class FAQUtils {
       limitMB = Integer.parseInt(portletPref.getValue(UPLOAD_FILE_SIZE, "").trim());
     }
     return limitMB;
+  }
+  
+  /**
+   * The class use for comparator Answers by markVotes.
+   * 
+   * @param: isASC the type of comparator.
+   *  + isASC == true: comparator by ascending
+   *  + isASC == false: comparator by descending
+  */
+  static public class VoteComparator implements Comparator<Answer> {
+    protected boolean isASC = true;
+
+    public VoteComparator(boolean isASC) {
+      this.isASC = isASC;
+    }
+
+    public int compare(Answer answer1, Answer answer2) {
+      Long vote1 = answer1.getMarkVotes();
+      Long vote2 = answer2.getMarkVotes();
+      if (isASC) {
+        return vote1.compareTo(vote2);
+      } else {
+        return vote2.compareTo(vote1);
+      }
+    }
   }
 
 }

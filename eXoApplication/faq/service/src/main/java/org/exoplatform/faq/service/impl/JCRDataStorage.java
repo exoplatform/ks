@@ -562,7 +562,7 @@ public class JCRDataStorage implements DataStorage, FAQNodeTypes {
     answer.setFullName(reader.string(EXO_FULL_NAME, EMPTY_STR));
     answer.setDateResponse((answerNode.getProperty(EXO_DATE_RESPONSE).getDate().getTime()));
     answer.setUsersVoteAnswer(reader.strings(EXO_USERS_VOTE_ANSWER, new String[] {}));
-    answer.setMarkVotes(reader.l(EXO_MARK_VOTE, 0));
+    answer.setMarkVotes(reader.l(EXO_MARK_VOTES));
     answer.setApprovedAnswers(reader.bool(EXO_APPROVE_RESPONSES, true));
     answer.setActivateAnswers(reader.bool(EXO_ACTIVATE_RESPONSES, true));
     answer.setPostId(reader.string(EXO_POST_ID, EMPTY_STR));
