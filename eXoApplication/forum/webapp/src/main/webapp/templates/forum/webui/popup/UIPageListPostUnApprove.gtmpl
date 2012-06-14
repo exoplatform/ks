@@ -47,7 +47,7 @@
 								<tr class="$classRow">
 									<td class="Tdbox"><div class="ThreadStatusIcon $iconPost"><span></span></div></td>
 									<td >
-										<label for="$topicId"><a href="<%=uicomponent.event("OpenPostLink", post.getId());%>" title="$message" class="title">$postTitle</a></label>
+										<label for="$postId"><a href="<%=uicomponent.event("OpenPostLink", post.getId());%>" title="$message" class="title">$postTitle</a></label>
 									</td>
 									<td class="Tdbox">
 										<div class="RatingInfoContainer">$createdDate</div>
