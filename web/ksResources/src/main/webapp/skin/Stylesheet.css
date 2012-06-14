@@ -82,3 +82,14 @@
 	-webkit-user-select: none;
 	-o-user-select: none;
 }
+
+.UIGroupMembershipSelector .UIBreadcumbs .BreadcumbsInfoBar {
+	height: auto;
+	border: medium none;
+	background: none;
+}
+
+.UIGroupMembershipSelector .UIBreadcumbs .LeftBlock {
+	line-height: 25px;
+	padding: 0px 2px;
+}

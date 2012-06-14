@@ -45,6 +45,7 @@ import org.exoplatform.ks.common.CommonUtils;
 import org.exoplatform.ks.common.TransformHTML;
 import org.exoplatform.ks.common.UserHelper;
 import org.exoplatform.ks.common.webui.BaseEventListener;
+import org.exoplatform.ks.common.webui.UIGroupSelector;
 import org.exoplatform.ks.common.webui.UIPopupContainer;
 import org.exoplatform.ks.common.webui.UISelector;
 import org.exoplatform.ks.common.webui.UIUserSelect;
@@ -57,8 +58,8 @@ import org.exoplatform.webui.core.UITree;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
-import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.form.UIFormInputIconSelector;
 import org.exoplatform.webui.form.UIFormInputInfo;
 import org.exoplatform.webui.form.UIFormSelectBox;
@@ -814,7 +815,7 @@ public class UITopicForm extends BaseForumForm implements UISelector {
           uiGroupSelector = openPopup(popupContainer, UIGroupSelector.class, "GroupSelector", 600, 0);
         }
         uiGroupSelector.setType(array[1]);
-        uiGroupSelector.setSelectedGroups(null);
+        uiGroupSelector.setSpaceGroupId(uiTopicForm.getAncestorOfType(UIForumPortlet.class).getSpaceGroupId());
         uiGroupSelector.setComponent(uiTopicForm, new String[] { childId });
         uiGroupSelector.getChild(UITree.class).setId(UIGroupSelector.TREE_GROUP_ID);
         uiGroupSelector.getChild(org.exoplatform.webui.core.UIBreadcumbs.class).setId(UIGroupSelector.BREADCUMB_GROUP_ID);

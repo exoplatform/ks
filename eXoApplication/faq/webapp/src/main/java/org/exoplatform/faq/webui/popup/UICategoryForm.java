@@ -34,7 +34,7 @@ import org.exoplatform.faq.webui.UIQuestions;
 import org.exoplatform.ks.common.CommonUtils;
 import org.exoplatform.ks.common.UserHelper;
 import org.exoplatform.ks.common.webui.BaseEventListener;
-import org.exoplatform.ks.common.webui.UIPopupAction;
+import org.exoplatform.ks.common.webui.UIGroupSelector;
 import org.exoplatform.ks.common.webui.UIPopupContainer;
 import org.exoplatform.ks.common.webui.UISelectComponent;
 import org.exoplatform.ks.common.webui.UISelector;
@@ -321,7 +321,7 @@ public class UICategoryForm extends BaseUIFAQForm implements UIPopupComponent, U
         uiGroupSelector = openPopup(popupContainer, UIGroupSelector.class, "UIMemberShipSelector", 550, 0);
       }
       uiGroupSelector.setType(types[1]);
-      uiGroupSelector.setSelectedGroups(null);
+      uiGroupSelector.setSpaceGroupId(categoryForm.getAncestorOfType(UIAnswersPortlet.class).getSpaceGroupId());
       uiGroupSelector.setComponent(categoryForm, new String[] { types[0] });
       uiGroupSelector.getChild(UITree.class).setId(UIGroupSelector.TREE_GROUP_ID);
       uiGroupSelector.getChild(org.exoplatform.webui.core.UIBreadcumbs.class).setId(UIGroupSelector.BREADCUMB_GROUP_ID);
@@ -400,6 +400,7 @@ public class UICategoryForm extends BaseUIFAQForm implements UIPopupComponent, U
       uiUserSelector.setShowSearch(true);
       uiUserSelector.setShowSearchUser(true);
       uiUserSelector.setShowSearchGroup(false);
+      uiUserSelector.setSpaceGroupId(categoryForm.getAncestorOfType(UIAnswersPortlet.class).getSpaceGroupId());
       uiPopupWindow.setUIComponent(uiUserSelector);
       uiPopupWindow.setShow(true);
       uiPopupWindow.setWindowSize(740, 400);
