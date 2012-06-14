@@ -2572,20 +2572,19 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
     try {
       Node forumHomeNode = getForumHomeNode(sProvider);
       long tmp = 0;
-      /*
-       * modified by Mai Van Ha
-       */
       String forumName = null;
       Node destForumNode = (Node) forumHomeNode.getSession().getItem(destForumPath);
-      forumName = destForumNode.getProperty(EXO_NAME).getString();
-      String owner = destForumNode.getProperty(EXO_OWNER).getString();
-      if (owner.indexOf(":") > 0) {
+      PropertyReader destForumReader = new PropertyReader(destForumNode);
+      forumName = destForumReader.string(EXO_NAME);
+      String owner = destForumReader.string(EXO_OWNER);
+      if (!Utils.isEmpty(owner) && owner.indexOf(":") > 0) {
         owner = ForumServiceUtils.getUserPermission(new String[] { owner }).get(0);
-        if (Utils.isEmpty(owner)) {
-          owner = topics.get(0).getEditReason();
-        }
       }
-      String headerSubject = "[" + destForumNode.getParent().getProperty(EXO_NAME).getString() + "][" + destForumNode.getProperty(EXO_NAME).getString() + "] ";
+      if (Utils.isEmpty(owner)) {
+        owner = topics.get(0).getEditReason();
+      }
+      String headerSubject = new StringBuilder("[").append(new PropertyReader(destForumNode.getParent()).string(EXO_NAME))
+                                                   .append("][").append(forumName).append("] ").toString();
       MessageBuilder messageBuilder = getInfoMessageMove(sProvider, mailContent, headerSubject, true);
       messageBuilder.setOwner(getScreenName(sProvider, owner));
       messageBuilder.setAddType(forumName);
@@ -2614,7 +2613,7 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
         topicNode.setProperty(EXO_PATH, destForumNode.getName());
         long topicPostCount = topicNode.getProperty(EXO_POST_COUNT).getLong() + 1;
         // Forum add Topic (destForum)
-        destForumNode.setProperty(EXO_TOPIC_COUNT, destForumNode.getProperty(EXO_TOPIC_COUNT).getLong() + 1);
+        destForumNode.setProperty(EXO_TOPIC_COUNT, destForumReader.l(EXO_TOPIC_COUNT) + 1);
         // setPath destForum
         queryLastTopic(sProvider, destForumNode.getPath());
         // Set PostCount
@@ -2624,7 +2623,7 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
         else
           tmp = 0;
         srcForumNode.setProperty(EXO_POST_COUNT, tmp);
-        destForumNode.setProperty(EXO_POST_COUNT, destForumNode.getProperty(EXO_POST_COUNT).getLong() + topicPostCount);
+        destForumNode.setProperty(EXO_POST_COUNT, destForumReader.l(EXO_POST_COUNT) + topicPostCount);
 
         // send email after move topic:
         messageBuilder.setObjName(topic.getTopicName());
@@ -3728,12 +3727,13 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
       } else {
         forumHomeNode.save();
       }
-      MessageBuilder messageBuilder = getInfoMessageMove(sProvider, mailContent, CommonUtils.EMPTY_STR, true);
+      String objectName = new StringBuilder("[").append(destForumNode.getParent().getProperty(EXO_NAME).getString())
+                              .append("][").append(destForumNode.getProperty(EXO_NAME).getString()).append("] ").toString();
+      MessageBuilder messageBuilder = getInfoMessageMove(sProvider, mailContent, objectName, true);
       String topicName = destTopicNode.getProperty(EXO_NAME).getString();
       String ownerTopic = destTopicNode.getProperty(EXO_OWNER).getString();
       messageBuilder.setOwner(getScreenName(sProvider, ownerTopic));
-      String objectName = "[" + destForumNode.getParent().getProperty(EXO_NAME).getString() + "][" + destForumNode.getProperty(EXO_NAME).getString() + "] " + topicName;
-      messageBuilder.setHeaderSubject(messageBuilder.getHeaderSubject() + objectName);
+      messageBuilder.setHeaderSubject(messageBuilder.getHeaderSubject() + topicName);
       messageBuilder.setAddType(topicName);
       link = link.replaceFirst("pathId", destTopicNode.getProperty(EXO_ID).getString());
       messageBuilder.setTypes(Utils.TOPIC, Utils.POST, "", "");
@@ -3787,6 +3787,8 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
       messageBuilder.setContent(reader.string(property, defaultContent));
       if (reader.bool(EXO_ENABLE_HEADER_SUBJECT)) {
         messageBuilder.setHeaderSubject(reader.string(EXO_HEADER_SUBJECT, defaultSubject));
+      } else {
+        messageBuilder.setHeaderSubject(defaultSubject);
       }
     } catch (Exception e) {
       messageBuilder.setContent(defaultContent);
