@@ -17,18 +17,21 @@
 package org.exoplatform.faq.webui.popup;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.faq.service.Cate;
+import org.exoplatform.faq.service.Category;
 import org.exoplatform.faq.service.FAQService;
 import org.exoplatform.faq.service.FAQSetting;
 import org.exoplatform.faq.service.Question;
 import org.exoplatform.faq.service.Utils;
 import org.exoplatform.faq.webui.FAQUtils;
 import org.exoplatform.faq.webui.UIAnswersPortlet;
+import org.exoplatform.ks.common.UserHelper;
 import org.exoplatform.ks.common.webui.BaseUIForm;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -135,14 +138,31 @@ public class UIAddRelationForm extends BaseUIForm implements UIPopupComponent {
 
   private void setListCate(String path) throws Exception {
     this.listCategory_.clear();
-    this.listCategory_.addAll(getFAQService().listingCategoryTree());
+    List<String> listOfUser = UserHelper.getAllGroupAndMembershipOfUser(null);
+    for (Cate cat : getFAQService().listingCategoryTree()) {
+      if (hasPermission(cat, listOfUser)) {
+        listCategory_.add(cat);
+      }
+    }
     mapQuestion_.put(Utils.CATEGORY_HOME, new ArrayList<Question>());
     for (Cate cat : listCategory_) {
       mapQuestion_.put(cat.getCategory().getId(), new ArrayList<Question>());
     }
-
   }
 
+  private boolean hasPermission(Cate cat, List<String> listOfUser) {
+    Category category = cat.getCategory();
+    List<String> moderators = Arrays.asList(category.getModerators());
+    if (Utils.hasPermission(moderators, listOfUser)) {
+      return true;
+    }
+    List<String> userPrivates = Arrays.asList(category.getUserPrivate());
+    if (userPrivates.size() > 0) {
+      return Utils.hasPermission(moderators, listOfUser);
+    }
+    return true;
+  }
+  
   protected List<Question> getQuestions(String cateId) {
     return mapQuestion_.get(cateId);
   }

@@ -40,6 +40,7 @@ import org.exoplatform.forum.webui.UITopicContainer;
 import org.exoplatform.ks.common.CommonUtils;
 import org.exoplatform.ks.common.UserHelper;
 import org.exoplatform.ks.common.webui.BaseEventListener;
+import org.exoplatform.ks.common.webui.UIGroupSelector;
 import org.exoplatform.ks.common.webui.UIPopupContainer;
 import org.exoplatform.ks.common.webui.UISelector;
 import org.exoplatform.ks.common.webui.UIUserSelect;
@@ -582,7 +583,7 @@ public class UIForumForm extends BaseForumForm implements UIPopupComponent, UISe
           uiGroupSelector = openPopup(popupContainer, UIGroupSelector.class, "GroupSelector", 600, 0);
         }
         uiGroupSelector.setType(array[1]);
-        uiGroupSelector.setSelectedGroups(null);
+        uiGroupSelector.setSpaceGroupId(forumForm.getAncestorOfType(UIForumPortlet.class).getSpaceGroupId());
         uiGroupSelector.setComponent(forumForm, new String[] { childId });
         uiGroupSelector.getChild(UITree.class).setId(UIGroupSelector.TREE_GROUP_ID);
         uiGroupSelector.getChild(org.exoplatform.webui.core.UIBreadcumbs.class).setId(UIGroupSelector.BREADCUMB_GROUP_ID);

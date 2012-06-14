@@ -147,6 +147,8 @@ public class UIForumPortlet extends UIPortletApplication {
 
   private String       forumSpId           = null;
 
+  private String       spaceGroupId        = null;
+
   protected String       spaceDisplayName  = null;
 
   private List<String> invisibleForums     = new ArrayList<String>();
@@ -251,18 +253,20 @@ public class UIForumPortlet extends UIPortletApplication {
   }
 
   public String getForumIdOfSpace() {
+    
     PortletRequestContext pcontext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance();
     PortletPreferences pref = pcontext.getRequest().getPreferences();
     if (pref.getValue("SPACE_URL", null) != null && ForumUtils.isEmpty(forumSpId)) {
       String url = pref.getValue("SPACE_URL", null);
       SpaceService sService = (SpaceService) PortalContainer.getInstance().getComponentInstanceOfType(SpaceService.class);
       Space space = sService.getSpaceByUrl(url);
+      spaceGroupId = space.getGroupId();
       forumSpId = Utils.FORUM_SPACE_ID_PREFIX + space.getPrettyName();
       spaceDisplayName = space.getDisplayName();
       try {
         OrganizationService service = (OrganizationService) PortalContainer.getInstance()
                                                                            .getComponentInstanceOfType(OrganizationService.class);
-        String parentGrId = service.getGroupHandler().findGroupById(space.getGroupId()).getParentId();
+        String parentGrId = service.getGroupHandler().findGroupById(spaceGroupId).getParentId();
         categorySpId = Utils.CATEGORY + parentGrId.replaceAll(CommonUtils.SLASH, CommonUtils.EMPTY_STR);
       } catch (Exception e) {
         if (log.isDebugEnabled()){
@@ -451,6 +455,9 @@ public class UIForumPortlet extends UIPortletApplication {
     return dayForumNewPost;
   }
 
+  public String getSpaceGroupId() {
+    return spaceGroupId;
+  }
   public void cancelAction() throws Exception {
     WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();
     UIPopupAction popupAction = getChild(UIPopupAction.class);
@@ -531,7 +538,8 @@ public class UIForumPortlet extends UIPortletApplication {
 
   public String getUserToken() throws Exception {
     try {
-      ContinuationService continuation = (ContinuationService) PortalContainer.getInstance().getComponentInstanceOfType(ContinuationService.class);
+      ContinuationService continuation = (ContinuationService) PortalContainer.getInstance()
+                                                                         .getComponentInstanceOfType(ContinuationService.class);
       return continuation.getUserToken(userProfile.getUserId());
     } catch (Exception e) {
       log.error("Could not retrieve continuation token for user " + userProfile.getUserId(), e);

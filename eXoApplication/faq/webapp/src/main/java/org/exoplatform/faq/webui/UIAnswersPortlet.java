@@ -55,6 +55,8 @@ public class UIAnswersPortlet extends UIPortletApplication {
 
   private final static String SLASH       = "/".intern();
 
+  private String              spaceGroupId = null;
+
   private boolean             isFirstTime = true;
 
   /**
@@ -82,6 +84,7 @@ public class UIAnswersPortlet extends UIPortletApplication {
         FAQService fService = (FAQService) getApplicationComponent(FAQService.class);
         String url = pref.getValue(SPACE_URL, null);
         Space space = sService.getSpaceByUrl(url);
+        spaceGroupId = space.getGroupId();
         String categoryId = Utils.CATE_SPACE_ID_PREFIX + space.getPrettyName();
         if (fService.isExisting(Utils.CATEGORY_HOME + SLASH + categoryId)) {
           return categoryId;
@@ -137,8 +140,8 @@ public class UIAnswersPortlet extends UIPortletApplication {
   public void renderPortletByURL() throws Exception {
     try {
       PortalRequestContext portalContext = Util.getPortalRequestContext();
+      String cateId = getSpaceCategoryId();
       if (portalContext.getRequestParameter(OBJECTID) == null && !portalContext.useAjax()) {
-        String cateId = getSpaceCategoryId();
         if (!FAQUtils.isFieldEmpty(cateId)) {
           UIBreadcumbs uiBreadcums = findFirstComponentOfType(UIBreadcumbs.class);
           UIQuestions uiQuestions = findFirstComponentOfType(UIQuestions.class);
@@ -158,6 +161,10 @@ public class UIAnswersPortlet extends UIPortletApplication {
     } catch (Exception e) {
       log.error("can not render the selected category", e);
     }
+  }
+
+  public String getSpaceGroupId() {
+    return spaceGroupId;
   }
 
   public void cancelAction() throws Exception {
