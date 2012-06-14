@@ -26,6 +26,7 @@ import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ks.common.webui.BaseEventListener;
 import org.exoplatform.ks.common.webui.UIPopupAction;
+import org.exoplatform.ks.common.webui.UIPopupContainer;
 import org.exoplatform.poll.Utils;
 import org.exoplatform.poll.service.Poll;
 import org.exoplatform.poll.service.PollNodeTypes;
@@ -308,19 +309,18 @@ public class UIPoll extends BasePollForm {
 
   static public class EditPollActionListener extends BaseEventListener<UIPoll> {
     public void onEvent(Event<UIPoll> event, UIPoll topicPoll, final String objectId) throws Exception {
-      UIPopupAction popupAction;
-      try {
-        UIPollPortlet forumPortlet = topicPoll.getAncestorOfType(UIPollPortlet.class);
-        popupAction = forumPortlet.getChild(UIPopupAction.class);
-      } catch (Exception e) {
-        UIPollPortlet forumPollPortlet = topicPoll.getAncestorOfType(UIPollPortlet.class);
-        popupAction = forumPollPortlet.getChild(UIPopupAction.class);
-      }
-      UIPollForm pollForm = popupAction.createUIComponent(UIPollForm.class, null, null);
+      UIPollPortlet pollPortlet = topicPoll.getAncestorOfType(UIPollPortlet.class);
+      UIPopupAction popupAction = pollPortlet.getChild(UIPopupAction.class);
+      UIPopupContainer popupContainer = popupAction.createUIComponent(UIPopupContainer.class, null, null);
+      UIPollForm pollForm = popupContainer.getChild(UIPollForm.class);
+      if (pollForm == null)
+        pollForm = popupContainer.addChild(UIPollForm.class, null, null);
+      popupContainer.setId("UIEditPollForm");
       topicPoll.isEditPoll = true;
       topicPoll.poll_ = topicPoll.getPoll();
       pollForm.setUpdatePoll(topicPoll.poll_, true);
-      popupAction.activate(pollForm, 662, 466);
+      popupAction.activate(popupContainer, 655, 455, true);
+      event.getRequestContext().addUIComponentToUpdateByAjax(popupAction);
     }
   }
 
