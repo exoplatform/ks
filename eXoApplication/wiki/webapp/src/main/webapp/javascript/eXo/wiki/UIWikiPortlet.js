@@ -37,7 +37,7 @@ UIWikiPortlet.prototype.init = function(portletId, linkId) {
     me.changeMode(event);
   };*/
 
-  if (document.attachEvent)
+  /*if (document.attachEvent)
     me.wikiportlet.attachEvent("onmouseup", me.onMouseUp);
   else
     me.wikiportlet.onmouseup = function(event) {
@@ -45,7 +45,7 @@ UIWikiPortlet.prototype.init = function(portletId, linkId) {
     };
   me.wikiportlet.onkeyup = function(event) {
     me.onKeyUp(event);
-  };
+  };*/
 }
 
 UIWikiPortlet.prototype.changeWindowTite = function(elm) {
