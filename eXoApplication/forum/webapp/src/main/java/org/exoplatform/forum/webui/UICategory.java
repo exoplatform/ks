@@ -229,9 +229,9 @@ public class UICategory extends BaseForumForm {
         checkBoxInput = getUICheckBoxInput(forumId).setChecked(false);
       } else {
         checkBoxInput = new UICheckBoxInput(forumId, forumId, false);
+        addUIFormInput(checkBoxInput);
+        checkBoxInput.setHTMLAttribute("title", forum.getForumName());
       }
-      checkBoxInput.setHTMLAttribute("title", forum.getForumName());
-      addUIFormInput(checkBoxInput);
       if (isShowForum(forumId))
         listForum.add(forum);
     }
