@@ -8,7 +8,7 @@
   </div>
 </div>
 <div class="UIAction">
-      <a href="javascript:void(0);" onclick="<%= uicomponent.event("Cancel") %>"  class="ActionButton LightBlueStyle"><%= _ctx.appRes("UIWikiSelectPageForm.action.Cancel")%></a>
       <a href="javascript:void(0);" onclick="<%= uicomponent.event("SelectPage") %>"  class="ActionButton LightBlueStyle"><%= _ctx.appRes("UIWikiSelectPageForm.action.Select")%></a>
+      <a href="javascript:void(0);" onclick="<%= uicomponent.event("Cancel") %>"  class="ActionButton LightBlueStyle"><%= _ctx.appRes("UIWikiSelectPageForm.action.Cancel")%></a>
     </div>
 <% uiform.end(); %>
