@@ -823,11 +823,10 @@ public class UIForumPortlet extends UIPortletApplication {
             return;
           }
         }
-        path = forum.getPath();
         if (cateId == null) {
-          cateId = path.substring(path.indexOf(Utils.CATEGORY), path.lastIndexOf(Utils.FORUM) - 1);
+          cateId = forum.getCategoryId();
         }
-        path = path.substring(path.indexOf(Utils.CATEGORY));
+        path = new StringBuilder(cateId).append("/").append(forum.getId()).toString();
         Category category = this.forumService.getCategory(cateId);
         if (this.checkCanView(category, forum, null)) {
           this.updateIsRendered(ForumUtils.FORUM);
