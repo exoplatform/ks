@@ -63,6 +63,17 @@ public final class TestPageRenderingCacheService extends AbstractRenderingTestCa
     renderingCacheService.getRenderedContent(new WikiPageParams(PortalConfig.PORTAL_TYPE, "classic", "WikiHome"),
                                                        Syntax.XHTML_1_0.toIdString());
     assertEquals(1, renderingCacheService.getRenderingCache().getCacheHit());
+    
+    wikiService.createPage(PortalConfig.PORTAL_TYPE, "classic","classicChild" , "WikiHome");
+    page.getContent().setText("{{children/}}");
+    PageImpl acmePage = (PageImpl) wikiService.getPageById(PortalConfig.PORTAL_TYPE, "classic", "WikiHome");
+    acmePage.getContent().setText("{{children/}}");
+    String classicHomeContent =  renderingCacheService.getRenderedContent(new WikiPageParams(PortalConfig.PORTAL_TYPE, "classic", "WikiHome"),
+                                                                          Syntax.XHTML_1_0.toIdString());
+    String acmeHomeContent =  renderingCacheService.getRenderedContent(new WikiPageParams(PortalConfig.PORTAL_TYPE, "acme", "WikiHome"),
+                                                                          Syntax.XHTML_1_0.toIdString());
+    assertTrue(!classicHomeContent.equals(acmeHomeContent));
+    
   }
   
   @Override

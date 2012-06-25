@@ -65,7 +65,7 @@ public class PageRenderingCacheServiceImpl implements PageRenderingCacheService 
       PageImpl page = (PageImpl) wikiService.getPageById(param.getType(), param.getOwner(), param.getPageId());
       boolean supportSectionEdit = page.hasPermission(PermissionType.EDITPAGE);
       String markup = page.getContent().getText();
-      MarkupKey key = new MarkupKey(markup, page.getSyntax(), targetSyntax, supportSectionEdit);
+      MarkupKey key = new MarkupKey(param, markup, page.getSyntax(), targetSyntax, supportSectionEdit);
       MarkupData cachedData = renderingCache.get(key);
       if (cachedData != null) {
         return cachedData.build();

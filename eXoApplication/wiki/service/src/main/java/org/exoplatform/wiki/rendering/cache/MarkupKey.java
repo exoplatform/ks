@@ -27,6 +27,8 @@ import org.exoplatform.wiki.service.WikiPageParams;
  * May 16, 2012  
  */
 public class MarkupKey implements Serializable {
+  
+  private WikiPageParams pageParams;
 
   private String         source;
 
@@ -39,12 +41,14 @@ public class MarkupKey implements Serializable {
   /**
    * Instance new markup key
    *
+   * @param pageParams the identity params of page
    * @param source the source markup
    * @param sourceSyntax the source syntax
    * @param targetSyntax the target syntax
    * @param supportSectionEdit the content supports section editing or not
    */
-  public MarkupKey(String source, String sourceSyntax, String targetSyntax, boolean supportSectionEdit) {
+  public MarkupKey(WikiPageParams pageParams, String source, String sourceSyntax, String targetSyntax, boolean supportSectionEdit) {
+    this.pageParams = pageParams;
     this.source = source;
     this.sourceSyntax = sourceSyntax;
     this.targetSyntax = targetSyntax;
@@ -58,6 +62,7 @@ public class MarkupKey implements Serializable {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
+    result = prime * result + ((pageParams == null) ? 0 : pageParams.hashCode());
     result = prime * result + ((source == null) ? 0 : source.hashCode());
     result = prime * result + ((sourceSyntax == null) ? 0 : sourceSyntax.hashCode());
     result = prime * result + (supportSectionEdit ? 1231 : 1237);
@@ -77,6 +82,11 @@ public class MarkupKey implements Serializable {
     if (getClass() != obj.getClass())
       return false;
     MarkupKey other = (MarkupKey) obj;
+    if (pageParams == null) {
+      if (other.pageParams != null)
+        return false;
+    } else if (!pageParams.equals(other.pageParams))
+      return false;
     if (source == null) {
       if (other.source != null)
         return false;
@@ -95,6 +105,6 @@ public class MarkupKey implements Serializable {
     } else if (!targetSyntax.equals(other.targetSyntax))
       return false;
     return true;
-  }  
+  }
   
 }

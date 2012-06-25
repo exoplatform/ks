@@ -75,6 +75,24 @@ public class WikiPageParams {
     this.parameters = parameters;
   }
 
+  /* (non-Javadoc)
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((attachmentName == null) ? 0 : attachmentName.hashCode());
+    result = prime * result + ((owner == null) ? 0 : owner.hashCode());
+    result = prime * result + ((pageId == null) ? 0 : pageId.hashCode());
+    result = prime * result + ((parameters == null) ? 0 : parameters.hashCode());
+    result = prime * result + ((type == null) ? 0 : type.hashCode());
+    return result;
+  }
+
+  /* (non-Javadoc)
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
   @Override
   public boolean equals(Object obj) {
     if (this == obj)
