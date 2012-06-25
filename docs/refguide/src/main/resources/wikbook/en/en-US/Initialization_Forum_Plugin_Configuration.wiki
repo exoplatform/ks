@@ -121,7 +121,7 @@ After the _org.exoplatform.forum.service.conf.InitializeForumPlugin_ object has 
 </object-param>
 {code}
 
-# Category includes some basic data which are defined in the *field* tag with a specific name as below:
+* Category includes some basic data which are defined in the *field* tag with a specific name as below:
 
 {code:xml}                              
 <field name="owner">
@@ -203,7 +203,7 @@ In the sample code above, the _org.exoplatform.forum.service.conf.ForumData_ obj
 
 h2. Forum topics {anchor:id=KSref.ForumInitializer.ForumTopics}
 
-# Forum may contain one or more topics. The value of topic is defined in the *topics* field. It returns a topic array. The value of topic array is defined by the _org.exoplatform.forum.service.conf.TopicData_ object as below:
+* Forum may contain one or more topics. The value of topic is defined in the *topics* field. It returns a topic array. The value of topic array is defined by the _org.exoplatform.forum.service.conf.TopicData_ object as below:
 
 {code:xml}
 <field name="topics">
@@ -245,7 +245,7 @@ With the sample code above, the _org.exoplatform.forum.service.conf.TopicData_ o
 </value>
 {code}
 
-# Topic may contain one or more posts. The value of the post is defined in the _posts_ field. It returns a post array. The value of the post array is defined by the _org.exoplatform.forum.service.conf.PostData_ object as below:
+* Topic may contain one or more posts. The value of the post is defined in the _posts_ field. It returns a post array. The value of the post array is defined by the _org.exoplatform.forum.service.conf.PostData_ object as below:
 
 {code:xml}
 <field name="posts">
