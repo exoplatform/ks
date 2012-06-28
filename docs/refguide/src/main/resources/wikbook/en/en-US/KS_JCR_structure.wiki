@@ -477,7 +477,7 @@ h1. Poll JCR structure {anchor:id=KSref.JCRStructure.PollJCRStructure}
 
 The Poll data are saved in eXo-JCR under the eXoPolls data directory. The whole JCR structure of Poll can be visualized in the diagram below:
 
-!images/Polls_JCR_Structure.png|align="center" width="70mm" fo:scalefit="1" html:scalefit="0"!
+!images/Polls_JCR_structure.png|align="center" width="70mm" fo:scalefit="1" html:scalefit="0"!
 
 The Poll node is used to store the default data in a poll. The node type of the Poll node is exo:poll.
 The Poll node is stored under eXoPolls node {{/exo:applications/eXoPolls/%PortalName%/Polls/Poll-id%}} and its node type (exo:polls) has the following properties:
