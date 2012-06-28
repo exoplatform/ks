@@ -18,6 +18,7 @@
 
   <!--forum core services  -->
   <import>war:/ks-extension/ks/forum/forum-configuration.xml</import>
+  <import>war:/ks-extension/ks/forum/cache-configuration.xml</import>
     
   <!-- builtin BBCodes  -->
   <import>war:/ks-extension/ks/forum/bbcodes-configuration.xml</import>
@@ -40,10 +41,12 @@
   
   <!-- Answers and FAQ core services -->
   <import>war:/ks-extension/ks/faq/faq-configuration.xml</import>
+  <import>war:/ks-extension/ks/faq/cache-configuration.xml</import>
   
   <!-- Poll core services -->
   <import>war:/ks-extension/ks/poll/poll-configuration.xml</import>
-  
+  <import>war:/ks-extension/ks/poll/cache-configuration.xml</import>
+
   
   
 </configuration>

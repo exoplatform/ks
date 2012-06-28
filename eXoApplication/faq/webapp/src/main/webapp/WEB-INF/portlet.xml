@@ -144,4 +144,15 @@
     </portlet-preferences>
 
   </portlet>
+
+  <filter>
+    <filter-name>CachingPortletFilter</filter-name>
+    <filter-class>org.exoplatform.faq.cache.CachingPortletFilter</filter-class>
+    <lifecycle>RENDER_PHASE</lifecycle>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>CachingPortletFilter</filter-name>
+    <portlet-name>FAQPortlet</portlet-name>
+  </filter-mapping>
 </portlet-app>

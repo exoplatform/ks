@@ -66,7 +66,7 @@ public class JCRDataStorage implements DataStorage, PollNodeTypes {
     this.sessionManager = dataLocator.getSessionManager();
   }
 
-  void addInitialDefaultDataPlugin(ComponentPlugin plugin) throws Exception {
+  public void addInitialDefaultDataPlugin(ComponentPlugin plugin) throws Exception {
     if (plugin instanceof InitialDefaultDataPlugin) {
       defaultDataPlugins.add((InitialDefaultDataPlugin) plugin);
     }

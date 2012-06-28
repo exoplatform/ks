@@ -16,6 +16,7 @@
  ***************************************************************************/
 package org.exoplatform.forum.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class Forum {
 
   private Date         modifiedDate;
 
-  private String       lastTopicPath;
+  private String       lastTopicPath        = "";
 
   private String       name;
 
@@ -73,7 +74,7 @@ public class Forum {
 
   private String[]     emailNotification;
 
-  private List<String> banIPs;
+  private List<String> banIPs = new ArrayList<String>();
 
   public Forum() {
     notifyWhenAddTopic = new String[] {};

@@ -25,8 +25,13 @@
   
   <component>
     <key>org.exoplatform.faq.service.DataStorage</key>
+    <type>org.exoplatform.faq.service.cache.CachedDataStorage</type>
+  </component>
+
+  <component>
+    <key>org.exoplatform.faq.service.impl.JCRDataStorage</key>
     <type>org.exoplatform.faq.service.impl.JCRDataStorage</type>
-  </component>   
+  </component>
   
   <component>
     <key>org.exoplatform.services.log.LogConfigurationInitializer</key>

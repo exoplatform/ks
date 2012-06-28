@@ -29,24 +29,7 @@ import javax.jcr.Session;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.container.xml.InitParams;
-import org.exoplatform.faq.service.Answer;
-import org.exoplatform.faq.service.Cate;
-import org.exoplatform.faq.service.Category;
-import org.exoplatform.faq.service.CategoryInfo;
-import org.exoplatform.faq.service.Comment;
-import org.exoplatform.faq.service.FAQEventQuery;
-import org.exoplatform.faq.service.FAQService;
-import org.exoplatform.faq.service.FAQSetting;
-import org.exoplatform.faq.service.FileAttachment;
-import org.exoplatform.faq.service.InitialDataPlugin;
-import org.exoplatform.faq.service.JCRPageList;
-import org.exoplatform.faq.service.ObjectSearchResult;
-import org.exoplatform.faq.service.Question;
-import org.exoplatform.faq.service.QuestionLanguage;
-import org.exoplatform.faq.service.QuestionPageList;
-import org.exoplatform.faq.service.TemplatePlugin;
-import org.exoplatform.faq.service.Utils;
-import org.exoplatform.faq.service.Watch;
+import org.exoplatform.faq.service.*;
 import org.exoplatform.ks.bbcode.core.BBCodeServiceImpl;
 import org.exoplatform.ks.common.CommonUtils;
 import org.exoplatform.ks.common.NotifyInfo;
@@ -74,7 +57,7 @@ public class FAQServiceImpl implements FAQService, Startable {
 
   public static final int               SEND_EMAIL = 1;
 
-  private JCRDataStorage                jcrData_;
+  private DataStorage                   jcrData_;
 
   private MultiLanguages                multiLanguages_;
 
@@ -95,12 +78,13 @@ public class FAQServiceImpl implements FAQService, Startable {
 
   protected List<AnswerEventListener>   listeners_ = new ArrayList<AnswerEventListener>(3);
 
-  public FAQServiceImpl(InitParams params, KSDataLocation locator, ConfigurationManager configManager) throws Exception {
+  public FAQServiceImpl(InitParams params, KSDataLocation locator, DataStorage storage, ConfigurationManager configManager) throws Exception {
     configManager_ = configManager;
     multiLanguages_ = new MultiLanguages();
     initDataPlugins = new ArrayList<InitialDataPlugin>();
     this.locator = locator;
-    jcrData_ = new JCRDataStorage(locator);
+    storage.init(locator);
+    jcrData_ = storage;
     bbcodeObject_ = new BBCodeServiceImpl();
   }
 
