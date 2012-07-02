@@ -12,16 +12,22 @@ import java.io.Serializable;
  * @author <a href="mailto:alain.defrance@exoplatform.com">Alain Defrance</a>
  */
 public enum CacheType {
-  CATEGORY_DATA("CategoryData"),
-  CATEGORY_LIST("CategoryList"),
-  FORUM_DATA("ForumData"),
-  FORUM_LIST("ForumList"),
-  TOPIC_DATA("TopicData"),
-  TOPIC_LIST("TopicList"),
-  WATCH_LIST_DATA("WatchListData"),
-  LINK_LIST_DATA("LinkListData"),
-  OBJECT_NAME_DATA("ObjectNameData"),
-  MISC_DATA("MiscData")
+  CATEGORY_DATA("forum.CategoryData"),
+  CATEGORY_LIST("forum.CategoryList"),
+  FORUM_DATA("forum.ForumData"),
+  FORUM_LIST("forum.ForumList"),
+  TOPIC_DATA("forum.TopicData"),
+  TOPIC_LIST("forum.TopicList"),
+  WATCH_LIST_DATA("forum.WatchListData"),
+  LINK_LIST_DATA("forum.LinkListData"),
+  OBJECT_NAME_DATA("forum.ObjectNameData"),
+  MISC_DATA("forum.MiscData"),
+  
+  FAQ_MARKUP("faq.Markup"),
+
+  POLL_DATA("poll.PollData"),
+  POLL_LIST("poll.PollList"),
+  POLL_SUMMARY_DATA("poll.PollSummaryData")
 
   ;
   

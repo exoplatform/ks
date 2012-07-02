@@ -34,20 +34,20 @@
 
         <!-- Categories -->
         <object-param>
-          <name>CategoryData</name>
+          <name>forum.CategoryData</name>
           <description></description>
           <object type="org.exoplatform.services.cache.ExoCacheConfig">
-            <field name="name"><string>CategoryData</string></field>
+            <field name="name"><string>forum.CategoryData</string></field>
             <field name="maxSize"><int>${cache.exo.forum.CategoryData.Capacity:10}</int></field>
             <field name="liveTime"><long>${cache.exo.forum.CategoryData.TimeToLive:-1}</long></field>
             <field name="implementation"><string>org.exoplatform.services.cache.concurrent.ConcurrentFIFOExoCache</string></field>
           </object>
         </object-param>
         <object-param>
-          <name>CategoryList</name>
+          <name>forum.CategoryList</name>
           <description></description>
           <object type="org.exoplatform.services.cache.ExoCacheConfig">
-            <field name="name"><string>CategoryList</string></field>
+            <field name="name"><string>forum.CategoryList</string></field>
             <field name="maxSize"><int>${cache.exo.forum.CategoryList.Capacity:5}</int></field>
             <field name="liveTime"><long>${cache.exo.forum.CategoryList.TimeToLive:-1}</long></field>
             <field name="implementation"><string>org.exoplatform.services.cache.concurrent.ConcurrentFIFOExoCache</string></field>
@@ -56,20 +56,20 @@
 
         <!-- Forums -->
         <object-param>
-          <name>ForumData</name>
+          <name>forum.ForumData</name>
           <description></description>
           <object type="org.exoplatform.services.cache.ExoCacheConfig">
-            <field name="name"><string>ForumData</string></field>
+            <field name="name"><string>forum.ForumData</string></field>
             <field name="maxSize"><int>${cache.exo.forum.ForumData.Capacity:150}</int></field>
             <field name="liveTime"><long>${cache.exo.forum.ForumData.TimeToLive:-1}</long></field>
             <field name="implementation"><string>org.exoplatform.services.cache.concurrent.ConcurrentFIFOExoCache</string></field>
           </object>
         </object-param>
         <object-param>
-          <name>ForumList</name>
+          <name>forum.ForumList</name>
           <description></description>
           <object type="org.exoplatform.services.cache.ExoCacheConfig">
-            <field name="name"><string>ForumList</string></field>
+            <field name="name"><string>forum.ForumList</string></field>
             <field name="maxSize"><int>${cache.exo.forum.ForumList.Capacity:30}</int></field>
             <field name="liveTime"><long>${cache.exo.forum.ForumList.TimeToLive:-1}</long></field>
             <field name="implementation"><string>org.exoplatform.services.cache.concurrent.ConcurrentFIFOExoCache</string></field>
@@ -78,20 +78,20 @@
 
         <!-- Topics -->
         <object-param>
-          <name>TopicData</name>
+          <name>forum.TopicData</name>
           <description></description>
           <object type="org.exoplatform.services.cache.ExoCacheConfig">
-            <field name="name"><string>TopicData</string></field>
+            <field name="name"><string>forum.TopicData</string></field>
             <field name="maxSize"><int>${cache.exo.forum.TopicData.Capacity:500}</int></field>
             <field name="liveTime"><long>${cache.exo.forum.TopicData.TimeToLive:-1}</long></field>
             <field name="implementation"><string>org.exoplatform.services.cache.concurrent.ConcurrentFIFOExoCache</string></field>
           </object>
         </object-param>
         <!--<object-param>
-          <name>TopicList</name>
+          <name>forum.TopicList</name>
           <description></description>
           <object type="org.exoplatform.services.cache.ExoCacheConfig">
-            <field name="name"><string>TopicList</string></field>
+            <field name="name"><string>forum.TopicList</string></field>
             <field name="maxSize"><int>${cache.exo.forum.TopicList.Capacity}</int></field>
             <field name="liveTime"><long>${cache.exo.forum.TopicList.TimeToLive}</long></field>
             <field name="implementation"><string>org.exoplatform.services.cache.concurrent.ConcurrentFIFOExoCache</string></field>
@@ -100,10 +100,10 @@
 
         <!-- Watches -->
         <object-param>
-          <name>WatchListData</name>
+          <name>forum.WatchListData</name>
           <description></description>
           <object type="org.exoplatform.services.cache.ExoCacheConfig">
-            <field name="name"><string>WatchListData</string></field>
+            <field name="name"><string>forum.WatchListData</string></field>
             <field name="maxSize"><int>${cache.exo.forum.WatchListData.Capacity:300}</int></field>
             <field name="liveTime"><long>${cache.exo.forum.WatchListData.TimeToLive:-1}</long></field>
             <field name="implementation"><string>org.exoplatform.services.cache.concurrent.ConcurrentFIFOExoCache</string></field>
@@ -112,10 +112,10 @@
 
         <!-- Links -->
         <object-param>
-          <name>LinkListData</name>
+          <name>forum.LinkListData</name>
           <description></description>
           <object type="org.exoplatform.services.cache.ExoCacheConfig">
-            <field name="name"><string>LinkListData</string></field>
+            <field name="name"><string>forum.LinkListData</string></field>
             <field name="maxSize"><int>${cache.exo.forum.LinkListData.Capacity:150}</int></field>
             <field name="liveTime"><long>${cache.exo.forum.LinkListData.TimeToLive:-1}</long></field>
             <field name="implementation"><string>org.exoplatform.services.cache.concurrent.ConcurrentFIFOExoCache</string></field>
@@ -124,10 +124,10 @@
 
         <!-- ObjectNameData -->
         <object-param>
-          <name>ObjectNameData</name>
+          <name>forum.ObjectNameData</name>
           <description></description>
           <object type="org.exoplatform.services.cache.ExoCacheConfig">
-            <field name="name"><string>ObjectNameData</string></field>
+            <field name="name"><string>forum.ObjectNameData</string></field>
             <field name="maxSize"><int>${cache.exo.forum.ObjectNameData.Capacity:500}</int></field>
             <field name="liveTime"><long>${cache.exo.forum.ObjectNameData.TimeToLive:-1}</long></field>
             <field name="implementation"><string>org.exoplatform.services.cache.concurrent.ConcurrentFIFOExoCache</string></field>
@@ -136,10 +136,10 @@
 
         <!-- MiscData -->
         <object-param>
-          <name>MiscData</name>
+          <name>forum.MiscData</name>
           <description></description>
           <object type="org.exoplatform.services.cache.ExoCacheConfig">
-            <field name="name"><string>MiscData</string></field>
+            <field name="name"><string>forum.MiscData</string></field>
             <field name="maxSize"><int>${cache.exo.forum.MiscData.Capacity:600}</int></field>
             <field name="liveTime"><long>${cache.exo.forum.MiscData.TimeToLive:-1}</long></field>
             <field name="implementation"><string>org.exoplatform.services.cache.concurrent.ConcurrentFIFOExoCache</string></field>
