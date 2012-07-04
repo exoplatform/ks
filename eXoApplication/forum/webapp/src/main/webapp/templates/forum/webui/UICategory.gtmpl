@@ -190,7 +190,7 @@
 						 	String classIconReadForum = "ThreadNoNewPost";
 						 	String titleNoNewPostForum = _ctx.appRes("UIForumIconState.label.ForumNoNewPost");
 						 	String fontWeight = "normal";
-							List forumModerators = ForumServiceUtils.getUserPermission(forum.getModerators());
+							boolean hasModerators = ForumServiceUtils.hasPermission(forum.getModerators(), userLogin);
 							path = categoryId+"/"+forumId ;
 						 	Topic topicNewPost = uicomponent.getLastTopic(category, forum);
 						 	if(topicNewPost != null) {
@@ -216,7 +216,7 @@
 								}	
 								titleTopic = ForumUtils.getLabel(_ctx.appRes("UICategory.label.GotoFirstNewPost"),topicNewPostTitle) ;
 								if(topicNewPost.getIsClosed()) {
-									if(isAdmin || ForumUtils.isStringInList(forumModerators, userLogin)) {
+									if(isAdmin || hasModerators) {
 										openLinkLastPost = uicomponent.event("OpenLastTopicLink", (forumId+'/'+topicId)) ;
 										urlLastPost = ForumUtils.createdForumLink(ForumUtils.TOPIC, topicId, false);
 									} else {
@@ -225,7 +225,7 @@
 									}
 								} else {
 									if(forum.getIsModerateTopic()) {
-										if(topicNewPost.getIsApproved() || ForumUtils.isStringInList(forumModerators, userLogin) || isAdmin){
+										if(isAdmin || hasModerators || topicNewPost.getIsApproved()){
 											openLinkLastPost = uicomponent.event("OpenLastTopicLink", (forumId+'/'+topicId)) ;
 											urlLastPost = ForumUtils.createdForumLink(ForumUtils.TOPIC, topicId, false);
 										} else {

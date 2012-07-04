@@ -1525,8 +1525,7 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
         if (isDelete) {
           String[] cateMods = PropertyReader.valuesToArray(cateNode.getProperty(EXO_MODERATORS).getValues());
           if (cateMods != null && cateMods.length > 0 && !Utils.isEmpty(cateMods[0])) {
-            List<String> moderators = ForumServiceUtils.getUserPermission(cateMods);
-            if (moderators.contains(userName))
+            if (ForumServiceUtils.hasPermission(cateMods, userName))
               continue;
           }
           if (forumNode.hasProperty(EXO_MODERATORS)) {
@@ -6257,8 +6256,8 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
       JsonGeneratorImpl generatorImpl = new JsonGeneratorImpl();
       Category cat = new Category();
       ContinuationService continuation = getContinuationService();
-      Set<String> set = new HashSet<String>(ForumServiceUtils.getUserPermission(userIds.toArray(new String[userIds.size()])));
       if (continuation != null) {
+        Set<String> set = new HashSet<String>(ForumServiceUtils.getUserPermission(userIds.toArray(new String[userIds.size()])));
         set.addAll(getAllAdministrator(sProvider));
         for (String userId : set) {
           if (Utils.isEmpty(userId) || userId.indexOf(CommonUtils.SLASH) > 0 || userId.indexOf(CommonUtils.COLON) > 0) continue;
