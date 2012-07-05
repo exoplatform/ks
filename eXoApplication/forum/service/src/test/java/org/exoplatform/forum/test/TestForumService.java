@@ -30,13 +30,15 @@ import org.exoplatform.forum.service.ForumStatistic;
 import org.exoplatform.forum.service.JCRPageList;
 import org.exoplatform.forum.service.MessageBuilder;
 import org.exoplatform.forum.service.Post;
+import org.exoplatform.forum.service.PruneSetting;
 import org.exoplatform.forum.service.Tag;
 import org.exoplatform.forum.service.Topic;
 import org.exoplatform.forum.service.TopicType;
 import org.exoplatform.forum.service.UserProfile;
 import org.exoplatform.forum.service.Utils;
 import org.exoplatform.forum.service.Watch;
-import org.exoplatform.ks.bbcode.api.BBCode;
+import org.exoplatform.ks.common.jcr.KSDataLocation;
+import org.exoplatform.ks.common.jcr.PropertyReader;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.util.IdGenerator;
 
@@ -59,6 +61,8 @@ public class TestForumService extends ForumServiceTestCase {
 
   private ForumService forumService_;
 
+  private KSDataLocation dataLocation;
+
   private String       categoryId;
 
   private String       forumId;
@@ -68,6 +72,7 @@ public class TestForumService extends ForumServiceTestCase {
   public void setUp() throws Exception {
     super.setUp();
     forumService_ = (ForumService) container.getComponentInstanceOfType(ForumService.class);
+    dataLocation = (KSDataLocation) container.getComponentInstanceOfType(KSDataLocation.class);
     SessionProviderService sessionProviderService = (SessionProviderService) container.getComponentInstanceOfType(SessionProviderService.class);
     sProvider = sessionProviderService.getSystemSessionProvider(null);
 
@@ -177,6 +182,31 @@ public class TestForumService extends ForumServiceTestCase {
   public void testCategory() throws Exception {
     String[] catIds = new String[] { getId(Utils.CATEGORY), getId(Utils.CATEGORY), getId(Utils.CATEGORY) };
 
+    // test case failed by KS-4422
+    String catId = getId(Utils.CATEGORY);
+    Category cat_ = createCategory(catId);
+    // check category existing
+    assertNull(String.format("The category has ID is %s existed.", catId), forumService_.getCategory(catId));
+    // save new category
+    forumService_.saveCategory(cat_, true);
+    // check again category existing
+    assertNotNull(String.format("The category has ID is %s not existing.", catId), forumService_.getCategory(catId));
+    
+    // test case failed by KS-4427
+    // get category new created it same category cat_
+    Category catTest = forumService_.getCategory(catId);
+    // get userProfiles by jcr node:
+    Node nodeCat = root_.getNode(dataLocation.getForumCategoriesLocation().concat("/").concat(catId));
+    int privateLength = new PropertyReader(nodeCat).strings(Utils.EXO_USER_PRIVATE).length;
+    assertEquals("Two objects userProfiles not same.", privateLength, catTest.getUserPrivate().length);
+
+    // test save/update moderators of category
+    List<String> categoriesId = new ArrayList<String>();
+    categoriesId.add(catId);
+    forumService_.saveModOfCategory(categoriesId, USER_DEMO, true);
+    catTest = forumService_.getCategory(catId);
+    assertEquals("The moderators of category not contanins user demo.", catTest.getModerators()[0], USER_DEMO);
+    
     // add category
     forumService_.saveCategory(createCategory(catIds[0]), true);
     forumService_.saveCategory(createCategory(catIds[1]), true);
@@ -185,7 +215,7 @@ public class TestForumService extends ForumServiceTestCase {
     assertNotNull("Category is null", category);
     // get categories
     List<Category> categories = forumService_.getCategories();
-    assertEquals(categories.size(), 3);
+    assertEquals(categories.size(), 4);
     // update category
     category.setCategoryName("ReName Category");
     forumService_.saveCategory(category, false);
@@ -196,6 +226,7 @@ public class TestForumService extends ForumServiceTestCase {
     for (int i = 0; i < 3; ++i) {
       forumService_.removeCategory(catIds[i]);
     }
+    forumService_.removeCategory(catId);
     categories = forumService_.getCategories();
     assertEquals("Size categories can not equals 0", categories.size(), 0);
   }
@@ -249,12 +280,13 @@ public class TestForumService extends ForumServiceTestCase {
     assertEquals(list.contains("demo"), true);
 
     // test moderator of category.
-    cat.setModerators(new String[] { "admin", "john" });
-    forumService_.saveCategory(cat, false);
+    list.clear();
+    list.add(catId);
+    forumService_.saveModOfCategory(list, USER_JOHN, true);
     forum = forumService_.getForum(catId, forumId);
     list.clear();
     list.addAll(Arrays.asList(forum.getModerators()));
-    // assertEquals("Forum in category can not content moderatort user admin", list.contains("admin"), true);
+    assertEquals("Forum in category can not content moderatort user admin", list.contains(USER_JOHN), true);
 
     // test moveForum, Move list Forum from Category 'cat' to Category 'cate'
 
@@ -285,7 +317,7 @@ public class TestForumService extends ForumServiceTestCase {
     forumService_.saveCategory(cat, true);
     Forum forum = createdForum();
     forumService_.saveForum(cat.getId(), forum, true);
-
+    forum = forumService_.getForum(cat.getId(), forum.getId());
     List<String> listTopicId = new ArrayList<String>();
     // add 10 Topics
     List<Topic> list = new ArrayList<Topic>();
@@ -296,9 +328,10 @@ public class TestForumService extends ForumServiceTestCase {
       listTopicId.add(topic.getId());
       forumService_.saveTopic(cat.getId(), forum.getId(), topic, true, false, new MessageBuilder());
     }
-    topic = list.get(8);
+    assertEquals(10, forumService_.getForum(cat.getId(), forum.getId()).getTopicCount());
 
     // get Topic - topic in position 8
+    topic = list.get(8);
     Topic topica = forumService_.getTopic(cat.getId(), forum.getId(), topic.getId(), "");
     assertNotNull(topica);
 
@@ -334,8 +367,7 @@ public class TestForumService extends ForumServiceTestCase {
     pagelist = forumService_.getPageTopicByUser("Owner", true, "");
     assertEquals(pagelist.getAvailable(), 10);
 
-    // auto prune
-    // set 5 topics for old
+    // set 5 topics have last post is 2 days.
     Calendar cal = Calendar.getInstance();
     cal.setTimeInMillis(cal.getTimeInMillis() - 2 * 86400000);
     Node topicNode;
@@ -344,10 +376,25 @@ public class TestForumService extends ForumServiceTestCase {
       topicNode.setProperty(ForumNodeTypes.EXO_LAST_POST_DATE, cal);
       topicNode.save();
     }
-
+    // get topics by last post days. Example with 1 day.
     listTopic = forumService_.getAllTopicsOld(1, forum.getPath());
     assertEquals("Failed to run auto prune. List topic has size not equals 5.", listTopic.size(), 5);
-
+    
+    // run autoPrune
+    PruneSetting pSetting = forumService_.getPruneSetting(forum.getPath());
+    // active the pruning this forum.
+    pSetting.setActive(true);
+    // prune for topics have last post more than 1 day.
+    pSetting.setInActiveDay(1);
+    forumService_.runPrune(pSetting);
+    // check topics pruned.
+    // After pruned, the topics is active is 11 - 5 = 6.
+    StringBuilder queryBuilder = new StringBuilder();
+    // @exo:isActive = 'true'
+    queryBuilder.append("@").append(ForumNodeTypes.EXO_IS_ACTIVE).append("='true'");
+    int size = forumService_.getTopicList(cat.getId(), forum.getId(), queryBuilder.toString(), "", 20).getAll().size();
+    assertEquals("Failed to run autoPrun topics, the size of topics active not equals 6.", size, 6);
+    
     // move Topic
     // move topic from forum to forum 1
     Forum forum1 = createdForum();
@@ -357,6 +404,8 @@ public class TestForumService extends ForumServiceTestCase {
     topics.add(topica);
     forumService_.moveTopic(topics, forum1.getPath(), "", "");
     assertNotNull("Failed to moved topic, topic is null.", forumService_.getTopic(cat.getId(), forum1.getId(), topica.getId(), ""));
+    assertEquals(10, forumService_.getForum(cat.getId(), forum.getId()).getTopicCount());
+    assertEquals(1, forumService_.getForum(cat.getId(), forum1.getId()).getTopicCount());
 
     // test remove Topic return Topic
     // remove id topic moved in list topicIds.
@@ -367,6 +416,7 @@ public class TestForumService extends ForumServiceTestCase {
     }
     List<Topic> topics2 = forumService_.getTopics(cat.getId(), forum.getId());
     assertEquals("Topics in forum failed to remove. List topic has size more than 1.", topics2.size(), 1);
+    assertEquals(1, forumService_.getForum(cat.getId(), forum.getId()).getTopicCount());
   }
 
   public void testTopicType() throws Exception {
@@ -395,6 +445,7 @@ public class TestForumService extends ForumServiceTestCase {
     }
     // getPost
     assertNotNull(forumService_.getPost(categoryId, forumId, topicId, posts.get(0).getId()));
+    assertEquals(25, forumService_.getTopic(categoryId, forumId, topicId, "").getPostCount());
 
     // get ListPost
     JCRPageList pagePosts = forumService_.getPosts(categoryId, forumId, topicId, "", "", "", "root");
@@ -423,6 +474,7 @@ public class TestForumService extends ForumServiceTestCase {
     // test remove Post return post
     assertNotNull(forumService_.removePost(categoryId, forumId, topicnew.getId(), newPost.getId()));
     assertNull(forumService_.getPost(categoryId, forumId, topicnew.getId(), newPost.getId()));
+    assertEquals(24, forumService_.getTopic(categoryId, forumId, topicId, "").getPostCount());
 
     // getViewPost
   }
@@ -483,7 +535,7 @@ public class TestForumService extends ForumServiceTestCase {
     //
   }
 
-  public void testGetObject() throws Exception {
+  public void testGetObjectNameByPath() throws Exception {
     // set Data
     setData();
 
@@ -492,8 +544,105 @@ public class TestForumService extends ForumServiceTestCase {
     topicPath = categoryId + "/" + forumId + "/" + topicId;
     assertNotNull(forumService_.getObjectNameByPath(topicPath));
 
+    // Test get object by path in case the object has been updated
+    // by saveForum
+    String forumPath = categoryId + "/" + forumId;
+    Forum originalForum = convertToForum(forumService_.getObjectNameByPath(forumPath));
+    assertNotNull(originalForum);
+    originalForum.setForumName("aaa");
+    forumService_.saveForum(categoryId, originalForum, false);
+
+    Forum updatedForum = convertToForum(forumService_.getObjectNameByPath(forumPath));
+    assertNotNull(updatedForum);
+    assertEquals(originalForum.getForumName(), updatedForum.getForumName());
+
+    // by modifyForum
+    originalForum.setIsLock(true);
+    forumService_.modifyForum(originalForum, Utils.LOCK);
+    updatedForum = convertToForum(forumService_.getObjectNameByPath(forumPath));
+    assertNotNull(updatedForum);
+    assertTrue(updatedForum.getIsLock());
+
+    // by saveModerateOfForums
+    List<String> list = new ArrayList<String>();
+    list.add(forumPath);
+    forumService_.saveModerateOfForums(list, "demo", false);
+    updatedForum = convertToForum(forumService_.getObjectNameByPath(forumPath));
+    assertNotNull(updatedForum);
+    list.clear();
+    list.addAll(Arrays.asList(updatedForum.getModerators()));
+    assertTrue(list.contains("demo"));
+
+    // by moveForum
+    Category cate = createCategory(getId(Utils.CATEGORY));
+    forumService_.saveCategory(cate, true);
+    Category cateNew = forumService_.getCategory(cate.getId());
+    List<Forum> forums = new ArrayList<Forum>();
+    forums.add(originalForum);
+    forumService_.moveForum(forums, cateNew.getPath());
+    originalForum = convertToForum(forumService_.getObjectNameByPath(forumPath));
+    assertNull(originalForum);
+    updatedForum = convertToForum(forumService_.getObjectNameByPath(cateNew.getId() + "/" + forumId));
+    assertNotNull(updatedForum);
+
+    // by removeForum
+    forumService_.removeForum(cateNew.getId(), forumId);
+    updatedForum = convertToForum(forumService_.getObjectNameByPath(cateNew.getId() + "/" + forumId));
+    assertNull(updatedForum);
+  }
+
+
+  public void testGetObjectNameById() throws Exception {
+    // set Data
+    setData();
+
     // Test get object by id
     assertNotNull(forumService_.getObjectNameById(forumId, Utils.FORUM));
+
+    // Test get object by id in case the object has been updated
+    // by saveForum
+    Forum originalForum = convertToForum(forumService_.getObjectNameById(forumId, Utils.FORUM));
+    assertNotNull(originalForum);
+    originalForum.setForumName("aaa");
+    forumService_.saveForum(categoryId, originalForum, false);
+
+    Forum updatedForum = convertToForum(forumService_.getObjectNameById(forumId, Utils.FORUM));
+    assertNotNull(updatedForum);
+    assertEquals(originalForum.getForumName(), updatedForum.getForumName());
+
+    // by modifyForum
+    originalForum.setIsLock(true);
+    forumService_.modifyForum(originalForum, Utils.LOCK);
+    updatedForum = convertToForum(forumService_.getObjectNameById(forumId, Utils.FORUM));
+    assertNotNull(updatedForum);
+    assertTrue(updatedForum.getIsLock());
+
+    // by saveModerateOfForums
+    List<String> list = new ArrayList<String>();
+    list.add(categoryId + "/" + forumId);
+    forumService_.saveModerateOfForums(list, "demo", false);
+    updatedForum = convertToForum(forumService_.getObjectNameById(forumId, Utils.FORUM));
+    assertNotNull(updatedForum);
+    list.clear();
+    list.addAll(Arrays.asList(updatedForum.getModerators()));
+    assertTrue(list.contains("demo"));
+
+    // by moveForum
+    Category cate = createCategory(getId(Utils.CATEGORY));
+    forumService_.saveCategory(cate, true);
+    Category cateNew = forumService_.getCategory(cate.getId());
+    List<Forum> forums = new ArrayList<Forum>();
+    forums.add(originalForum);
+    forumService_.moveForum(forums, cateNew.getPath());
+    updatedForum = convertToForum(forumService_.getObjectNameById(forumId, Utils.FORUM));
+    assertNotNull(updatedForum);
+    assertEquals(cateNew.getPath() + "/" + forumId, updatedForum.getPath());
+
+    // by removeForum
+    forumService_.removeForum(cateNew.getId(), forumId);
+    updatedForum = convertToForum(forumService_.getObjectNameById(forumId, Utils.FORUM));
+    assertNull(updatedForum);
+
   }
 
   public void testImportXML() throws Exception {
@@ -794,21 +943,17 @@ public class TestForumService extends ForumServiceTestCase {
     return forumAdministration;
   }
 
-  private BBCode createBBCode(String tag, String replacement, boolean isActive) {
-    BBCode bbCode = new BBCode();
-    bbCode.setTagName(tag);
-    bbCode.setActive(isActive);
-    bbCode.setDescription("Description!");
-    bbCode.setExample("[" + tag + "] text example [/" + tag + "]");
-    bbCode.setOption(false);
-    bbCode.setReplacement(replacement);
-    return bbCode;
-  }
-
   private TopicType createTopicType(String name) {
     TopicType topicType = new TopicType();
     topicType.setIcon("BlueIcon");
     topicType.setName(name);
     return topicType;
+  }
+
+  private Forum convertToForum(Object object) {
+    if (object instanceof Forum) {
+      return (Forum) object;
+    }
+    return null;
   }
 }

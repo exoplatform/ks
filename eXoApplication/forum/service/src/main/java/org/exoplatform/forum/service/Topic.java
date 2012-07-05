@@ -339,8 +339,12 @@ public class Topic {
     return this.attachments;
   }
 
+  public String getCategoryId() {
+    return Utils.getCategoryId(path);
+  }
+
   public String getForumId() {
-    return null;
+    return Utils.getForumId(path);
   }
 
   public boolean getIsWaiting() {
