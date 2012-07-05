@@ -18,7 +18,6 @@ package org.exoplatform.faq.service;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,9 +34,10 @@ import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
-import org.exoplatform.services.organization.Membership;
+import org.exoplatform.services.organization.MembershipHandler;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.services.organization.User;
+import org.exoplatform.services.organization.UserHandler;
 
 /**
  * Created by The eXo Platform SARL
@@ -71,9 +71,9 @@ public class FAQServiceUtils {
     return ((expr.indexOf(SLASH) >= 0) && (expr.indexOf(COLON) >= 0));
   }
 
-  private static ListAccess<User> getUserByGroup(OrganizationService organizationService, String group) throws Exception {
+  private static ListAccess<User> getUserByGroup(UserHandler userHandler, String group) throws Exception {
     try {
-      return organizationService.getUserHandler().findUsersByGroupId(group);
+      return userHandler.findUsersByGroupId(group);
     } catch (Exception e) {
       return null;
     }
@@ -86,34 +86,29 @@ public class FAQServiceUtils {
    * @return list of users that mach at least one of the membership
    * @throws Exception
    */
-  @SuppressWarnings("unchecked")
+
   private static List<String> getUserByMembershipType(OrganizationService organizationService, String memberShip) throws Exception {
-    List<String> users = new ArrayList<String>();
+    List<String> users = getFromCache(new String[] { memberShip });
+    if (users != null) {
+      return users;
+    }
+    users = new ArrayList<String>();
     String[] array = memberShip.trim().split(COLON);
+    UserHandler userHandler = organizationService.getUserHandler();
     if (array[0].length() > 1) {
-      ListAccess<User> pageList = getUserByGroup(organizationService, array[1]);
-      if (pageList == null) {
-        return users;
-      }
-      User[] userArray = (User[]) pageList.load(0, pageList.getSize());
-      for (int i = 0; i < pageList.getSize(); i++) {
-        User user = userArray[i];
-        String userName = user.getUserName();
-        if (!users.contains(userName)) {
-          Collection<Membership> memberships = organizationService.getMembershipHandler().findMembershipsByUser(userName);
-          for (Membership member : memberships) {
-            if (member.getMembershipType().equals(array[0]) && member.getGroupId().equals(array[1])) {
-              users.add(userName);
-              break;
-            }
-          }
+      List<String> usersOfGroup = getUserByGroupId(userHandler, array[1]);
+      MembershipHandler membershipHandler = organizationService.getMembershipHandler();
+      for (String userName : usersOfGroup) {
+        if (membershipHandler.findMembershipByUserGroupAndType(userName, array[1], array[0]) != null) {
+          users.add(userName);
         }
       }
     } else {
       if (ANY.equals(array[0])) {
-        users.addAll(getUserByGroupId(organizationService, array[1]));
+        users.addAll(getUserByGroupId(userHandler, array[1]));
       }
     }
+    storeInCache(new String[] { memberShip }, users);
     return users;
   }
 
@@ -124,9 +119,13 @@ public class FAQServiceUtils {
    * @return list of users that mach at least one of the group id
    * @throws Exception
    */
-  private static List<String> getUserByGroupId(OrganizationService organizationService, String groupId) throws Exception {
-    List<String> users = new ArrayList<String>();
-    ListAccess<User> pageList = getUserByGroup(organizationService, groupId);
+  private static List<String> getUserByGroupId(UserHandler userHandler, String groupId) throws Exception {
+    List<String> users = getFromCache(new String[] { groupId });
+    if (users != null) {
+      return users;
+    }
+    users = new ArrayList<String>();
+    ListAccess<User> pageList = getUserByGroup(userHandler, groupId);
     if (pageList == null) {
       return users;
     }
@@ -134,6 +133,7 @@ public class FAQServiceUtils {
     for (int i = 0; i < pageList.getSize(); i++) {
       users.add(userArray[i].getUserName());
     }
+    storeInCache(new String[] { groupId }, users);
     return users;
   }
 
@@ -158,7 +158,7 @@ public class FAQServiceUtils {
       if (isMembershipExpression(str)) {
         users.addAll(getUserByMembershipType(organizationService, str));
       } else if (isGroupExpression(str)) {
-        users.addAll(getUserByGroupId(organizationService, str));
+        users.addAll(getUserByGroupId(organizationService.getUserHandler(), str));
       } else {
         users.add(str);
       }

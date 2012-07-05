@@ -5,6 +5,7 @@ package org.exoplatform.poll.service.ws;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -221,17 +222,16 @@ public class PollWebservice implements ResourceContainer {
     return false;
   }
 
+  @SuppressWarnings("unchecked")
   private List<String> getAllGroupAndMembershipOfUser(String username) {
     List<String> listOfUser = new ArrayList<String>();
     try {
-      listOfUser.add(username);
+      listOfUser.add(username);// himself
       Set<String> list = new HashSet<String>();
-      list.addAll(getGroupsOfUser(username));
-      for (Object membership : getOrganizationService().getMembershipHandler().findMembershipsByUser(username)) {
-        String value = ((Membership) membership).getGroupId();
-        list.add(value); // its groups
-        value = ((Membership) membership).getMembershipType() + ":" + value;
-        list.add(value);
+      Collection<Membership> memberships = organizationService.getMembershipHandler().findMembershipsByUser(username);
+      for (Membership membership : memberships) {
+        listOfUser.add(membership.getGroupId()); // its groups
+        listOfUser.add(membership.getMembershipType() + ":" + membership.getGroupId()); // its memberships
       }
       listOfUser.addAll(list);
     } catch (Exception e) {
