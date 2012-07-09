@@ -1,8 +1,8 @@
-Data injector is used to create data for the performance benchmark. This part will describe which data injectors are implemented in eXo Knowledge and how to use them.	
+Data injector is used to create data for the performance benchmark. This part will describe which data injectors are implemented in Knowledge and how to use them.	
 
 h1. Technical details {anchor:id=KSref.Configuration.Data_Injector_Service.Technical_details}
 
-In eXo Knowledge, data injectors are implemented as plugins attached to the org.exoplatform.services.bench.DataInjectorService service. This service is normally registered to the portal container as a general component and handled via RESTful requests.
+In Knowledge, data injectors are implemented as plugins attached to the org.exoplatform.services.bench.DataInjectorService service. This service is normally registered to the portal container as a general component and handled via RESTful requests.
 
 To use this service, add the following dependency to the Classpath of the server:
 
@@ -63,7 +63,7 @@ To activate _DataInjectorService_, you must register this component to a portal 
 </component>
 {code}
 
-In eXo Knowledge, there are three plugins attached to the _DataInjectorService_ component:
+In Knowledge, there are three plugins attached to the _DataInjectorService_ component:
 * ForumDataInjector
 * WikiDataInjector
 * AnswerDataInjector
