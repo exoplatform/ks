@@ -53,6 +53,7 @@ public class PollWebservice implements ResourceContainer {
   private OrganizationService organizationService = null;
   
   public PollWebservice() {
+    getOrganizationService();
   }
   
   private static final CacheControl         cc;
