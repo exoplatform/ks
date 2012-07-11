@@ -74,7 +74,7 @@
             canEdit = uicomponent.isCategoryModerator(category.getPath()) ; 
             i = new Date().getTime();
         %>
-        
+          <div class="FAQTmpCategory"><span></span></div>
           <div class="$classCss FAQCategory oncontextmenu" id="UIContextPopupMenu$i">
           	<input type="hidden" class="InfoCategory" id="<%=category.getId()%>" value="<%=uicomponent.event("ChangeIndex",uicomponent.OBJECTID)%>" title="input hidden" name="<%=category.getId()%>"/>
             <div>
@@ -134,7 +134,7 @@
               </div>
             </div>
         <% } %>
-        
+        <div class="FAQTmpCategory"><span></span></div>
       </div>
       </div>
     </div>
