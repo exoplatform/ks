@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<messagebundle>
+  <msg name="title">\u00faltima publicaci\u00f3n</msg>
+  <msg name="baseurl">Foro portlet</msg>
+  <msg name="subscribeurl">URL de suscripci\u00f3n</msg>
+  <msg name="limit">Total</msg>
+  <msg name="format">Formato de fecha</msg>
+  <msg name="showall">Foro</msg>
+  <msg name="noevent">No hay nueva publicaci\u00f3n.</msg>
+  <msg name="urlEmpty"><![CDATA[Es necesario escribir <strong>URL de suscripci\u00f3n</strong> en la configuraci\u00f3n del Gadget.<br/> Su formato debe ser: <i>"/{container_name}/{rest_name}/ks/forum/getmessage".</i>]]></msg>
+  <msg name="urlError"><![CDATA[Usted escribi\u00f3 <strong>URL de suscripci\u00f3n</strong> no es correcto. Su formato debe ser:<br/><i>"/{container_name}/{rest_name}/ks/forum/getmessage".</i>]]></msg>
+  <msg name="setting">Ajuste</msg>
+  <msg name="save">Guardar</msg>
+  <msg name="cancel">Cancelar</msg>
+</messagebundle>
