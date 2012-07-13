@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<messagebundle>
+  <msg name="title">Encuesta Presentada</msg>
+  <msg name="setting">Ajuste</msg>
+  <msg name="vote">Votar</msg>
+  <msg name="voteAgain">Votar de nuevo</msg>
+  <msg name="warning">Por favor, seleccione al menos una opci\u00f3n</msg>
+  <msg name="option">Opciones</msg>
+  <msg name="percent">Por ciento</msg>
+  <msg name="voter">votantes</msg>
+  <msg name="total">Total</msg>
+  <msg name="discuss">Discutir en el foro</msg>
+  <msg name="nopoll">No hay ninguna encuesta...</msg>
+  <msg name="createPoll">Crear su encuesta en</msg>
+</messagebundle>
