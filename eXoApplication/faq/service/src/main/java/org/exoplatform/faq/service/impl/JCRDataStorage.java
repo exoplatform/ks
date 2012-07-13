@@ -53,6 +53,7 @@ import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.Workspace;
 import javax.jcr.observation.Event;
+import javax.jcr.observation.EventListener;
 import javax.jcr.observation.ObservationManager;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
@@ -115,6 +116,8 @@ public class JCRDataStorage implements DataStorage, FAQNodeTypes {
   protected Map<String, String>   serverConfig_        = new HashMap<String, String>();
 
   private Map<String, NotifyInfo> messagesInfoMap_     = new HashMap<String, NotifyInfo>();
+
+  private Map<String, EventListener> listeners         = new HashMap<String, EventListener>();
 
   final Queue<NotifyInfo>         pendingMessagesQueue = new ConcurrentLinkedQueue<NotifyInfo>();
 
@@ -1405,6 +1408,8 @@ public class JCRDataStorage implements DataStorage, FAQNodeTypes {
           updateDatas(questionNode, catId, true);
           updateDatas(questionNode, catId, false);
           questionNode.save();
+          unregisterQuestionNodeListener(getQuestionNodeById(id));
+          registerQuestionNodeListener(questionNode);
           try {
             sendNotifyMoveQuestion(destCateNode, questionNode, catId, questionLink, faqSetting);
           } catch (Exception e) {
@@ -3202,11 +3207,26 @@ public class JCRDataStorage implements DataStorage, FAQNodeTypes {
     try {
       ObservationManager observation = questionNode.getSession().getWorkspace().getObservationManager();
       QuestionNodeListener listener = new QuestionNodeListener();
-      observation.addEventListener(listener, Event.NODE_ADDED | Event.NODE_REMOVED | Event.PROPERTY_ADDED | Event.PROPERTY_CHANGED, questionNode.getPath(), true, null, null, false);
+      String questionPath = questionNode.getPath();
+      observation.addEventListener(listener, Event.NODE_ADDED | Event.NODE_REMOVED | Event.PROPERTY_ADDED | Event.PROPERTY_CHANGED, questionPath, true, null, null, false);
+      listeners.put(questionPath, listener);
     } catch (Exception e) {
       log.error("can not add listener to question node", e);
     }
 
+  }
+  
+  private void unregisterQuestionNodeListener(Node questionNode) {
+    try {
+      String questionPath = questionNode.getPath();
+      if (listeners.containsKey(questionPath)) {
+        ObservationManager observation = questionNode.getSession().getWorkspace().getObservationManager();
+        observation.removeEventListener((QuestionNodeListener) listeners.get(questionPath));
+        listeners.remove(questionPath);
+      }
+    } catch (Exception e) {
+      log.error("can not remove listener from question node", e);
+    }
   }
 
   public void reCalculateInfoOfQuestion(String absPathOfProp) throws Exception {
