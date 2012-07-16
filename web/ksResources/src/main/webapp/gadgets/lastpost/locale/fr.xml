@@ -1,58 +1,15 @@
-<!--
-
-    Copyright (C) 2009 eXo Platform SAS.
-    
-    This is free software; you can redistribute it and/or modify it
-    under the terms of the GNU Lesser General Public License as
-    published by the Free Software Foundation; either version 2.1 of
-    the License, or (at your option) any later version.
-    
-    This software is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-    Lesser General Public License for more details.
-    
-    You should have received a copy of the GNU Lesser General Public
-    License along with this software; if not, write to the Free
-    Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
-    02110-1301 USA, or see the FSF site: http://www.fsf.org.
-
--->
-
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <messagebundle>
-	<msg name="title">
-  	Last post
-  </msg>
-	<msg name="baseurl">
-  	Forum portlet
-  </msg>
-	<msg name="subscribeurl">
-  	Subscription URL
-  </msg>
-	<msg name="limit">
-		Total
-  </msg>
-	<msg name="format">
-  	Date time format
-  </msg>  
-  <msg name="showall">
-  	Forum
-  </msg>
-	<msg name="noevent">
-  	No new post
-  </msg>	
-	<msg name="urlEmpty">
-  	It is required to enter <strong>Subscription URL</strong> in the Gadget Settings.<br/> Its format must be: <i>"/{container_name}/{rest_name}/ks/forum/getmessage".</i>
-  </msg>	<msg name="urlError">
-  	Your entered <strong>Subscription URL</strong> is not correct. Its format must be:<br/> <i>"/{container_name}/{rest_name}/ks/forum/getmessage".</i>
-  </msg>
-	<msg name="setting">
-  	Setting
-  </msg>
-	<msg name="save">
-  	Save
-  </msg>
-	<msg name="cancel">
-  	Cancel
-  </msg>
+  <msg name="title">Dernier message</msg>
+  <msg name="baseurl">URL du Forum</msg>
+  <msg name="subscribeurl">URL de Service</msg>
+  <msg name="limit">Total</msg>
+  <msg name="format">Format de date</msg>
+  <msg name="showall">Forum</msg>
+  <msg name="noevent">Aucun nouveau post</msg>
+  <msg name="urlEmpty"><![CDATA[<strong>L'URL de Service</strong> est obligatoire.<br/> Le format souhaité est : <i>"/{container_name}/{rest_name}/ks/forum/getmessage".</i>]]></msg>
+  <msg name="urlError"><![CDATA[L'<strong>URL de Service</strong>n'est pas correcte. Son format doit être:<br/> <i>"/{container_name}/{rest_name}/ks/forum/getmessage".</i>]]></msg>
+  <msg name="setting">Paramètres</msg>
+  <msg name="save">Enregistrer</msg>
+  <msg name="cancel">Annuler</msg>
 </messagebundle>
