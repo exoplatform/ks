@@ -26,6 +26,20 @@ public class WikiPageParams {
     this.pageId = pageId;
   }
 
+  /**
+   * @param type
+   * @param owner
+   * @param pageId
+   * @param attachmentName
+   */
+  public WikiPageParams(String type, String owner, String pageId, String attachmentName) {
+    super();
+    this.type = type;
+    this.owner = owner;
+    this.pageId = pageId;
+    this.attachmentName = attachmentName;
+  }
+
   public void setType(String type) {
     this.type = type;
   }

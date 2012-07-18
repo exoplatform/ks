@@ -6,10 +6,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.jcr.util.IdGenerator;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
+import org.exoplatform.wiki.rendering.cache.PageRenderingCacheService;
 import org.exoplatform.wiki.service.WikiContext;
+import org.exoplatform.wiki.service.WikiPageParams;
 import org.exoplatform.wiki.service.related.RelatedUtil;
 import org.exoplatform.wiki.tree.TreeNode;
 import org.xwiki.component.annotation.Component;
@@ -52,6 +55,11 @@ public class RelatedMacro extends AbstractMacro<RelatedPagesMacroParameters>{
     
     try {
       block = new RawBlock(createRelationList(params), XHTML_SYNTAX);
+      PageRenderingCacheService renderingCacheService = (PageRenderingCacheService) ExoContainerContext.getCurrentContainer()
+                                                                                                       .getComponentInstanceOfType(PageRenderingCacheService.class);
+      WikiContext wikiContext = getWikiContext();
+      renderingCacheService.addPageLink(new WikiPageParams(wikiContext.getType(), wikiContext.getOwner(), wikiContext.getPageId()),
+                                        new WikiPageParams(params.getType(), params.getOwner(), params.getPageId()));
     } catch (Exception e) {
       if (log_.isWarnEnabled()) log_.warn("generate related macro failed", e);
       return Collections.emptyList();

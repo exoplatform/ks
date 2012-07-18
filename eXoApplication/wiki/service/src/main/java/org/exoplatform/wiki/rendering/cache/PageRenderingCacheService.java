@@ -16,6 +16,9 @@
  */
 package org.exoplatform.wiki.rendering.cache;
 
+import java.util.List;
+import java.util.Map;
+
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.wiki.service.WikiPageParams;
 
@@ -39,5 +42,26 @@ public interface PageRenderingCacheService {
    * Get the rendering cache
    * @return the rendering cache
    */
-  public ExoCache<MarkupKey, MarkupData> getRenderingCache();  
+  public ExoCache<MarkupKey, MarkupData> getRenderingCache();
+
+  /**
+   * Return the collection of connections of page. In details, a connections is
+   * built if in content of a page, there is a link to another page
+   * 
+   * @return the map of connection
+   */
+  public Map<WikiPageParams, List<WikiPageParams>> getPageLinksMap();
+  
+  /**
+   * Record a link between two pages
+   * @param param identity parameter of a page to add
+   * @param entity identity parameter of page to be added
+   */
+  public void addPageLink(WikiPageParams param, WikiPageParams entity);
+  
+  /**
+   * Invalidate all cache entries link to a page in case this page is removed, changed or renamed...
+   * @param param specify identity of a page
+   */
+  public void invalidateCache(WikiPageParams param);
 }

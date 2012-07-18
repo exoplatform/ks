@@ -23,6 +23,7 @@ import org.chromattic.api.RelationshipType;
 import org.chromattic.api.annotations.MixinType;
 import org.chromattic.api.annotations.OneToOne;
 import org.chromattic.api.annotations.Property;
+import org.exoplatform.wiki.mow.api.WikiNodeType;
 
 /**
  * @author <a href="mailto:</a>
@@ -35,7 +36,7 @@ public abstract class RenamedMixin {
   public abstract PageImpl getEntity();
   public abstract void setEntity(PageImpl page);
 
-  @Property(name = "oldPageIds")
+  @Property(name = WikiNodeType.Definition.OLD_PAGE_IDS)
   public abstract void setOldPageIds(String[] ids);
   public abstract String[] getOldPageIds();  
   

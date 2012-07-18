@@ -24,6 +24,7 @@ import javax.inject.Inject;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.wiki.mow.core.api.wiki.PageImpl;
 import org.exoplatform.wiki.rendering.RenderingService;
+import org.exoplatform.wiki.rendering.cache.PageRenderingCacheService;
 import org.exoplatform.wiki.rendering.context.MarkupContextManager;
 import org.exoplatform.wiki.service.WikiContext;
 import org.exoplatform.wiki.service.WikiPageParams;
@@ -88,6 +89,16 @@ public class IncludePageMacro extends AbstractMacro<IncludePageMacroParameters> 
     PageImpl page = null;
     try {
       page = (PageImpl) getWikiService().getPageById(includeParams.getType(), includeParams.getOwner(), includeParams.getPageId());
+
+      PageRenderingCacheService renderingCacheService = (PageRenderingCacheService) ExoContainerContext.getCurrentContainer()
+                                                                                                       .getComponentInstanceOfType(PageRenderingCacheService.class);
+      renderingCacheService.addPageLink(new WikiPageParams(currentCtx.getType(), currentCtx.getOwner(), currentCtx.getPageId()),
+                                        new WikiPageParams(includeParams.getType(),
+                                                           includeParams.getOwner(),
+                                                           includeParams.getPageId()));
+      if (page == null) {
+        return Collections.emptyList();
+      }
       includeParams = new WikiPageParams(includeParams.getType(), includeParams.getOwner(), page.getName());
     } catch (Exception e) {
       throw new MacroExecutionException(String.format("Failed to resolve page [%s.%s:%s]",

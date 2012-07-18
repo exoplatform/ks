@@ -106,5 +106,19 @@ public class MarkupKey implements Serializable {
       return false;
     return true;
   }
+
+  /**
+   * @return the supportSectionEdit
+   */
+  public boolean isSupportSectionEdit() {
+    return supportSectionEdit;
+  }
+
+  /**
+   * @param supportSectionEdit the supportSectionEdit to set
+   */
+  public void setSupportSectionEdit(boolean supportSectionEdit) {
+    this.supportSectionEdit = supportSectionEdit;
+  }
   
 }

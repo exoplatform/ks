@@ -228,7 +228,9 @@ public class WikiServiceImpl implements WikiService, Startable {
       
       //update LinkRegistry
       LinkRegistry linkRegistry = wiki.getLinkRegistry();
-      linkRegistry.getLinkEntries().get(getLinkEntryName(wikiType, wikiOwner, pageId)).setNewLink(null);
+      if (linkRegistry.getLinkEntries().get(getLinkEntryName(wikiType, wikiOwner, pageId)) != null) {
+        linkRegistry.getLinkEntries().get(getLinkEntryName(wikiType, wikiOwner, pageId)).setNewLink(null);
+      }
       
       session.save();
     } catch (Exception e) {
@@ -272,24 +274,23 @@ public class WikiServiceImpl implements WikiService, Startable {
       return false;
     PageImpl currentPage = (PageImpl) getPageById(wikiType, wikiOwner, pageName);
     PageImpl parentPage = currentPage.getParentPage();
+
+    RenamedMixin mix = currentPage.getRenamedMixin();
+    if (mix == null) {        
+      mix = parentPage.getChromatticSession().create(RenamedMixin.class);
+      currentPage.setRenamedMixin(mix);
+      List<String> ids = new ArrayList<String>() ;
+      ids.add(pageName);
+      mix.setOldPageIds(ids.toArray(new String[]{}));
+    }
+    List<String> ids = new ArrayList<String>();
+    for (String id : mix.getOldPageIds()) {
+      ids.add(id);
+    }
+    mix.setOldPageIds(ids.toArray(new String[] {}));    
     currentPage.setName(newName);
     getModel().save();
     currentPage.setTitle(newTitle) ;
-    if(currentPage.getRenamedMixin() != null) {
-      RenamedMixin mix = currentPage.getRenamedMixin() ;
-      List<String> ids = new ArrayList<String>() ;
-      for(String id : mix.getOldPageIds()) {
-        ids.add(id) ;
-      }
-      ids.add(pageName) ;
-      mix.setOldPageIds(ids.toArray(new String[]{}));
-    }else {
-      RenamedMixin mix = parentPage.getChromatticSession().create(RenamedMixin.class);
-      currentPage.setRenamedMixin(mix) ;
-      List<String> ids = new ArrayList<String>() ;
-      ids.add(pageName) ;
-      mix.setOldPageIds(ids.toArray(new String[]{}));
-    }
     
     //update LinkRegistry
     WikiImpl wiki = (WikiImpl) parentPage.getWiki();
@@ -326,10 +327,15 @@ public class WikiServiceImpl implements WikiService, Startable {
                                                  currentLocationParams.getOwner(),
                                                  currentLocationParams.getPageId());
       WikiImpl sourceWiki = (WikiImpl) movePage.getWiki();
-      MovedMixin mix = session.create(MovedMixin.class);
-      if (movePage.getMovedMixin() == null) {
-        session.setEmbedded(movePage, MovedMixin.class, mix);
-      }      
+      MovedMixin mix = movePage.getMovedMixin();
+      if (mix == null) {        
+        movePage.setMovedMixin(session.create(MovedMixin.class));
+        mix = movePage.getMovedMixin();
+        mix.setTargetPage(movePage.getParentPage());
+        session.save();
+      }
+      mix.setTargetPage(destPage);
+   
       WikiImpl destWiki = (WikiImpl) destPage.getWiki();
       movePage.setParentPage(destPage);
       
