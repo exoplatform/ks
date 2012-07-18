@@ -995,6 +995,7 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   public void importXML(String nodePath, ByteArrayInputStream bis, int typeImport) throws Exception {
     storage.importXML(nodePath, bis, typeImport);
+    categoryList.select(new ScopeCacheSelector<CategoryListKey, ListCategoryData>());
     forumList.select(new ScopeCacheSelector());
     forumData.select(new ScopeCacheSelector());
   }
