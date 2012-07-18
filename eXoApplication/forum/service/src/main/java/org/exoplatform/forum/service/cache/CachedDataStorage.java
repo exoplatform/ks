@@ -155,14 +155,14 @@ public class CachedDataStorage implements DataStorage, Startable {
     
     if (isNew) {
       CategoryData categoryData = new CategoryData(category);
-      objectNameData.put(new ObjectNameKey(category.getId()), categoryData);
+      objectNameData.put(new ObjectNameKey(category.getId(), Utils.CATEGORY), categoryData);
     } else {
-      objectNameData.remove(new ObjectNameKey(category.getId()));
+      objectNameData.remove(new ObjectNameKey(category.getId(), Utils.CATEGORY));
     }
   }
   
-  private void clearObjectCache(String caategoryId, String forumId, boolean isPutNewKey) throws Exception {
-    clearObjectCache(getForum(caategoryId, forumId), isPutNewKey);
+  private void clearObjectCache(String categoryId, String forumId, boolean isPutNewKey) throws Exception {
+    clearObjectCache(getForum(categoryId, forumId), isPutNewKey);
   }
 
   public void start() {
