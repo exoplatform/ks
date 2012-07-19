@@ -642,8 +642,13 @@ public class JCRDataStorage implements DataStorage, FAQNodeTypes {
 
   private void saveAnswer(Answer answer, Node answerHome, String questionId, String categoryId) throws Exception {
     Node answerNode;
+/*  Fix by issue: KS-4058
+    Now, the status of Answer is wrong, it storage value is isRemoved.
+    We must set value of isNew again */ 
+    boolean isNew = true;
     try {
       answerNode = answerHome.getNode(answer.getId());
+      isNew = false;// The answerNode existing, isNew = false.
     } catch (PathNotFoundException e) {
       answerNode = answerHome.addNode(answer.getId(), EXO_ANSWER);
     }
@@ -674,6 +679,7 @@ public class JCRDataStorage implements DataStorage, FAQNodeTypes {
       answerNode.setProperty(EXO_RESPONSE_LANGUAGE, answer.getLanguage());
       answerNode.setProperty(EXO_QUESTION_ID, questionId);
       answerNode.setProperty(EXO_CATEGORY_ID, categoryId);
+      answer.setNew(isNew);// set again value of isNew in answer
     } catch (Exception e) {
       log.error("Failed to save Answer: ", e);
     }
