@@ -179,5 +179,10 @@ public interface WikiNodeType {
     public final static String DESCRIPTION                = "description";
     
     public final static String URL                        = "url";
+
+    public final static String OLD_PAGE_IDS               = "oldPageIds";
+
+    public final static String TARGET_PAGE                = "targetPage";
+    
   }
 }

@@ -20,9 +20,11 @@
 package org.exoplatform.wiki.mow.core.api.wiki;
 
 import org.chromattic.api.RelationshipType;
+import org.chromattic.api.annotations.ManyToOne;
+import org.chromattic.api.annotations.MappedBy;
 import org.chromattic.api.annotations.MixinType;
 import org.chromattic.api.annotations.OneToOne;
-import org.chromattic.api.annotations.Property;
+import org.exoplatform.wiki.mow.api.WikiNodeType;
 
 /**
  * @author <a href="mailto:</a>
@@ -35,9 +37,10 @@ public abstract class MovedMixin {
   public abstract PageImpl getEntity();
   public abstract void setEntity(PageImpl page);
 
-  @Property(name = "targetPage")
-  public abstract void setTargetPage(String page);
-  public abstract String getTargetPage();
+  @ManyToOne(type=RelationshipType.REFERENCE)
+  @MappedBy(WikiNodeType.Definition.TARGET_PAGE)
+  public abstract void setTargetPage(PageImpl page);
+  public abstract PageImpl getTargetPage();
 
   
 }

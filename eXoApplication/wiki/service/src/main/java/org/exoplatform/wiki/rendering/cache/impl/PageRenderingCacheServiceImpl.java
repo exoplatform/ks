@@ -16,11 +16,17 @@
  */
 package org.exoplatform.wiki.rendering.cache.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
+import org.exoplatform.wiki.mow.api.Page;
 import org.exoplatform.wiki.mow.core.api.wiki.PageImpl;
 import org.exoplatform.wiki.rendering.RenderingService;
 import org.exoplatform.wiki.rendering.cache.MarkupData;
@@ -29,6 +35,7 @@ import org.exoplatform.wiki.rendering.cache.PageRenderingCacheService;
 import org.exoplatform.wiki.service.PermissionType;
 import org.exoplatform.wiki.service.WikiPageParams;
 import org.exoplatform.wiki.service.WikiService;
+import org.xwiki.rendering.syntax.Syntax;
 
 /**
  * Created by The eXo Platform SAS
@@ -47,6 +54,8 @@ public class PageRenderingCacheServiceImpl implements PageRenderingCacheService 
   private WikiService                     wikiService;
 
   private ExoCache<MarkupKey, MarkupData> renderingCache;
+  
+  private Map<WikiPageParams, List<WikiPageParams>> pageLinksMap = new ConcurrentHashMap<WikiPageParams, List<WikiPageParams>>();
 
   /**
    * Initialize rendering cache service 
@@ -65,7 +74,11 @@ public class PageRenderingCacheServiceImpl implements PageRenderingCacheService 
       PageImpl page = (PageImpl) wikiService.getPageById(param.getType(), param.getOwner(), param.getPageId());
       boolean supportSectionEdit = page.hasPermission(PermissionType.EDITPAGE);
       String markup = page.getContent().getText();
-      MarkupKey key = new MarkupKey(param, markup, page.getSyntax(), targetSyntax, supportSectionEdit);
+      MarkupKey key = new MarkupKey(new WikiPageParams(param.getType(), param.getOwner(), param.getPageId()),
+                                    markup,
+                                    page.getSyntax(),
+                                    targetSyntax,
+                                    supportSectionEdit);
       MarkupData cachedData = renderingCache.get(key);
       if (cachedData != null) {
         return cachedData.build();
@@ -85,6 +98,46 @@ public class PageRenderingCacheServiceImpl implements PageRenderingCacheService 
   @Override
   public final ExoCache<MarkupKey, MarkupData> getRenderingCache() {
     return renderingCache;
+  }
+  
+  @Override
+  public Map<WikiPageParams, List<WikiPageParams>> getPageLinksMap() {
+    return pageLinksMap;
+  }
+
+  @Override
+  public void addPageLink(WikiPageParams param, WikiPageParams entity) {
+    List<WikiPageParams> linkParams = this.pageLinksMap.get(entity);
+    if (linkParams == null) {
+      linkParams = new ArrayList<WikiPageParams>();
+      this.pageLinksMap.put(entity, linkParams);
+    }
+    linkParams.add(param);
+  }
+
+  @Override
+  public void invalidateCache(WikiPageParams param) {
+    List<WikiPageParams> linkedPages = pageLinksMap.get(param);
+    if (linkedPages != null && linkedPages.size() != 0) {
+      for (WikiPageParams wikiPageParams : linkedPages) {
+        try {
+          Page page = wikiService.getPageById(wikiPageParams.getType(), wikiPageParams.getOwner(), wikiPageParams.getPageId());
+          MarkupKey key = new MarkupKey(wikiPageParams,
+                                        page.getContent().getText(),
+                                        page.getSyntax(),
+                                        Syntax.XHTML_1_0.toIdString(),
+                                        false);
+          getRenderingCache().remove(key);
+          key.setSupportSectionEdit(true);
+          getRenderingCache().remove(key);
+        } catch (Exception e) {
+          LOG.warn(String.format("Failed to invalidate cache of page [%s:%s:%s]",
+                                 wikiPageParams.getType(),
+                                 wikiPageParams.getOwner(),
+                                 wikiPageParams.getPageId()));
+        }
+      }
+    }
   }
 
 }
