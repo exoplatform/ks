@@ -812,7 +812,7 @@ public class UIForumPortlet extends UIPortletApplication {
           }
         }
         if (forum == null) {
-          forum = (Forum) this.forumService.getObjectNameById(path, Utils.FORUM);
+          forum = (Forum) this.forumService.getObjectNameById(path.substring(path.lastIndexOf(ForumUtils.SLASH) + 1), Utils.FORUM);
           if (forum == null && path.equals(getForumIdOfSpace())) {
             forum = forumService.getForum(this.categorySpId, path);
           }
