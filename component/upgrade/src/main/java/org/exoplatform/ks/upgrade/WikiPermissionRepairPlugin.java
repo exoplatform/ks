@@ -65,7 +65,9 @@ public class WikiPermissionRepairPlugin extends UpgradeProductPlugin {
     RequestLifeCycle.begin(PortalContainer.getInstance());
     MOWService mowService = (MOWService) ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(MOWService.class);
     ChromatticSession session = mowService.getSession();
-    QueryResult<AttachmentImpl> attachmentIterator = session.createQueryBuilder(AttachmentImpl.class).where("jcr:path LIKE '/%' AND not(fn:name()='content')").get().objects();
+    
+    // Select all the attachment of wiki pages except for metadata
+    QueryResult<AttachmentImpl> attachmentIterator = session.createQueryBuilder(AttachmentImpl.class).where("jcr:path LIKE '%/WikiHome/%' AND not(fn:name()='content')").get().objects();
     
     Log.info("\nTotal attachments found: {}\n", attachmentIterator.size());
     int fixedAttachment = 0;
