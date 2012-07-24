@@ -294,8 +294,22 @@ public abstract class PageImpl extends NTFolder implements Page {
     }
     
     AttachmentImpl file = createAttachment();
-    file.setName(TitleResolver.getId(fileName, false));
-    addAttachment(file);
+    String nameAfterEncode = TitleResolver.replaceSpecialCharacterByUnderscore(fileName);
+    
+    int index = 1;
+    String name = nameAfterEncode;
+    boolean isAddAttachmentSuccess = false;
+    while(!isAddAttachmentSuccess) {
+      try {
+        file.setName(name);
+        addAttachment(file);
+        isAddAttachmentSuccess = true;
+      } catch (DuplicateNameException ex) {
+        name = nameAfterEncode + index;
+        index++;
+      }
+    }
+    
     if (fileName.lastIndexOf(".") > 0) {
       file.setTitle(fileName.substring(0, fileName.lastIndexOf(".")));
       file.setFileType(fileName.substring(fileName.lastIndexOf(".")));

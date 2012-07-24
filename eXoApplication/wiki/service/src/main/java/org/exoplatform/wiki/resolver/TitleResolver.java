@@ -18,10 +18,10 @@ package org.exoplatform.wiki.resolver;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.StringTokenizer;
 
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
+import org.exoplatform.wiki.utils.WikiNameValidator;
 
 /**
  * Created by The eXo Platform SAS
@@ -46,18 +46,21 @@ public class TitleResolver {
           log.warn(String.format("Getting Page Id from %s failed because of UnspportedEncodingException. Using page title(%s) instead (Not recommended. Fix it if possible!!!)", title), e1);
       }
     }
-    return replaceSpacebyUnderscore(id);
+    return id.replace(" ", "_");
   }
 
-  private static String replaceSpacebyUnderscore(String s) {
-    StringTokenizer st = new StringTokenizer(s, " ", false);
-    StringBuilder sb = new StringBuilder();
-    if (st.hasMoreElements()) {
-      sb.append(st.nextElement());
+  public static String replaceSpecialCharacterByUnderscore(String s) {
+    if (s == null) {
+      return null;
     }
-    while (st.hasMoreElements())
-      sb.append("_").append(st.nextElement());
-    return sb.toString();
+    
+    s = s.replace(' ', '_');
+    for (int i = 0; i < WikiNameValidator.INVALID_CHARACTERS.length(); i++) {
+      char c = WikiNameValidator.INVALID_CHARACTERS.charAt(i);
+      if (c != ' ') {
+        s = s.replace(c, '_');
+      }
+    }
+    return s;
   }
-
 }
