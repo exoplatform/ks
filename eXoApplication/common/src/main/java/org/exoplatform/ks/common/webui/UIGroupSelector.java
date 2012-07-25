@@ -160,8 +160,12 @@ public class UIGroupSelector extends UIGroupMembershipSelector implements UIPopu
         children.add(group.getGroupName());
       } else {
         Collection<Group> groups = service.getGroupHandler().findGroups(getCurrentGroup());
-        for (Group child : groups) {
-          children.add(child.getGroupName());
+        if (groups.size() > 0) {
+          for (Group child : groups) {
+            children.add(child.getGroupName());
+          }
+        } else {
+          children.add(WebUIUtils.getLabel(getId(), "selectThisGroup"));
         }
       }
     }

@@ -39,7 +39,11 @@
 				        } else if(uicomponent.isSelectUser()){ 
 				        	key = user ;
 				        } else if(uicomponent.isSelectGroup()){ 
-				        	key = uicomponent.getCurrentGroup().getId()+"/"+user ;
+				        	if (_ctx.appRes(uicomponent.id + ".label.selectThisGroup").equals(user)) {
+				        	  key = uicomponent.getCurrentGroup().getId();
+				        	} else {
+				        	  key = uicomponent.getCurrentGroup().getId() + "/" + user;
+				        	}
 				        }    
 		      %>
 				     <div class="$rowCssClass">

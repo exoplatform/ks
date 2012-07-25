@@ -357,7 +357,7 @@ public class JCRDataStorage implements DataStorage, PollNodeTypes {
           isAdd = hasPermissionInForum(sProvider, node, allInfoOfUser);
         } else {
           // check permission for poll private.
-          if (path.indexOf(APPLICATION_DATA) > 0) {
+          if (path.indexOf(APPLICATION_DATA) > 0 && allInfoOfUser != null) {
             path = path.substring(path.indexOf(GROUPS + "/") + GROUPS.length(), path.indexOf("/" + APPLICATION_DATA));
             for (String group : allInfoOfUser) {
               if (group.indexOf(":") < 0) {
