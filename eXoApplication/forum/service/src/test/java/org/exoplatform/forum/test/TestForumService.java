@@ -402,7 +402,22 @@ public class TestForumService extends ForumServiceTestCase {
     forum1 = forumService_.getForum(cat.getId(), forum1.getId());
     List<Topic> topics = new ArrayList<Topic>();
     topics.add(topica);
+    //Calculate last read test case
+    forumService_.updateTopicAccess(USER_ROOT, topica.getId());
+    forumService_.updateForumAccess(USER_ROOT, forum.getId());
+    UserProfile userProfile = forumService_.getDefaultUserProfile(USER_ROOT, "");
+    String lastPostId = topica.getId().replace(Utils.TOPIC, Utils.POST);
+    userProfile.addLastPostIdReadOfForum(forum.getId(), topica.getId()+"/"+lastPostId);
+    userProfile.addLastPostIdReadOfTopic(topica.getId(), lastPostId);
+    forumService_.saveLastPostIdRead(USER_ROOT, userProfile.getLastReadPostOfForum(), userProfile.getLastReadPostOfTopic());
+    // Before move topica to forum1
+    assertEquals(userProfile.getLastPostIdReadOfForum(forum1.getId()).length() > 0, false);
+    // moving topica to forum1
     forumService_.moveTopic(topics, forum1.getPath(), "", "");
+    userProfile = forumService_.getDefaultUserProfile(USER_ROOT, "");
+    // After moved topica to forum1, the forum1 has last post read.
+    assertEquals(userProfile.getLastPostIdReadOfForum(forum1.getId()).length() > 0, true);
+    
     assertNotNull("Failed to moved topic, topic is null.", forumService_.getTopic(cat.getId(), forum1.getId(), topica.getId(), ""));
     assertEquals(10, forumService_.getForum(cat.getId(), forum.getId()).getTopicCount());
     assertEquals(1, forumService_.getForum(cat.getId(), forum1.getId()).getTopicCount());

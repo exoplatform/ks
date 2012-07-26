@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.jcr.RepositoryException;
 import javax.jcr.Value;
 
 import org.exoplatform.container.ExoContainerContext;
@@ -551,7 +550,7 @@ public class Utils implements ForumNodeTypes {
     RepositoryService repositoryService = (RepositoryService) ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(RepositoryService.class);
     try {
       return repositoryService.getCurrentRepository().getConfiguration().getName();
-    } catch (RepositoryException e) {
+    } catch (Exception e) {
       if (LOG.isDebugEnabled()) {
         LOG.debug("Can not get current repository", e);
       }
