@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.chromattic.api.ChromatticSession;
 import org.exoplatform.commons.chromattic.ChromatticManager;
 import org.exoplatform.commons.utils.ObjectPageList;
@@ -585,7 +586,7 @@ public class WikiServiceImpl implements WikiService, Startable {
                              String newSyntaxId) throws Exception {
     if (newTitle != null) {
       template = getTemplatesContainer(params).addPage(TitleResolver.getId(newTitle,false), template);
-      template.setDescription(newDescription);
+      template.setDescription(StringEscapeUtils.escapeHtml(newDescription));
       template.setTitle(newTitle);
       template.getContent().setText(newContent);
       template.setSyntax(newSyntaxId);

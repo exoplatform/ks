@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.jcr.datamodel.IllegalNameException;
@@ -188,7 +189,7 @@ public class SavePageActionComponent extends UIComponent {
             ((PageImpl) page).setMinorEdit(Boolean.parseBoolean(minorAtt.toString()));
           }
           synchronized (((PageImpl) page).getJCRPageNode().getUUID()) {
-            page.setComment(commentInput.getValue());
+            page.setComment(StringEscapeUtils.escapeHtml(commentInput.getValue()));
             page.setSyntax(syntaxId);
             pageTitleControlForm.getUIFormInputInfo().setValue(title);
             pageParams.setPageId(page.getName());
