@@ -294,7 +294,9 @@ public class TestFAQService extends FAQServiceTestCase{
 		faqService_.saveCategory(Utils.CATEGORY_HOME+"/"+cate1.getId(), subCate1, true) ;
 		
 //	is Category Exist	
-		assertEquals("Category has name:"+cate1.getName()+"  is no longer exists.", faqService_.isCategoryExist(cate1.getName(), Utils.CATEGORY_HOME), true);
+    assertEquals(true, faqService_.isCategoryExist(cate1.getName(), Utils.CATEGORY_HOME));
+    // When input path of parent category is null - Test KS-3974
+    assertEquals(true, faqService_.isCategoryExist(cate1.getName(), null));
 //		Get category by id
 		cate1 = faqService_.getCategoryById(Utils.CATEGORY_HOME+"/"+cate1.getId());
 		assertNotNull("Category have not been added", cate1) ;

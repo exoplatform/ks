@@ -3440,23 +3440,26 @@ public class JCRDataStorage implements DataStorage {
   /* (non-Javadoc)
    * @see org.exoplatform.faq.service.impl.DataStorage#isCategoryExist(java.lang.String, java.lang.String)
    */
+  @Override
   public boolean isCategoryExist(String name, String path) {
     SessionProvider sProvider = CommonUtils.createSystemProvider();
-    try{
-      Node category = getFAQServiceHome(sProvider).getNode(path) ;
-      NodeIterator iter = category.getNodes() ;
-      while (iter.hasNext()) {
-        Node cat = iter.nextNode();
-        try{
-          if(name.equals(cat.getProperty("exo:name").getString())) return true ;
-        }catch (Exception e) {
-          log.debug("Failed to check exist category by name", e);
-        }
-      }			
-    }catch(Exception e) {
-      log.error("Cheking whether catagory is exist: ", e);
+    if (StringUtils.isEmpty(path)) {
+      path = Utils.CATEGORY_HOME;
     }
-    return false ;
+    try {
+      NodeIterator iter = getFAQServiceHome(sProvider).getNode(path).getNodes();
+      while (iter.hasNext()) {
+        Node catNode = iter.nextNode();
+        if (new PropertyReader(catNode).string("exo:name", "").equalsIgnoreCase(name)) {
+          return true;
+        }
+      }
+    } catch (Exception e) {
+      if (log.isWarnEnabled()) {
+        log.warn("Cheking whether catagory is exist: ", e);
+      }
+    }
+    return false;
   }
 
   /* (non-Javadoc)
