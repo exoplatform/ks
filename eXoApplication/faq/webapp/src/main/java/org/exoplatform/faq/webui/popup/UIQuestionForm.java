@@ -635,7 +635,7 @@ public class UIQuestionForm extends BaseUIFAQForm implements UIPopupComponent {
         } catch (Exception e) {
           questionForm.log.error("Can not run discuss question in to forum portlet", false);
         }
-        if(!questionForm.isModerate || questionForm.isMode) {
+        if(!(questionForm.isModerate) || questionForm.getUICheckBoxInput(IS_APPROVED).isChecked()){
           if(isNew) info("UIQuestionForm.msg.add-new-question-successful", false) ;
         } else {
           info("UIQuestionForm.msg.question-not-is-approved", false) ;
