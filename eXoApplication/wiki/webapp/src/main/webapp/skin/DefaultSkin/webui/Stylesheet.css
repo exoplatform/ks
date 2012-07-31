@@ -1747,13 +1747,14 @@ table.UIFormGrid div.Id {
     overflow:visible  !important;
   }   
   body * {
-    visibility:hidden;
+	visibility: hidden;
   }
   #UIWikiPageContentArea, #UIWikiPageContentArea * {
     visibility:visible;
     overflow: visible !important;
   }
   #UIWikiPageContentArea {
+	visibility:visible;
     position:absolute;
     left:0;
     top:0;
@@ -1767,5 +1768,21 @@ table.UIFormGrid div.Id {
   }
   .UIWikiPortlet .WikiLayout {
     position: static !important;
+  }
+  .UILeftContainerArea {
+	  border: solid 1px magenta;
+	  height: auto !important;
+	  min-height:0px !important;
+  }
+  .WikiLayout {
+	  height: auto !important;
+  }
+  .Spliter {
+	  height: auto !important;
+  }
+  .UIRightContainerArea {
+	  overflow: visible !important;
+	  width: auto !important;
+	  height: auto !important;
   }
 }
