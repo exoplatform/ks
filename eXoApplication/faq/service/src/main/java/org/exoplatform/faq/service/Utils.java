@@ -183,4 +183,21 @@ public class Utils {
     }
     return queryString.toString();
   }
+  
+  public static String buildQueryListOfUser(String property, List<String> listOfUser) {
+    StringBuilder query = new StringBuilder();
+    for (String expr : listOfUser) {
+      if(query.length() > 0) {
+        query.append(" or ");
+      }
+      query.append("@").append(property).append(" = '").append(expr).append("'");
+      if (FAQServiceUtils.isGroupExpression(expr)) {
+        query.append(" or @").append(property).append(" = '*:").append(expr).append("'");
+      } else if(FAQServiceUtils.isMembershipExpression(expr)){
+        expr = expr.substring(expr.indexOf(":")+1);
+        query.append(" or @").append(property).append(" = '*:").append(expr).append("'");
+      }
+    }
+    return query.toString();
+  }
 }

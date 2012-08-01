@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -294,12 +295,14 @@ public class TestFAQService extends FAQServiceTestCase {
     faqService_.getAllCategories();
     Category cate1 = createCategory("Cate 1", 0);
     cate1.setIndex(1);
+    cate1.setUserPrivate(new String[]{"test", "manager:/admin/user"});
     faqService_.saveCategory(Utils.CATEGORY_HOME, cate1, true);
 
     Category cate2 = createCategory("Cate 2", 0);
     cate2.setIndex(2);
     cate2.setName("Nguyen van truong test category222222");
     cate2.setModerators(new String[] { "Demo" });
+    cate2.setUserPrivate(new String[]{"test", "member:/abc/fod", "*:/admin/user"});
     faqService_.saveCategory(Utils.CATEGORY_HOME, cate2, true);
 
     // add sub category 1
@@ -330,9 +333,17 @@ public class TestFAQService extends FAQServiceTestCase {
     cate1 = faqService_.getCategoryById(cate1.getPath());
     assertEquals("Name of category 1 haven't been changed", "Nguyen van truong test category111111", cate1.getName());
 
-    // get Categories
-    List<Category> listCate = faqService_.getSubCategories(Utils.CATEGORY_HOME, faqSetting_, true, null);
-    assertEquals("In root category don't have two subcategories", listCate.size(), 2);
+    // get Categories with normal user
+    FAQSetting faqSetting = new FAQSetting();
+    faqSetting.setIsAdmin("false");
+    List<Category> listCate = faqService_.getSubCategories(Utils.CATEGORY_HOME, faqSetting, true, Arrays.asList(new String[]{"demo", "/admin/user"}));
+    assertEquals(1, listCate.size());
+    // get Categories with moderators/administrators 
+    listCate = faqService_.getSubCategories(Utils.CATEGORY_HOME, faqSetting, true, Arrays.asList(new String[]{"john", "manager:/admin/user"}));
+    assertEquals(2, listCate.size());
+    faqSetting.setIsAdmin("true");
+    listCate = faqService_.getSubCategories(Utils.CATEGORY_HOME, faqSetting, true, new ArrayList<String>());
+    assertEquals(2, listCate.size());
 
     // Get Maxindex of cateogry
     assertEquals("Root have two category and maxIndex of subcategories in root is't 2", faqService_.getMaxindexCategory(Utils.CATEGORY_HOME), 2);

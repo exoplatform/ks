@@ -1921,19 +1921,21 @@ public class JCRDataStorage implements DataStorage, FAQNodeTypes {
       }
 
       StringBuffer queryString = new StringBuffer(JCR_ROOT).append(parentCategory.getPath());
-      if (faqSetting.isAdmin())
-        queryString.append("/element(*,exo:faqCategory) [@exo:isView='true'] order by @exo:index ascending");
-      else {
-        queryString.append("/element(*,exo:faqCategory)[@exo:isView='true' and ( not(@exo:userPrivate) or @exo:userPrivate=''");
-        for (String id : limitedUsers) {
-          queryString.append(" or @exo:userPrivate = '").append(id).append("' ");
-          queryString.append(" or @exo:moderators = '").append(id).append("' ");
+      if (faqSetting.isAdmin()) {
+        queryString.append("/element(*,").append(EXO_FAQ_CATEGORY)
+                   .append(") [@").append(EXO_IS_VIEW).append("='true'] order by @").append(EXO_INDEX).append(" ascending");
+      } else {
+        queryString.append("/element(*,").append(EXO_FAQ_CATEGORY)
+                   .append(") [@").append(EXO_IS_VIEW).append("='true' and ( not(@").append(EXO_USER_PRIVATE)
+                   .append(") or @").append(EXO_USER_PRIVATE).append("=''");
+        if (limitedUsers.size() > 0) {
+          queryString.append(" or ").append(Utils.buildQueryListOfUser(EXO_USER_PRIVATE, limitedUsers));
+          queryString.append(" or ").append(Utils.buildQueryListOfUser(EXO_MODERATORS, limitedUsers));
         }
-        queryString.append(" )] order by @exo:index");
+        queryString.append(")] order by @").append(EXO_INDEX).append(" ascending");
       }
       QueryManager qm = parentCategory.getSession().getWorkspace().getQueryManager();
-      String qString = queryString.toString();
-      Query query = qm.createQuery(qString, Query.XPATH);
+      Query query = qm.createQuery(queryString.toString(), Query.XPATH);
       QueryResult result = query.execute();
       NodeIterator iter = result.getNodes();
       while (iter.hasNext()) {

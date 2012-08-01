@@ -58,7 +58,7 @@ public class FAQServiceUtils {
    * @param expr
    * @return
    */
-  private static boolean isGroupExpression(String expr) {
+  public static boolean isGroupExpression(String expr) {
     return ((expr.indexOf(SLASH) >= 0) && !(expr.indexOf(COLON) >= 0));
   }
 
@@ -67,7 +67,7 @@ public class FAQServiceUtils {
    * @param expr
    * @return
    */
-  private static boolean isMembershipExpression(String expr) {
+  public static boolean isMembershipExpression(String expr) {
     return ((expr.indexOf(SLASH) >= 0) && (expr.indexOf(COLON) >= 0));
   }
 
