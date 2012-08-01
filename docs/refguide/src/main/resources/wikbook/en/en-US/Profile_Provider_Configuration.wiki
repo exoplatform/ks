@@ -14,7 +14,7 @@ Configure the _profile-configuration.xml_ file as shown below:
 </component>
 {code}
 
-When eXo Knowledge is integrated in eXo Platform and if you want to use ProfileProvider from eXo Social, you need to change "*type*" _org.exoplatform.ks.common.user.DefaultContactProvider_ into _org.exoplatform.ks.ext.common.SocialContactProvider_.
+When Knowledge is integrated in eXo Platform and if you want to use ProfileProvider from eXo Social, you need to change "*type*" _org.exoplatform.ks.common.user.DefaultContactProvider_ into _org.exoplatform.ks.ext.common.SocialContactProvider_.
 
 h1. Use ContactProvider {anchor:id=KSref.ProfileProviderConfiguration.UseContactProvider}
 You can get the _ContactProvider_ as follows:
@@ -31,7 +31,7 @@ public CommonContact getPersonalContact(String userId) throws Exception {
 }
 {code}
 
-In eXo Knowledge, when using ContactProvider, you can use one of two following classes:
+In Knowledge, when using ContactProvider, you can use one of two following classes:
 
 * [DefaultContactProvider|#KSref.ProfileProviderConfiguration.UseDefaultContactProvider]
 

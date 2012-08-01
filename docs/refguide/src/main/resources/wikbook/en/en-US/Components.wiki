@@ -1,7 +1,7 @@
-h1. Components of eXo Knowledge {anchor:id=KSref.Components}
+h1. Components of Knowledge {anchor:id=KSref.Components}
 
 || Key || Data type || Description ||
-| *org.exoplatform.ks.common. jcr.KSDataLocation* | org.exoplatform.ks.common. jcr.KSDataLocation | Hold the JCR storage location for eXo Knowledge data. |
+| *org.exoplatform.ks.common. jcr.KSDataLocation* | org.exoplatform.ks.common. jcr.KSDataLocation | Hold the JCR storage location for the Knowledge data. |
 | *org.exoplatform.services. scheduler.JobSchedulerService* | org.exoplatform.services.scheduler. impl.JobSchedulerServiceImpl | Define a job to execute a given number of times during a given period. It is used to monitor jobs automatically and continously, to schedule event-driven jobs and reports, and to control performance. |
 
 * Init-params of org.exoplatform.ks.common.jcr.KSDataLocation:
