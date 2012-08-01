@@ -190,7 +190,7 @@ Follow these steps to deploy your new action extension:
 
 *1.* Build the project by using the *mvn clean install* command.
 
-*2.* Copy the _target/example-1.0-SNAPSHOT.jar_ file into the _TOMCAT_HOME/webapps/wiki.war/WEB-INF/lib/_ directory.
+*2.* Copy the _target/example-1.0-SNAPSHOT.jar_ file into the _TOMCAT\_HOME/webapps/wiki.war/WEB-INF/lib/_ directory.
 
 *3.* Run the tomcat and go to Wiki application, you should see the result as below:
 

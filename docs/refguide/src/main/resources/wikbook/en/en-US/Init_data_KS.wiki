@@ -1,7 +1,7 @@
 The Init data plug-in is used to define the default data in the _.xml_ file. It includes nodes (node of jcr).
-When the _org.exoplatform.services.jcr.config.RepositoryServiceConfiguration_ component is initialized, the _org.exoplatform.services.jcr.impl.config.RepositoryServiceConfigurationPlugin_ component will be get and the function _addConfig_ is called. Then, the _/ks-extension/jcr/repository-configuration.xml_ file is loaded and the component _org.exoplatform.ks.common.jcr.KSDataLocation_ will be initialized. Next, the _setLocation_ function is called, setting up the workspace and repository for KS. After that, the _addPlugin_ function will be run, generating the DataLocation (some parent nodes) for eXo Knowledge.
+When the _org.exoplatform.services.jcr.config.RepositoryServiceConfiguration_ component is initialized, the _org.exoplatform.services.jcr.impl.config.RepositoryServiceConfigurationPlugin_ component will be get and the function _addConfig_ is called. Then, the _/ks-extension/jcr/repository-configuration.xml_ file is loaded and the component _org.exoplatform.ks.common.jcr.KSDataLocation_ will be initialized. Next, the _setLocation_ function is called, setting up the workspace and repository for KS. After that, the _addPlugin_ function will be run, generating the DataLocation (some parent nodes) for Knowledge.
 
-The following is the list of applications in eXo Knowledge and the corresponding components used to initialize the default data.
+The following is the list of applications in Knowledge and the corresponding components used to initialize the default data.
 || Application || Component || Description ||
 | *Forum* | {{KSDataLocation, ForumServiceImpl}} | Initialize default data of the Forum portlet. |
 | *Answers* | {{KSDataLocation, AnswerServiceImpl}} | Initialize default data of the Answers portlet. |
@@ -9,7 +9,7 @@ The following is the list of applications in eXo Knowledge and the corresponding
 
 In this section, you will understand how to initialize data via the sample configurations below.
 
-h1. Initialize the conf-part for loading _repository-configuration.xml_ {anchor:id=KSref.InitDataConfiguration.InitializeConf-partForLoading_repository-configuration.xml_}
+h1. Initialize the conf-part for loading repository-configuration.xml {anchor:id=KSref.InitDataConfiguration.InitializeConf-partForLoading_repository-configuration.xml_}
 
 When the server starts, the _jcr-configuration.xml_ file is initialized. The component-plugin named addConfig will be referred to org.exoplatform.services.jcr.impl.config.RepositoryServiceConfigurationPlugin to load the _war:/ks-extension/jcr/repository-configuration.xml_ file.
 
@@ -41,7 +41,7 @@ When the server starts, the _jcr-configuration.xml_ file is initialized. The com
 || Name || Possible value || Default value || Description ||
 | *conf-path* | {{string}} |war:/ks-extension/jcr/ repository- configuration.xml| The path to the _repository-configuration.xml_ file. |
 
-h1. Initialize workspace name and repository name in _storage-configuration.xml_ {anchor:id=KSref.InitDataConfiguration.InitializeWorkspaceName&RepositoryName}
+h1. Initialize workspace name and repository name in storage-configuration.xml {anchor:id=KSref.InitDataConfiguration.InitializeWorkspaceName&RepositoryName}
 
 In details:
 

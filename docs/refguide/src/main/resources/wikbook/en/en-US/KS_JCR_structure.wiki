@@ -499,7 +499,7 @@ The Poll node is stored under eXoPolls node {{/exo:applications/eXoPolls/%Portal
 | exo:isClosed | Boolean | false | The poll status: open/closed. The poll is closed if the value is set to "true". |
 
 h1. Wiki JCR structure  {anchor:id=KSref.JCRStructure.WikiJCRStructure}
-The Wiki portlet is a JCR-based application. The Wiki data are stored in the eXo JCR storage. The Wiki application of eXo Knowledge supports several wikis, each wiki is organized as a tree of pages and hosted in different locations, depending on the type of wiki:
+The Wiki portlet is a JCR-based application. The Wiki data are stored in the eXo JCR storage. The Wiki application of Knowledge supports several wikis, each wiki is organized as a tree of pages and hosted in different locations, depending on the type of wiki:
 
 * Portal wikis: _/exo\:applications/eXoWiki/wikis/$PORTAL/WikiHome_
 * Group wikis: _/Groups/$GROUP/ApplicationData/eXoWiki/WikiHome_

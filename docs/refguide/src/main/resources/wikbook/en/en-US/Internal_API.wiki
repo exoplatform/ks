@@ -1,8 +1,8 @@
-Applications of eXo Knowledge, such as Forum, Answers and Polls, use REST services to communicate with the server. This section describes REST Services of internal APIs. 
+Applications of Knowledge, such as Forum, Answers and Polls, use REST services to communicate with the server. This section describes REST Services of internal APIs. 
 
 h1. Forum application {anchor:id=KSref.InternalAPIs.ForumApplication}
 
-The Forum application of eXo Knowledge uses the ForumWebservice to provide all APIs to work with Forum, such as filtering IPs, viewing RSS, and more.
+The Forum application of Knowledge uses the ForumWebservice to provide all APIs to work with Forum, such as filtering IPs, viewing RSS, and more.
 
 || Service name || Service URL || Description || Location ||
 | *ForumWebservice* | $portalName/ $restcontextname/ ks/forum/ | Call extended services of the Forum application. | * Maven groupId: org.exoplatform.ks {example}{example} * ArtifactId: exo.ks.web.webservice |
@@ -21,7 +21,7 @@ Use the following APIs to build all the functions of the Forum application:
 
 h1. Answers application {anchor:id=KSref.InternalAPIs.AnswersApplication}
 
-The Answers application of eXo Knowledge uses the FAQWebservice to view RSS.
+The Answers application of Knowledge uses the FAQWebservice to view RSS.
 
 || Service name || Service URL || Description || Location ||
 | *FAQWebservice* | $portalName/ $restcontextname/ ks/faq | Call the extended services of the Answers application. | * Maven groupId: org.exoplatform.ks {example}{example} * ArtifactId: exo.ks.eXoApplication. faq.service |
@@ -36,7 +36,7 @@ Use the following APIs to build all the functions of Answers application:
 
 h1. Polls application {anchor:id=KSref.InternalAPIs.PollsApplication}
 
-The Polls application of eXo Knowledge uses the PollWebservice to create and interact with the Polls gadget.
+The Polls application of Knowledge uses the PollWebservice to create and interact with the Polls gadget.
 
 || Service name || Service URL || Description || Location ||
 | *PollWebservice* | $portalName/ $restcontextname/ private/ks/poll | Call extended services of the Polls application. | * Maven groupId: org.exoplatform.ks {example}{example} * ArtifactId: exo.ks.eXoApplication. poll.service |
