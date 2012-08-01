@@ -2884,7 +2884,7 @@ public class JCRDataStorage implements DataStorage, FAQNodeTypes {
         }
       }
     } catch (Exception e) {
-      log.error("Failed to import data in category " + parentId, e);
+      log.warn("Failed to import data in category " + parentId + ":\n" + e.getMessage());
       return false;
     }
     return true;
