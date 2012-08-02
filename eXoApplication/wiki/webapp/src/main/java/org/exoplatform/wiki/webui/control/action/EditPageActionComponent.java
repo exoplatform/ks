@@ -18,8 +18,10 @@ package org.exoplatform.wiki.webui.control.action;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.exoplatform.container.PortalContainer;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -29,6 +31,9 @@ import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.wiki.commons.Utils;
 import org.exoplatform.wiki.mow.api.Page;
+import org.exoplatform.wiki.mow.api.WikiType;
+import org.exoplatform.wiki.mow.core.api.wiki.PageImpl;
+import org.exoplatform.wiki.mow.core.api.wiki.WikiHome;
 import org.exoplatform.wiki.rendering.RenderingService;
 import org.exoplatform.wiki.webui.EditMode;
 import org.exoplatform.wiki.webui.UIWikiPageEditForm;
@@ -93,9 +98,28 @@ public class EditPageActionComponent extends AbstractEventActionComponent {
       UIFormTextAreaInput markupInput = pageEditForm.findComponentById(UIWikiPageEditForm.FIELD_CONTENT);
       UIFormStringInput commentInput = pageEditForm.findComponentById(UIWikiPageEditForm.FIELD_COMMENT);
       
-      Page page = Utils.getCurrentWikiPage();
+      PageImpl page = (PageImpl)Utils.getCurrentWikiPage();
       String title = page.getTitle();
-      String content = page.getContent().getText();
+      //Check if current page is welcome page
+      int versionTotals = page.getVersionableMixin().getVersionHistory().getChildren().size() - 1;
+      String content = "";
+      if(page instanceof WikiHome && versionTotals ==1) {
+      	 String portalOwner = page.getWiki().getOwner();
+      	 WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();
+      	 ResourceBundle res = context.getApplicationResourceBundle();
+      	 StringBuilder sb = new StringBuilder("{{tip}}\n" + res.getString("UIWikiWelcomePage.label.welcome") +" ");
+      	 sb.append(portalOwner).append(" ");
+         if (WikiType.PORTAL.toString().equals(page.getWiki().getType().toUpperCase())) {
+           sb.append("portal.");
+         } else {
+           sb.append("group.");
+         }
+         String sandboxMessage = res.getString("UIWikiWelcomePage.label.sandbox");
+         sandboxMessage = sandboxMessage.replaceFirst("sandbox", "**[[Sandbox space>>group:sandbox.WikiHome]]**");
+         sb.append("\n* " + sandboxMessage + "\n{{/tip}}");
+         content = sb.toString();
+      } else content = page.getContent().getText();
+      
       titleInput.setEditable(true);
       if (wikiPortlet.getEditMode() == EditMode.SECTION) {
         RenderingService renderingService = (RenderingService) PortalContainer.getComponent(RenderingService.class);
