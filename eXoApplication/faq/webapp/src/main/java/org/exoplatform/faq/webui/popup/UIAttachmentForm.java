@@ -55,17 +55,24 @@ import org.exoplatform.webui.form.input.UIUploadInput;
     }
 )
 public class UIAttachmentForm extends BaseUIFAQForm implements UIPopupComponent {
-  private static final String FILE_UPLOAD    = "FileUpload";
+  private static final String FILE_UPLOAD         = "FileUpload";
 
-  final private static int    fixWidthImage  = 200;
+  final private static int    fixWidthImage       = 200;
 
-  private boolean             isChangeAvatar = false;
+  private boolean             isChangeAvatar      = false;
+  
+  private int                 numberOfUploadInput = 0;
+  
+  public int getNumberOfUploadInput() {
+    return numberOfUploadInput;
+  }
 
   public void setIsChangeAvatar(boolean changeAvatar) {
     this.isChangeAvatar = changeAvatar;
   }
 
   public void setNumberUpload(int number) {
+    this.numberOfUploadInput = number;
     int sizeLimit = FAQUtils.getLimitUploadSize(isChangeAvatar);
     UIUploadInput uploadInput = new UIUploadInput(FILE_UPLOAD, FILE_UPLOAD, number, sizeLimit);
     addUIFormInput(uploadInput);
