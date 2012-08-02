@@ -30,6 +30,7 @@ function UIWikiSearchBox() {
   this.searchType = "";
   this.menu = null;
   this.wikiNodeURI = null;
+  this.searchMsg = "Search for";
 };
 
 UIWikiSearchBox.prototype.init = function(componentId, searchInputName, searchLabel, wikiNodeURI) {
@@ -38,6 +39,7 @@ UIWikiSearchBox.prototype.init = function(componentId, searchInputName, searchLa
   var restInput = uiComponent["restURL"];
   this.input = uiComponent[searchInputName];
   this.input.setAttribute('autocomplete', 'off');
+  this.input.setAttribute('title', searchLabel);
   
   this.restURL = restInput.value;
   this.input.onkeyup = function(evt) {
@@ -226,9 +228,9 @@ UIWikiSearchBox.prototype.renderMenu = function(data) {
   var linkNode = document.createElement("a");
   linkNode.className = 'ItemIcon MenuIcon';
   linkNode.setAttribute('href', 'javascript:eXo.wiki.UIWikiSearchBox.doAdvanceSearch();');
-   linkNode.setAttribute('title', "Seach for \'" + this.input.value + "\'");
-  linkNode.innerHTML = "Seach for \'" + this.input.value + "\'";
-  linkNode.setAttribute('title', "Seach for \'" + this.input.value + "\'");
+   linkNode.setAttribute('title', this.searchMsg+ " \'" + this.input.value + "\'");
+  linkNode.innerHTML = this.searchMsg + " \'" + this.input.value + "\'";
+  linkNode.setAttribute('title', this.searchMsg + " \'" + this.input.value + "\'");
   searchText.appendChild(linkNode);  
   searchItemNode.appendChild(searchText);  
   this.menu.insertBefore(searchItemNode, textNode);

@@ -3,10 +3,13 @@
 
   def rcontext = _ctx.getRequestContext() ;
   String searchLabel=_ctx.appRes("UIWikiSearchBox.label.Search");
+  String searchForLabel=_ctx.appRes("UIWikiSearchBox.label.SearchFor");
   String wikiNodeURI = Utils.getCurrentWikiNodeUri();
   String restUrl= uicomponent.getContextSearchURL();
   rcontext.getJavascriptManager().importJavascript('eXo.wiki.UIWikiSearchBox', '/wiki/javascript/') ;
   rcontext.getJavascriptManager().addJavascript("eXo.wiki.UIWikiSearchBox.init('" + uicomponent.id +"','"+ uicomponent.FIELD_SEARCHVALUE +"','" +searchLabel + "','"+ wikiNodeURI +"');");
+  rcontext.getJavascriptManager().addJavascript("eXo.wiki.UIWikiSearchBox.searchMsg ='" + searchForLabel +"' ;");
+  
 %>
 <div class="UIWikiSearchBox">
   <% uiform.begin() %>
