@@ -136,6 +136,10 @@ public class CachedDataStorage implements DataStorage, Startable {
     forumList.select(new ScopeCacheSelector<ForumListKey, ListForumData>());
   }
   
+  private void clearLinkListCache() throws Exception {
+    linkListData.select(new ScopeCacheSelector<LinkListKey, ListLinkData>());
+  }
+  
   private void clearObjectCache(Forum forum, boolean isPutNewKey) throws Exception {
     if (forum != null) {
       ForumData forumData = new ForumData(forum);
@@ -408,8 +412,9 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   public void saveCategory(Category category, boolean isNew) throws Exception {
     storage.saveCategory(category, isNew);
-      categoryData.put(new CategoryKey(category), new CategoryData(category));
+    categoryData.put(new CategoryKey(category), new CategoryData(category));
     categoryList.select(new ScopeCacheSelector<CategoryListKey, ListCategoryData>());
+    clearLinkListCache();
     clearObjectCache(category, isNew);
   }
 
@@ -439,6 +444,7 @@ public class CachedDataStorage implements DataStorage, Startable {
   public Category removeCategory(String categoryId) throws Exception {
     categoryData.remove(new CategoryKey(categoryId));
     categoryList.select(new ScopeCacheSelector<CategoryListKey, ListCategoryData>());
+    clearLinkListCache();
     return storage.removeCategory(categoryId);  
   }
 
@@ -496,6 +502,7 @@ public class CachedDataStorage implements DataStorage, Startable {
     storage.saveForum(categoryId, forum, isNew);
     clearForumCache(forum, true);
     clearForumListCache();
+    clearLinkListCache();
     clearObjectCache(forum, true);
   }
 
@@ -511,6 +518,7 @@ public class CachedDataStorage implements DataStorage, Startable {
   public Forum removeForum(String categoryId, String forumId) throws Exception {
     clearForumCache(categoryId, forumId, false);
     clearForumListCache();
+    clearLinkListCache();
     clearObjectCache(categoryId, forumId, false);
     return storage.removeForum(categoryId, forumId);
   }
@@ -521,6 +529,7 @@ public class CachedDataStorage implements DataStorage, Startable {
       clearObjectCache(forum, false);
     }
     clearForumListCache();
+    clearLinkListCache();
     storage.moveForum(forums, destCategoryPath);
   }
 
