@@ -407,7 +407,6 @@ public class Utils {
     HashMap<String, IDType> permissionMap = new HashMap<String, IDType>();
     UserACL userACL = (UserACL) ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(UserACL.class);
     permissionMap.put(userACL.getSuperUser(), IDType.USER);
-    permissionMap.put(userACL.getAdminGroups(), IDType.GROUP);
     for (String group : userACL.getPortalCreatorGroups()) {
       permissionMap.put(group, IDType.MEMBERSHIP);
     }
