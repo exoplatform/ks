@@ -196,8 +196,8 @@ public class AnswersSpaceActivityPublisher extends AnswerEventListener {
       Identity userIdentity = identityM.getOrCreateIdentity(OrganizationIdentityProvider.NAME, question.getAuthor());
       Activity activity = new Activity();
       activity.setUserId(userIdentity.getId());
-      activity.setTitle(msg);
-      activity.setBody(body);
+      activity.setTitle(StringEscapeUtils.unescapeHtml(msg));
+      activity.setBody(StringEscapeUtils.unescapeHtml(body));
       activity.setType(SPACE_APP_ID);
       Map<String, String> params = new HashMap<String, String>();
       params.put(QUESTION_ID_KEY, question.getId());
