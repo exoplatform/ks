@@ -458,6 +458,15 @@ public class UIForumPortlet extends UIPortletApplication {
   public String getSpaceGroupId() {
     return spaceGroupId;
   }
+
+  public String getCategorySpaceId() {
+    return categorySpId;
+  }
+
+  public String getForumSpaceId() {
+    return forumSpId;
+  }
+
   public void cancelAction() throws Exception {
     WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();
     UIPopupAction popupAction = getChild(UIPopupAction.class);

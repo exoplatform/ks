@@ -23,6 +23,7 @@ import org.exoplatform.forum.service.CacheUserProfile;
 import org.exoplatform.forum.service.Category;
 import org.exoplatform.forum.service.Forum;
 import org.exoplatform.forum.service.ForumAdministration;
+import org.exoplatform.forum.service.ForumLinkData;
 import org.exoplatform.forum.service.ForumNodeTypes;
 import org.exoplatform.forum.service.ForumPrivateMessage;
 import org.exoplatform.forum.service.ForumService;
@@ -310,6 +311,46 @@ public class TestForumService extends ForumServiceTestCase {
     // check remove
     forums = forumService_.getForumSummaries(catId, "");
     assertEquals("List forums can not equals 0", forums.size(), 0);
+  }
+
+  
+  public void testGetAllLink() throws Exception {
+    killData();
+    // save normal category
+    Category cat = createCategory(new Category().getId());
+    forumService_.saveCategory(cat, true);
+    // save normal forum
+    Forum forum = createdForum();
+    forumService_.saveForum(cat.getId(), forum, true);
+    forum.setId(new Forum().getId());
+    forumService_.saveForum(cat.getId(), forum, true);
+
+    // save category in space
+    String cateIdSpace = "forumCategoryspaces";
+    cat = createCategory(cateIdSpace);
+    forumService_.saveCategory(cat, true);
+    // save forum in space 1
+    forum.setId("forumSpaceroot_space");
+    forum.setForumName("Root spcase");
+    forumService_.saveForum(cat.getId(), forum, true);
+    // save forum in space 2
+    forum.setId("forumSpacetest_space");
+    forumService_.saveForum(cat.getId(), forum, true);
+    // save forum in space 3
+    forum.setId("forumSpaceabc_space");
+    forumService_.saveForum(cat.getId(), forum, true);
+
+    List<ForumLinkData> forumLinks = new ArrayList<ForumLinkData>();
+    StringBuilder strQueryCate = new StringBuilder();
+    strQueryCate.append("[@exo:id !='").append(cateIdSpace).append("']");
+    forumLinks.addAll(forumService_.getAllLink(strQueryCate.toString(), ""));
+    strQueryCate = new StringBuilder();
+    strQueryCate.append("[@exo:id='").append(cateIdSpace).append("']");
+    String forumQr = "[(jcr:like(@" + Utils.EXO_ID + ",'%" + "test_space" + "%'))]";
+    forumLinks.addAll(forumService_.getAllLink(strQueryCate.toString(), forumQr));
+    // list has size is 5 (2 categories and 2 normal forums and 1 forum in category space)
+    assertEquals("The size of list forumLinks not equals 5.", forumLinks.size(), 5);
+    killData();
   }
 
   public void testTopic() throws Exception {
