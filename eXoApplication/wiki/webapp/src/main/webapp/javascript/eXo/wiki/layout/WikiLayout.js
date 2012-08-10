@@ -30,8 +30,9 @@ function WikiLayout() {
   this.bodyClass = '';
   this.myBody;
   this.myHtml;
-  this.min_height = 350;
+  this.min_height = 300;
   this.currWidth = 0;
+  this.bottomPadding = 50;
 };
 
 window.onresize = function() {
@@ -123,21 +124,19 @@ WikiLayout.prototype.setWithLayOut = function() {
   if (WikiLayout.rightArea) {
     WikiLayout.rightArea.style.width = (maxWith - lWith) + 'px';
   }
-  WikiLayout.setHeightRightContent();
 };
 
 WikiLayout.prototype.setHeightLayOut = function() {
   var WikiLayout = eXo.wiki.WikiLayout;
   var layout = eXo.wiki.WikiLayout.layoutContainer;
   var hdef = document.documentElement.clientHeight - layout.offsetTop;
-  hdef = (hdef > WikiLayout.min_height) ? hdef : WikiLayout.min_height;
   var hct = hdef * 1;
   layout.style.height = hdef + "px";
   var delta = WikiLayout.heightDelta();
-  if(delta + WikiLayout.min_height > hdef) {
+  if(delta > hdef) {
     WikiLayout.setClassBody(WikiLayout.bodyClass);
   }
-  while ((delta = WikiLayout.heightDelta()) > 0 && (hdef - delta) > WikiLayout.min_height) {
+  while ((delta = WikiLayout.heightDelta()) > 0 && hdef > delta) {
     hct = hdef - delta;
     layout.style.height = (hct + "px");
     hdef = hdef - 2;
@@ -153,6 +152,8 @@ WikiLayout.prototype.setHeightLayOut = function() {
   if (WikiLayout.rightArea) {
     WikiLayout.rightArea.style.height = hct + "px";
   }
+  
+  WikiLayout.setHeightRightContent();
 };
 
 WikiLayout.prototype.setHeightRightContent = function() {
@@ -164,18 +165,11 @@ WikiLayout.prototype.setHeightRightContent = function() {
     var bottomArea = DOMUtil.findFirstDescendantByClass(WikiLayout.rightArea, "div", "UIWikiBottomArea");
     var pageContainer = DOMUtil.findFirstDescendantByClass(WikiLayout.rightArea, "div", "UIWikiPageContainer");
     if(bottomArea) {
-      if(eXo.core.Browser.getBrowserType() == "ie") {
-        pageArea.style.height = "auto";
-        pageArea.style.minHeight = "auto";
-        var delta = WikiLayout.rightArea.offsetHeight - (pageContainer.offsetHeight + bottomArea.offsetHeight) ;
-        if(delta > 0) {
-          pageArea.style.minHeight = (pageArea.offsetHeight + delta) + "px";
-        }
-        bottomArea.style.padding = "5px 15px";
-        bottomArea.style.width = "auto";
-      } else {
-        pageContainer.style.minHeight = (WikiLayout.rightArea.offsetHeight - 12) + "px";
-        pageArea.style.paddingBottom = bottomArea.offsetHeight + "px";
+      var pageAreaHeight = (WikiLayout.rightArea.offsetHeight - bottomArea.offsetHeight - WikiLayout.bottomPadding);
+      if ((pageAreaHeight > pageArea.offsetHeight) && (pageAreaHeight > WikiLayout.min_height)) {
+        pageArea.style.height = pageAreaHeight + "px";
+      } else if (pageArea.offsetHeight < WikiLayout.min_height) {
+        pageArea.style.height = WikiLayout.min_height + "px";
       }
     }
   }

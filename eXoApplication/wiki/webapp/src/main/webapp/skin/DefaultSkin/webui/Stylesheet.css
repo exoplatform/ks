@@ -406,7 +406,6 @@ table.UIFormGrid div.Id {
 .UIWikiPortlet .UIWikiPageArea {
 	padding: 0px 15px 45px 15px;
 	overflow: visible;
-	min-height: 300px;
 }
 
 .UIWikiPageContentArea table {
@@ -1025,15 +1024,15 @@ table.UIFormGrid div.Id {
 }
 
 .UIWikiBottomArea {
-	position: absolute;
-	bottom:0px;
-	left: 15px;
 	padding: 0px 0px 5px;
 	width: 97.5%;
+    margin-left: 15px;
 }
 
 *+html .UIWikiBottomArea {
 	position: static;
+	padding: 5px 15px;
+	width: auto;
 }
 
 .UIWikiPageInfoArea {
