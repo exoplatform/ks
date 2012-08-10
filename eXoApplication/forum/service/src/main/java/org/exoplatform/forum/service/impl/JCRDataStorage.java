@@ -33,9 +33,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -57,6 +57,7 @@ import javax.jcr.query.QueryResult;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.container.ExoContainer;
@@ -88,6 +89,8 @@ import org.exoplatform.forum.service.Post;
 import org.exoplatform.forum.service.PruneSetting;
 import org.exoplatform.forum.service.SendMessageInfo;
 import org.exoplatform.forum.service.SortSettings;
+import org.exoplatform.forum.service.SortSettings.Direction;
+import org.exoplatform.forum.service.SortSettings.SortField;
 import org.exoplatform.forum.service.Tag;
 import org.exoplatform.forum.service.Topic;
 import org.exoplatform.forum.service.TopicListAccess;
@@ -95,8 +98,6 @@ import org.exoplatform.forum.service.TopicType;
 import org.exoplatform.forum.service.UserProfile;
 import org.exoplatform.forum.service.Utils;
 import org.exoplatform.forum.service.Watch;
-import org.exoplatform.forum.service.SortSettings.Direction;
-import org.exoplatform.forum.service.SortSettings.SortField;
 import org.exoplatform.forum.service.conf.CategoryData;
 import org.exoplatform.forum.service.conf.CategoryEventListener;
 import org.exoplatform.forum.service.conf.ForumData;
@@ -106,14 +107,15 @@ import org.exoplatform.forum.service.conf.StatisticEventListener;
 import org.exoplatform.forum.service.conf.TopicData;
 import org.exoplatform.forum.service.user.AutoPruneJob;
 import org.exoplatform.ks.common.CommonUtils;
+import org.exoplatform.ks.common.TransformHTML;
 import org.exoplatform.ks.common.UserHelper;
 import org.exoplatform.ks.common.conf.RoleRulesPlugin;
 import org.exoplatform.ks.common.jcr.JCRSessionManager;
 import org.exoplatform.ks.common.jcr.JCRTask;
 import org.exoplatform.ks.common.jcr.KSDataLocation;
+import org.exoplatform.ks.common.jcr.KSDataLocation.Locations;
 import org.exoplatform.ks.common.jcr.PropertyReader;
 import org.exoplatform.ks.common.jcr.SessionManager;
-import org.exoplatform.ks.common.jcr.KSDataLocation.Locations;
 import org.exoplatform.management.annotations.Managed;
 import org.exoplatform.management.annotations.ManagedDescription;
 import org.exoplatform.management.jmx.annotations.NameTemplate;
@@ -7258,7 +7260,7 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
     String message = post.string(EXO_MESSAGE);
     listContent.add(message);
     SyndContent description = new SyndContentImpl();
-    description.setType("text/plain");
+    description.setType("text/html");
     description.setValue("ST[CDATA[" + message + "END]]");
     final String title = post.string(EXO_NAME);
     final Date created = post.date(EXO_CREATED_DATE);
@@ -7275,24 +7277,30 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
     String desc = reader.string(EXO_DESCRIPTION, " ");
     SyndFeed feed = new SyndFeedImpl();
     feed.setFeedType("rss_2.0");
-    feed.setTitle(reader.string(EXO_NAME));
     feed.setPublishedDate(reader.date(EXO_CREATED_DATE, new Date()));
     feed.setLink(link);
-    feed.setDescription("ST[CDATA[" + desc + "END]]");
+    feed.setDescription(getTitleRSS(desc));
     feed.setEncoding("UTF-8");
+    feed.setTitle(getTitleRSS(reader.string(EXO_NAME)));
     return feed;
   }
 
   private SyndEntry createNewEntry(String uri, String title, String link, List<String> listContent, SyndContent description, Date pubDate, String author) {
     SyndEntry entry = new SyndEntryImpl();
     entry.setUri(uri);
-    entry.setTitle(title);
+    entry.setTitle(getTitleRSS(title));
     entry.setLink(link);
     entry.setContributors(listContent);
     entry.setDescription(description);
     entry.setPublishedDate(pubDate);
     entry.setAuthor(author);
     return entry;
+  }
+  
+  
+  private String getTitleRSS(String title) {
+    return new StringBuilder("ST[CDATA[")
+          .append(StringEscapeUtils.unescapeHtml(TransformHTML.getTitleInHTMLCode(title, null))).append("END]]").toString();
   }
 
   public InputStream createUserRss(String userId, String link) throws Exception {
