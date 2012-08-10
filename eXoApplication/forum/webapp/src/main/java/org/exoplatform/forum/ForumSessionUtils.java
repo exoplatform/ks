@@ -18,6 +18,8 @@ package org.exoplatform.forum;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
@@ -26,12 +28,14 @@ import org.exoplatform.forum.service.ForumAttachment;
 import org.exoplatform.forum.service.ForumService;
 import org.exoplatform.forum.service.Utils;
 import org.exoplatform.ks.common.CommonUtils;
+import org.exoplatform.ks.common.UserHelper;
 import org.exoplatform.ks.common.user.CommonContact;
 import org.exoplatform.ks.common.user.ContactProvider;
 import org.exoplatform.portal.application.PortalRequestContext;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
+import org.exoplatform.services.organization.Group;
 
 /**
  * Created by The eXo Platform SAS
@@ -104,4 +108,29 @@ public class ForumSessionUtils {
     link = link.replaceFirst(componentName, "UIBreadcumbs").replaceFirst(actionName, "ChangePath").replace("pathId", objectId).replaceAll("&amp;", "&");
     return (url + link);
   }
+  
+  public static List<String> getGroupIdInSpaceOfUser(String userId) throws Exception {
+    List<String> groupIds = new ArrayList<String>();
+    for (Object group : UserHelper.getOrganizationService().getGroupHandler().findGroupsOfUser(userId)) {
+      if (((Group) group).getId().indexOf(ForumUtils.SPACE_GROUP_ID) >= 0) {
+        groupIds.add(((Group) group).getGroupName());
+      }
+    }
+    return groupIds;
+  }
+  
+  public static String getQueryForumInSpace(String userId) throws Exception {
+    if (!ForumUtils.isEmpty(userId)) {
+      StringBuilder builder = new StringBuilder();
+      for (String groupId : getGroupIdInSpaceOfUser(userId)) {
+        if (builder.length() > 0) {
+          builder.append(" or ");
+        }
+        builder.append("(jcr:like(@").append(Utils.EXO_ID).append(",'%").append(groupId).append("%'))");
+      }
+      return builder.toString();
+    }
+    return ForumUtils.EMPTY_STR;
+  }
+  
 }

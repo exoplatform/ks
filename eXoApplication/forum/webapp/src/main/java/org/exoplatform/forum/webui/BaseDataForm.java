@@ -19,6 +19,7 @@ package org.exoplatform.forum.webui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.exoplatform.forum.ForumSessionUtils;
 import org.exoplatform.forum.ForumUtils;
 import org.exoplatform.forum.service.Category;
 import org.exoplatform.forum.service.Forum;
@@ -80,7 +81,11 @@ public class BaseDataForm extends BaseForumForm {
 
   public List<Forum> getForums(String categoryId) throws Exception {
     List<Forum> forums = new ArrayList<Forum>();
-    for (Forum forum : getForumService().getForumSummaries(categoryId, ForumUtils.EMPTY_STR)) {
+    String strQueryForum = ForumUtils.EMPTY_STR;
+    if(categoryId.indexOf(ForumUtils.SPACE_GROUP_ID) > 0) {
+      strQueryForum = ForumSessionUtils.getQueryForumInSpace(getUserProfile().getUserId());
+    }
+    for (Forum forum : getForumService().getForumSummaries(categoryId, strQueryForum)) {
       if (forum.getId().equals(forumId)) {
         if (pathTopic.indexOf(categoryId) >= 0) {
           continue;
@@ -137,5 +142,4 @@ public class BaseDataForm extends BaseForumForm {
     }
     return topics;
   }
-
 }

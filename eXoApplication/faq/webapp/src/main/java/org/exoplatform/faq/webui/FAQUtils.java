@@ -42,6 +42,8 @@ import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.faq.service.Answer;
+import org.exoplatform.faq.service.Cate;
+import org.exoplatform.faq.service.Category;
 import org.exoplatform.faq.service.FAQService;
 import org.exoplatform.faq.service.FAQSetting;
 import org.exoplatform.faq.service.FileAttachment;
@@ -526,7 +528,40 @@ public class FAQUtils {
     }
     return "";
   }
+  
+  
+  /**
+   * Get all sub category from rootCategoryId and return all in one List<Cate>
+   * @param rootCategoryId root of Tree
+   * @param faqSetting 
+   * @param limitedUsers limit Cate by user
+   * @param limitDeep max deep of tree
+   * @return
+   * @throws Exception
+   */  
+  public static List<Cate> listingCategoryTree(String rootCategoryId, FAQSetting faqSetting, List<String> limitedUsers, final int limitDeep) throws Exception {
+    if(rootCategoryId == null){
+      rootCategoryId = Utils.CATEGORY_HOME;
+    }
+    return listingCategoryTree(rootCategoryId, faqSetting, limitedUsers, limitDeep, 0);
+  }
+  
+  private static List<Cate> listingCategoryTree(String rootCategoryId, FAQSetting faqSetting, List<String> limitedUsers, final int limitDeep, int currentDeep) throws Exception {
+    List<Cate> result = new ArrayList<Cate>();
+    if(currentDeep <= limitDeep){
+      List<Category> categories = getFAQService().getSubCategories(rootCategoryId, faqSetting, false, limitedUsers);
+      for (Category category : categories) {
+        Cate cate = new Cate();
+        cate.setCategory(category);
+        cate.setDeft(currentDeep);
+        result.add(cate);
 
+        result.addAll(listingCategoryTree(rootCategoryId + "/" + category.getId(), faqSetting, limitedUsers, limitDeep, currentDeep + 1));
+      }
+    }
+    return result;
+  }
+  
   public static int getLimitUploadSize(boolean isAvatar) {
     PortletRequestContext pcontext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance();
     PortletPreferences portletPref = pcontext.getRequest().getPreferences();

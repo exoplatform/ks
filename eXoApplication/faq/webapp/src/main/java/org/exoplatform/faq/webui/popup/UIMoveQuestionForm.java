@@ -17,9 +17,12 @@
 package org.exoplatform.faq.webui.popup;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.exoplatform.faq.service.Cate;
+import org.exoplatform.faq.service.Category;
+import org.exoplatform.faq.service.FAQServiceUtils;
 import org.exoplatform.faq.service.FAQSetting;
 import org.exoplatform.faq.service.Question;
 import org.exoplatform.faq.service.Utils;
@@ -28,6 +31,7 @@ import org.exoplatform.faq.webui.FAQUtils;
 import org.exoplatform.faq.webui.UIAnswersContainer;
 import org.exoplatform.faq.webui.UIAnswersPortlet;
 import org.exoplatform.faq.webui.UIQuestions;
+import org.exoplatform.ks.common.UserHelper;
 import org.exoplatform.ks.common.webui.BaseEventListener;
 import org.exoplatform.ks.common.webui.UIPopupAction;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -100,7 +104,10 @@ public class UIMoveQuestionForm extends BaseUIFAQForm implements UIPopupComponen
   }
 
   public void updateSubCategory() throws Exception {
-    this.listCate.addAll(getFAQService().listingCategoryTree());
+    FAQSetting faqSetting = new FAQSetting();
+    faqSetting.setIsAdmin("False");
+    this.listCate.addAll(FAQUtils.listingCategoryTree(null,faqSetting, null, Integer.MAX_VALUE));
+    
     String orderType = faqSetting_.getOrderType();
     if (orderType.equals("asc"))
       faqSetting_.setOrderType("desc");
@@ -113,7 +120,9 @@ public class UIMoveQuestionForm extends BaseUIFAQForm implements UIPopupComponen
       UIAnswersPortlet portlet = moveQuestionForm.getAncestorOfType(UIAnswersPortlet.class);
       UIQuestions questions = portlet.getChild(UIAnswersContainer.class).getChild(UIQuestions.class);
       try {
-        if (!moveQuestionForm.faqSetting_.isAdmin() && !questions.getFAQService().isCategoryModerator(catePath, null)) {
+        Category category = questions.getFAQService().getCategoryById(catePath);
+        if (category.getUserPrivate().length > 0 && !Utils.hasPermission(Arrays.asList(category.getUserPrivate()),
+            UserHelper.getAllGroupAndMembershipOfUser(null))) {
           warning("UIQuestions.msg.can-not-move-question");
           return;
         }
