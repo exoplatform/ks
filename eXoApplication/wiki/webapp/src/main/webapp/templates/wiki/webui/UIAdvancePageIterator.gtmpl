@@ -1,6 +1,6 @@
 <% 
-    int pageSelected = uicomponent.pageList.getCurrentPage() ;
-    int maxPage = uicomponent.pageList.getAvailablePage() ;
+    int pageSelected = uicomponent.currentPage;
+    int maxPage = uicomponent.getMaxPage();
     String selected = String.valueOf(pageSelected) ;
 %>
 <div class="UIAdvancePageIterator ClearFix">

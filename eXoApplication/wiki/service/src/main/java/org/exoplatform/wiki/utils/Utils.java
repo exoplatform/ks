@@ -9,9 +9,11 @@ import java.util.Properties;
 import java.util.Stack;
 
 import javax.jcr.RepositoryException;
+import javax.jcr.query.QueryResult;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
+import org.chromattic.core.api.ChromatticSessionImpl;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.PortalContainer;
@@ -22,6 +24,7 @@ import org.exoplatform.portal.config.model.PortalConfig;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.AccessControlList;
+import org.exoplatform.services.jcr.impl.core.query.QueryImpl;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.services.mail.Message;
@@ -48,6 +51,7 @@ import org.exoplatform.wiki.service.WikiPageParams;
 import org.exoplatform.wiki.service.WikiService;
 import org.exoplatform.wiki.service.diff.DiffResult;
 import org.exoplatform.wiki.service.diff.DiffService;
+import org.exoplatform.wiki.service.search.WikiSearchData;
 import org.xwiki.rendering.syntax.Syntax;
 
 public class Utils {
@@ -523,5 +527,15 @@ public class Utils {
     StringBuffer strBuffer = new StringBuffer(url);
     strBuffer.append("?").append(WikiContext.ACTION).append("=").append(COMPARE_REVISION).append("&").append(VER_NAME).append("=").append(verName);
     return strBuffer.toString();
+  }
+  
+  public static long countSearchResult(WikiSearchData data) throws Exception {
+    MOWService mowService = (MOWService) ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(MOWService.class);
+    WikiStoreImpl wStore = (WikiStoreImpl) mowService.getModel().getWikiStore();
+    
+    String statement = data.getStatement();
+    QueryImpl q = (QueryImpl) ((ChromatticSessionImpl) wStore.getSession()).getDomainSession().getSessionWrapper().createQuery(statement);
+    QueryResult result = q.execute();
+    return result.getNodes().getSize();
   }
 }

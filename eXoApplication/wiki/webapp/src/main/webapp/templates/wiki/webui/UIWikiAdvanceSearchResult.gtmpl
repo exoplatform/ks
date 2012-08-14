@@ -19,8 +19,8 @@ import org.exoplatform.wiki.service.WikiPageParams;
 		<div class="UIWikiAdvanceSearchResult" id="$uicomponent.id">
 			<div class="ResultInfo"><%=resultInfo%></div>
 			<%
-				for(SearchResult result in results.getPage(results.getCurrentPage())) {
-				  def page = uicomponent.getPage(result);
+				for(SearchResult result in results.getAll()) {
+				    def page = uicomponent.getPage(result);
 					def wiki= uicomponent.getWiki(page);					
 				    WikiPageParams pageParams = new WikiPageParams(wiki.getType(), wiki.getOwner(), page.getName());				    
 					String pageURI = Utils.getURLFromParams(pageParams);
@@ -55,8 +55,7 @@ import org.exoplatform.wiki.service.WikiPageParams;
 				</div>
 						<%	
 					} else if (WikiNodeType.WIKI_ATTACHMENT.equals(result.getType())){
-						att = (AttachmentImpl) org.exoplatform.wiki.utils.Utils.getObject( result.getPath(),
-																																															 WikiNodeType.WIKI_ATTACHMENT);						
+						att = (AttachmentImpl) org.exoplatform.wiki.utils.Utils.getObject( result.getPath(), result.getType());
 						String downloadlink = att.getDownloadURL();						
 						String extension = Utils.getExtension(att.getName()) ;
 						%>				 
