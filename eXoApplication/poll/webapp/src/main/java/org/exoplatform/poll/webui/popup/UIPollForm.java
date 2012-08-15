@@ -39,6 +39,7 @@ import org.exoplatform.poll.webui.UIPollManagement;
 import org.exoplatform.poll.webui.UIPollPortlet;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
@@ -47,6 +48,7 @@ import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.input.UICheckBoxInput;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 import org.exoplatform.webui.form.validator.PositiveNumberFormatValidator;
 
 /**
@@ -108,7 +110,7 @@ public class UIPollForm extends BasePollForm implements UIPopupComponent, UISele
     PublicData.setChecked(isPublic);
     UIFormStringInput GroupPrivate = new UIFormStringInput(FIELD_GROUP_PRIVATE_INPUT, FIELD_GROUP_PRIVATE_INPUT, "");
     GroupPrivate.setReadOnly(true);
-    addUIFormInput(question);
+    addUIFormInput(question.addValidator(MandatoryValidator.class));
     addUIFormInput(timeOut);
     addUIFormInput(VoteAgain);
     addUIFormInput(MultiVote);
@@ -122,6 +124,7 @@ public class UIPollForm extends BasePollForm implements UIPopupComponent, UISele
     if (uiFormMultiValue != null)
       removeChildById(FIELD_OPTIONS);
     uiFormMultiValue = createUIComponent(UIFormMultiValueInputSet.class, null, null);
+    uiFormMultiValue.addValidator(MandatoryValidator.class);
     uiFormMultiValue.setId(FIELD_OPTIONS);
     uiFormMultiValue.setName(FIELD_OPTIONS);
     uiFormMultiValue.setType(UIFormStringInput.class);
@@ -204,8 +207,15 @@ public class UIPollForm extends BasePollForm implements UIPopupComponent, UISele
       boolean isMultiVote = uiForm.getUICheckBoxInput(FIELD_MULTIVOTE_CHECKBOX).isChecked();
       String sms = "";
       @SuppressWarnings("unchecked")
+      List<UIComponent> childs = uiForm.uiFormMultiValue.getChildren();
       List<String> values = (List<String>) uiForm.uiFormMultiValue.getValue();
       List<String> values_ = new ArrayList<String>();
+      
+      if (childs.size() != values.size()) {
+        uiForm.warning("UIPollForm.msg.FillAllOptions", false);
+        return;
+      }
+      
       int i = 1;
       for (String value : values) {
         if (!Utils.isEmpty(value)) {

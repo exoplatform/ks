@@ -60,7 +60,7 @@ public class UIFormMultiValueInputSet extends UIFormInputContainer<List> {
   /**
    * A list of validators
    */
-  protected List<Validator>            validators;
+  protected List<Validator>            validators_;
 
   /**
    * The type of items in the selector
@@ -94,6 +94,22 @@ public class UIFormMultiValueInputSet extends UIFormInputContainer<List> {
 
   public Class<List> getTypeValue() {
     return List.class;
+  }
+  
+  public <E extends Validator> UIFormInput addValidator(Class<E> clazz, Object... params) throws Exception {
+    if (validators_ == null)
+      validators_ = new ArrayList<Validator>(3);
+    if (params.length > 0) {
+      Class<?>[] classes = new Class[params.length];
+      for (int i = 0; i < params.length; i++) {
+        classes[i] = params[i].getClass();
+      }
+      Constructor<E> constructor = clazz.getConstructor(classes);
+      validators_.add(constructor.newInstance(params));
+      return this;
+    }
+    validators_.add(clazz.newInstance());
+    return this;
   }
 
   public void setType(Class<? extends UIFormInput> clazz) {
@@ -222,9 +238,8 @@ public class UIFormMultiValueInputSet extends UIFormInputContainer<List> {
     }
     params[0] = getId() + String.valueOf(idx);
     UIFormInputBase inputBase = (UIFormInputBase) constructor_.newInstance(params);
-    List<Validator> validators = this.getValidators();
-    if (validators != null) {
-      for (Validator validator : validators) {
+    if (validators_ != null) {
+      for (Validator validator : validators_) {
         inputBase.addValidator(validator.getClass());
       }
     }
