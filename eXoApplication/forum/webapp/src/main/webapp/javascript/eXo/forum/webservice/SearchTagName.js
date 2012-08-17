@@ -210,43 +210,44 @@ SearchTagName.prototype.updateIpBanList = function() {
 };
 
 SearchTagName.prototype.buildItemNode = function(ip) {
+	var SearchTagName = eXo.forum.webservice.SearchTagName;
 	var itemNode = document.createElement('div');
 	itemNode.className = 'TagNameItem';
 	itemNode.innerHTML = ip;
 	ip = ip.substring(0, ip.indexOf(' '));
 	this.searchTagNameNode;
 	itemNode.onclick = function() {
-		var str = String(eXo.forum.webservice.SearchTagName.searchTagNameNode.value);
+		var str = String(SearchTagName.searchTagNameNode.value);
 		str = str.substring(0, str.lastIndexOf(' '))
 		if(str.length == 0) str = ip ;
 		else str = str + " " + ip;
-		eXo.forum.webservice.SearchTagName.searchTagNameNode.value = str;
-		eXo.forum.webservice.SearchTagName.searchTagNameNode.focus();
-		eXo.forum.webservice.SearchTagName.parentNode.style.visibility = "hidden";
-		eXo.forum.webservice.SearchTagName.searchTagName(' ');
+		SearchTagName.searchTagNameNode.value = str;
+		SearchTagName.searchTagNameNode.focus();
+		SearchTagName.parentNode.style.visibility = "hidden";
+		SearchTagName.searchTagName(' ');
 	}
-	itemNode.onmouseover = eXo.forum.webservice.SearchTagName.mouseEvent(this, true);
-	itemNode.onfocus = eXo.forum.webservice.SearchTagName.mouseEvent(this, true);
-  itemNode.onmouseout = eXo.forum.webservice.SearchTagName.mouseEvent(this, false);
-  itemNode.onblur = eXo.forum.webservice.SearchTagName.mouseEvent(this, false);
+	itemNode.onmouseover = SearchTagName.onmouseOver;
+	itemNode.onfocus = SearchTagName.onmouseOver;
+	itemNode.onmouseout = SearchTagName.onmouseOut;
+	itemNode.onblur = SearchTagName.onmouseOut;
 	return itemNode;
 };
 
 
-SearchTagName.prototype.mouseEvent = function(elm, isOv) {
-  if (isOv) {
-    if (elm.className === 'TagNameItem') {
-      elm.className = 'TagNameItem OverItem';
-    } else {
-      elm.className = 'TagNameItem OverItem Slect';
-    }
-  } else {
-    if (elm.className === 'TagNameItem OverItem') {
-    	elm.className = 'TagNameItem';
-    } else {
-    	elm.className = 'TagNameItem Selected';
-    }
-  }
+SearchTagName.prototype.onmouseOver = function() {
+	if (this.className === 'TagNameItem') {
+  	  	this.className = 'TagNameItem OverItem';
+	} else {
+	  	this.className = 'TagNameItem OverItem Slect';
+	}
+};
+
+SearchTagName.prototype.onmouseOut = function() {
+	if (this.className === 'TagNameItem OverItem') {
+		this.className = 'TagNameItem';
+	} else {
+		this.className = 'TagNameItem Selected';
+	}
 };
 
 SearchTagName.prototype.ajaxProcessOverwrite = function(manualMode, ajaxRequest) {
