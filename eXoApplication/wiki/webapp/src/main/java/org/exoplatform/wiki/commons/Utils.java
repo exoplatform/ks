@@ -100,7 +100,7 @@ public class Utils {
     String pageNodeSelected = uiPortal.getSelectedUserNode().getURI();
     if (!requestURL.contains(pageNodeSelected)) {
       // Happens at the first time processRender() called when add wiki portlet manually
-      requestURL = portalRequestContext + pageNodeSelected;
+      requestURL = portalRequestContext.getPortalURI() + pageNodeSelected;
     }      
     return requestURL;
   }
