@@ -164,6 +164,22 @@ public class CachedDataStorage implements DataStorage, Startable {
   private void clearObjectCache(String categoryId, String forumId, boolean isPutNewKey) throws Exception {
     clearObjectCache(getForum(categoryId, forumId), isPutNewKey);
   }
+  
+  private void clearWatchingItemCache(String watchingItemPath) throws Exception {
+    String categoryId = watchingItemPath.contains("/") ? watchingItemPath.substring(0, watchingItemPath.indexOf("/")) : watchingItemPath;
+    String forumId = watchingItemPath.contains("/" + Utils.FORUM) ? watchingItemPath.substring(watchingItemPath.indexOf("/" + Utils.FORUM) + 1) : null;
+    forumId = (!Utils.isEmpty(forumId) && forumId.contains("/")) ? forumId.substring(0, forumId.indexOf("/")) : forumId;
+    String topicId = watchingItemPath.contains(Utils.TOPIC) ? watchingItemPath.substring(watchingItemPath.indexOf(Utils.TOPIC)) : null;
+    
+    // Clear watching item data
+    if (!Utils.isEmpty(topicId)) {
+      topicData.remove(new TopicKey(categoryId + "/" + forumId + "/" + topicId, false));
+    } else if (!Utils.isEmpty(forumId)) {
+      forumData.remove(new ForumKey(categoryId, forumId));
+    } else {
+      categoryData.remove(new CategoryKey(categoryId));
+    }
+  }
 
   public void start() {
 
@@ -929,15 +945,27 @@ public class CachedDataStorage implements DataStorage, Startable {
   public void addWatch(int watchType, String path, List<String> values, String currentUser) throws Exception {
     storage.addWatch(watchType, path, values, currentUser);
     watchListData.remove(new SimpleCacheKey(null, currentUser));
+    clearWatchingItemCache(path);
   }
 
   public void removeWatch(int watchType, String path, String values) throws Exception {
     storage.removeWatch(watchType, path, values);
     watchListData.select(new ScopeCacheSelector());
+    clearWatchingItemCache(path);
   }
 
   public void updateEmailWatch(List<String> listNodeId, String newEmailAdd, String userId) throws Exception {
     storage.updateEmailWatch(listNodeId, newEmailAdd, userId);
+    watchListData.remove(new SimpleCacheKey(null, userId));
+    for (String id : listNodeId) {
+      if (id.contains(Utils.CATEGORY)) {
+        categoryData.remove(new CategoryKey(id));
+      } else if (id.contains(Utils.FORUM)) {
+        forumData.remove(new ForumKey((Forum) getObjectNameById(id, Utils.FORUM)));
+      } else if (id.contains(Utils.TOPIC)) {
+        topicData.remove(new TopicKey((Topic) getObjectNameById(id, Utils.TOPIC)));
+      }
+    }
   }
 
   // TODO : need range

@@ -723,12 +723,7 @@ public class UICategory extends BaseForumForm {
 
   static public class WatchOptionActionListener extends BaseEventListener<UICategory> {
     public void onEvent(Event<UICategory> event, UICategory uiCategory, final String objectId) throws Exception {
-      Category category;
-      if (UICategory.isUnWatch) {
-        category = uiCategory.refreshCategory();
-      } else {
-        category = uiCategory.category;
-      }
+      Category category = uiCategory.refreshCategory();
       UIWatchToolsForm watchToolsForm = uiCategory.openPopup(UIWatchToolsForm.class, 500, 365);
       watchToolsForm.setPath(category.getPath());
       watchToolsForm.setEmails(category.getEmailNotification());
