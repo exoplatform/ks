@@ -81,6 +81,7 @@ import org.picocontainer.Startable;
 public class CachedDataStorage implements DataStorage, Startable {
 
   private static final Log LOG = ExoLogger.getLogger(CachedDataStorage.class);
+  private static final String PRIVATE_MESSAGE_COUNT_KEY = "messageCount";
 
   private DataStorage storage;
   private CacheService service;
@@ -789,6 +790,7 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   public void saveReadMessage(String messageId, String userName, String type) throws Exception {
     storage.saveReadMessage(messageId, userName, type);
+    miscData.remove(new SimpleCacheKey(PRIVATE_MESSAGE_COUNT_KEY, userName));
   }
 
   public JCRPageList getPrivateMessage(String userName, String type) throws Exception {
@@ -797,7 +799,7 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   public long getNewPrivateMessage(final String userName) throws Exception {
 
-    SimpleCacheKey key = new SimpleCacheKey("messageCount", userName);
+    SimpleCacheKey key = new SimpleCacheKey(PRIVATE_MESSAGE_COUNT_KEY, userName);
 
     return (Long) miscDataFuture.get(
         new ServiceContext<SimpleCacheData>() {
@@ -817,10 +819,12 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   public void savePrivateMessage(ForumPrivateMessage privateMessage) throws Exception {
     storage.savePrivateMessage(privateMessage);
+    miscData.remove(new SimpleCacheKey(PRIVATE_MESSAGE_COUNT_KEY, privateMessage.getSendTo()));
   }
 
   public void removePrivateMessage(String messageId, String userName, String type) throws Exception {
     storage.removePrivateMessage(messageId, userName, type);
+    miscData.remove(new SimpleCacheKey(PRIVATE_MESSAGE_COUNT_KEY, userName));
   }
 
   public ForumSubscription getForumSubscription(String userId) {
