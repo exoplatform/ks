@@ -45,6 +45,10 @@
 	width: 135px;
 }
 
+.UIPollPortlet .UIAddPollForm .HorizontalLayout .OptionField .checkbox {
+	width: 16px;
+}
+
 .UIPollPortlet .UIAddPollForm .Icon {
 	width: 16px; height: 16px;
 	float: left;
