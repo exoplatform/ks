@@ -453,6 +453,7 @@
     <module>eXoApplication</module>
     <module>extension</module>
     <module>demo</module>
+    <module>extras</module>
     <module>docs</module>
     <module>testsuite</module>
     <module>server/tomcat/patch</module>
