@@ -1,5 +1,44 @@
+{docbook}
+<highlights>
+    <itemizedlist>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.FAQTemplateConfiguration.ConfigurationPlugin"> Configuration plug-in</link>
+          </emphasis> </para>
+          <para>The plugin which is used to automatically set up a default template for the FAQ portlet.</para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.FAQTemplateConfiguration.HowToChangeLookAndFeel">How to change look and feel</link>
+          </emphasis> </para>
+          <para>Ways to change the template FAQ viewer, either by using plug-in or by using the <emphasis>Edit</emphasis> mode. </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.FAQTemplateConfiguration.APIsProvidedByUIComponent">API provided by the UIComponent (UIViewer.java)</link>
+          </emphasis> </para>
+          <para>Information about API provided by the UIComponent.</para>
+      </listitem>
+    </itemizedlist>
+	</highlights>
+{docbook}
 
-h1. Configuration plug-in {anchor:id=KSref.FAQTemplateConfiguration.ConfigurationPlugin}
+{docbook}
+<para>
+<prompt>
+   <emphasis role="bold">See also</emphasis>
+</prompt>
+</para>
+{docbook}
+* [Extension points|#KSref.DeveloperReference.ExtensionPoints]
+* [Internal API|#KSref.DeveloperReference.InternalAPI]
+* [Extend actions over a wiki page from external jars|#KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars]
+* [JCR structure|#KSref.JCRStructure]
+
+h1. Configuration plug-in {anchor:id=KSref.FAQTemplateConfiguration.ConfigurationPluginRoleNotInToc}
 Configuration plug-in is used to automatically set up a default template for the FAQ portlet. When the FAQ service starts, it will get values which are returned from the _TemplatePlugin_ component to initialize the template for the FAQ portlet.
 
 The template configuration plug-in is configured in the _templates-configuration.xml_ file.
@@ -40,7 +79,7 @@ The properties of template configuration plug-in are defined in the _init-params
 |*viewerTemplate* | Path of file template. | war:/ks-extension/ks/faq/templates/ FAQViewerPortlet.gtmpl |
 
 
-h1. How to change look and feel {anchor:id=KSref.FAQTemplateConfiguration.HowToChangeLookAndFeel}
+h1. How to change look and feel {anchor:id=KSref.FAQTemplateConfiguration.HowToChangeLookAndFeelRoleNotInToc}
 You can change the template FAQ viewer in one of the following two ways:
 
 * [By using Plug-in|#KSref.FAQTemplateConfiguration.Plugin]
@@ -80,7 +119,7 @@ Edit Mode
 *3.* Edit the content of *text-area-input* and click *Save*. 
 
 
-h1. API provided by the UIComponent (UIViewer.java) {anchor:id=KSref.FAQTemplateConfiguration.APIsProvidedByUIComponent}
+h1. API provided by the UIComponent (UIViewer.java) {anchor:id=KSref.FAQTemplateConfiguration.APIsProvidedByUIComponentRoleNotInToc}
 
 * UIViewer is the child of the component _UIFAQPortlet_. It shows the main content of FAQ portlet.
 

@@ -1,6 +1,19 @@
-Applications of Knowledge, such as Forum, Answers and Polls, use REST services to communicate with the server. This section describes REST Services of internal APIs. 
+ This section describes REST Services of internal APIs which applications of Knowledge use to communicate with the server. There are the following applications:
 
-h1. Forum application {anchor:id=KSref.InternalAPIs.ForumApplication}
+* [Forum application|#KSref.InternalAPIs.ForumApplication]
+* [Answers application|#KSref.InternalAPIs.AnswersApplication]
+* [Polls application|#KSref.InternalAPIs.PollsApplication]
+
+
+{docbook}
+<para xml:id="KSref.InternalAPIs.ForumApplication">
+<citetitle>
+<emphasis role="bold">
+Forum application
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 
 The Forum application of Knowledge uses the ForumWebservice to provide all APIs to work with Forum, such as filtering IPs, viewing RSS, and more.
 
@@ -19,7 +32,16 @@ Use the following APIs to build all the functions of the Forum application:
 | *viewrss* | Process the request by users when they want to view RSS. | $portalName/ $restcontextname/ ks/forum/rss/ | String resourceid |category id  {example}{example} forum id  {example}{example} topic id |
 | *userrss* | Process the request by users when they want to view their own collected RSS. | $portalName /$restcontextname/ ks/forum/rss/user/ | String resourceid | username id |
 
-h1. Answers application {anchor:id=KSref.InternalAPIs.AnswersApplication}
+
+{docbook}
+<para xml:id="KSref.InternalAPIs.AnswersApplication">
+<citetitle>
+<emphasis role="bold">
+Answers application
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 
 The Answers application of Knowledge uses the FAQWebservice to view RSS.
 
@@ -34,7 +56,15 @@ Use the following APIs to build all the functions of Answers application:
 | *viewrss* | View RSS | $portalName/ $restcontextname/ ks/faq/rss/| String resourceid | category id, question id |
 
 
-h1. Polls application {anchor:id=KSref.InternalAPIs.PollsApplication}
+{docbook}
+<para xml:id="KSref.InternalAPIs.PollsApplication">
+<citetitle>
+<emphasis role="bold">
+Polls application
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 
 The Polls application of Knowledge uses the PollWebservice to create and interact with the Polls gadget.
 
@@ -49,3 +79,14 @@ Use the following APIs to build all functions of the Answers application:
 | *viewPoll* | Return data of the Polls system | $portalName/ $restcontextname/ private/ks/poll/ viewpoll/| String pollId | id of poll |
 | *votePoll* | Update data for the Polls with the returned id | $portalName/ $restcontextname/ private/ks/poll /votepoll/| String pollId  {example}{example} String indexVote | id of poll  {example}{example} integer |
 
+{docbook}
+<para>
+<prompt>
+   <emphasis role="bold">See also</emphasis>
+</prompt>
+</para>
+{docbook}
+* [Extension points|#KSref.DeveloperReference.ExtensionPoints]
+* [FAQ Template Configuration|#KSref.DeveloperReference.FAQTemplateConfiguration]
+* [Extend actions over a wiki page from external jars|#KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars]
+* [JCR structure|#KSref.JCRStructure]

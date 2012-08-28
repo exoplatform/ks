@@ -29,3 +29,14 @@ Links to used REST services
 * portal/rest/private/ks/poll/viewpoll/{{{pollId}}}
 
 * portal/rest/private/ks/poll/votepoll/{{{pollId}}}/{{{indexVote}}}
+
+
+{docbook}
+<para>
+<prompt>
+    <emphasis role="bold">See also</emphasis>
+</prompt>
+</para>
+{docbook}
+
+* [Portlets|#KSref.Applications.Portlets]

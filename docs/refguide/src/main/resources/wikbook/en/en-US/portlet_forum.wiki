@@ -10,10 +10,27 @@ Package
 {docbook}
 This portlet is packaged in the _forum.war_ file.
 
-h1. Portlet.xml {anchor:id=KSref.FoumPortlet.ForumPortletxml}
+{docbook}
+<para xml:id="KSref.FoumPortlet.ForumPortletxml">
+<citetitle>
+<emphasis role="bold">
+Portlet.xml
+</emphasis>
+</citetitle>
+</para>
+{docbook}
+
 * See the _portlet.xml_ file in the project following this path: _forum/WEB-INF/portlet.xml_.
 	
-h1. Preferences {anchor:id=KSref.ForumPortlet.ForumPortletPreferences}
+{docbook}
+<para xml:id="KSref.ForumPortlet.ForumPortletPreferences">
+<citetitle>
+<emphasis role="bold">
+Preferences
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 
 || Preference name || Possible value || Default value || Description ||
 | *useAjax* | {{true}}, {{false}} | {{true}} | Define if links in the Forum will be plain hrefs or javascript ajax (better for SEO) or not. |
@@ -32,7 +49,16 @@ h1. Preferences {anchor:id=KSref.ForumPortlet.ForumPortletPreferences}
 | *isShowRules* | {{true}}, {{false}} | {{true}} | Specify if the forum rules panel is shown or not. |
 | *isShowStatistics* | {{true}}, {{false}} | {{true}} | Specify if the statistics panel is shown or not. |
 
-h1. Events {anchor:id=KSref.ForumPortlet.Event}
+
+{docbook}
+<para xml:id="KSref.ForumPortlet.Event">
+<citetitle>
+<emphasis role="bold">
+Events
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 
 || Name || Description ||
 | *[ForumLinkEvent|#KSref.ForumPortlet.ForumLinkEvent]* | Set the render for UIForumLinkPortlet and set values for UIForumLinks. |
@@ -43,7 +69,7 @@ h1. Events {anchor:id=KSref.ForumPortlet.Event}
 | *[ForumRuleEvent|#KSref.ForumPortlet.ForumRuleEvent]* | Set the render for UIForumRulePortlet. |
 | *[QuickReplyEvent|#KSref.ForumPortlet.QuickReplyEvent]* | Set the render for UIForumQuickReplyPortlet. |
 
-h2. ForumLinkEvent {anchor:id=KSref.ForumPortlet.ForumLinkEvent}
+*ForumLinkEvent* {anchor:id=KSref.ForumPortlet.ForumLinkEvent}
 This event is fired through UIForumLinkPortlet. 
 
 To receive ForumLinkEvent, you must use the _ForumParameter_ class with two properties:
@@ -68,7 +94,7 @@ if ( ...condition to render the UIForumLinkPortlet... ) {
 actionRes.setEvent(new QName("ForumLinkEvent"), param) ;
 {code}
 
-h2. ReLoadPortletEvent {anchor:id=KSref.ForumPortlet.ReLoadPortletEvent}
+*ReLoadPortletEvent* {anchor:id=KSref.ForumPortlet.ReLoadPortletEvent}
 This event is fired through UIForumPortlet. 
 
 To receive ReLoadPortletEvent, you must use the _ForumParameter_ class with two properties:
@@ -88,7 +114,7 @@ actionRes.setEvent(new QName("ReLoadPortletEvent"), param) ;
 ....
 {code}
 
-h2. OpenLink {anchor:id=KSref.ForumPortlet.OpenLink}
+*OpenLink* {anchor:id=KSref.ForumPortlet.OpenLink}
 This event is fired through UIForumPortlet. 
 
 To receive OpenLink, you must use the _ForumParameter_ class with one property:
@@ -106,7 +132,7 @@ actionRes.setEvent(new QName("OpenLink"), param) ;
 ....
 {code}
 
-h2. ForumPollEvent {anchor:id=KSref.ForumPortlet.ForumPollEvent}
+*ForumPollEvent* {anchor:id=KSref.ForumPortlet.ForumPollEvent}
 This event is fired through UIForumPollPortlet.
 
 To receive ForumPollEvent, you must use the _ForumParameter_ class with four properties:
@@ -130,7 +156,7 @@ actionRes.setEvent(new QName("ForumPollEvent"), param);
 ....
 {code}
 
-h2. ForumModerateEvent {anchor:id=KSref.ForumPortlet.ForumModerateEvent}
+*ForumModerateEvent* {anchor:id=KSref.ForumPortlet.ForumModerateEvent}
 This event is fired through UIForumModeratePortlet.
 
 To receive ForumModerateEvent, you must use the _ForumParameter_ class with two properties:
@@ -151,7 +177,7 @@ actionRes.setEvent(new QName("ForumPollEvent"), param);
 ....
 {code}
 
-h2. ForumRuleEvent {anchor:id=KSref.ForumPortlet.ForumRuleEvent}
+*ForumRuleEvent* {anchor:id=KSref.ForumPortlet.ForumRuleEvent}
 This event is fired through UIForumRulePortlet.
 
 To receive ForumRuleEvent, you must use the _ForumParameter_ class with two properties:
@@ -179,7 +205,7 @@ actionRes.setEvent(new QName("ForumRuleEvent"), param) ;
 ....
 {code}
 
-h2. QuickReplyEvent {anchor:id=KSref.ForumPortlet.QuickReplyEvent}
+*QuickReplyEvent* {anchor:id=KSref.ForumPortlet.QuickReplyEvent}
 This event is fired through UIQuickReplyPortlet.
 
 To receive QuickReplyEvent, you must use the _ForumParameter_ class with five properties:

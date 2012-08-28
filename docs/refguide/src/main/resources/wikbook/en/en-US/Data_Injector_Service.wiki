@@ -1,8 +1,25 @@
-Data injector is used to create data for the performance benchmark. This part will describe which data injectors are implemented in Knowledge and how to use them.	
+{docbook}
+<highlights>
+    <itemizedlist>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.Configuration.Data_Injectior_Service.Configuration">Configuration</link>
+          </emphasis> </para>
+          <para>Information on how to activate the <emphasis>DataInjectorService</emphasis> component and the configuration of plugins attached to it.</para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="CSref.Configuration.DataInjectorService.CalendarDataInjector"> How to use</link>
+          </emphasis> </para>
+          <para>Instruction on how to use the plugins of <emphasis>DataInjectorService</emphasis> component to inject/reject data.</para>
+      </listitem>
+    </itemizedlist>
+	</highlights>
+{docbook}
 
-h1. Technical details {anchor:id=KSref.Configuration.Data_Injector_Service.Technical_details}
-
-In Knowledge, data injectors are implemented as plugins attached to the org.exoplatform.services.bench.DataInjectorService service. This service is normally registered to the portal container as a general component and handled via RESTful requests.
+Data injector is used to create data for the performance benchmark. In Knowledge, they are implemented as plugins attached to the _org.exoplatform.services.bench.DataInjectorService_ service. This service is normally registered to the portal container as a general component and handled via RESTful requests.
 
 To use this service, add the following dependency to the Classpath of the server:
 
@@ -52,8 +69,18 @@ public abstract class DataInjector extends BaseComponentPlugin {
   public abstract void reject(HashMap<String , String> params) throws Exception;
 {code}
 
+{docbook}
+<para>
+<prompt>
+   <emphasis role="bold">See also</emphasis>
+</prompt>
+</para>
+{docbook}
 
-h1. Configuration {anchor:id=KSref.Configuration.Data_Injectior_Service.Configuration}
+* [Components|#KSref.Configuration.Components]
+* [External Component Plugins|#KSref.Configuration.External-component-plugins]
+
+h1. Configuration {anchor:id=KSref.Configuration.Data_Injectior_Service.ConfigurationRoleNotInToc}
 
 To activate _DataInjectorService_, you must register this component to a portal container by the following configuration:
 
@@ -101,7 +128,7 @@ The query parameters description:
 * Every created topic can only  be read/modified by user 'root' to grant permission to other members.
 
 
-h2. Wiki Data injector  {anchor:id=KSref.Configuration.Data_Injectior_Service.Wiki_data_injectior}
+h2. WikiDatainjector  {anchor:id=KSref.Configuration.Data_Injectior_Service.Wiki_data_injectior}
 The Data injector for Wiki is configured as follow:
 
 {code:xml}
@@ -219,7 +246,7 @@ In which:
 In the other way, such settings have been declared in "ksdemo.war/WEB-INF/conf/ksdemo/ks/bench-configuration.xml", therefore, to save time and effort, you can import it to "ksdemo.war/WEB-INF/conf/configuration.xml" and then modify it rather than create new one.
 {note}
 
-h1. How to use? {anchor:id=KSref.Configuration.Data_Injectior_Service.How_to_use}
+h1. How to use {anchor:id=KSref.Configuration.Data_Injectior_Service.How_to_useRoleNotInToc}
 
 You can use RESTful service to request to inject or reject data. The format of request link is:
 

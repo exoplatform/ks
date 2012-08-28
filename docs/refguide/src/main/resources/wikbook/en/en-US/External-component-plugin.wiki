@@ -1,0 +1,59 @@
+{docbook}
+<highlights>
+    <itemizedlist>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.Configuration.EditDataConfiguration">Init data configuration</link>
+          </emphasis> </para>
+          <para>Information about plugin components that define the default data in <filename>.xml</filename> files.</para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.Configuration.RolesConfiguration">Roles Configuration</link>
+          </emphasis> </para>
+          <para>Information about the <methodname>RoleRulePlugin</methodname> plugin that defines roles of users in the Forum application of eXo Platform.</para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.Configuration.ProfileProvider">ProfileProvider Configuration</link>
+          </emphasis> </para>
+          <para>Information about the <methodname>ProfileProvider</methodname> plugin that allows retrieving personal information of users.</para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.Configuration.ForumConfiguration">Forum Configuration</link>
+          </emphasis> </para>
+          <para>Information about plugin components that define data of the Forum application.</para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.Configuration.AnswerConfiguration">Answer Configuration</link>
+          </emphasis> </para>
+          <para>Information about plugin components that define data of the Answer application.</para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.Configuration.AnswersEmailTemplatesConfiguration">Poll Configuration</link>
+          </emphasis> </para>
+          <para>Information about plugin components that define the default Poll data in the <filename>.xml</filename> file in Knowledge.</para>
+      </listitem>
+    </itemizedlist>
+	</highlights>
+{docbook}
+
+{docbook}
+<para>
+<prompt>
+   <emphasis role="bold">See also</emphasis>
+</prompt>
+</para>
+{docbook}
+
+* [Components|#KSref.Configuration.Components]
+* [Data Injectors|#KSref.Configuration.Data_Injector_Service]

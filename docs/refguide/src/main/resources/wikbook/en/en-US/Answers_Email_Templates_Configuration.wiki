@@ -1,19 +1,22 @@
-Answers is configured mainly in the file:
-- Portlet preferences: */webapps/faq/WEB-INF/portlet.xml*
+{docbook}
+<para xml:id="KSref.Configuration.AnswersEmailTemplatesConfiguration">
+<citetitle>
+<emphasis role="bold">
+Answers Email Templates Configuration
+</emphasis>
+</citetitle>
+</para>
+{docbook}
+
+Answers is configured mainly in the _/webapps/faq/WEB-INF/portlet.xml_ file.
 
 {info}
 For general information of the Knowledge configuration, refer to [Knowledge Configuration|#KSref.Configuration] section.
 {info}
 
-{docbook}
-<para xml:id="KSref.AnswerEmailTemplatesConfiguration.Configuration">
-<citetitle>
-<emphasis role="bold">
-Configuration
-</emphasis>
-</citetitle>
-</para>
-{docbook}
+
+*Configuration*
+
 
 The Mail templates use a specific syntax, enabling you to create a customized email message in the Edit mode via three templates: New question, Edit/answer, and Move question. 
 
@@ -22,9 +25,9 @@ The Mail templates use a specific syntax, enabling you to create a customized em
 Parameters which are used in templates consist of:
 
 || Parameter || Description ||
-| *&categoryName_* | Load the name of Category. |
-| *&questionContent_* | Load the question's content. |
-| *&questionResponse_* | Load the question's answer. |
-| *&questionLink_*| Load the link to question in the Answers portlet. |
+| *&categoryName\_* | Load the name of Category. |
+| *&questionContent\_* | Load the question's content. |
+| *&questionResponse\_* | Load the question's answer. |
+| *&questionLink\_*| Load the link to question in the Answers portlet. |
 
 

@@ -12,8 +12,16 @@ Package
 This portlet is packaged in the _poll.war_ file.
 
 
-h1. Portlet.xml {anchor:id=KSref.PollPortlet.PollPortletxml}
-* See the _portlet.xml_ file in the project following this path: _poll/WEB-INF/portlet.xml_. 
+{docbook}
+<para xml:id="KSref.PollPortlet.PollPortletxml">
+<citetitle>
+<emphasis role="bold">
+Portlet.xml
+</emphasis>
+</citetitle>
+</para>
+{docbook}
+* See the _portlet.xml_ file in the project following this path: _poll/WEB-INF/portlet.xml_.
 
 {code:xml}
 <portlet-preferences>
@@ -25,7 +33,15 @@ h1. Portlet.xml {anchor:id=KSref.PollPortlet.PollPortletxml}
 </portlet-preferences>
 {code}
  
-h1. Portlet Preferences {anchor:id=KSref.PollPortlet.PollPortletPreferences}
+{docbook}
+<para xml:id="KSref.PollPortlet.PollPortletPreferences">
+<citetitle>
+<emphasis role="bold">
+Portlet Preferences
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 
 || Preference name || Possible value || Default value || Description ||
 | *pollIdShow* | {{string}} | {{empty}} | The Id of poll which is displayed in the Polls portlet. |

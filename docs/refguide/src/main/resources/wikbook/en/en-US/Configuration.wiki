@@ -7,18 +7,22 @@
           <emphasis role="bold">
             <link linkend="KSref.Configuration.Components">Components</link>
           </emphasis> </para>
+          <para>Description of the services which provide low-level functionality for UI components of Knowledge. </para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
-            <link linkend="KSref.Configuration.External-component-plugins">External-component-plugin</link>
+            <link linkend="KSref.Configuration.External-component-plugins">External component plugins</link>
           </emphasis> </para>
+          <para>Description of the main component plugins used in Knowledge. Each part supplies an example
+           configuration with the explanation about ini-params so you can know how to use these plugins. </para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
-            <link linkend="KSref.Configuration.Data_Injector_Service">Data Injector Servive</link>
+            <link linkend="KSref.Configuration.Data_Injector_Service">Data Injectors</link>
           </emphasis> </para>
+          <para>Description of data injectors used to create data for performance test in Knowledge and how to use them.</para>
       </listitem>
     </itemizedlist>
 	</abstract>

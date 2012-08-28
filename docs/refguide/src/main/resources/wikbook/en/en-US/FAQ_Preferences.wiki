@@ -11,11 +11,28 @@ Package
 {docbook}
 This portlet is packaged in the _faq.war_ file.
 
-h1. Portlet.xml {anchor:id=KSref.FAQPortlet.FAQPortletxml}
+{docbook}
+<para xml:id="KSref.FAQPortlet.FAQPortletxml">
+<citetitle>
+<emphasis role="bold">
+Portlet.xml
+</emphasis>
+</citetitle>
+</para>
+{docbook}
+
 * See the _portlet.xml_ file in the project following this path: _/webapps/faq/WEB-INF/portlet.xml_.
 
-h1. Portlet Preferences {anchor:id=KSref.FAQPortlet.FAQPortletPreferences}
 
+{docbook}
+<para xml:id="KSref.FAQPortlet.FAQPortletPreferences">
+<citetitle>
+<emphasis role="bold">
+Portlet Preferences
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 The FAQ portlet includes some portlet preferences that you can configure to alter the behavior.
 
 At runtime, you can use the EDIT mode portlet to set the preferences: 

@@ -1,14 +1,45 @@
-This section describes how to create a sample action extension in Wiki.
+{docbook}
+<highlights>
+    <itemizedlist>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.Extend_actions_over_a_wiki_page_from_external_jars.Create_a_new_project_for_action_extension">Create a new project for action extension</link>
+          </emphasis> </para>
+          <para>Instruction on how to create a new project for action extension and an example of the <filename>pom.xml</filename> file.</para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.Extend_actions_over_a_wiki_page_from_external_jars.Create_new_actions_and_their_corresponding_listeners">Create new actions and their corresponding listeners</link>
+          </emphasis> </para>
+          <para>Instruction on how to create new actions and their corresponding listeners via modifying the <classname>ViewSourceActionComponent</classname> class.</para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.Extend_actions_over_a_wiki_page_from_external_jars.Register_new_actions_with_UIExtensionManager">Register new actions with UIExtensionManager</link>
+          </emphasis> </para>
+          <para>Instruction on how to register new actions with <methodname>UIExtensionManage</methodname> via the <filename>configuration.xml</filename> file.</para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.Extend_actions_over_a_wiki_page_from_external_jars.Deploy_new_action_extension">Deploy new action extension</link>
+          </emphasis> </para>
+          <para>Instruction on how to deploy a new action extension.</para>
+      </listitem>
+    </itemizedlist>
+	</highlights>
+{docbook}
 
-h1. Overview  {anchor:id=KSref.Extend_actions_over_a_wiki_page_from_external_jars.Overview}
+{anchor:id=KSref.Extend_actions_over_a_wiki_page_from_external_jars.Overview}
 
 The toolbar in Wiki is built basing on the UI Extension Framework, so you can add your own actions packaged in external jars to it.
+{anchor:id=KSref.Extend_actions_over_a_wiki_page_from_external_jars.How_to_add_action_extension_to_the_Wiki_toolbar}
+This section shows you how to add a new action to the Wiki toolbar to view the Wiki markup of a page.
 
-h1. How to add action extension to the Wiki toolbar {anchor:id=KSref.Extend_actions_over_a_wiki_page_from_external_jars.How_to_add_action_extension_to_the_Wiki_toolbar}
-
-After reading this section, you can add your own actions to the Wiki toolbar. In the following example, you are going to add a new action on the Wiki toolbar to view the Wiki markup of a page.
-
-h2. Create a new project for action extension  {anchor:id=KSref.Extend_actions_over_a_wiki_page_from_external_jars.Create_a_new_project_for_action_extension}
+h1. Create a new project for action extension  {anchor:id=KSref.Extend_actions_over_a_wiki_page_from_external_jars.Create_a_new_project_for_action_extensionRoleNotInToc}
 
 Create a Maven project which has the following directory structure:
 
@@ -74,7 +105,7 @@ Here is the content of the _pom.xml_ file:
 </project>
 {code}
 
-h2. Create new actions and their corresponding listeners    {anchor:id=KSref.Extend_actions_over_a_wiki_page_from_external_jars.Create_new_actions_and_their_corresponding_listeners}
+h1. Create new actions and their corresponding listeners    {anchor:id=KSref.Extend_actions_over_a_wiki_page_from_external_jars.Create_new_actions_and_their_corresponding_listenersRoleNotInToc}
 
 Edit the _ViewSourceActionComponent_ class as below:
 
@@ -141,7 +172,7 @@ public class ViewSourceActionComponent extends AbstractEventActionComponent {
 }
 {code}
 
-h2. Register new actions with UIExtensionManager      {anchor:id=KSref.Extend_actions_over_a_wiki_page_from_external_jars.Register_new_actions_with_UIExtensionManager}
+h1. Register new actions with UIExtensionManager      {anchor:id=KSref.Extend_actions_over_a_wiki_page_from_external_jars.Register_new_actions_with_UIExtensionManagerRoleNotInToc}
 
 Edit the _configuration.xml_ file as below:
 
@@ -185,7 +216,7 @@ Besides the _MoreExtensionContainer_ type, action extension may be one of these 
 | {{org.exoplatform.wiki.webui.control.BrowseExtensionContainer}} | Actions will be placed on the *Browse* drop-down list at the view mode. |
 | {{org.exoplatform.wiki.webui.popup.UIWikiSettingContainer}} | Actions will be placed on the Wiki setting tabs. |
 
-h3. Deploy new action extension      {anchor:id=KSref.Extend_actions_over_a_wiki_page_from_external_jars.Deploy_new_action_extension}
+h1. Deploy new action extension      {anchor:id=KSref.Extend_actions_over_a_wiki_page_from_external_jars.Deploy_new_action_extensionRoleNotInToc}
 Follow these steps to deploy your new action extension:
 
 *1.* Build the project by using the *mvn clean install* command.

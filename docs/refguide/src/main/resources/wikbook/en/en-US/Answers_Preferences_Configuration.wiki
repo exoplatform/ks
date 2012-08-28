@@ -11,11 +11,29 @@ Package
 {docbook}
 This portlet is packaged in the _faq.war_ file.
 
-h1. Portlet.xml {anchor:id=KSref.AnswerPortlet.AnswerPortletxml}
+
+{docbook}
+<para xml:id="KSref.AnswerPortlet.AnswerPortletxml">
+<citetitle>
+<emphasis role="bold">
+Portlet.xml
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 
 * See the _portlet.xml_ file in the project following this path: _/webapps/faq/WEB-INF/portlet.xml_.
 
-h1. Portlet Preferences {anchor:id=KSref.AnswerPortlet.AnswerPortletPreferences}
+
+{docbook}
+<para xml:id="KSref.AnswerPortlet.AnswerPortletPreferences">
+<citetitle>
+<emphasis role="bold">
+Portlet Preferences
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 
 The Answers portlet consists of preferences as follows:
 

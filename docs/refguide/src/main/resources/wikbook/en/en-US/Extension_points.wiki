@@ -1,9 +1,60 @@
+{docbook}
+<highlights>
+    <itemizedlist>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.ExtensionPoints.ForumEventLifeCycle"> ForumEventLifeCycle</link>
+          </emphasis> </para>
+          <para>Enables you to listen to the lifecycle of a forum. By implementing ForumEventLifeCycle, you can be notified of new posts and replies, categories and topics.
+           This installation will be injected when the data flow is called to save data.</para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.ExtensionPoints.AnswerEventLifeCycle">AnswerEventLifeCycle</link>
+          </emphasis> </para>
+          <para> Installs event updates for the Answers data that are injected while saving answers, saving questions or posting comments.</para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.ExtensionPoints.BBCodeRenderer">BBCodeRenderer</link>
+          </emphasis> </para>
+          <para>Is used in the core of Knowledge to render BBCodes. In which, the data input is text, containing BBCode tags, and the data output will be BBCode tags which have been encrypted into HTML tags.</para>
+      </listitem>
+    </itemizedlist>
+	</highlights>
+{docbook}
+
 There are some extension points in Knowledge, so that you can control how these components work by implementing or extending default implementations, then reconfigure these new components in the _configuration.xml_ file.
 
-h1. ForumEventLifeCycle {anchor:id=KSref.ExtensionPoints.ForumEventLifeCycle}
+{docbook}
+<para>
+<prompt>
+   <emphasis role="bold">See also</emphasis>
+</prompt>
+</para>
+{docbook}
+
+* [Internal API|#KSref.DeveloperReference.InternalAPI]
+* [FAQ Template Configuration|#KSref.DeveloperReference.FAQTemplateConfiguration]
+* [Extend actions over a wiki page from external jars|#KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars]
+* [JCR structure|#KSref.JCRStructure]
+
+
+h1. ForumEventLifeCycle {anchor:id=KSref.ExtensionPoints.ForumEventLifeCycleRoleNotInToc}
 {{ForumEventLifeCycle}} enables you to listen to the lifecycle of a forum. By implementing ForumEventLifeCycle, you can be notified of new posts and replies, categories and topics. This installation will be injected when the data flow is called to save data.
 
-h2. Configuration plug-in {anchor:id=KSref.ExtensionPoints.ForumEventLifeCycleConfiguration}
+{docbook}
+<para xml:id="KSref.ExtensionPoints.ForumEventLifeCycleConfiguration">
+<citetitle>
+<emphasis role="bold">
+Configuration plug-in
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 
 You can find the configuration file of this component at: _ext/social-integration/src/main/resources/conf/portal/configuration.xml_.
 
@@ -20,7 +71,17 @@ For example, to add a Forum to a space of the Social application and keep new ac
 </external-component-plugins>
 {code}
 
-h2. Tutorial {anchor:id=KSref.ExtensionPoints.ForumEventLifeCycleTutorial}
+
+{docbook}
+<para xml:id="KSref.ExtensionPoints.ForumEventLifeCycleTutorial">
+<citetitle>
+<emphasis role="bold">
+Tutorial
+</emphasis>
+</citetitle>
+</para>
+{docbook}
+
 To use *ForumEventLifeCycle* class, do the following steps:
 
 *1.* Create a new class that extends _ForumEventListener_.
@@ -92,10 +153,19 @@ public class ABCActivityPublisher extends ForumEventListener {
 {code}
 
 
-h1. AnswerEventLifeCycle {anchor:id=KSref.ExtensionPoints.AnswerEventLifeCycle}
+h1. AnswerEventLifeCycle {anchor:id=KSref.ExtensionPoints.AnswerEventLifeCycleRoleNotInToc}
 {{AnswerEventLifeCycle}} installs event updates for the Answers data that is injected while saving answers, saving questions or posting comments.
 
-h2. Configuration plug-in {anchor:id=KSref.ExtensionPoints.AnswerEventLifeCycleConfiguration}
+
+{docbook}
+<para xml:id="KSref.ExtensionPoints.AnswerEventLifeCycleConfiguration">
+<citetitle>
+<emphasis role="bold">
+Configuration plug-in
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 
 You can find the configuration file of this component at: _ext/social-integration/src/main/resources/conf/portal/configuration.xml_.
 
@@ -114,7 +184,15 @@ For example, to add Answers to a space of the Social application and keep new ac
 
 In which, {{AnswersSpaceActivityPublisher}} is the class to implement {{ForumEventLifeCycle}}.
 
-h2. Tutorial {anchor:id=KSref.ExtensionPoints.AnswerEventLifeCycleTutorial}
+{docbook}
+<para xml:id="KSref.ExtensionPoints.AnswerEventLifeCycleTutorial">
+<citetitle>
+<emphasis role="bold">
+Tutorial
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 
 To use the *AnswerEventLifeCycle* class, do the following steps:
 
@@ -174,8 +252,7 @@ public class ABCActivityPublisher extends AnswerEventListener {
 </external-component-plugins>
 {code}
 
-h1. BBCodeRenderer {anchor:id=KSref.ExtensionPoints.BBCodeRenderer}
-
+h1. BBCodeRenderer {anchor:id=KSref.ExtensionPoints.BBCodeRendererRoleNotInToc}
 {{BBCodeRenderer}} is used in the core of Knowledge to render BBCodes. In which, the data input is text, containing BBCode tags. The data output will be BBCode tags which have been encrypted into HTML tags.
 
 You can find the configuration file of this component at: _extension/webapp/src/main/webapp/WEB-INF/ks-extension/ks/forum/bbcodes-configuration.xml_.

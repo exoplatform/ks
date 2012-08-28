@@ -1,39 +1,54 @@
 {docbook}
-<abstract>
- <para>Knowledge is a JCR-based product which uses JCR to store data. The root node of Knowledge is <emphasis>exo:application</emphasis> which includes these child nodes: <emphasis>exo:forumHome</emphasis>, <emphasis>exo:faqHome</emphasis>.
- </para>
- <para>In this chapter, you will have opportunity to further understand about the JCR structure of Knowledge that consists of the following main sections:</para>
-    <itemizedlist>
+<highlights>
+     <itemizedlist>
       <listitem>
         <para>
           <emphasis role="bold">
             <link linkend="KSref.JCRStructure.ForumJCRStructure">Forum JCR structure</link>
           </emphasis> </para>
+          <para>Information on the Forum JCR structure, such as nodes, child nodes, node types and their properties.</para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
             <link linkend="KSref.JCRStructure.FAQJCRStructure">FAQ JCR structure</link>
           </emphasis> </para>
+          <para>Information on the FAQ JCR structure, such as nodes, child nodes, node types and their properties.</para>
       </listitem>
       <listitem>
         <para>
-
           <emphasis role="bold">
             <link linkend="KSref.JCRStructure.PollJCRStructure">Poll JCR structure</link>
           </emphasis> </para>
+          <para>Information on the Poll JCR structure, such as nodes, child nodes, node types and their properties.</para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
             <link linkend="KSref.JCRStructure.WikiJCR">Wiki JCR structure</link>
           </emphasis> </para>
+          <para>Information on the Wiki JCR structure, such as nodes, child nodes, node types and their properties.</para>
       </listitem>
     </itemizedlist>
-	</abstract>
+    <para>Knowledge is a JCR-based product which uses JCR to store data. The root node of Knowledge is <emphasis>exo:application</emphasis> which includes these child nodes: <emphasis>exo:forumHome</emphasis>, <emphasis>exo:faqHome</emphasis>.
+   </para>
+  <para>In this section, you will have opportunity to further understand about the JCR structure of Knowledge via the main topics above.</para>
+	</highlights>
 {docbook}
 
-h1. Forum JCR structure {anchor:id=KSref.JCRStructure.ForumJCRStructure}
+{docbook}
+<para>
+<prompt>
+   <emphasis role="bold">See also</emphasis>
+</prompt>
+</para>
+{docbook}
+* [Extension points|#KSref.DeveloperReference.ExtensionPoints]
+* [Internal API|#KSref.DeveloperReference.InternalAPI]
+* [FAQ Template Configuration|#KSref.DeveloperReference.FAQTemplateConfiguration]
+* [Extend actions over a wiki page from external jars|#KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars]
+
+h1. Forum JCR structure {anchor:id=KSref.JCRStructure.ForumJCRStructureRoleNotInToc}
 Forum is a JCR-based application. The Forum data are saved in eXo-JCR under the Forum Service data directory. The whole JCR structure of Forum can be visualized in the diagram below:
 
 !images/Forum_JCR_Structure.png|align="center" width="150mm" fo:scalefit="1" html:scalefit="0"!
@@ -332,7 +347,7 @@ The Topic node is stored in {{/exo:applications/ForumService/ForumData/TopicType
 | exo:icon | String | false | The icon of the topic type. |
 
 
-h1. FAQ JCR structure {anchor:id=KSref.JCRStructure.FAQJCRStructure}
+h1. FAQ JCR structure {anchor:id=KSref.JCRStructure.FAQJCRStructureRoleNotInToc}
 FAQ is a JCR-based application. The FAQ data are stored in the eXo-JCR under the faqApp data directory. 
 The whole FAQ JCR structure can be visualized in the following diagram:
 
@@ -438,7 +453,7 @@ Answers and comments node are stored under the Answer home and the Comment home 
 | exo:postId | String | false | The post id. |
 | exo:fullName | String | false | The answer author's full name. |
 
-- The Comment node is stored in {{/exo:applications/faqApp/categories/questions/%Question-id%/faqCommentHome/%Comment-id%}} and its node type has the following propeties:
+- The Comment node is stored in {{/exo:applications/faqApp/categories/questions/%Question-id%/faqCommentHome/%Comment-id%}} and its node type has the following properties:
 
 || Properties name || Required type || Multiple || Description ||
 | exo:id | String | false | The comment id. |
@@ -473,7 +488,7 @@ This node stores the template for FAQ portlet. The user can edit this template o
 - The template is stored in an nt:file node type under the Template Home node.
 {{/exo:applications/faqApp/templateHome/nt:file}}.
 
-h1. Poll JCR structure {anchor:id=KSref.JCRStructure.PollJCRStructure}
+h1. Poll JCR structure {anchor:id=KSref.JCRStructure.PollJCRStructureRoleNotInToc}
 
 The Poll data are saved in eXo-JCR under the eXoPolls data directory. The whole JCR structure of Poll can be visualized in the diagram below:
 
@@ -498,7 +513,7 @@ The Poll node is stored under eXoPolls node {{/exo:applications/eXoPolls/%Portal
 | exo:isAgainVote | Boolean | false | Enable/disable the option to vote again. User can change their vote if the value is set to "true". |
 | exo:isClosed | Boolean | false | The poll status: open/closed. The poll is closed if the value is set to "true". |
 
-h1. Wiki JCR structure  {anchor:id=KSref.JCRStructure.WikiJCRStructure}
+h1. Wiki JCR structure  {anchor:id=KSref.JCRStructure.WikiJCRStructureRoleNotInToc}
 The Wiki portlet is a JCR-based application. The Wiki data are stored in the eXo JCR storage. The Wiki application of Knowledge supports several wikis, each wiki is organized as a tree of pages and hosted in different locations, depending on the type of wiki:
 
 * Portal wikis: _/exo\:applications/eXoWiki/wikis/$PORTAL/WikiHome_

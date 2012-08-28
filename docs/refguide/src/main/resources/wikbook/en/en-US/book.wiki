@@ -1,17 +1,18 @@
 h1. Applications {anchor:id=KSref.Applications}
 {include:document="Application.wiki"}
 h2. Portlets {anchor:id=KSref.Applications.Portlets}
+{include:document="portlet.wiki"}
 
-h3. Forum Portlet {anchor:id=KSref.Applications.Forum Portlet}
+h3. Forum Portlet {anchor:id=KSref.Applications.Forum PortletRoleNotInToc}
 {include:document="portlet_forum.wiki"}
 
-h3. Answers Portlet {anchor:id=KSref.Applications.Answers Portlet}
+h3. Answers Portlet {anchor:id=KSref.Applications.Answers PortletRoleNotInToc}
 {include:document="Answers_Preferences_Configuration.wiki"}
 
-h3. FAQ Portlet {anchor:id=KSref.Applications.FAQ Portlet}
+h3. FAQ Portlet {anchor:id=KSref.Applications.FAQ PortletRoleNotInToc}
 {include:document="FAQ_Preferences.wiki"}
 
-h3. Polls Portlet {anchor:id=KSref.Applications.Polls Portlet}
+h3. Polls Portlet {anchor:id=KSref.Applications.Polls PortletRoleNotInToc}
 {include:document="Poll_Preference.wiki"}
 
 h2. Gadgets {anchor:id=KSref.Applications.Gadgets}
@@ -22,18 +23,19 @@ h1. Configuration {anchor:id=KSref.Configuration}
 h2. Components {anchor:id=KSref.Configuration.Components}
 {include:document="Components.wiki"}
 
-h2. External-component-plugin {anchor:id=KSref.Configuration.External-component-plugins}
+h2. External component plugins {anchor:id=KSref.Configuration.External-component-plugins}
+{include:document="External-component-plugin.wiki"}
 
-h3. Init data configuration {anchor:id=KSref.Configuration.EditDataConfiguration}
+h3. Init data configuration {anchor:id=KSref.Configuration.EditDataConfigurationRoleNotInToc}
 {include:document="Init_data_KS.wiki"}
 
-h3. Roles Configuration {anchor:id=KSref.Configuration.RolesConfiguration}
+h3. Roles Configuration {anchor:id=KSref.Configuration.RolesConfigurationRoleNotInToc}
 {include:document="Roles_Plugin_Configuration.wiki"}
 
-h3. ProfileProvider Configuration {anchor:id=KSref.Configuration.ProfileProvider}
+h3. ProfileProvider Configuration {anchor:id=KSref.Configuration.ProfileProviderRoleNotInToc}
 {include:document="Profile_Provider_Configuration.wiki"}
 
-h3. Forum Configuration {anchor:id=KSref.Configuration.ForumConfiguration}
+h3. Forum Configuration {anchor:id=KSref.Configuration.ForumConfigurationRoleNotInToc}
 
 h4. BBCode Configuration {anchor:id=KSref.Configuration.BBCodeConfiguration}
 {include:document="BBCode_Configuration.wiki"}
@@ -53,22 +55,16 @@ h4. Update Statistic Data {anchor:id=KSref.Configuration.StatisticData}
 h4. Default User Profile {anchor:id=KSref.Configuration.DefaultUserProfile}
 {include:document="Forum_Default_User_Profile_Setting.wiki"}
 
-h3. Answer Configuration {anchor:id=KSref.Configuration.AnswerConfiguration}
-
-h4. Answers Initializer {anchor:id=KSref.Configuration.AnswersInitializer}
+h3. Answer Configuration {anchor:id=KSref.Configuration.AnswerConfigurationRoleNotInToc}
 {include:document="Answers_Initialization_Plugin.wiki"}
-
-h4. Answers Email Templates Configuration {anchor:id=KSref.Configuration.AnswersEmailTemplatesConfiguration}
 {include:document="Answers_Email_Templates_Configuration.wiki"}
 
-h3. Poll Configuration {anchor:id=KSref.Configuration.PollConfiguration} 
+h3. Poll Configuration {anchor:id=KSref.Configuration.PollConfigurationRoleNotInToc}
 {include:document="Initialization_Poll_Plugin_Configuration.wiki"}
 
-h2. Data Injector Servive {anchor:id=KSref.Configuration.Data_Injector_Service}
+h2. Data Injectors {anchor:id=KSref.Configuration.Data_Injector_Service}
 {include:document="Data_Injector_Service.wiki"}
 
-h1. JCR structure {anchor:id=KSref.JCRStructure} 
-{include:document="KS_JCR_structure.wiki"}
 
 h1. Developer reference {anchor:id=KSref.DeveloperReference}
 {include:document="Developer_reference.wiki"}
@@ -85,5 +81,6 @@ h2. FAQ Template Configuration {anchor:id=KSref.DeveloperReference.FAQTemplateCo
 h2. Extend actions over a wiki page from external jars {anchor:id=KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars}
 {include:document="Extend_actions_over_a_wiki_page_from_external_jars.wiki"}
 
-
+h2. JCR structure {anchor:id=KSref.JCRStructure}
+{include:document="KS_JCR_structure.wiki"}
 

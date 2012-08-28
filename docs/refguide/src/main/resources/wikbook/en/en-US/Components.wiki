@@ -1,4 +1,19 @@
-h1. Components of Knowledge {anchor:id=KSref.Components}
+This section shows some main components used to implement applications of Knowledge. These components are classified
+into the following groups:
+* [Components of Knowledge|#KSref.Components]
+* [Components of Forum|#KSref.Components.ForumComponents]
+* [Components of Answers|#KSref.Components.AnswersComponents]
+* [Components of Polls|#KSref.Components.PollComponents]
+
+{docbook}
+<para xml:id="KSref.Components">
+<citetitle>
+<emphasis role="bold">
+Components of Knowledge
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 
 || Key || Data type || Description ||
 | *org.exoplatform.ks.common. jcr.KSDataLocation* | org.exoplatform.ks.common. jcr.KSDataLocation | Hold the JCR storage location for the Knowledge data. |
@@ -10,23 +25,59 @@ h1. Components of Knowledge {anchor:id=KSref.Components}
 | *repository* | {{string}} | {{repository}} |
 | *workspace* | {{string}} | {{knowledge}} |
 
-h1. Components of Forum {anchor:id=KSref.Components.ForumComponents}
+
+{docbook}
+<para xml:id="KSref.Components.ForumComponents">
+<citetitle>
+<emphasis role="bold">
+Components of Forum
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 || Key || Data type || Description ||
 | *org.exoplatform.ks.bbcode. api.BBCodeService* | org.exoplatform.ks.bbcode. core.BBCodeServiceImpl | Manage CRUD operations on BBCodes. |
 | *org.exoplatform.forum. service.DataStorage* | org.exoplatform.forum.service. impl.JCRDataStorage | Store data of Forum via the JCR system. |
 | *org.exoplatform.forum. service.ForumService* | org.exoplatform.forum.service. impl.ForumServiceImpl | Include all public APIs to interact with the UI component and database. |
 | *org.exoplatform.forum.service. ForumStatisticsService* | org.exoplatform.forum.service. impl.ForumStatisticsServiceImpl | Include all public APIs to interact with the database of Statistics system. |
 
-h1. Components of Answers {anchor:id=KSref.Components.AnswersComponents}
+
+{docbook}
+<para xml:id="KSref.Components.AnswersComponents">
+<citetitle>
+<emphasis role="bold">
+Components of Answers
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 || Key || Data type || Description ||
 | *org.exoplatform.faq. service.FAQService* | org.exoplatform.faq.service. impl.FAQServiceImpl | Include all public APIs to interact with the UI component and database. |
 | *org.exoplatform.faq. service.DataStorage* | org.exoplatform.faq.service. impl.JCRDataStorage | Store data of FAQ via the JCR system. |
 
-h1. Components of Polls {anchor:id=KSref.Components.PollComponents}
+
+{docbook}
+<para xml:id="KSref.Components.PollComponents">
+<citetitle>
+<emphasis role="bold">
+Components of Polls
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 || Key || Data type || Description ||
 | *org.exoplatform.poll. service.DataStorage* | org.exoplatform.poll.service. impl.JCRDataStorage | Include all public APIs to interact with the UI component and database. |
 | *org.exoplatform.poll. service.PollService* | org.exoplatform.poll.service. impl.PollServiceImpl | Store data of Polls via the JCR system. |
 
 
+{docbook}
+<para>
+<prompt>
+   <emphasis role="bold">See also</emphasis>
+</prompt>
+</para>
+{docbook}
 
+* [External Component Plugins|#KSref.Configuration.External-component-plugins]
+* [Data Injectors|#KSref.Configuration.Data_Injector_Service]
 
