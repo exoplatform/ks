@@ -125,6 +125,7 @@
               <property name="support-highlighting" value="true" />
               <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt" />
               <property name="indexing-configuration-path" value="war:/ks-extension/jcr/indexing-configuration.xml" />
+	      <property name="analyzer" value="org.exoplatform.services.jcr.analyzer.IgnoreAccentAnalyzer"/>
             </properties>
           </query-handler>
           <lock-manager class="org.exoplatform.services.jcr.impl.core.lock.jbosscache.CacheableLockManagerImpl">
