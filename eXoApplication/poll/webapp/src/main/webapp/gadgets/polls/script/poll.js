@@ -121,7 +121,7 @@ function showResult(data){
   var msgTotal = prefs.getMsg('total');
   var pollId = data.id;
   var parentPath = data.parentPath;
-  var haveTopic = parentPath.indexOf("ForumData/CategoryHome"); //check topic of poll if toptic is exist
+  var haveTopic = (parentPath.indexOf("ForumData/CategoryHome") > 0); //check topic of poll if toptic is exist
   var discussUrl = "#";
   var tbl = [];
   

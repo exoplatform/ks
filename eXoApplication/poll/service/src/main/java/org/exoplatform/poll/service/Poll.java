@@ -237,7 +237,8 @@ public class Poll {
     return showVote;
   }
 
-  public void setVotes() {
+  public void setVotes(String votes) {
+    this.votes = votes;
   }
 
   public String getVotes() {

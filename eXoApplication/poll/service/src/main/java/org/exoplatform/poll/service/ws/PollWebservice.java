@@ -102,8 +102,7 @@ public class PollWebservice implements ResourceContainer {
                            @Context UriInfo uriInfo) throws Exception {
     PollService pollService = (PollService) ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(PollService.class);
     String username = getUserId(sc, uriInfo);
-    if (!Utils.isEmpty(pollId)) {
-      try {
+    if (!Utils.isEmpty(pollId) && !pollId.equals("pollId")) {
         Poll poll = pollService.getPoll(pollId);
         if (poll != null) {
           // poll.setIsAdmin(String.valueOf(hasGroupAdminOfGatein()));
@@ -128,14 +127,8 @@ public class PollWebservice implements ResourceContainer {
             poll.setId("DoNotPermission");
             return Response.ok(poll, MediaType.APPLICATION_JSON).cacheControl(cc).build();
           }
-          poll.setVotes();
-          poll.setInfoVote();
-          poll.setShowVote(isGuestPermission(poll, username));
-          return Response.ok(poll, MediaType.APPLICATION_JSON).cacheControl(cc).build();
+          return baseResponsePoll(poll, username);
         }
-      } catch (Exception e) {
-        log.error("Can not get poll by id: " + pollId, e);
-      }
     }
     PollSummary pollSummary = new PollSummary();
     pollSummary = pollService.getPollSummary(getAllGroupAndMembershipOfUser(username));
@@ -159,11 +152,8 @@ public class PollWebservice implements ResourceContainer {
             validateIndexVote(indexVote, poll.getOption().length)) {
           poll = Utils.calculateVote(poll, username, indexVote);
           pollService.savePoll(poll, false, true);
-          poll.setVotes();
-          poll.setInfoVote();
-          poll.setShowVote(isGuestPermission(poll, username));
           poll.setIsAdmin(String.valueOf(hasGroupAdminOfGatein(username)));
-          return Response.ok(poll, MediaType.APPLICATION_JSON).cacheControl(cc).build();
+          return baseResponsePoll(poll, username);
         }
       } catch (Exception e) {
         log.debug("Failed to vote poll.", e);
@@ -171,6 +161,19 @@ public class PollWebservice implements ResourceContainer {
       return Response.ok("You do not have permission to vote this poll; or some options have been removed from the poll.", MediaType.TEXT_PLAIN).cacheControl(cc).build();
     }
     return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+  }
+
+  private Response baseResponsePoll(Poll poll, String username) throws Exception {
+    poll.setInfoVote();
+    poll.setShowVote(isGuestPermission(poll, username));
+    poll.setUserVote(new String[]{});
+    String prentPath = poll.getParentPath();
+    if(prentPath != null && prentPath.indexOf("ForumData/CategoryHome") > 0) {
+      poll.setParentPath("/ForumData/CategoryHome");
+    } else {
+      poll.setParentPath("");
+    }
+    return Response.ok(poll, MediaType.APPLICATION_JSON).cacheControl(cc).build();
   }
 
   private boolean validateIndexVote(String indexVote, int max) {
