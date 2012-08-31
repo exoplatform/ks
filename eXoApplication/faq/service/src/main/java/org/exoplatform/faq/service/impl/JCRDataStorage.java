@@ -2835,57 +2835,52 @@ public class JCRDataStorage implements DataStorage, FAQNodeTypes {
   @Override
   public boolean importData(String parentId, InputStream inputStream, boolean isZip) throws Exception {
     SessionProvider sProvider = CommonUtils.createSystemProvider();
-    try {
-      List<String> patchNodeImport = new ArrayList<String>();
-      Node categoryNode = getFAQServiceHome(sProvider).getNode(parentId);
-      Session session = categoryNode.getSession();
-      NodeIterator iter = categoryNode.getNodes();
-      while (iter.hasNext()) {
-        patchNodeImport.add(iter.nextNode().getName());
-      }
-      if (isZip) { // Import from zipfile
-        ZipInputStream zipStream = new ZipInputStream(inputStream);
-        while (zipStream.getNextEntry() != null) {
-          ByteArrayOutputStream out = new ByteArrayOutputStream();
-          int available = -1;
-          byte[] data = new byte[2048];
-          while ((available = zipStream.read(data, 0, 1024)) > -1) {
-            out.write(data, 0, available);
-          }
-          zipStream.closeEntry();
-          out.close();
-          InputStream input = new ByteArrayInputStream(out.toByteArray());
-          session.importXML(categoryNode.getPath(), input, ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW);
-          session.save();
+    List<String> patchNodeImport = new ArrayList<String>();
+    Node categoryNode = getFAQServiceHome(sProvider).getNode(parentId);
+    Session session = categoryNode.getSession();
+    NodeIterator iter = categoryNode.getNodes();
+    while (iter.hasNext()) {
+      patchNodeImport.add(iter.nextNode().getName());
+    }
+    if (isZip) { // Import from zipfile
+      ZipInputStream zipStream = new ZipInputStream(inputStream);
+      while (zipStream.getNextEntry() != null) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        int available = -1;
+        byte[] data = new byte[2048];
+        while ((available = zipStream.read(data, 0, 1024)) > -1) {
+          out.write(data, 0, available);
         }
-        zipStream.close();
-        calculateImportRootCategory(categoryNode);
-      } else { // import from xml
-        session.importXML(categoryNode.getPath(), inputStream, ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW);
+        zipStream.closeEntry();
+        out.close();
+        InputStream input = new ByteArrayInputStream(out.toByteArray());
+        session.importXML(categoryNode.getPath(), input, ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW);
         session.save();
       }
-      categoryNode = (Node) session.getItem(categoryNode.getPath());
-      iter = categoryNode.getNodes();
+      zipStream.close();
+      calculateImportRootCategory(categoryNode);
+    } else { // import from xml
+      session.importXML(categoryNode.getPath(), inputStream, ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW);
+      session.save();
+    }
+    categoryNode = (Node) session.getItem(categoryNode.getPath());
+    iter = categoryNode.getNodes();
+    while (iter.hasNext()) {
+      Node node = iter.nextNode();
+      if (patchNodeImport.contains(node.getName()))
+        patchNodeImport.remove(node.getName());
+      else
+        patchNodeImport.add(node.getName());
+    }
+    for (String string : patchNodeImport) {
+      Node nodeParentQuestion = categoryNode.getNode(string);
+      iter = getQuestionsIterator(nodeParentQuestion, EMPTY_STR, true);
+      // Update number answers and regeister question node listener
       while (iter.hasNext()) {
         Node node = iter.nextNode();
-        if (patchNodeImport.contains(node.getName()))
-          patchNodeImport.remove(node.getName());
-        else
-          patchNodeImport.add(node.getName());
+        reUpdateNumberOfPublicAnswers(node);
+        registerQuestionNodeListener(node);
       }
-      for (String string : patchNodeImport) {
-        Node nodeParentQuestion = categoryNode.getNode(string);
-        iter = getQuestionsIterator(nodeParentQuestion, EMPTY_STR, true);
-        // Update number answers and regeister question node listener
-        while (iter.hasNext()) {
-          Node node = iter.nextNode();
-          reUpdateNumberOfPublicAnswers(node);
-          registerQuestionNodeListener(node);
-        }
-      }
-    } catch (Exception e) {
-      log.error("Failed to import data in category " + parentId, e);
-      return false;
     }
     return true;
   }

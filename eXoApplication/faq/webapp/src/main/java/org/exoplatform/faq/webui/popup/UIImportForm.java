@@ -76,11 +76,8 @@ public class UIImportForm extends BaseUIForm implements UIPopupComponent {
           return;
         }
         try {
-          if (!service.importData(importForm.categoryId_, uploadInput.getUploadDataAsStream(), isZip)) {
-            importForm.warning("UIImportForm.msg.import-fail", false);
-          } else {
-            importForm.info("UIImportForm.msg.import-successful", false);
-          }
+          service.importData(importForm.categoryId_, uploadInput.getUploadDataAsStream(), isZip);
+          importForm.info("UIImportForm.msg.import-successful", false);
         } catch (AccessDeniedException ace) {
           importForm.warning("UIImportForm.msg.access-denied", false);
         } catch (ConstraintViolationException con) {
@@ -88,7 +85,7 @@ public class UIImportForm extends BaseUIForm implements UIPopupComponent {
         } catch (ItemExistsException ise) {
           importForm.warning("UIImportForm.msg.CategoryIsExist", false);
         } catch (Exception e) {
-          importForm.warning("UIImportForm.msg.filetype-error", false);
+          importForm.warning("UIImportForm.msg.import-fail", false);
         }
 
         UploadService uploadService = importForm.getApplicationComponent(UploadService.class);
