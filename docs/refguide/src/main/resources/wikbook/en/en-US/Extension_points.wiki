@@ -4,24 +4,23 @@
       <listitem>
         <para>
           <emphasis role="bold">
-            <link linkend="KSref.ExtensionPoints.ForumEventLifeCycle"> ForumEventLifeCycle</link>
+            <link linkend="KSref.ExtensionPoints.ForumEventLifeCycle">ForumEventLifeCycle</link>
           </emphasis> </para>
-          <para>Enables you to listen to the lifecycle of a forum. By implementing ForumEventLifeCycle, you can be notified of new posts and replies, categories and topics.
-           This installation will be injected when the data flow is called to save data.</para>
+          <para>Introduction to ForumEventLifeCycle that enables you to listen to the lifecycle of a forum, its configuration plug-in, and steps to use the ForumEventLifeCycle class.</para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
             <link linkend="KSref.ExtensionPoints.AnswerEventLifeCycle">AnswerEventLifeCycle</link>
           </emphasis> </para>
-          <para> Installs event updates for the Answers data that are injected while saving answers, saving questions or posting comments.</para>
+          <para>Introduction to AnswerEventLifeCycle that installs event updates for the Answers data, its configuration plug-in, and steps to use the AnswerEventLifeCycle class.</para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
             <link linkend="KSref.ExtensionPoints.BBCodeRenderer">BBCodeRenderer</link>
           </emphasis> </para>
-          <para>Is used in the core of Knowledge to render BBCodes. In which, the data input is text, containing BBCode tags, and the data output will be BBCode tags which have been encrypted into HTML tags.</para>
+          <para>Introduction to BBCodeRenderer that is used in the core of Knowledge to render BBCodes, its configuration file, and how to register BBCodeRenderer.</para>
       </listitem>
     </itemizedlist>
 	</highlights>
@@ -39,7 +38,7 @@ There are some extension points in Knowledge, so that you can control how these 
 
 * [Internal API|#KSref.DeveloperReference.InternalAPI]
 * [FAQ Template Configuration|#KSref.DeveloperReference.FAQTemplateConfiguration]
-* [Extend actions over a wiki page from external jars|#KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars]
+* [Actions over a wiki page from external jars|#KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars]
 * [JCR structure|#KSref.JCRStructure]
 
 

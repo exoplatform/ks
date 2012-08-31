@@ -55,7 +55,7 @@ h4. Update Statistic Data {anchor:id=KSref.Configuration.StatisticData}
 h4. Default User Profile {anchor:id=KSref.Configuration.DefaultUserProfile}
 {include:document="Forum_Default_User_Profile_Setting.wiki"}
 
-h3. Answer Configuration {anchor:id=KSref.Configuration.AnswerConfigurationRoleNotInToc}
+h3. Answers Configuration {anchor:id=KSref.Configuration.AnswerConfigurationRoleNotInToc}
 {include:document="Answers_Initialization_Plugin.wiki"}
 {include:document="Answers_Email_Templates_Configuration.wiki"}
 
@@ -64,7 +64,6 @@ h3. Poll Configuration {anchor:id=KSref.Configuration.PollConfigurationRoleNotIn
 
 h2. Data Injectors {anchor:id=KSref.Configuration.Data_Injector_Service}
 {include:document="Data_Injector_Service.wiki"}
-
 
 h1. Developer reference {anchor:id=KSref.DeveloperReference}
 {include:document="Developer_reference.wiki"}
@@ -78,7 +77,7 @@ h2. Internal API {anchor:id=KSref.DeveloperReference.InternalAPI}
 h2. FAQ Template Configuration {anchor:id=KSref.DeveloperReference.FAQTemplateConfiguration}
 {include:document="template-configuration-plugin.wiki"}
 
-h2. Extend actions over a wiki page from external jars {anchor:id=KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars}
+h2. Actions over a wiki page from external jars {anchor:id=KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars}
 {include:document="Extend_actions_over_a_wiki_page_from_external_jars.wiki"}
 
 h2. JCR structure {anchor:id=KSref.JCRStructure}

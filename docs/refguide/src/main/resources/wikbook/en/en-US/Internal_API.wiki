@@ -1,9 +1,8 @@
- This section describes REST Services of internal APIs which applications of Knowledge use to communicate with the server. There are the following applications:
+This section describes REST Services of internal APIs which applications of Knowledge use to communicate with the server. There are the following applications:
 
 * [Forum application|#KSref.InternalAPIs.ForumApplication]
 * [Answers application|#KSref.InternalAPIs.AnswersApplication]
 * [Polls application|#KSref.InternalAPIs.PollsApplication]
-
 
 {docbook}
 <para xml:id="KSref.InternalAPIs.ForumApplication">
@@ -88,5 +87,5 @@ Use the following APIs to build all functions of the Answers application:
 {docbook}
 * [Extension points|#KSref.DeveloperReference.ExtensionPoints]
 * [FAQ Template Configuration|#KSref.DeveloperReference.FAQTemplateConfiguration]
-* [Extend actions over a wiki page from external jars|#KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars]
+* [Actions over a wiki page from external jars|#KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars]
 * [JCR structure|#KSref.JCRStructure]

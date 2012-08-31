@@ -3,20 +3,20 @@
     The intended readers of this guide are developers who want to develop Knowledge functions of eXo Platform 3.5.
 </para>
 <para>
-    This guide consists of the following main content:
+    This guide is divided into the following chapters:
 </para>
 <itemizedlist>
 <listitem>
-<para><emphasis role="bold"><link linkend="KSref.Applications">Applications</link></emphasis>: Provides the comprehensive view about Knowledge applications of eXo Platform 3.5.</para>
+<para><emphasis role="bold"><link linkend="KSref.Applications">Applications</link></emphasis></para>
+<para>The comprehensive view about 2 main applications (including Portlets and Gadgets) of Knowledge.</para>
 </listitem>
 <listitem>
-<para><emphasis role="bold"><link linkend="KSref.Configuration">Configuration</link></emphasis>: Provides the configuration of Knowledge components, external component plugins and other configurations.</para>
+<para><emphasis role="bold"><link linkend="KSref.Configuration">Configuration</link></emphasis></para>
+<para>Details of configurations in Knowledge, including components, external component plugins and data injectors.</para>
 </listitem>
 <listitem>
-<para><emphasis role="bold"><link linkend="KSref.JCRStructure">JCR structure</link></emphasis>: Provides the JCR structure of each Knowledge applications.</para>
-</listitem>
-<listitem>
-<para><emphasis role="bold"><link linkend="KSref.DeveloperReference">Developer reference</link></emphasis>: Provides the knowledge about overridden components and public REST APIs implemented in Knowledge functions of eXo Platform 3.5.</para>
+<para><emphasis role="bold"><link linkend="KSref.DeveloperReference">Developer reference</link></emphasis></para>
+<para>Details of extension points, internal API, FAQ Template Configuration, actions over a wiki page from external jars and Knowledge JCR structure.</para>
 </listitem>
 </itemizedlist>
 </abstract>

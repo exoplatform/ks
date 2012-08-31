@@ -6,21 +6,21 @@
           <emphasis role="bold">
             <link linkend="KSref.Extend_actions_over_a_wiki_page_from_external_jars.Create_a_new_project_for_action_extension">Create a new project for action extension</link>
           </emphasis> </para>
-          <para>Instruction on how to create a new project for action extension and an example of the <filename>pom.xml</filename> file.</para>
+          <para>Introduction to the structure of a new project and content of the <filename>pom.xml</filename> file.</para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
             <link linkend="KSref.Extend_actions_over_a_wiki_page_from_external_jars.Create_new_actions_and_their_corresponding_listeners">Create new actions and their corresponding listeners</link>
           </emphasis> </para>
-          <para>Instruction on how to create new actions and their corresponding listeners via modifying the <classname>ViewSourceActionComponent</classname> class.</para>
+          <para>Details of modifying the <classname>ViewSourceActionComponent</classname> class that allows creating new actions and their corresponding listeners.</para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
             <link linkend="KSref.Extend_actions_over_a_wiki_page_from_external_jars.Register_new_actions_with_UIExtensionManager">Register new actions with UIExtensionManager</link>
           </emphasis> </para>
-          <para>Instruction on how to register new actions with <methodname>UIExtensionManage</methodname> via the <filename>configuration.xml</filename> file.</para>
+          <para>Details of modifying the <filename>configuration.xml</filename> file that allows registering new actions with <methodname>UIExtensionManage</methodname>, and information of the types of action extensions.</para>
       </listitem>
       <listitem>
         <para>
@@ -35,9 +35,20 @@
 
 {anchor:id=KSref.Extend_actions_over_a_wiki_page_from_external_jars.Overview}
 
-The toolbar in Wiki is built basing on the UI Extension Framework, so you can add your own actions packaged in external jars to it.
+The toolbar in Wiki is built basing on the UI Extension Framework, so you can add your own actions packaged in external jars to it. After reading this section, you will know how to extend actions over a wiki page from external jars.
 {anchor:id=KSref.Extend_actions_over_a_wiki_page_from_external_jars.How_to_add_action_extension_to_the_Wiki_toolbar}
-This section shows you how to add a new action to the Wiki toolbar to view the Wiki markup of a page.
+
+{docbook}
+<para>
+<prompt>
+   <emphasis role="bold">See also</emphasis>
+</prompt>
+</para>
+{docbook}
+* [Extension points|#KSref.DeveloperReference.ExtensionPoints]
+* [Internal API|#KSref.DeveloperReference.InternalAPI]
+* [FAQ Template Configuration|#KSref.DeveloperReference.FAQTemplateConfiguration]
+* [JCR structure|#KSref.JCRStructure]
 
 h1. Create a new project for action extension  {anchor:id=KSref.Extend_actions_over_a_wiki_page_from_external_jars.Create_a_new_project_for_action_extensionRoleNotInToc}
 

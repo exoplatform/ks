@@ -6,14 +6,14 @@
           <emphasis role="bold">
             <link linkend="KSref.Configuration.Data_Injectior_Service.Configuration">Configuration</link>
           </emphasis> </para>
-          <para>Information on how to activate the <emphasis>DataInjectorService</emphasis> component and the configuration of plugins attached to it.</para>
+          <para>Instructions on how to activate the <emphasis>DataInjectorService</emphasis> component and the detailed configuration of plugins (including ForumDataInjector, WikiDatainjector and AnswerDataInjector) attached to it.</para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
-            <link linkend="CSref.Configuration.DataInjectorService.CalendarDataInjector"> How to use</link>
+            <link linkend="CSref.Configuration.DataInjectorService.CalendarDataInjector">How to use</link>
           </emphasis> </para>
-          <para>Instruction on how to use the plugins of <emphasis>DataInjectorService</emphasis> component to inject/reject data.</para>
+          <para>Instructions on how to use plugins of the <emphasis>DataInjectorService</emphasis> component to inject/reject data.</para>
       </listitem>
     </itemizedlist>
 	</highlights>

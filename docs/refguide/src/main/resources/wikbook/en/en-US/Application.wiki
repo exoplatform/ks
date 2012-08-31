@@ -7,14 +7,14 @@
           <emphasis role="bold">
             <link linkend="KSref.Applications.Portlets">Portlets</link>
           </emphasis> </para>
-          <para>Provision of a list of all porlets used in Knowledge. </para>
+          <para>Details (package, portlet.xml, and portlet preferences) of all portlets used in Knowledge, including Forum, Answers, FAQ and Polls. </para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
             <link linkend="KSref.Applications.Gadgets">Gadgets</link>
           </emphasis> </para>
-          <para>Provision of a list of all gadgets used in Knowledge. </para>
+          <para>Introduction to Poll Gadget, its preferences and links to used REST services. </para>
       </listitem>
     </itemizedlist>
   <para>These applications are packaged as Web application archives (WARs).

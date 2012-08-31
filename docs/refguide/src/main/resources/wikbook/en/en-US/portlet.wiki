@@ -6,35 +6,33 @@
           <emphasis role="bold">
             <link linkend="KSref.Applications.Forum Portlet">Forum Portlet</link>
           </emphasis> </para>
-          <para>The application to post and read messages on different topics. </para>
+          <para>Details (including package, portlet.xml, preferences and events) of the Forum application which allows posting and reading messages on different topics. </para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
             <link linkend="KSref.Applications.Answers Portlet">Answers Portlet</link>
           </emphasis> </para>
-          <para>The application to create answers, reply and manage questions.</para>
+          <para>Details (including package, portlet.xml, preferences) of the Answers application that allows creating answers, replying and managing questions.</para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
             <link linkend="KSref.Applications.FAQ Portlet">FAQ Portlet</link>
           </emphasis> </para>
-          <para>The application to show questions and answers.</para>
+          <para>Details (including package, portlet.xml, preferences) of the FAQ application which allows showing questions and answers.</para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
             <link linkend="KSref.Applications.Polls Portlet">Polls Portlet</link>
           </emphasis> </para>
-          <para>The application for users to vote any ideas, or activities.</para>
+          <para>Details (including package, portlet.xml, preferences) of the Poll application which allows voting any ideas, or activities.</para>
       </listitem>
     </itemizedlist>
     <para></para>
 	</highlights>
 {docbook}
-
-This section provides all information, such as description, package, preferences, and _portlet.xml_ about the portlet application included in Knowledge.
 
 {docbook}
 <para>

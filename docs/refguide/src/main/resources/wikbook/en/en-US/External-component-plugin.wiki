@@ -6,42 +6,42 @@
           <emphasis role="bold">
             <link linkend="KSref.Configuration.EditDataConfiguration">Init data configuration</link>
           </emphasis> </para>
-          <para>Information about plugin components that define the default data in <filename>.xml</filename> files.</para>
+          <para>Introduction to the Init data plug-in that defines the default data in the <filename>.xml</filename> files, and instructions on how to initialize the conf-part for loading repository-configuration.xml/workspace name and repository name in storage-configuration.xml/data.</para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
             <link linkend="KSref.Configuration.RolesConfiguration">Roles Configuration</link>
           </emphasis> </para>
-          <para>Information about the <methodname>RoleRulePlugin</methodname> plugin that defines roles of users in the Forum application of eXo Platform.</para>
+          <para>Details of the <methodname>RoleRulePlugin</methodname> plugin that defines roles of users in the Forum application of eXo Platform.</para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
             <link linkend="KSref.Configuration.ProfileProvider">ProfileProvider Configuration</link>
           </emphasis> </para>
-          <para>Information about the <methodname>ProfileProvider</methodname> plugin that allows retrieving personal information of users.</para>
+          <para>Introduction to the <methodname>ProfileProvider</methodname> plugin that allows retrieving personal information of users, how to configure the profile-configuration.xml file and to get the ContactProvider.</para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
             <link linkend="KSref.Configuration.ForumConfiguration">Forum Configuration</link>
           </emphasis> </para>
-          <para>Information about plugin components that define data of the Forum application.</para>
+          <para>Information and detailed configurations of plugin components that define data of the Forum application, including: BBCode, Forums Initializer, Auto-prune, User Statistics, Statistic Data, and Default User Profile.</para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
-            <link linkend="KSref.Configuration.AnswerConfiguration">Answer Configuration</link>
+            <link linkend="KSref.Configuration.AnswerConfiguration">Answers Configuration</link>
           </emphasis> </para>
-          <para>Information about plugin components that define data of the Answer application.</para>
+          <para>Information of the plugin components that define data of the Answers application, including: Answers Initializer and Answers Email Templates.</para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
             <link linkend="KSref.Configuration.AnswersEmailTemplatesConfiguration">Poll Configuration</link>
           </emphasis> </para>
-          <para>Information about plugin components that define the default Poll data in the <filename>.xml</filename> file in Knowledge.</para>
+          <para>Details of the configurations of default Poll data.</para>
       </listitem>
     </itemizedlist>
 	</highlights>

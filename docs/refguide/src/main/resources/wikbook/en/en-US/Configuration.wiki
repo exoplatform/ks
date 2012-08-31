@@ -7,14 +7,14 @@
           <emphasis role="bold">
             <link linkend="KSref.Configuration.Components">Components</link>
           </emphasis> </para>
-          <para>Description of the services which provide low-level functionality for UI components of Knowledge. </para>
+          <para>Basic information of 3 types of components which are used to implement the Knowledge applications: Knowledge, Forum, Answers and Polls. </para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
             <link linkend="KSref.Configuration.External-component-plugins">External component plugins</link>
           </emphasis> </para>
-          <para>Description of the main component plugins used in Knowledge. Each part supplies an example
+          <para>Description of the main external component plugins used in Knowledge: Init data, Roles, ProfileProvider, Forum, Answer, and Poll. Each part supplies an example
            configuration with the explanation about ini-params so you can know how to use these plugins. </para>
       </listitem>
       <listitem>
@@ -22,7 +22,7 @@
           <emphasis role="bold">
             <link linkend="KSref.Configuration.Data_Injector_Service">Data Injectors</link>
           </emphasis> </para>
-          <para>Description of data injectors used to create data for performance test in Knowledge and how to use them.</para>
+          <para>Introduction to the data injectors which are used to create data for performance test in Knowledge, their configurations and how to use them.</para>
       </listitem>
     </itemizedlist>
 	</abstract>

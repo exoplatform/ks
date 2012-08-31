@@ -4,23 +4,23 @@
       <listitem>
         <para>
           <emphasis role="bold">
-            <link linkend="KSref.FAQTemplateConfiguration.ConfigurationPlugin"> Configuration plug-in</link>
-          </emphasis> </para>
-          <para>The plugin which is used to automatically set up a default template for the FAQ portlet.</para>
+            <link linkend="KSref.FAQTemplateConfiguration.ConfigurationPlugin">Configuration plug-in</link>
+          </emphasis></para>
+          <para>Information of the configuration plug-in which is used to automatically set up a default template for the FAQ portlet, and details of properties of the template configuration plug-in.</para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
             <link linkend="KSref.FAQTemplateConfiguration.HowToChangeLookAndFeel">How to change look and feel</link>
           </emphasis> </para>
-          <para>Ways to change the template FAQ viewer, either by using plug-in or by using the <emphasis>Edit</emphasis> mode. </para>
+          <para>Instructions on how to change the template FAQ viewer, either by using plug-in or by using the <emphasis>Edit</emphasis> mode.</para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
             <link linkend="KSref.FAQTemplateConfiguration.APIsProvidedByUIComponent">API provided by the UIComponent (UIViewer.java)</link>
           </emphasis> </para>
-          <para>Information about API provided by the UIComponent.</para>
+          <para>Introduction to UIViewer, details of APIs and classes (CategoryInfo, QuestionInfo, SubCategoryInfo).</para>
       </listitem>
     </itemizedlist>
 	</highlights>
@@ -35,7 +35,7 @@
 {docbook}
 * [Extension points|#KSref.DeveloperReference.ExtensionPoints]
 * [Internal API|#KSref.DeveloperReference.InternalAPI]
-* [Extend actions over a wiki page from external jars|#KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars]
+* [Actions over a wiki page from external jars|#KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars]
 * [JCR structure|#KSref.JCRStructure]
 
 h1. Configuration plug-in {anchor:id=KSref.FAQTemplateConfiguration.ConfigurationPluginRoleNotInToc}
@@ -45,7 +45,7 @@ The template configuration plug-in is configured in the _templates-configuration
 
 In details:
 
-At runtime of the FAQ Service, _FAQService_ component is called, then _templates-configuration.xml_ file is executed. The component-plugin named _addTemplatePlugin_ will be referred to _org.exoplatform.faq.service.TemplatePlugin- to execute some objects and create default data for the *Forum* application.
+At runtime of the FAQ Service, _FAQService_ component is called, then _templates-configuration.xml_ file is executed. The component-plugin named _addTemplatePlugin_ will be referred to _org.exoplatform.faq.service.TemplatePlugin_ to execute some objects and create default data for the *Forum* application.
 
 {code:xml}
 <external-component-plugins>
@@ -126,7 +126,7 @@ h1. API provided by the UIComponent (UIViewer.java) {anchor:id=KSref.FAQTemplate
 * List of APIs:
 
 ||Function name || Param || Return || Description||
-|*getCategoryInfo* | Empty | CategoryInfo object | Get the object *CategoryInfo*|
+|*getCategoryInfo* | Empty | CategoryInfo object | Get the object *CategoryInfo*.|
 |*arrangeList* |{{ (List< String > list)}}: List of path | A new list is arranged | Arrange a list of path. |
 |*render* | {{(String)}}: The content of answers or comments | A new string is converted by function render | Render the content of answers or comments. |
 

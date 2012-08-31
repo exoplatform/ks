@@ -7,7 +7,7 @@ The following is the list of applications in Knowledge and the corresponding com
 | *Answers* | {{KSDataLocation, AnswerServiceImpl}} | Initialize default data of the Answers portlet. |
 | *Polls* | {{KSDataLocation, PollServiceImpl}} | Initialize default data of the Polls portlet. |
 
-In this section, you will understand how to initialize data via the sample configurations below.
+In this section, you will understand how to initialize data via the sample configurations later.
 
 h1. Initialize the conf-part for loading repository-configuration.xml {anchor:id=KSref.InitDataConfiguration.InitializeConf-partForLoading_repository-configuration.xml_}
 

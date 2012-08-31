@@ -6,28 +6,28 @@
           <emphasis role="bold">
             <link linkend="KSref.JCRStructure.ForumJCRStructure">Forum JCR structure</link>
           </emphasis> </para>
-          <para>Information on the Forum JCR structure, such as nodes, child nodes, node types and their properties.</para>
+          <para>Introduction to the whole JCR structure of Forum, and comprehensive knowledge of its main nodes: Forum System and Forum Data.</para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
             <link linkend="KSref.JCRStructure.FAQJCRStructure">FAQ JCR structure</link>
           </emphasis> </para>
-          <para>Information on the FAQ JCR structure, such as nodes, child nodes, node types and their properties.</para>
+          <para>Introduction to the whole JCR structure of FAQ, and comprehensive knowledge of its main nodes: Category, FAQ setting, Template for FAQ.</para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
             <link linkend="KSref.JCRStructure.PollJCRStructure">Poll JCR structure</link>
           </emphasis> </para>
-          <para>Information on the Poll JCR structure, such as nodes, child nodes, node types and their properties.</para>
+          <para>Introduction to the whole JCR structure of Poll, and properties of its node type (exo:polls).</para>
       </listitem>
       <listitem>
         <para>
           <emphasis role="bold">
-            <link linkend="KSref.JCRStructure.WikiJCR">Wiki JCR structure</link>
+            <link linkend="KSref.JCRStructure.WikiJCRStructure">Wiki JCR structure</link>
           </emphasis> </para>
-          <para>Information on the Wiki JCR structure, such as nodes, child nodes, node types and their properties.</para>
+          <para>Introduction to the whole JCR structure of Wiki, and comprehensive knowledge of its main nodes: Wiki data and Wikimetadata.</para>
       </listitem>
     </itemizedlist>
     <para>Knowledge is a JCR-based product which uses JCR to store data. The root node of Knowledge is <emphasis>exo:application</emphasis> which includes these child nodes: <emphasis>exo:forumHome</emphasis>, <emphasis>exo:faqHome</emphasis>.
@@ -46,7 +46,7 @@
 * [Extension points|#KSref.DeveloperReference.ExtensionPoints]
 * [Internal API|#KSref.DeveloperReference.InternalAPI]
 * [FAQ Template Configuration|#KSref.DeveloperReference.FAQTemplateConfiguration]
-* [Extend actions over a wiki page from external jars|#KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars]
+* [Actions over a wiki page from external jars|#KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars]
 
 h1. Forum JCR structure {anchor:id=KSref.JCRStructure.ForumJCRStructureRoleNotInToc}
 Forum is a JCR-based application. The Forum data are saved in eXo-JCR under the Forum Service data directory. The whole JCR structure of Forum can be visualized in the diagram below:
