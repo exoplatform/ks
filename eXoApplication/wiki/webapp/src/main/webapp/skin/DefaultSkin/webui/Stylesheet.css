@@ -1738,3 +1738,50 @@ table.UIFormGrid div.Id {
   background-color: whitesmoke;
   cursor: pointer;
 }
+
+@media print
+{
+  body {
+    position:relative;
+    overflow:visible  !important;
+  }   
+  body * {
+	visibility: hidden;
+  }
+  #UIWikiPageContentArea, #UIWikiPageContentArea * {
+    visibility:visible;
+    overflow: visible !important;
+  }
+  #UIWikiPageContentArea {
+	visibility:visible;
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+  }
+  #UIWikiPageControlArea_PageToolBar, #UIWikiPageControlArea_PageToolBar * {
+    visibility:hidden;
+  }
+  .UIWikiPortlet .UIWikiMiddleArea .UIWikiPageContainer {
+    position: static !important;
+  }
+  .UIWikiPortlet .WikiLayout {
+    position: static !important;
+  }
+  .UILeftContainerArea {
+	  border: solid 1px magenta;
+	  height: auto !important;
+	  min-height:0px !important;
+  }
+  .WikiLayout {
+	  height: auto !important;
+  }
+  .Spliter {
+	  height: auto !important;
+  }
+  .UIRightContainerArea {
+	  overflow: visible !important;
+	  width: auto !important;
+	  height: auto !important;
+  }
+}
