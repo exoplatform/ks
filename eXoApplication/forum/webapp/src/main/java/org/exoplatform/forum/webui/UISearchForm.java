@@ -413,7 +413,7 @@ public class UISearchForm extends BaseForumForm implements UISelector {
         return;
       }      
       ForumEventQuery eventQuery = new ForumEventQuery();
-      eventQuery.setListOfUser(UserHelper.getAllGroupAndMembershipOfUser(uiForm.userProfile.getUserId()));
+      eventQuery.setListOfUser(UserHelper.getAllGroupAndMembershipOfUser(null));
       eventQuery.setUserPermission(uiForm.userProfile.getUserRole());
       eventQuery.setType(type);
       eventQuery.setKeyValue(keyValue);

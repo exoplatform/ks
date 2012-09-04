@@ -132,13 +132,13 @@ public class TestForumEventQuery extends TestCase {
     assertEquals(selector + predicate + "]", eventQuery.getPathQuery(categoryIds));
     // sub case 2: close is true
     eventQuery.setIsClose("true");
-    List<String> listOfUser = Arrays.asList(new String[] { "john", "/exo", "/exo:moderator" });// userName, group and membership of this user.
+    List<String> listOfUser = Arrays.asList(new String[] { "john", "/foo/bar", "bez:/foo/dez" });// userName, group and membership of this user.
     eventQuery.setListOfUser(listOfUser);
-    predicate = tempPredicate + " and (@exo:isClosed='true' and (@exo:moderators='john' or @exo:moderators='john' or @exo:moderators='/exo' or @exo:moderators='/exo:moderator'))";
+    predicate = tempPredicate + " and (@exo:isClosed='true' and (@exo:moderators = 'john' or @exo:moderators = '/foo/bar' or @exo:moderators = '*:/foo/bar' or @exo:moderators = 'bez:/foo/dez' or @exo:moderators = '*:/foo/dez'))";
     assertEquals(selector + predicate + "]", eventQuery.getPathQuery(categoryIds));
     // sub case 3: close is all
     eventQuery.setIsClose("all");
-    predicate = tempPredicate + " and (@exo:isClosed='false' or @exo:moderators='john' or @exo:moderators='/exo' or @exo:moderators='/exo:moderator')";
+    predicate = tempPredicate + " and (@exo:isClosed='false' or (@exo:moderators = 'john' or @exo:moderators = '/foo/bar' or @exo:moderators = '*:/foo/bar' or @exo:moderators = 'bez:/foo/dez' or @exo:moderators = '*:/foo/dez'))";
     assertEquals(selector + predicate + "]", eventQuery.getPathQuery(categoryIds));
 
     // set Lock, if isLock = 'all', not build new x-path
@@ -260,10 +260,10 @@ public class TestForumEventQuery extends TestCase {
     assertEquals(selector + predicate + "]", eventQuery.getPathQuery(categoryIds));
 
     // check can view for normal user and guest
-    List<String> listOfUser = Arrays.asList(new String[] { "john", "/exo", "/exo:moderator" });// userName, group and membership of this user.
+    List<String> listOfUser = Arrays.asList(new String[] { "john", "/foo/bar", "bez:/foo/dez" });// userName, group and membership of this user.
     eventQuery.setListOfUser(listOfUser);
     eventQuery.setUserPermission(2);
-    predicate += " and (@exo:isApproved='true' and @exo:isActive='true' and @exo:isWaiting='false' and @exo:isActiveByForum='true')" + " and (not(@exo:canView) or @exo:canView='' or @exo:canView='john' or @exo:canView='/exo' or @exo:canView='/exo:moderator' or @exo:canView=' ')";
+    predicate += " and (@exo:isApproved='true' and @exo:isActive='true' and @exo:isWaiting='false' and @exo:isActiveByForum='true') and ((not(@exo:canView) or @exo:canView='' or @exo:canView=' ') or @exo:canView = 'john' or @exo:canView = '/foo/bar' or @exo:canView = '*:/foo/bar' or @exo:canView = 'bez:/foo/dez' or @exo:canView = '*:/foo/dez' or @exo:owner='john')";
     assertEquals(selector + predicate + "]", eventQuery.getPathQuery(categoryIds));
 
     // set category Scoping
@@ -275,12 +275,12 @@ public class TestForumEventQuery extends TestCase {
   public void testQuerySearchPost() {
     List<String> categoryIds = new ArrayList<String>();
     String selector = "/jcr:root/forumPath//element(*,exo:post)";
-    String postPrivate = " and (@exo:userPrivate='exoUserPri' or @exo:userPrivate='john' or @exo:userPrivate='/exo' or @exo:userPrivate='/exo:moderator') and (@exo:isFirstPost='false')";
+    String postPrivate = " and (@exo:userPrivate='exoUserPri' or @exo:userPrivate='john' or @exo:userPrivate='/foo/bar' or @exo:userPrivate='bez:/foo/dez') and (@exo:isFirstPost='false')";
     ForumEventQuery eventQuery = new ForumEventQuery();
     String predicate = "";
     eventQuery.setType(Utils.POST);
     eventQuery.setPath("/forumPath");
-    List<String> listOfUser = Arrays.asList(new String[] { "john", "/exo", "/exo:moderator" });// userName, group and membership of this user.
+    List<String> listOfUser = Arrays.asList(new String[] { "john", "/foo/bar", "bez:/foo/dez" });// userName, group and membership of this user.
     eventQuery.setListOfUser(listOfUser);
     eventQuery.setUserPermission(0);
     // not conditions

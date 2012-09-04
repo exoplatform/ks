@@ -612,10 +612,9 @@ public class UIForumPortlet extends UIPortletApplication {
   }
 
   public boolean checkCanView(Category cate, Forum forum, Topic topic) throws Exception {
-    String userId = getUserProfile().getUserId();
-    if (userProfile.getUserRole() == 0)
+    if (getUserProfile().getUserRole() == 0)
       return true;
-    List<String> userBound = UserHelper.getAllGroupAndMembershipOfUser(userId);
+    List<String> userBound = UserHelper.getAllGroupAndMembershipOfUser(null);
     String[] viewer = cate.getUserPrivate();
     if (isArrayNotNull(viewer)) {
       if (!Utils.hasPermission(Arrays.asList(viewer), userBound))

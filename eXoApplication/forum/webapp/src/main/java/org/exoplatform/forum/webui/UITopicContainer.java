@@ -391,17 +391,12 @@ public class UITopicContainer extends UIForumKeepStickPageIterator {
     }
     if (!isModerator) {
       strQuery.append("@").append(Utils.EXO_IS_WAITING).append("='false' and @").append(Utils.EXO_IS_ACTIVE).append("='true' and @")
-              .append(Utils.EXO_IS_CLOSED).append("='false' and (not(@").append(Utils.EXO_CAN_VIEW).append(") or @").append(Utils.EXO_CAN_VIEW)
-              .append("='' or @").append(Utils.EXO_CAN_VIEW).append("=' ' or @").append(Utils.EXO_OWNER).append("='").append(userId).append("'");
-      for (String string : UserHelper.getAllGroupAndMembershipOfUser(userId)) {
-        strQuery.append(" or @").append(Utils.EXO_CAN_VIEW).append("='").append(string).append("'");
-      }
-      strQuery.append(")");
+              .append(Utils.EXO_IS_CLOSED).append("='false' and (")
+      .append(Utils.buildXpathHasProperty(Utils.EXO_CAN_VIEW)).append(" or ")
+      .append(Utils.buildXpathByUserInfo(Utils.EXO_CAN_VIEW, UserHelper.getAllGroupAndMembershipOfUser(null))).append(")");
 
       if (this.forum.getIsModerateTopic()) {
-        if (!ForumUtils.isEmpty(strQuery.toString()))
-          strQuery.append(" and ");
-        strQuery.append("@").append(Utils.EXO_IS_APPROVED).append("='true'");
+        strQuery.append("  and  (@").append(Utils.EXO_IS_APPROVED).append("='true')");
       }
 
       List<String> listUser = new ArrayList<String>();

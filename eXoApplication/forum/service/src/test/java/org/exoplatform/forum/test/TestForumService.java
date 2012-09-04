@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -37,10 +38,14 @@ import org.exoplatform.forum.service.TopicType;
 import org.exoplatform.forum.service.UserProfile;
 import org.exoplatform.forum.service.Utils;
 import org.exoplatform.forum.service.Watch;
+import org.exoplatform.ks.common.UserHelper;
 import org.exoplatform.ks.common.jcr.KSDataLocation;
 import org.exoplatform.ks.common.jcr.PropertyReader;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.util.IdGenerator;
+import org.exoplatform.services.security.ConversationState;
+import org.exoplatform.services.security.Identity;
+import org.exoplatform.services.security.MembershipEntry;
 
 /**
  * Created by The eXo Platform SARL
@@ -55,6 +60,8 @@ public class TestForumService extends ForumServiceTestCase {
 
   private static final String USER_JOHN = "john";
 
+  private Collection<MembershipEntry> membershipEntries = new ArrayList<MembershipEntry>();
+  
   public TestForumService() throws Exception {
     super();
   }
@@ -322,12 +329,16 @@ public class TestForumService extends ForumServiceTestCase {
     // add 10 Topics
     List<Topic> list = new ArrayList<Topic>();
     Topic topic;
-    for (int i = 0; i < 10; i++) {
-      topic = createdTopic("Owner");
+    for (int i = 0; i < 9; i++) {
+      topic = createdTopic(USER_ROOT);
+      topic.setCanView(new String[]{USER_ROOT, "*:/foo/zed"});
       list.add(topic);
       listTopicId.add(topic.getId());
       forumService_.saveTopic(cat.getId(), forum.getId(), topic, true, false, new MessageBuilder());
     }
+    topic = createdTopic(USER_JOHN);
+    listTopicId.add(topic.getId());
+    forumService_.saveTopic(cat.getId(), forum.getId(), topic, true, false, new MessageBuilder());
     assertEquals(10, forumService_.getForum(cat.getId(), forum.getId()).getTopicCount());
 
     // get Topic - topic in position 8
@@ -359,13 +370,32 @@ public class TestForumService extends ForumServiceTestCase {
     List<Topic> listTopic = pagelist.getPage(1);
     assertEquals("Available page not equals 5", listTopic.size(), 5);
     assertEquals(pagelist.getAvailablePage(), 2);
+    
+    // get Page topic has check permission.
+    setMembershipEntry("/foo/zed", "member", true);
+    loginUser(USER_DEMO);
+    
+    StringBuilder query = new StringBuilder();
+    String strQuery = query.append("(").append(Utils.buildXpathHasProperty(Utils.EXO_CAN_VIEW)).append(" or ").toString();
+    String buildQueryViewer = Utils.buildXpathByUserInfo(Utils.EXO_CAN_VIEW, UserHelper.getAllGroupAndMembershipOfUser(null));
+    buildQueryViewer += " or @" + Utils.EXO_OWNER + "='" + USER_DEMO + "')";
+    pagelist = forumService_.getPageTopic(cat.getId(), forum.getId(), strQuery + buildQueryViewer, "");
+    assertEquals(10, pagelist.getAvailable());
+    
+    setMembershipEntry("/foo/bar", "member", true);
+    loginUser(USER_JOHN);
 
+    buildQueryViewer = Utils.buildXpathByUserInfo(Utils.EXO_CAN_VIEW, UserHelper.getAllGroupAndMembershipOfUser(null));
+    buildQueryViewer += " or @" + Utils.EXO_OWNER + "='" + USER_JOHN + "')";
+    pagelist = forumService_.getPageTopic(cat.getId(), forum.getId(), strQuery + buildQueryViewer, "");
+    assertEquals(1, pagelist.getAvailable());
+    
     // get Topic By User
-    topic = createdTopic("demo");
+    topic = createdTopic(USER_DEMO);
     forumService_.saveTopic(cat.getId(), forum.getId(), topic, true, false, new MessageBuilder());
-    // We have 11 topic: 10 by Owner and 1 by demo
-    pagelist = forumService_.getPageTopicByUser("Owner", true, "");
-    assertEquals(pagelist.getAvailable(), 10);
+    // We have 11 topic: 9 by root, 1 by john and 1 by demo 
+    pagelist = forumService_.getPageTopicByUser(USER_ROOT, true, "");
+    assertEquals(9, pagelist.getAvailable());
 
     // set 5 topics have last post is 2 days.
     Calendar cal = Calendar.getInstance();
@@ -955,5 +985,19 @@ public class TestForumService extends ForumServiceTestCase {
       return (Forum) object;
     }
     return null;
+  }
+  
+  private void setMembershipEntry(String group, String membershipType, boolean isNew) {
+    MembershipEntry membershipEntry = new MembershipEntry(group, membershipType);
+    if(isNew) {
+      membershipEntries.clear();
+    }
+    membershipEntries.add(membershipEntry);
+  }
+
+  private void loginUser(String userId) {
+    Identity identity = new Identity(userId, membershipEntries);
+    ConversationState state = new ConversationState(identity);
+    ConversationState.setCurrent(state);
   }
 }

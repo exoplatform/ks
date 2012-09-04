@@ -383,6 +383,27 @@ public class TestUtils extends TestCase {
     assertEquals(expected, actual);
   }
 
+  public void testBuildXpathByUserInfo() {
+    // the property and listOfUser always not null.
+    String property = "exo:foo";
+    List<String> listOfUser = new ArrayList<String>();
+    String actual = Utils.buildXpathByUserInfo(property, listOfUser);
+    String expected = "";
+    assertEquals(expected, actual);
+    listOfUser.add("demo");
+    actual = Utils.buildXpathByUserInfo(property, listOfUser);
+    expected = "@exo:foo = 'demo'";
+    assertEquals(expected, actual);
+    listOfUser.add("/foo/bar");
+    actual = Utils.buildXpathByUserInfo(property, listOfUser);
+    expected = "@exo:foo = 'demo' or @exo:foo = '/foo/bar' or @exo:foo = '*:/foo/bar'";
+    listOfUser.add("member:/zed/bar");
+    actual = Utils.buildXpathByUserInfo(property, listOfUser);
+    expected = "@exo:foo = 'demo' or @exo:foo = '/foo/bar' or @exo:foo = '*:/foo/bar'" +
+               " or @exo:foo = 'member:/zed/bar' or @exo:foo = '*:/zed/bar'";
+    assertEquals(expected, actual);
+  }
+  
   public void testHasPermission() {
     List<String> l1 = Arrays.asList(" ");
     List<String> l2 = null;

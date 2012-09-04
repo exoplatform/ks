@@ -260,20 +260,15 @@ public class ForumEventQuery implements ForumNodeTypes {
             if (isAnd)
               stringBuffer.append(" and ");
             if (isClosed.equals("all")) {
-              stringBuffer.append("(@").append(EXO_IS_CLOSED).append("='false'");
-              for (String str : listOfUser) {
-                stringBuffer.append(" or @").append(EXO_MODERATORS).append("='").append(str).append("'");
-              }
-              stringBuffer.append(")");
+              stringBuffer.append("(@").append(EXO_IS_CLOSED).append("='false' or (")
+                          .append(Utils.buildXpathByUserInfo(EXO_MODERATORS, listOfUser))
+                          .append("))");
             } else if (isClosed.equals("false")) {
               stringBuffer.append("(@").append(EXO_IS_CLOSED).append("='").append(isClosed).append("')");
               isEmpty = false;
             } else if (isClosed.equals("true")) {
-              stringBuffer.append("(@").append(EXO_IS_CLOSED).append("='").append(isClosed).append("' and (@")
-                                       .append(EXO_MODERATORS).append("='").append(listOfUser.get(0)).append("'");
-              for (String str : listOfUser) {
-                stringBuffer.append(" or @").append(EXO_MODERATORS).append("='").append(str).append("'");
-              }
+              stringBuffer.append("(@").append(EXO_IS_CLOSED).append("='").append(isClosed).append("' and (")
+                                       .append(Utils.buildXpathByUserInfo(EXO_MODERATORS, listOfUser));
               stringBuffer.append("))");
               isEmpty = false;
             }
@@ -356,16 +351,16 @@ public class ForumEventQuery implements ForumNodeTypes {
       }
       stringBuffer.append("(@").append(EXO_IS_APPROVED).append("='true' and @").append(EXO_IS_ACTIVE).append("='true' and @")
                   .append(EXO_IS_WAITING).append("='false' and @").append(EXO_IS_ACTIVE_BY_FORUM).append("='true')");
-      List<String> tempL = new ArrayList<String>();
-      tempL.addAll(listOfUser);
-      tempL.add(" ");
-      String s = Utils.propertyMatchAny("@"+EXO_CAN_VIEW, tempL);
-      if (s != null && s.length() > 0) {
+      
+      String str = Utils.buildXpathByUserInfo(EXO_CAN_VIEW, listOfUser);
+      if(!Utils.isEmpty(str)) {
         if (isAnd) {
           stringBuffer.append(" and ");
         }
-        stringBuffer.append(s);
+        stringBuffer.append("(").append(Utils.buildXpathHasProperty(EXO_CAN_VIEW)).append(" or ")
+        .append(str).append(" or @").append(EXO_OWNER).append("='").append(listOfUser.get(0)).append("'").append(")");
       }
+
     } 
     
     if (type.equals(Utils.POST)) {

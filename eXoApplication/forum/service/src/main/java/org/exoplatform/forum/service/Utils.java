@@ -459,6 +459,44 @@ public class Utils implements ForumNodeTypes {
   }
 
   /**
+   * build Xpath query for check has property existing. 
+   * @param String property is the property of node
+   * @return String
+   * @since 2.2.10
+   */
+  public static String buildXpathHasProperty(String property) {
+    StringBuilder builder = new StringBuilder();
+    if(!isEmpty(property)){
+      builder.append("(not(@").append(property).append(") or @").append(property).append("='' or @").append(property).append("=' ')");
+    }
+    return builder.toString();
+  }
+  
+  /**
+   * build Xpath query for case comparator with all properties of user and other property. 
+   * @param String property is the property of node
+   * @param List groupAndMembershipInfos is list all properties of user
+   * @return String
+   * @since 2.2.10
+   */
+  public static String buildXpathByUserInfo(String property, List<String> groupAndMembershipInfos) {
+    StringBuilder query = new StringBuilder();
+    for (String str : groupAndMembershipInfos) {
+      if(query.length() > 0) {
+        query.append(" or ");
+      }
+      query.append("@").append(property).append(" = '").append(str).append("'");
+      if (ForumServiceUtils.isGroupExpression(str)) {
+        query.append(" or @").append(property).append(" = '*:").append(str).append("'");
+      } else if(ForumServiceUtils.isMembershipExpression(str)){
+        str = str.substring(str.indexOf(":")+1);
+        query.append(" or @").append(property).append(" = '*:").append(str).append("'");
+      }
+    }
+    return query.toString();
+  }
+
+  /**
    * Checking a user who whether contained Users/MemberShip/Group ? 
    * @param listOfCanviewrs
    * @param listOfBoundUsers

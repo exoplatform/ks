@@ -95,7 +95,7 @@ public class UIForumLinks extends BaseForumForm {
     }
     StringBuffer buffQueryCate = new StringBuffer();
     StringBuffer buffQueryForum = new StringBuffer();
-    List<String> listUser = UserHelper.getAllGroupAndMembershipOfUser(this.userProfile.getUserId());
+    List<String> listUser = UserHelper.getAllGroupAndMembershipOfUser(null);
     if (this.userProfile.getUserRole() > 0) {
       // set Query for Forum
       StringBuffer mods = getStrQuery(listUser, Utils.EXO_MODERATORS);
