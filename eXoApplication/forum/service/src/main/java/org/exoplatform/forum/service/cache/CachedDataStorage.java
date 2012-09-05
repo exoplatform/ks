@@ -141,6 +141,17 @@ public class CachedDataStorage implements DataStorage, Startable {
     linkListData.select(new ScopeCacheSelector<LinkListKey, ListLinkData>());
   }
   
+  private void clearTopicCache(String topicPath) throws Exception {
+    topicData.remove(new TopicKey(topicPath, true));
+  }
+
+  private void clearTopicCache(String categoryId, String forumId, String topicId) throws Exception {
+    Topic topic = getTopic(categoryId, forumId, topicId, null);
+    if (topic != null) {
+      clearTopicCache(topic.getPath());
+    }
+  }
+  
   private void clearObjectCache(Forum forum, boolean isPutNewKey) throws Exception {
     if (forum != null) {
       ForumData forumData = new ForumData(forum);
@@ -669,6 +680,8 @@ public class CachedDataStorage implements DataStorage, Startable {
     storage.savePost(categoryId, forumId, topicId, post, isNew, messageBuilder);
     clearForumCache(categoryId, forumId, false);
     clearForumListCache();
+    clearTopicCache(categoryId, forumId, topicId);
+    statistic = null;
   }
 
   public void modifyPost(List<Post> posts, int type) {
@@ -679,6 +692,8 @@ public class CachedDataStorage implements DataStorage, Startable {
     try {
       clearForumCache(categoryId, forumId, false);
       clearForumListCache();
+      clearTopicCache(categoryId, forumId, topicId);
+      statistic = null;
     } catch (Exception e) {
       LOG.error(e.getMessage(), e);
     }
@@ -1204,7 +1219,11 @@ public class CachedDataStorage implements DataStorage, Startable {
   public void movePost(String[] postPaths, String destTopicPath, boolean isCreatNewTopic, String mailContent, String link) throws Exception {
     forumData.select(new ForumPathSelector(new String[] {Utils.getForumPath(postPaths[0]), Utils.getForumPath(destTopicPath)}, forumData));
     clearForumListCache();
+    for (String postPath : postPaths) {
+      clearTopicCache(postPath.substring(0, postPath.lastIndexOf("/")));
+    }
     storage.movePost(postPaths, destTopicPath, isCreatNewTopic, mailContent, link);
+    clearTopicCache(destTopicPath);
   }
 
   public void mergeTopic(String srcTopicPath, String destTopicPath, String mailContent, String link) throws Exception {
