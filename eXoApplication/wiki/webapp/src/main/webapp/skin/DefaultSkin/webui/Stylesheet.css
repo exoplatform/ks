@@ -520,6 +520,10 @@ table.UIFormGrid div.Id {
 	padding: 20px 10px 10px;
 }
 
+.UIWikiPortlet .UIWikiContentDisplay .WikiContent table {
+	width: auto;
+}
+
 .UIWikiPageVersionsList {
 	padding-bottom: 30px;
 }
@@ -680,6 +684,10 @@ table.UIFormGrid div.Id {
 	border-spacing: 0;
 	border: 1px solid #dddddd;
 	border-right: none;
+	width: auto;
+}
+
+.UIWikiPagePreview .UIWikiPortlet .WikiContent table {
 	width: auto;
 }
 
