@@ -24,18 +24,23 @@
         <include>org.xwiki.commons:xwiki-commons-properties</include>
         <include>org.xwiki.commons:xwiki-commons-xml</include>
         <include>org.xwiki.commons:xwiki-commons-script</include>
-        <include>org.xwiki.commons:xwiki-commons-legacy-component</include>
+        <include>org.xwiki.commons:xwiki-commons-text</include>
         <include>org.xwiki.rendering:xwiki-rendering-api</include>
         <include>org.xwiki.rendering:xwiki-rendering-syntax-wikimodel</include>
-        <include>org.xwiki.rendering:xwiki-rendering-syntax-xwiki2</include>
+        <include>org.xwiki.rendering:xwiki-rendering-syntax-xwiki20</include>
+        <include>org.xwiki.rendering:xwiki-rendering-syntax-xwiki21</include>
         <include>org.xwiki.rendering:xwiki-rendering-syntax-xhtml</include>
+        <include>org.xwiki.rendering:xwiki-rendering-syntax-confluence</include>
+        <include>org.xwiki.rendering:xwiki-rendering-syntax-plain</include>
         <include>org.xwiki.rendering:xwiki-rendering-macro-toc</include>
+        <include>org.xwiki.rendering:xwiki-rendering-macro-jira</include>
         <include>org.xwiki.rendering:xwiki-rendering-macro-box</include>
         <include>org.xwiki.rendering:xwiki-rendering-macro-message</include>
+        <include>org.xwiki.rendering:xwiki-rendering-wikimodel</include>
         <include>org.xwiki.platform:xwiki-platform-rendering-macro-code</include>
         <include>org.xwiki.platform:xwiki-platform-model</include>
         <include>org.xwiki.platform:xwiki-platform-wysiwyg-client</include>
-        <include>org.wikimodel:org.wikimodel.wem</include>
+        <include>org.jdom:jdom2</include>
         <include>org.suigeneris:jrcs.diff</include>
         <include>org.suigeneris:jrcs.rcs</include>
         <include>ecs:ecs</include>

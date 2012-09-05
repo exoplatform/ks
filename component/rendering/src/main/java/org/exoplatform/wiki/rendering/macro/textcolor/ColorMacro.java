@@ -73,7 +73,7 @@ public class ColorMacro extends AbstractMacro<ColorMacroParameters> {
   
   protected Parser getSyntaxParser(String syntaxId) throws MacroExecutionException {
     try {
-      return (Parser) componentManager.lookup(Parser.class, syntaxId);
+      return (Parser) componentManager.getInstance(Parser.class, syntaxId);
     } catch (ComponentLookupException e) {
       throw new MacroExecutionException("Failed to find source parser", e);
     }

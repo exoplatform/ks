@@ -65,7 +65,7 @@ public class DefaultLinkService implements LinkService {
    * entity reference.
    */
   @Inject
-  @Named("explicit/reference")
+  @Named("explicit")
   private EntityReferenceResolver<EntityReference> explicitReferenceEntityReferenceResolver;
 
   /**

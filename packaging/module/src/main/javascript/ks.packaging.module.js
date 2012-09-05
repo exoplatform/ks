@@ -80,21 +80,25 @@ function getModule(params) {
     addDependency(new Project("org.xwiki.commons", "xwiki-commons-properties", "jar",  "${org.xwiki.platform.version}")).
     addDependency(new Project("org.xwiki.commons", "xwiki-commons-xml", "jar",  "${org.xwiki.platform.version}")).
     addDependency(new Project("org.xwiki.commons", "xwiki-commons-script", "jar",  "${org.xwiki.platform.version}")).
-    addDependency(new Project("org.xwiki.commons", "xwiki-commons-legacy-component", "jar",  "${org.xwiki.platform.version}")).
+    addDependency(new Project("org.xwiki.commons", "xwiki-commons-text", "jar",  "${org.xwiki.platform.version}")).
     addDependency(new Project("org.xwiki.rendering", "xwiki-rendering-api", "jar",  "${org.xwiki.platform.version}")).
     addDependency(new Project("org.hibernate", "hibernate-validator", "jar",  "${hibernate-validator.version}")).
     addDependency(new Project("org.xwiki.rendering", "xwiki-rendering-syntax-wikimodel", "jar",  "${org.xwiki.platform.version}")).
-    addDependency(new Project("org.xwiki.rendering", "xwiki-rendering-syntax-xwiki2", "jar",  "${org.xwiki.platform.version}")).
+    addDependency(new Project("org.xwiki.rendering", "xwiki-rendering-syntax-xwiki20", "jar",  "${org.xwiki.platform.version}")).
+    addDependency(new Project("org.xwiki.rendering", "xwiki-rendering-syntax-xwiki21", "jar",  "${org.xwiki.platform.version}")).
     addDependency(new Project("org.xwiki.rendering", "xwiki-rendering-syntax-xhtml", "jar",  "${org.xwiki.platform.version}")).
+    addDependency(new Project("org.xwiki.rendering", "xwiki-rendering-syntax-confluence", "jar",  "${org.xwiki.platform.version}")).
+    addDependency(new Project("org.xwiki.rendering", "xwiki-rendering-syntax-plain", "jar",  "${org.xwiki.platform.version}")).        
     addDependency(new Project("org.xwiki.rendering", "xwiki-rendering-transformation-macro", "jar",  "${org.xwiki.platform.version}")).
     addDependency(new Project("org.xwiki.rendering", "xwiki-rendering-transformation-icon", "jar",  "${org.xwiki.platform.version}")).
     addDependency(new Project("org.xwiki.rendering", "xwiki-rendering-macro-toc", "jar",  "${org.xwiki.platform.version}")).
     addDependency(new Project("org.xwiki.rendering", "xwiki-rendering-macro-box", "jar",  "${org.xwiki.platform.version}")).
     addDependency(new Project("org.xwiki.rendering", "xwiki-rendering-macro-message", "jar",  "${org.xwiki.platform.version}")).
+    addDependency(new Project("org.xwiki.rendering", "xwiki-rendering-wikimodel", "jar",  "${org.xwiki.platform.version}")).    
     addDependency(new Project("org.xwiki.platform", "xwiki-platform-rendering-macro-code", "jar",  "${org.xwiki.platform.version}")).
     addDependency(new Project("org.xwiki.platform", "xwiki-platform-model", "jar",  "${org.xwiki.platform.version}")).
     addDependency(new Project("org.xwiki.platform", "xwiki-platform-wysiwyg-client", "jar",  "${org.xwiki.platform.version}")).
-    addDependency(new Project("org.wikimodel", "org.wikimodel.wem", "jar",  "${org.wikimodel.version}")).
+    addDependency(new Project("org.jdom", "jdom2", "jar",  "${org.jdom.version}")).
     addDependency(new Project("org.suigeneris", "jrcs.diff", "jar",  "${org.suigeneris.version}")).
     addDependency(new Project("org.suigeneris", "jrcs.rcs", "jar",  "${org.suigeneris.version}")).
     addDependency(new Project("ecs", "ecs", "jar",  "${ecs.version}"));

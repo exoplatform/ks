@@ -32,6 +32,8 @@ import org.xwiki.rendering.block.Block;
 import org.xwiki.rendering.block.GroupBlock;
 import org.xwiki.rendering.block.MacroBlock;
 import org.xwiki.rendering.block.XDOM;
+import org.xwiki.rendering.block.Block.Axes;
+import org.xwiki.rendering.block.match.ClassBlockMatcher;
 import org.xwiki.rendering.macro.AbstractMacro;
 import org.xwiki.rendering.macro.MacroExecutionException;
 import org.xwiki.rendering.parser.ParseException;
@@ -81,7 +83,7 @@ public class SectionMacro extends AbstractMacro<SectionMacroParameters> {
           + "] with Syntax parser [" + parser.getSyntax() + "]", e);
     }
 
-    List<MacroBlock> potentialColumns = parsedDom.getChildrenByType(MacroBlock.class, false);
+    List<MacroBlock> potentialColumns = parsedDom.getBlocks(new ClassBlockMatcher(MacroBlock.class), Axes.CHILD);
 
     int count = countColumns(potentialColumns);
 
@@ -140,7 +142,7 @@ public class SectionMacro extends AbstractMacro<SectionMacroParameters> {
 
   protected Parser getSyntaxParser(String syntaxId) throws MacroExecutionException {
     try {
-      return (Parser) this.componentManager.lookup(Parser.class, syntaxId);
+      return (Parser) this.componentManager.getInstance(Parser.class, syntaxId);
     } catch (ComponentLookupException e) {
       throw new MacroExecutionException("Failed to find source parser", e);
     }

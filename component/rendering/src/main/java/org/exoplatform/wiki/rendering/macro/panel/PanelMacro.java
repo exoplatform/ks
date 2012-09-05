@@ -199,7 +199,7 @@ public class PanelMacro extends AbstractMacro<PanelMacroParameters> {
    */
   protected Parser getSyntaxParser(MacroTransformationContext context) throws MacroExecutionException {
     try {
-      return getComponentManager().lookup(Parser.class, context.getSyntax().toIdString());
+      return getComponentManager().getInstance(Parser.class, context.getSyntax().toIdString());
     } catch (ComponentLookupException e) {
       throw new MacroExecutionException("Failed to find source parser for syntax ["
           + context.getSyntax() + "]", e);

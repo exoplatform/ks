@@ -102,7 +102,7 @@ public class DefaultIconTransformation extends AbstractTransformation implements
     try {
       XDOM mappingTree = this.mappingDOMs.get(context.getSyntax().toIdString());
       if (mappingTree == null) {
-        Parser syntaxParser = componentManager.lookup(Parser.class, context.getSyntax().toIdString());
+        Parser syntaxParser = componentManager.getInstance(Parser.class, context.getSyntax().toIdString());
         mappingTree = new XDOM(Collections.<Block> emptyList());
         for (Map.Entry<Object, Object> entry : this.configuration.getMappings().entrySet()) {
           try {

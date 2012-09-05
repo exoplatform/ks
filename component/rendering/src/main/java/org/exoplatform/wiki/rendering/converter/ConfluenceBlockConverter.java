@@ -31,6 +31,8 @@ import org.xwiki.rendering.block.FormatBlock;
 import org.xwiki.rendering.block.MacroBlock;
 import org.xwiki.rendering.block.ParagraphBlock;
 import org.xwiki.rendering.block.XDOM;
+import org.xwiki.rendering.block.Block.Axes;
+import org.xwiki.rendering.block.match.ClassBlockMatcher;
 import org.xwiki.rendering.converter.ConversionException;
 import org.xwiki.rendering.listener.Format;
 import org.xwiki.rendering.parser.ParseException;
@@ -55,7 +57,7 @@ public class ConfluenceBlockConverter implements BlockConverter {
 
   @Override
   public void convert(XDOM xdom) throws ConversionException {
-    List<MacroBlock> blocks = xdom.getChildrenByType(MacroBlock.class, true);
+    List<MacroBlock> blocks = xdom.getBlocks(new ClassBlockMatcher(MacroBlock.class),Axes.DESCENDANT);
     for (MacroBlock block : blocks) {
       transformDivMacro(block);
       transformSpanMacro(block);
@@ -79,7 +81,7 @@ public class ConfluenceBlockConverter implements BlockConverter {
       Block parent = block.getParent();
       Map<String, String> params = block.getParameters();
       XDOM xdom = parse(block.getContent());
-      List<MacroBlock> children = xdom.getChildrenByType(MacroBlock.class, true);
+      List<MacroBlock> children = xdom.getBlocks(new ClassBlockMatcher(MacroBlock.class),Axes.DESCENDANT);
 
       for (MacroBlock child : children) {
         transformSpanMacro(child);
@@ -92,7 +94,7 @@ public class ConfluenceBlockConverter implements BlockConverter {
   
   private XDOM parse(String content) throws ConversionException {
     try {
-      Parser parser = componentManager.lookup(Parser.class, Syntax.CONFLUENCE_1_0.toIdString());
+      Parser parser = componentManager.getInstance(Parser.class, Syntax.CONFLUENCE_1_0.toIdString());
       return parser.parse(new StringReader(content));
     } catch (ComponentLookupException e) {
       throw new ConversionException("Failed to locate Parser for syntax [Confluence 1.0]", e);

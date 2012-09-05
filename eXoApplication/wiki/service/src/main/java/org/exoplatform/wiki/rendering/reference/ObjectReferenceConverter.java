@@ -16,7 +16,7 @@
  */
 package org.exoplatform.wiki.rendering.reference;
 
-import org.xwiki.component.annotation.ComponentRole;
+import org.xwiki.component.annotation.Role;
 
 /**
  * Created by The eXo Platform SAS
@@ -24,7 +24,7 @@ import org.xwiki.component.annotation.ComponentRole;
  *          hieult@exoplatform.com
  * Oct 17, 2011  
  */
-@ComponentRole
+@Role
 public interface ObjectReferenceConverter {
   
   /**

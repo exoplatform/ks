@@ -20,15 +20,15 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.exoplatform.wiki.rendering.internal.parser.DefaultXWikiConfluenceGeneratorListener;
-import org.wikimodel.wem.IWikiParser;
-import org.wikimodel.wem.confluence.ConfluenceWikiParser;
 import org.xwiki.component.annotation.Component;
-import org.xwiki.rendering.internal.parser.WikiModelConfluenceParser;
+import org.xwiki.rendering.internal.parser.confluence.ConfluenceParser;
 import org.xwiki.rendering.internal.parser.wikimodel.XWikiGeneratorListener;
 import org.xwiki.rendering.listener.Listener;
 import org.xwiki.rendering.parser.ResourceReferenceParser;
 import org.xwiki.rendering.syntax.Syntax;
 import org.xwiki.rendering.util.IdGenerator;
+import org.xwiki.rendering.wikimodel.IWikiParser;
+import org.xwiki.rendering.wikimodel.confluence.ConfluenceWikiParser;
 
 /**
  * Created by The eXo Platform SAS
@@ -37,7 +37,7 @@ import org.xwiki.rendering.util.IdGenerator;
  * Jan 14, 2012  
  */
 @Component("confluence/1.0")
-public class DefaultWikiModelConfluenceParser extends WikiModelConfluenceParser {
+public class DefaultWikiModelConfluenceParser extends ConfluenceParser {
   
   /**
    * @see #getLinkReferenceParser()

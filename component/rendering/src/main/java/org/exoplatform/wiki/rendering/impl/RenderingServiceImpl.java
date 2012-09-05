@@ -17,6 +17,7 @@
 package org.exoplatform.wiki.rendering.impl;
 
 import java.io.StringReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,6 +43,8 @@ import org.xwiki.rendering.block.HeaderBlock;
 import org.xwiki.rendering.block.LinkBlock;
 import org.xwiki.rendering.block.SectionBlock;
 import org.xwiki.rendering.block.XDOM;
+import org.xwiki.rendering.block.Block.Axes;
+import org.xwiki.rendering.block.match.ClassBlockMatcher;
 import org.xwiki.rendering.converter.ConversionException;
 import org.xwiki.rendering.listener.Format;
 import org.xwiki.rendering.listener.reference.ResourceReference;
@@ -71,15 +74,16 @@ public class RenderingServiceImpl implements RenderingService, Startable {
   private EmbeddableComponentManager componentManager = null;
 
   public Execution getExecution() throws ComponentLookupException, ComponentRepositoryException{
-    return componentManager.lookup(Execution.class);
+    return componentManager.getInstance(Execution.class);
   }
   
   public ComponentManager getComponentManager() {
     return componentManager;
   }
 
-  public <T> T getComponent(Class<T> clazz) {
-    return getComponent(clazz, "default");
+  public <T> T getComponent(Type clazz) {
+    T component = this.<T>getComponent(clazz, "default");
+    return component;
   }
   
   /*
@@ -94,7 +98,7 @@ public class RenderingServiceImpl implements RenderingService, Startable {
     
     
     try {
-      BlockConverter refiner = componentManager.lookup(BlockConverter.class, sSyntax.toIdString());
+      BlockConverter refiner = componentManager.getInstance(BlockConverter.class, sSyntax.toIdString());
       refiner.convert(xdom);
     } catch (ComponentLookupException e) {
       if (LOG.isDebugEnabled()) {
@@ -166,16 +170,16 @@ public class RenderingServiceImpl implements RenderingService, Startable {
   public void stop() {
   }
   
-  private <T> T getComponent(Class<T> clazz, String hint) {
+  private <T> T getComponent(Type clazz, String hint) {
     T component = null;
     if (componentManager != null) {
       try {
-        component = componentManager.lookup(clazz, hint);
+        component = componentManager.<T>getInstance(clazz, hint);
       } catch (ComponentLookupException e) {
-        throw new RuntimeException("Failed to load component [" + clazz.getName() + "] for hint [" + hint + "]", e);
+        throw new RuntimeException("Failed to load component [" + clazz + "] for hint [" + hint + "]", e);
       }
     } else {
-      throw new RuntimeException("Component manager has not been initialized before lookup for [" + clazz.getName() + "] for hint [" + hint + "]");
+      throw new RuntimeException("Component manager has not been initialized before lookup for [" + clazz + "] for hint [" + hint + "]");
     }
 
     return component;
@@ -209,7 +213,7 @@ public class RenderingServiceImpl implements RenderingService, Startable {
 
     // Step 2: Run transformations
     try {
-      TransformationManager transformationManager = componentManager.lookup(TransformationManager.class);
+      TransformationManager transformationManager = componentManager.getInstance(TransformationManager.class);
       transformationManager.performTransformations(xdom, sourceSyntax);
     } catch (TransformationException e) {
       throw new ConversionException("Failed to execute some transformations", e);
@@ -219,7 +223,7 @@ public class RenderingServiceImpl implements RenderingService, Startable {
     WikiPrinter printer = new DefaultWikiPrinter();
     BlockRenderer renderer;
     try {
-      renderer = componentManager.lookup(BlockRenderer.class, targetSyntax.toIdString());
+      renderer = componentManager.getInstance(BlockRenderer.class, targetSyntax.toIdString());
     } catch (ComponentLookupException e) {
       throw new ConversionException("Failed to locate Renderer for syntax [" + targetSyntax + "]",
                                     e);
@@ -267,7 +271,7 @@ public class RenderingServiceImpl implements RenderingService, Startable {
       markup = clean(markup);
     }
     try {
-      Parser parser = componentManager.lookup(Parser.class, sSyntax.toIdString());
+      Parser parser = componentManager.getInstance(Parser.class, sSyntax.toIdString());
       xdom = parser.parse(new StringReader(markup));
     } catch (ComponentLookupException e) {
       throw new ConversionException("Failed to locate Parser for syntax [" + sSyntax + "]", e);
@@ -282,7 +286,7 @@ public class RenderingServiceImpl implements RenderingService, Startable {
 
   private String renderXDOM(Block content, Syntax targetSyntax) throws Exception {
     try {
-      BlockRenderer renderer = componentManager.lookup(BlockRenderer.class, targetSyntax.toIdString());
+      BlockRenderer renderer = componentManager.getInstance(BlockRenderer.class, targetSyntax.toIdString());
       WikiPrinter printer = new DefaultWikiPrinter();
       renderer.render(content, printer);
       return printer.toString();
@@ -294,7 +298,7 @@ public class RenderingServiceImpl implements RenderingService, Startable {
   private List<HeaderBlock> getFilteredHeaders(XDOM xdom) {
     List<HeaderBlock> filteredHeaders = new ArrayList<HeaderBlock>();
     // get the headers
-    List<HeaderBlock> headers = xdom.getChildrenByType(HeaderBlock.class, true);
+    List<HeaderBlock> headers = xdom.getBlocks(new ClassBlockMatcher(HeaderBlock.class), Axes.DESCENDANT); 
     // get the maximum header level
     int sectionDepth = 3;
     // filter the headers

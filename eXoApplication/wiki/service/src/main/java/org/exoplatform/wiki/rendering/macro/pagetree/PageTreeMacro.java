@@ -131,7 +131,7 @@ public class PageTreeMacro extends AbstractMacro<PageTreeMacroParameters> {
 
   protected WikiModel getWikiModel(MacroTransformationContext context) throws MacroExecutionException {
     try {
-      return getComponentManager().lookup(WikiModel.class);
+      return getComponentManager().getInstance(WikiModel.class);
     } catch (ComponentLookupException e) {
       throw new MacroExecutionException("Failed to find wiki model", e);
     }

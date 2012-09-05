@@ -17,7 +17,7 @@
 package org.exoplatform.wiki.rendering.builder;
 
 import org.exoplatform.wiki.service.WikiPageParams;
-import org.xwiki.component.annotation.ComponentRole;
+import org.xwiki.component.annotation.Role;
 
 /**
  * Created by The eXo Platform SAS
@@ -25,7 +25,7 @@ import org.xwiki.component.annotation.ComponentRole;
  *          hieult@exoplatform.com
  * Oct 27, 2011  
  */
-@ComponentRole
+@Role
 public interface ReferenceBuilder {
 
   public static final String wikiSpaceSeparator = ":";

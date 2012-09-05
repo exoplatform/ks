@@ -86,7 +86,7 @@ public class TableCellMacro extends AbstractMacro<Object> {
   
   protected Parser getSyntaxParser(String syntaxId) throws MacroExecutionException {
     try {
-      return (Parser) this.componentManager.lookup(Parser.class, syntaxId);
+      return (Parser) this.componentManager.getInstance(Parser.class, syntaxId);
     } catch (ComponentLookupException e) {
       throw new MacroExecutionException("Failed to find source parser", e);
     }

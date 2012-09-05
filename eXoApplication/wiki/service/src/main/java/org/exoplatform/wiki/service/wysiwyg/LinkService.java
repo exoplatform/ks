@@ -16,7 +16,7 @@
  */
 package org.exoplatform.wiki.service.wysiwyg;
 
-import org.xwiki.component.annotation.ComponentRole;
+import org.xwiki.component.annotation.Role;
 import org.xwiki.gwt.wysiwyg.client.wiki.EntityConfig;
 import org.xwiki.gwt.wysiwyg.client.wiki.EntityReference;
 import org.xwiki.gwt.wysiwyg.client.wiki.ResourceReference;
@@ -27,7 +27,7 @@ import org.xwiki.gwt.wysiwyg.client.wiki.ResourceReference;
  *          viet.nguyen@exoplatform.com
  * Aug 12, 2010  
  */
-@ComponentRole
+@Role
 public interface LinkService {
   /**
    * Creates an entity link configuration object (URL, link reference) for a link with the specified origin and

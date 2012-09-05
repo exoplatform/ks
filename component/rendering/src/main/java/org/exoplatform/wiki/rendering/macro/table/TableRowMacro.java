@@ -33,6 +33,8 @@ import org.xwiki.rendering.block.MacroBlock;
 import org.xwiki.rendering.block.TableCellBlock;
 import org.xwiki.rendering.block.TableHeadCellBlock;
 import org.xwiki.rendering.block.XDOM;
+import org.xwiki.rendering.block.Block.Axes;
+import org.xwiki.rendering.block.match.ClassBlockMatcher;
 import org.xwiki.rendering.macro.AbstractMacro;
 import org.xwiki.rendering.macro.MacroExecutionException;
 import org.xwiki.rendering.parser.ParseException;
@@ -77,7 +79,7 @@ public class TableRowMacro extends AbstractMacro<Object> {
       throw new MacroExecutionException("Failed to parse content [" + content + "] with Syntax parser [" + parser.getSyntax() + "]", e);
     }
 
-    List<MacroBlock> potentialCells = parsedDom.getChildrenByType(MacroBlock.class, false);
+    List<MacroBlock> potentialCells = parsedDom.getBlocks(new ClassBlockMatcher(MacroBlock.class), Axes.CHILD);
     int count = this.countCells(potentialCells);
     if (count == 0) {
       throw new MacroExecutionException("TableRow macro expect at least one cell macro as first-level children");
@@ -96,7 +98,7 @@ public class TableRowMacro extends AbstractMacro<Object> {
   
   protected Parser getSyntaxParser(String syntaxId) throws MacroExecutionException {
     try {
-      return (Parser) this.componentManager.lookup(Parser.class, syntaxId);
+      return (Parser) this.componentManager.getInstance(Parser.class, syntaxId);
     } catch (ComponentLookupException e) {
       throw new MacroExecutionException("Failed to find source parser", e);
     }

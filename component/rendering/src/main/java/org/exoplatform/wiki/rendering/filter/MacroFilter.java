@@ -16,7 +16,7 @@
  */
 package org.exoplatform.wiki.rendering.filter;
 
-import org.xwiki.component.annotation.ComponentRole;
+import org.xwiki.component.annotation.Role;
 import org.xwiki.rendering.converter.ConversionException;
 
 /**
@@ -25,7 +25,7 @@ import org.xwiki.rendering.converter.ConversionException;
  *          hieult@exoplatform.com
  * Oct 26, 2011  
  */
-@ComponentRole
+@Role
 public interface MacroFilter {
   
   /**

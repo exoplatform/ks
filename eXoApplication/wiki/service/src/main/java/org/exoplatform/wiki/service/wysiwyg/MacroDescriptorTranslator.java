@@ -16,7 +16,7 @@
  */
 package org.exoplatform.wiki.service.wysiwyg;
 
-import org.xwiki.component.annotation.ComponentRole;
+import org.xwiki.component.annotation.Role;
 import org.xwiki.gwt.wysiwyg.client.plugin.macro.MacroDescriptor;
 
 /**
@@ -28,7 +28,7 @@ import org.xwiki.gwt.wysiwyg.client.plugin.macro.MacroDescriptor;
 /**
  * Translates a {@link MacroDescriptor} into the execution context language.
  */
-@ComponentRole
+@Role
 public interface MacroDescriptorTranslator {
   /**
    * Translates the given macro descriptor into the execution context language.

@@ -17,7 +17,7 @@
 package org.exoplatform.wiki.rendering.context;
 
 import org.exoplatform.wiki.service.WikiContext;
-import org.xwiki.component.annotation.ComponentRole;
+import org.xwiki.component.annotation.Role;
 import org.xwiki.rendering.listener.reference.ResourceType;
 
 /**
@@ -26,7 +26,7 @@ import org.xwiki.rendering.listener.reference.ResourceType;
  *          hieult@exoplatform.com
  * Oct 27, 2011  
  */
-@ComponentRole
+@Role
 public interface MarkupContextManager {
   /**
    * Build the markup context for object

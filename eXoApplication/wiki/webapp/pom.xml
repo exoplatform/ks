@@ -110,6 +110,31 @@
       <version>${javax.servlet.servlet-api.version}</version>
       <scope>provided</scope>
     </dependency>
+
+    <dependency>
+      <groupId>com.smartgwt</groupId>
+      <artifactId>smartgwt</artifactId>
+      <version>${smartgwt.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.xwiki.platform</groupId>
+      <artifactId>xwiki-platform-gwt-user</artifactId>
+      <version>${org.xwiki.platform.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.xwiki.platform</groupId>
+      <artifactId>xwiki-platform-gwt-dom</artifactId>
+      <version>${org.xwiki.platform.version}</version>
+      <scope>provided</scope>
+    </dependency>    
+    
+    <dependency>
+      <groupId>org.xwiki.platform</groupId>
+      <artifactId>xwiki-platform-wysiwyg-plugin-api</artifactId>
+      <version>${org.xwiki.platform.version}</version>
+      <scope>provided</scope>
+    </dependency>    
     
     <dependency>
       <groupId>junit</groupId>

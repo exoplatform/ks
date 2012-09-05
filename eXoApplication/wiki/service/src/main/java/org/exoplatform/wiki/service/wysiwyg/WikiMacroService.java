@@ -201,7 +201,7 @@ public class WikiMacroService implements MacroService {
               && !"column".equals(macroId.getId())) {
             boolean isSupported = true;
             try {
-              MacroFilter macroFilter = componentManager.lookup(MacroFilter.class, syntaxId);
+              MacroFilter macroFilter = componentManager.getInstance(MacroFilter.class, syntaxId);
               isSupported = macroFilter.isSupport(macroId.getId());
             } catch (ComponentLookupException e) {
               if (log.isDebugEnabled()) {

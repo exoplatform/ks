@@ -51,7 +51,7 @@ public class ConfluenceToXWiki2Transformer {
     }
     
     try {
-      Parser parser = componentManager.lookup(Parser.class, sourceSyntax.toIdString());
+      Parser parser = componentManager.getInstance(Parser.class, sourceSyntax.toIdString());
       XDOM xdom = parser.parse(new StringReader(content));
       WikiPrinter printer = convert(xdom, sourceSyntax, targetSyntax, componentManager);
       
@@ -74,7 +74,7 @@ public class ConfluenceToXWiki2Transformer {
     WikiPrinter printer = new DefaultWikiPrinter();
     BlockRenderer renderer;
     try {
-      renderer = componentManager.lookup(BlockRenderer.class, targetSyntax.toIdString());
+      renderer = componentManager.getInstance(BlockRenderer.class, targetSyntax.toIdString());
     } catch (ComponentLookupException e) {
       throw new ConversionException("Failed to locate Renderer for syntax [" + targetSyntax + "]", e);
     }

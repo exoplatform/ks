@@ -73,15 +73,19 @@ public class DefaultMarkupContextManager implements MarkupContextManager {
 
     WikiContext wikiMarkupContext = new WikiContext();
     try {
-      DocumentReferenceResolver<String> stringDocumentReferenceResolver = componentManager.lookup(DocumentReferenceResolver.class);
-      AttachmentReferenceResolver<String> stringAttachmentReferenceResolver = componentManager.lookup(AttachmentReferenceResolver.class);
-      ObjectReferenceResolver<String> stringObjectReferenceResolver = componentManager.lookup(ObjectReferenceResolver.class);
+      DocumentReferenceResolver<String> stringDocumentReferenceResolver = 
+        componentManager.getInstance(DocumentReferenceResolver.TYPE_STRING);
+      AttachmentReferenceResolver<String> stringAttachmentReferenceResolver = 
+        componentManager.getInstance(AttachmentReferenceResolver.TYPE_STRING);
+      ObjectReferenceResolver<String> stringObjectReferenceResolver = 
+        componentManager.getInstance(ObjectReferenceResolver.TYPE_STRING);
       ExecutionContext ec = execution.getContext();
       WikiContext wikiContext = null;
       if (ec != null) {
         wikiContext = (WikiContext) ec.getProperty(WikiContext.WIKICONTEXT);
         try {
-          org.exoplatform.wiki.rendering.reference.ObjectReferenceConverter converter = componentManager.lookup(ObjectReferenceConverter.class, wikiContext.getSyntax());
+          org.exoplatform.wiki.rendering.reference.ObjectReferenceConverter converter = 
+            componentManager.getInstance(ObjectReferenceConverter.class, wikiContext.getSyntax());
           objectName = converter.convert(objectName);
         } catch (ComponentLookupException e) {
           if (LOG.isDebugEnabled()) {

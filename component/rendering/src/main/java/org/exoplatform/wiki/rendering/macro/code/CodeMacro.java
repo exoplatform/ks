@@ -136,7 +136,7 @@ public class CodeMacro extends AbstractBoxMacro<CodeMacroParameters> {
   protected List<Block> highlight(CodeMacroParameters parameters, String content) throws ParseException,
                                                                                  ComponentLookupException {
     HighlightParser parser = null;
-    parser = getComponentManager().lookup(HighlightParser.class);
+    parser = getComponentManager().getInstance(HighlightParser.class);
     return parser.highlight(parameters.getLanguage(), new StringReader(content));
   }
   

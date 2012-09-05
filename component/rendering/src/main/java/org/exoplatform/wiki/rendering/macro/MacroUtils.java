@@ -93,7 +93,7 @@ public class MacroUtils {
    */
   private static Parser getSyntaxParser(ComponentManager componentManager, MacroTransformationContext context) throws MacroExecutionException {
     try {
-      return componentManager.lookup(Parser.class, context.getSyntax().toIdString());
+      return componentManager.getInstance(Parser.class, context.getSyntax().toIdString());
     } catch (ComponentLookupException e) {
       throw new MacroExecutionException("Failed to find source parser for syntax ["
           + context.getSyntax() + "]", e);

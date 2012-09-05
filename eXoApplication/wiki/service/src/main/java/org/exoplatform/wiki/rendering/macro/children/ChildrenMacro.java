@@ -189,7 +189,7 @@ public class ChildrenMacro extends AbstractMacro<ChildrenMacroParameters> {
 
   private ReferenceBuilder getReferenceBuilder(MacroTransformationContext context) throws MacroExecutionException {
     try {
-      return componentManager.lookup(ReferenceBuilder.class, context.getSyntax().toIdString());
+      return componentManager.getInstance(ReferenceBuilder.class, context.getSyntax().toIdString());
     } catch (ComponentLookupException e) {
       throw new MacroExecutionException(String.format("Failed to find reference builder for syntax %s", context.getSyntax()
                                                                                                                .toIdString()), e);

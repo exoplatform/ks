@@ -16,7 +16,7 @@
  */
 package org.exoplatform.wiki.rendering.converter;
 
-import org.xwiki.component.annotation.ComponentRole;
+import org.xwiki.component.annotation.Role;
 import org.xwiki.rendering.block.XDOM;
 import org.xwiki.rendering.converter.ConversionException;
 
@@ -26,7 +26,7 @@ import org.xwiki.rendering.converter.ConversionException;
  *          hieult@exoplatform.com
  * Jul 15, 2011  
  */
-@ComponentRole
+@Role
 public interface BlockConverter {
 
   /**
