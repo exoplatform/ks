@@ -19,6 +19,7 @@ package org.exoplatform.ks.bbcode.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -71,7 +72,7 @@ public class BBCodeServiceImpl implements Startable, BBCodeService, ManagementAw
   private static Log         log                   = ExoLogger.getLogger(BBCodeServiceImpl.class);
 
   public BBCodeServiceImpl() {
-    activeBBCodesCache = new ArrayList<String>();
+    activeBBCodesCache = new CopyOnWriteArrayList<String>();
     plugins = new ArrayList<BBCodePlugin>();
   }
 
@@ -171,9 +172,8 @@ public class BBCodeServiceImpl implements Startable, BBCodeService, ManagementAw
         bbCodeHome.save();
       }
 
-      synchronized (activeBBCodesCache) {
-        activeBBCodesCache.clear();
-      }
+
+      activeBBCodesCache.clear();
 
     } catch (Exception e) {
       log.error("Error saving BBCodes", e);
@@ -265,13 +265,12 @@ public class BBCodeServiceImpl implements Startable, BBCodeService, ManagementAw
         QueryResult result = query.execute();
         NodeIterator iter = result.getNodes();
         String tagName = "";
-
-        synchronized (activeBBCodesCache) {
-          while (iter.hasNext()) {
-            Node bbcNode = iter.nextNode();
-            tagName = bbcNode.getName();
-            activeBBCodesCache.add(tagName);
-          }
+ 
+        //
+        while (iter.hasNext()) {
+          Node bbcNode = iter.nextNode();
+          tagName = bbcNode.getName();
+          activeBBCodesCache.add(tagName);
         }
 
       } finally {
@@ -311,9 +310,9 @@ public class BBCodeServiceImpl implements Startable, BBCodeService, ManagementAw
     try {
       bbCodeHome.getNode(bbcodeId).remove();
       bbCodeHome.save();
-      synchronized (activeBBCodesCache) {
-        activeBBCodesCache.clear();
-      }
+      
+      activeBBCodesCache.clear();
+      
     } catch (Exception e) {
       log.error("Error removing BBCode" + bbcodeId, e);
     } finally {
