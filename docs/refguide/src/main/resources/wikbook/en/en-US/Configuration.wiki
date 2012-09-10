@@ -7,7 +7,7 @@
           <emphasis role="bold">
             <link linkend="KSref.Configuration.Components">Components</link>
           </emphasis> </para>
-          <para>Basic information of 3 types of components which are used to implement the Knowledge applications: Knowledge, Forum, Answers and Polls. </para>
+          <para>Basic information about 3 types of components which are used to implement the Knowledge applications: Knowledge, Forum, Answers and Polls. </para>
       </listitem>
       <listitem>
         <para>

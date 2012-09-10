@@ -34,7 +34,7 @@
           <emphasis role="bold">
             <link linkend="KSref.Configuration.AnswerConfiguration">Answers Configuration</link>
           </emphasis> </para>
-          <para>Information of the plugin components that define data of the Answers application, including: Answers Initializer and Answers Email Templates.</para>
+          <para>Information about the plugin components that define data of the Answers application, including: Answers Initializer and Answers Email Templates.</para>
       </listitem>
       <listitem>
         <para>

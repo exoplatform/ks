@@ -1,9 +1,4 @@
-This section shows some main components used to implement applications of Knowledge. These components are classified
-into the following groups:
-* [Components of Knowledge|#KSref.Components]
-* [Components of Forum|#KSref.Components.ForumComponents]
-* [Components of Answers|#KSref.Components.AnswersComponents]
-* [Components of Polls|#KSref.Components.PollComponents]
+This section shows some main components used to implement applications of Knowledge.
 
 {docbook}
 <para xml:id="KSref.Components">

@@ -6,7 +6,7 @@
           <emphasis role="bold">
             <link linkend="KSref.FAQTemplateConfiguration.ConfigurationPlugin">Configuration plug-in</link>
           </emphasis></para>
-          <para>Information of the configuration plug-in which is used to automatically set up a default template for the FAQ portlet, and details of properties of the template configuration plug-in.</para>
+          <para>Information about the configuration plug-in which is used to automatically set up a default template for the FAQ portlet, and details of properties of the template configuration plug-in.</para>
       </listitem>
       <listitem>
         <para>
