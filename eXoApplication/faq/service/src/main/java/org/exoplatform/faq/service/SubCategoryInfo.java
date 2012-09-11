@@ -32,9 +32,11 @@ public class SubCategoryInfo {
 
   private String                name;
 
-  private List<QuestionInfo>    questionInfos = new ArrayList<QuestionInfo>();
+  private List<QuestionInfo>    questionInfos   = new ArrayList<QuestionInfo>();
 
-  private List<SubCategoryInfo> subCateInfos  = new ArrayList<SubCategoryInfo>();
+  private List<SubCategoryInfo> subCateInfos    = new ArrayList<SubCategoryInfo>();
+  
+  private boolean               enabledLoadMore = true;
 
   public SubCategoryInfo() {
   }
@@ -79,4 +81,11 @@ public class SubCategoryInfo {
     this.subCateInfos = subCateInfos;
   }
 
+  public boolean hasLoadMore() {
+    return enabledLoadMore;
+  }
+
+  public void setLoadMore(boolean enabledLoadMore) {
+    this.enabledLoadMore = enabledLoadMore;
+  }
 }

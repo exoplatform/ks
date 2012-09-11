@@ -30,37 +30,41 @@ import org.exoplatform.ks.common.jcr.KSDataLocation;
  * Apr 10, 2008, 4:40:22 PM
  */
 public class Utils {
-  final public static String FAQ_APP              = "faqApp".intern();
+  final public static String FAQ_APP                         = "faqApp".intern();
 
-  final public static String DEFAULT_AVATAR_URL   = "/faq/skin/DefaultSkin/webui/background/Avatar1.gif";
+  final public static String DEFAULT_AVATAR_URL              = "/faq/skin/DefaultSkin/webui/background/Avatar1.gif";
 
-  final public static String QUESTION_HOME        = "questions".intern();
+  final public static String QUESTION_HOME                   = "questions".intern();
 
-  final public static String CATEGORY_HOME        = KSDataLocation.Locations.FAQ_CATEGORIES_HOME;
+  final public static String CATEGORY_HOME                   = KSDataLocation.Locations.FAQ_CATEGORIES_HOME;
 
-  final public static String ANSWER_HOME          = "faqAnswerHome".intern();
+  final public static String ANSWER_HOME                     = "faqAnswerHome".intern();
 
-  final public static String COMMENT_HOME         = "faqCommentHome".intern();
+  final public static String COMMENT_HOME                    = "faqCommentHome".intern();
 
-  final public static String LANGUAGE_HOME        = "languages".intern();
+  final public static String LANGUAGE_HOME                   = "languages".intern();
 
-  final public static String ALL                  = "All".intern();
+  final public static String ALL                             = "All".intern();
 
-  public static final String CATE_SPACE_ID_PREFIX = "CategorySpace".intern();
+  public static final String CATE_SPACE_ID_PREFIX            = "CategorySpace".intern();
 
-  final public static String UI_FAQ_VIEWER        = "UIFAQViewer".intern();
+  final public static String UI_FAQ_VIEWER                   = "UIFAQViewer".intern();
 
-  final public static String DELETED              = ":deleted".intern();
+  final public static String DELETED                         = ":deleted".intern();
 
-  final public static String HYPHEN               = "-".intern();
+  final public static String HYPHEN                          = "-".intern();
 
-  final public static String QUESTION_ID_PARAM    = "questionId";
+  final public static String QUESTION_ID_PARAM               = "questionId";
 
-  final public static String ANSWER_NOW_PARAM     = "answer-now";
+  final public static String ANSWER_NOW_PARAM                = "answer-now";
 
-  final public static String QUESTION_ID          = "?&".concat(QUESTION_ID_PARAM).concat("=");
+  final public static String QUESTION_ID                     = "?&".concat(QUESTION_ID_PARAM).concat("=");
 
-  final public static String ANSWER_NOW           = "&".concat(ANSWER_NOW_PARAM).concat("=");
+  final public static String ANSWER_NOW                      = "&".concat(ANSWER_NOW_PARAM).concat("=");
+
+  final public static int    LIMIT_OF_CATEGORIES_PER_LOADING = 5;
+  
+  final public static int    LIMIT_OF_QUESTIONS_PER_LOADING  = 5;
 
   /**
    * This method sort list category is date ascending

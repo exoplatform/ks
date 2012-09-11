@@ -24,6 +24,7 @@ import java.util.Map;
 import javax.jcr.Node;
 
 import org.exoplatform.container.component.ComponentPlugin;
+import org.exoplatform.faq.service.DataStorage.LoadMoreType;
 import org.exoplatform.faq.service.impl.AnswerEventListener;
 import org.exoplatform.ks.common.NotifyInfo;
 
@@ -971,6 +972,8 @@ public interface FAQService extends FAQServiceLegacy {
    * @throws Exception
    */
   public CategoryInfo getCategoryInfo(String categoryPath, List<String> categoryIdScoped) throws Exception;
+  
+  public CategoryInfo loadMore(LoadMoreType type, String categoryPath, List<String> categoryIdScoped, int offset, int limit) throws Exception;
 
   /**
    * Get template of questions

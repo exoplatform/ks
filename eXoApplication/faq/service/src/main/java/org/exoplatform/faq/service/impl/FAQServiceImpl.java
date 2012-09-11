@@ -47,6 +47,7 @@ import org.exoplatform.faq.service.QuestionPageList;
 import org.exoplatform.faq.service.TemplatePlugin;
 import org.exoplatform.faq.service.Utils;
 import org.exoplatform.faq.service.Watch;
+import org.exoplatform.faq.service.DataStorage.LoadMoreType;
 import org.exoplatform.ks.bbcode.core.BBCodeServiceImpl;
 import org.exoplatform.ks.common.CommonUtils;
 import org.exoplatform.ks.common.NotifyInfo;
@@ -1229,6 +1230,10 @@ public class FAQServiceImpl implements FAQService, Startable {
 
   public CategoryInfo getCategoryInfo(String categoryPath, List<String> categoryIdScoped) throws Exception {
     return jcrData_.getCategoryInfo(categoryPath, categoryIdScoped);
+  }
+  
+  public CategoryInfo loadMore(LoadMoreType type, String categoryPath, List<String> categoryIdScoped, int offset, int limit) throws Exception {
+    return jcrData_.loadMore(type, categoryPath, categoryIdScoped, offset, limit);
   }
 
   public byte[] getTemplate() throws Exception {

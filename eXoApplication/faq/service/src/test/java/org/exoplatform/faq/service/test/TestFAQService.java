@@ -34,6 +34,7 @@ import org.exoplatform.faq.service.Category;
 import org.exoplatform.faq.service.CategoryInfo;
 import org.exoplatform.faq.service.Comment;
 import org.exoplatform.faq.service.DataStorage;
+import org.exoplatform.faq.service.DataStorage.LoadMoreType;
 import org.exoplatform.faq.service.FAQEventQuery;
 import org.exoplatform.faq.service.FAQService;
 import org.exoplatform.faq.service.FAQSetting;
@@ -454,6 +455,19 @@ public class TestFAQService extends FAQServiceTestCase {
     assertEquals("Can not questionInfo  of category.", categoryInfo.getQuestionInfos().size(), 5);
     // remove Data when tested category
     // faqService_.removeCategory(Utils.CATEGORY_HOME);
+  }
+  
+  public void testLoadMore() throws Exception {
+    // Add new data default
+    defaultData();
+    // Test load more categories
+    List<String> categoryIdScoped = new ArrayList<String>();
+    CategoryInfo categoryInfo = faqService_.loadMore(LoadMoreType.CATEGORY, Utils.CATEGORY_HOME, categoryIdScoped, 1, 2);
+    assertEquals(categoryInfo.getSubCateInfos().size(), 2);
+    // Test load more questions
+    categoryIdScoped.add(categoryId1);
+    categoryInfo = faqService_.loadMore(LoadMoreType.QUESTION, Utils.CATEGORY_HOME, categoryIdScoped, 2, 3);
+    assertEquals(categoryInfo.getSubCateInfos().get(0).getQuestionInfos().size(), 3);
   }
 
   public void testQuestion() throws Exception {
