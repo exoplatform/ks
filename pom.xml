@@ -129,6 +129,10 @@
     <javax.validation.version>1.0.0.GA</javax.validation.version>
     <hibernate-validator.version>4.0.0.GA</hibernate-validator.version>
     <!-- End wiki properties -->
+	<!--eXo style-->
+	<doc-style.version>1.0.8-SNAPSHOT</doc-style.version>
+	<!--Wikbook-->
+	<version.wikbook.plugin>0.9.37</version.wikbook.plugin>
   
     <!-- ************** -->
     <!-- Build settings -->
