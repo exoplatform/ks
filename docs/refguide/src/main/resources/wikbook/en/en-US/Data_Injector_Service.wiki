@@ -241,7 +241,8 @@ In which:
 || Param ||  Value  || Description ||
 | view | string, string, etc | The list of granted permissions users/groups/memberships, if the value is "any" or not set, everyone can view all category create by prefix. |
 | edit | string, string, etc | The list of granted permissions users/groups/memberships, if the value is "any" or not set, only user with highest permission (Administrator) can edit all category create by prefix. |
-	
+
+
 {note}
 In the other way, such settings have been declared in "ksdemo.war/WEB-INF/conf/ksdemo/ks/bench-configuration.xml", therefore, to save time and effort, you can import it to "ksdemo.war/WEB-INF/conf/configuration.xml" and then modify it rather than create new one.
 {note}

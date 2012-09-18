@@ -81,6 +81,7 @@ In particular, when the ForumService starts, the Initialization plug-in componen
 </component-plugin>
 {code}
 
+
 * In which,
 || Name || Set-method || Type || Description ||
 | *default.data* | {{addInitialDataPlugin}} | {{org.exoplatform.forum. service.conf. InitializeForumPlugin}} | The initial default data of Forum. |
@@ -88,7 +89,7 @@ In particular, when the ForumService starts, the Initialization plug-in componen
 * Init-param
 || Name || Possible value || Default value || Description |
 | *livedemo.default. configuration* | {{object}} | {{org.exoplatform.forum. service.conf. ForumInitialData}} | The initial data for live demo. |
-  
+
 
 * Category array
 
