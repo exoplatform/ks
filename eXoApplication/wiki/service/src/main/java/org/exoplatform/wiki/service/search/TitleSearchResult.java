@@ -42,14 +42,17 @@ public class TitleSearchResult {
   private String path;
 
   private String uri;
+  
+  private String fileType;
 
   public TitleSearchResult() {
   }
 
-  public TitleSearchResult(String fullTitle, String path, String type) {
+  public TitleSearchResult(String fullTitle, String path, String type, String fileType) {
     this.fullTitle = fullTitle;
     this.type = type;
     this.path = path;
+    this.fileType = fileType;
     setUri();
   }
 
@@ -77,6 +80,13 @@ public class TitleSearchResult {
     this.path = path;
   }
 
+  public String getFileType() {
+    return fileType;
+  }
+  
+  public void setFileType(String fileType) {
+    this.fileType = fileType;
+  }
   private Wiki getWiki() throws Exception {
     Wiki searchWiki = null;
     if (WikiNodeType.WIKI_PAGE.equals(getType())) {

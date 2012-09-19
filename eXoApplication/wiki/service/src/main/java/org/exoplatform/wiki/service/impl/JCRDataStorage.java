@@ -13,6 +13,7 @@ import javax.jcr.ImportUUIDBehavior;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Session;
+import javax.jcr.Value;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
 import javax.jcr.query.Row;
@@ -147,18 +148,28 @@ public class JCRDataStorage implements DataStorage{
     String type = row.getValue(WikiNodeType.Definition.PRIMARY_TYPE).getString();
     String path = row.getValue(WikiNodeType.Definition.PATH).getString();
     String fullTitle = row.getValue(WikiNodeType.Definition.TITLE).getString();
-    boolean isFile = row.getValue(WikiNodeType.Definition.FILE_TYPE) != null;
+    String fileType = "page";
     PageImpl page = null;
-    if (!isFile){
+    if (WikiNodeType.WIKI_PAGE.equals(type) || WikiNodeType.WIKI_HOME.equals(type)){
+      fileType = "page";
       page = (PageImpl) Utils.getObject(path, WikiNodeType.WIKI_PAGE);      
     } else {
-      fullTitle = fullTitle.concat(row.getValue(WikiNodeType.Definition.FILE_TYPE).getString());
+      Value value = row.getValue(WikiNodeType.Definition.FILE_TYPE);
+      if (value != null) {
+        fileType = value.getString();
+        fullTitle = fullTitle.concat(fileType);
+      }
+      
+   // Remove character "." in fileType
+      if ((fileType.length() > 0) && (fileType.charAt(0) == '.')) {
+        fileType = fileType.substring(1);
+      }
       AttachmentImpl searchAtt = (AttachmentImpl) Utils.getObject(path, WikiNodeType.WIKI_ATTACHMENT);
       page = searchAtt.getParentPage();
     }
     if (page == null || !page.hasPermission(PermissionType.VIEWPAGE))
       return null;
-    TitleSearchResult result = new TitleSearchResult(fullTitle, path, type);
+    TitleSearchResult result = new TitleSearchResult(fullTitle, path, type, fileType);
     return result;
   }
   
