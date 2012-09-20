@@ -253,11 +253,9 @@ public class MessageBuilder {
     }
   }
 
-  public Message getContentEmail() {
-    setPrivateLink();
-    Message message = new Message();
-    message.setMimeType(ForumNodeTypes.TEXT_HTML);
-    message.setFrom(owner);
+ 
+  private String getHeaderSubjectOfMessage(){
+    String headerSubject = this.headerSubject; 
     if (headerSubject != null && headerSubject.length() > 0) {
       headerSubject = StringUtils.replace(headerSubject, "$CATEGORY", catName);
       headerSubject = StringUtils.replace(headerSubject, "$FORUM", forumName);
@@ -265,7 +263,14 @@ public class MessageBuilder {
     } else {
       headerSubject = "[" + catName + "][" + forumName + "]" + topicName;
     }
-    message.setSubject(CommonUtils.decodeSpecialCharToHTMLnumber(headerSubject));
+    return CommonUtils.decodeSpecialCharToHTMLnumber(headerSubject);
+  }
+  public Message getContentEmail() {
+    setPrivateLink();
+    Message message = new Message();
+    message.setMimeType(ForumNodeTypes.TEXT_HTML);
+    message.setFrom(owner);
+    message.setSubject(getHeaderSubjectOfMessage());
     String content_ = StringUtils.replace(content, "$OBJECT_NAME", objName);
     content_ = StringUtils.replace(content_, "$OBJECT_WATCH_TYPE", types.get(watchType));
     content_ = StringUtils.replace(content_, "$ADD_TYPE", types.get(addType));
@@ -292,7 +297,7 @@ public class MessageBuilder {
     Message message = new Message();
     message.setMimeType(ForumNodeTypes.TEXT_HTML);
     message.setFrom(owner);
-    message.setSubject(CommonUtils.decodeSpecialCharToHTMLnumber(headerSubject));
+    message.setSubject(getHeaderSubjectOfMessage());
 
     String content_ = StringUtils.replace(content, "$OBJECT_NAME", objName);
     content_ = StringUtils.replace(content_, "$OBJECT_PARENT_NAME", addType);
