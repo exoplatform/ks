@@ -74,6 +74,9 @@ h2. Extension points {anchor:id=KSref.DeveloperReference.ExtensionPoints}
 h2. Internal API {anchor:id=KSref.DeveloperReference.InternalAPI}
 {include:document="Internal_API.wiki"}
 
+h2. Wiki Service API   {anchor:id=KSref.DeveloperReference.WikiService}
+{include:document="WikiService.wiki"}
+
 h2. FAQ Template Configuration {anchor:id=KSref.DeveloperReference.FAQTemplateConfiguration}
 {include:document="template-configuration-plugin.wiki"}
 

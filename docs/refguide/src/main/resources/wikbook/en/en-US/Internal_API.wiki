@@ -86,6 +86,7 @@ Use the following APIs to build all functions of the Answers application:
 </para>
 {docbook}
 * [Extension points|#KSref.DeveloperReference.ExtensionPoints]
+* [Wiki Service API|#KSref.DeveloperReference.WikiService]
 * [FAQ Template Configuration|#KSref.DeveloperReference.FAQTemplateConfiguration]
 * [Actions over a wiki page from external jars|#KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars]
 * [JCR structure|#KSref.JCRStructure]

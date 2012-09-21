@@ -1,0 +1,159 @@
+{docbook}
+<highlights>
+    <itemizedlist>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.DeveloperReference.WikiService.DiffService">DiffService</link>
+          </emphasis> </para>
+          <para>This service is used to show the differences between two strings..</para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.DeveloperReference.WikiService.LinkService">LinkService</link>
+          </emphasis> </para>
+          <para>This service is used for the WYSIWYG editor to get the configuration.</para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.DeveloperReference.WikiService.ResizeImageService">ResizeImageService</link>
+          </emphasis> </para>
+          <para>This service is used to resize the image to a desired size.</para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.DeveloperReference.WikiService.RenderingService">RenderingService</link>
+          </emphasis> </para>
+          <para>This service provides functions to render between syntaxes.</para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.DeveloperReference.WikiService.WikiRestService">WikiRestService</link>
+          </emphasis> </para>
+          <para>This service provides functions to access Wiki data, such as tree data, Help content, images and more.</para>
+      </listitem>
+       <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.DeveloperReference.WikiService.WikiService">WikiService</link>
+          </emphasis> </para>
+          <para>This service provides interface for processing database with wikis and pages, including adding, editing, removing and searching data.</para>
+      </listitem>
+    </itemizedlist>
+	</highlights>
+{docbook}
+
+{docbook}
+<para>
+<prompt>
+   <emphasis role="bold">See also</emphasis>
+</prompt>
+</para>
+{docbook}
+* [Extension points|#KSref.DeveloperReference.ExtensionPoints]
+* [Internal API|#KSref.DeveloperReference.InternalAPI]
+* [FAQ Template Configuration|#KSref.DeveloperReference.FAQTemplateConfiguration]
+* [Actions over a wiki page from external jars|#KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars]
+* [JCR structure|#KSref.JCRStructure]
+
+h1. DiffService  {anchor:id=KSref.DeveloperReference.WikiService.DiffService}
+This service is used to show the differences between two strings.
+
+||Method || Param || Return || Description||
+|*getDifferencesAsList*(String text1, String text2) throws DifferentiationFailedException |{{text1}}: The original content. {example}{example}  {{text2}}: The revised content. |{{List}} |Return a list of differences between lines of text1 and text2. |
+|*getWordDifferencesAsList*(String text1, String text2) throws DifferentiationFailedException, |{{text1}}: The original content. {example}{example}  {{text2}}: The revised content. |{{List }} |Return a list of differences between words of text1 and text2. |
+|*getWordDifferencesAsHTML*(String text1, String text2) throws DifferentiationFailedException, |{{text1}}: The original content. {example}{example}  {{text2}}: The revised content. |{{DiffResult}} |Return a _DiffResult_ object representing differences between words of text1 and text2. |
+|*getDifferencesAsHTML*(String text1, String text2, boolean allDoc) throws DifferentiationFailedException, | {{text1}}: The original content. {example}{example}  {{text2}}: The revised content.  {example}{example}  {{allDoc}}: Show all documents.|{{DiffResult}} |Return a _DiffResult_ object representing differences between lines of text1 and text2. |
+
+h1. LinkService   {anchor:id=KSref.DeveloperReference.WikiService.LinkService}
+This service is used for the WYSIWYG editor to get the configuration.
+
+||Method || Param || Return || Description||
+|*getEntityConfig*(EntityReference origin, ResourceReference destination); |{{origin}}: The origin of the link  {example}{example}  {{destination}}: The destination of the link. |{{EntityConfig}}: The link configuration object that can be used to insert the link in the origin page. |Create an entity link configuration object (URL, link reference) for a link with the specified origin and destination. The link reference in the returned {{EntityConfig}} is relative to the link origin. |
+|*parseLinkReference*(String linkReference, EntityReference baseReference); |{{linkReference}}: A link reference pointing to an entity of the specified type.   {example}{example}  {{baseReference}}: The entity reference used to resolve the linked entity reference.  | {{ResourceReference}}: A reference to the linked entity. |Parse the given link reference and extract a reference to the linked entity. The returned entity reference is resolved relative to the given base entity reference. |
+
+
+h1. ResizeImageService {anchor:id=KSref.DeveloperReference.WikiService.ResizeImageService}
+This service is used to resize the image to a desired size.
+
+||Method || Param || Return || Description||
+|*resizeImage*(String imageName, InputStream is, int requestWidth, int requestHeight, boolean keepAspectRatio); |{{imageName}}: The name of the image that is resized.  {example}{example}  {{is}}: The input stream of the image. {example}{example}  {{requestWidth}}: The new image width.  {example}{example}  {{requestHeight}}: The new image height.  {example}{example}  {{keepAspectRatio}}: Keep the aspect ratio or not.  | {{InputStream}}: The resized input stream. |Resize the given image to the specified dimensions. |
+|*resizeImageByWidth*(String imageName, InputStream is, int requestWidth); |{{imageName}}: The name of the image that is resized.  {example}{example}   {{is}}: The input stream of the image.  {example}{example}  {{requestWidth}}: The new image width | {{InputStream}}|Resize the given image to the requested width and keep the aspect ratio. |
+|*resizeImageByHeight*(String imageName, InputStream is, int requestHeight); |{{imageName}}: The name of the image that is resized.  {example}{example}   {{is}}: The input stream of the image.  {example}{example}  {{requestHeight}}: The new image height. | {{InputStream }} | Resize the given image to the requested height and keep the aspect ratio. |
+
+h1. RenderingService  {anchor:id=KSref.DeveloperReference.WikiService.RenderingService}
+This service provides functions to render between syntaxes.
+||Method || Param || Return || Description||
+|*getExecution*() throws ComponentLookupException, ComponentRepositoryException; |N/A |{{Execution}} |Get the execution from the XWIKI component manager. |
+|*getComponentManager*(); |N/A |{{ComponentManager }}: The XWIKI coponent manager. |Get the XWIKI component manager. |
+|*render*(String markup, String sourceSyntax, String targetSyntax, boolean supportSectionEdit) throws Exception; |{{markup}}: The text base to convert.  {example}{example}  {{sourceSyntax}}: The original syntax of markup.  {example}{example} {{targetSyntax}}: The syntax to convert markup.  {example}{example} {{supportSectionEdit}}: Support users to edit the section or not|{{String}}: The markup in the target syntax. |Render the markup from the source syntax to the target syntax. |
+|*getContentOfSection*(String markup, String sourceSyntax, String sectionIndex) throws Exception; |{{markup}}: The markup that contains sections. {example}{example}  {{sourceSyntax}}: The syntax of the markup.   {example}{example} {{sectionIndex}}: The index of section that gets the content.|{{String}}: The content of section. |Get the content of a section specified by _sectionIndex_. |
+|*updateContentOfSection*(String markup, String sourceSyntax, String sectionIndex, String newSectionContent) throws Exception; |{{markup}}: The markup that contain sections. {example}{example}  {{sourceSyntax}}: The syntax of the markup.  {example}{example} {{sectionIndex}}: The index of section that gets the content. {example}{example}  {{newSectionContent}}: The new content to update to the section.  |{{String}}: The new content of markup.|Update the content of a section specified by _sectionIndex_. |
+|*parse*(String markup, String sourceSyntax) throws Exception; |{{markup}}: The markup to parse. {example}{example}  {{sourceSyntax}}: The syntax of markup. | {{ XDOM}}: The tree representation of the content as _org.xwiki.rendering.block.Block_.|Parse the markup to XDOM. |
+|*getCssURL*(); |N/A |{{String}}: The URL of CSS. |Get the CSS URL. |
+|*setCssURL*(String cssURL); |{{cssURL}}: The URL of CSS.|{{void}} |Set the CSS URL. |
+
+
+h1. WikiRestService {anchor:id=KSref.DeveloperReference.WikiService.WikiRestService}
+This service provides functions to access Wiki data, such as tree data, Help content, images and more.
+||Method || Param || Return || Description||
+|*getWikiPageContent(String sessionKey, String wikiContextKey, boolean isMarkup, String data); |{{sessionKey}}: The key used to retrieve the editor input value from the session.  {example}{example}  {{wikiContextKey}}: The key used to get the wiki context from the client session. {example}{example}  {{isMarkup}}: If _true_, then _markup content_ is returned, otherwise _html content_ is returned.  {example}{example}  {{data}}: The content of the wiki page.| {{Response}}: _Status.OK_ and the page contain as _TEXT\_HTML_. _Status.INTERNAL\_SERVER\_ERROR_ if the exception occurs when getting the content of wiki page.  |Get the content of a wiki page. |
+|*upload*(String wikiType, String wikiOwner, String pageId) | {{wikiType}}: The wiki type.  {example}{example} {{wikiOwner}}: The wiki owner.  {example}{example} {{pageId}}: The page Id of the wiki page.| {{Response}}: _Status.OK_ if the upload successes. _HTTPStatus.BAD\_REQUEST_ if the upload fails. |Update a file to the wiki page specified by the parameters. |
+|*getTreeData*(String type, String path, String currentPath, Boolean showExcerpt, String depth); | {{type}}: The tree type {example}{example}  {{path}}: The JCR path of the root node.  {example}{example}  {{currentPath}}: The JCR path of the current selected node.  {example}{example} {{showExcerp}}: Show the summary of page or not. {example}{example}  {{depth}}: Start the depth to show the tree node.| {{Response}}: _Status.OK_ and the tree data as _APPLICATION\_JSON_. _Status.INTERNAL\_SERVER\_ERROR_ if the exception occurs when getting the tree data. | Get data to create a page tree.|
+|*getRelated*(String path); | {{path}}: The JCR path of the wiki page from which will get the related pages.| {{Response}}: _Status.OK_ and _JsonRelatedData_ as _APPLICATION\_JSON_. _Status.NOT\_FOUND_ if the wiki page cannot be found by the input JCR path. _Status.INTERNAL\_SERVER\_ERROR_ if the exception occurs when getting related pages. |Get a list of the relate pages of a wiki page. |
+|*searchData*(String keyword, String wikiType, String wikiOwner) throws Exception; | {{keyword}}: The keyword to search.  {example}{example}  {{wikiType}}: The wiki type.  {example}{example}  {{wikiOwner}}: The wiki owner.| {{Response}}: _Status.OK_ and search result as _APPLICATION\_JSON_. _Status.INTERNAL\_SERVER\_ERROR_ if the exception occurs when searching for a page. |Search through the title of wiki pages by a keyword. |
+|*getImage*(UriInfo uriInfo, String wikiType, String wikiOwner, String pageId, String imageId, Integer width); | {{uriInfo}}: The base URL information.  {example}{example} {{wikiType}}: The wiki type.  {example}{example} {{wikiOwner}}: The wiki owner.  {example}{example}  {{pageId}}: The wiki page Id. {example}{example}  {{imageId}}: The image Id.  {example}{example}  {{width}}: The width of the image.| {{Response}}: _Status.OK_ and the image after resize. _Status.INTERNAL\_SERVER\_ERROR_ if the exception occurs when getting the image. |Get an image from a wiki page. |
+|*getHelpSyntaxPage*(String syntaxId); | {{syntaxId}}: The syntax Id. | {{Response}}: _Status.OK_ and help content as _TEXT\_HTML_. _Status.INTERNAL\_SERVER\_ERROR_ if the exception occurs when getting the help content.|Get the Help content by the syntax Id. |
+
+h1. WikiService   {anchor:id=KSref.DeveloperReference.WikiService.WikiService}
+This service provides interface for processing database with wikis and pages, including adding, editing, removing and searching data.
+
+||Method || Param || Return || Description||
+|*createPage*(String wikiType, String wikiOwner, String title, String parentId) throws Exception; |{{wikiType}}: The wiki type.  {example}{example} {{wikiOwner}}: The owner of the page. {example}{example} {{title}}: The title of the new wiki page.  {example}{example} {{parentId}}: The page Id of the parent page. |{{Page}}: The new wiki page. |Create a wiki page specified by the parameters. |
+|*createTemplatePage*(String title, WikiPageParams params) throws Exception; |{{title}}: The title of the template.  {example}{example}  {{params}}: The parameter to specify the place to create a draft page. |{{Template}}: A new draft page. |Create a new template specified by the parameters. |
+|*initDefaultTemplatePage*(String path) ; |{{path}}: The JCR path from where the default template is created. |{{void}} |Initialize default templates of wiki.  |
+|*createDraftNewPage*(String draftNewPageId) throws Exception; |{{draftNewPageId}}: The Id of the draft page. | {{void}} |Create a draft page for a new wiki page. |
+|*deletePage*(String wikiType, String wikiOwner, String pageId) throws Exception; |{{wikiType}}: The wiki type.  {example}{example} {{wikiOwner}}: The wiki owner.  {example}{example}  {{pageId}}: The Id of wiki page that is deleted. |{{boolean}} |Delete a wiki page specified by the parameters. |
+|*deleteTemplatePage*(String wikiType, String wikiOwner, String templateId) throws Exception; |{{wikiType}}: The wiki type.  {example}{example}  {{wikiOwner}}: The wiki owner.  {example}{example}  {{templateId}}: The template Id  which is deleted.|{{void}} |Delete a template specified by the parameters. |
+|*deleteDraftNewPage*(String draftNewPageId) throws Exception; |{{draftNewPageId}}: The Id of the draft page which is deleted. |{{void}} |Delete a draft page specified by the parameter. |
+|*renamePage*(String wikiType, String wikiOwner, String pageName, String newName, String newTitle) throws Exception; |{{wikiType}}: The wiki type.  {example}{example}  {{wikiOwner}}: The wiki owner.  {example}{example}  {{pageName}}: The name of the wiki page which is renamed.  {example}{example}  {{newName}}: The new name of the wiki page.  {example}{example}  {{newTitle}}: The new title of the wiki page. | {{boolean}}|Rename a wiki page specified by the parameters. |
+|*movePage*(WikiPageParams currentLocationParams, WikiPageParams newLocationParams) throws Exception; |{{currentLocationParams}}: Specify the current location of the wiki page.  {example}{example}  {{newLocationParams}}: Specify the new location to which the wiki page is moved. |{{boolean}} |Move a wiki page to another location. |
+|*getWikiPermission*(String wikiType, String wikiOwner) throws Exception; |{{wikiType}}: The wiki type.  {example}{example}  {{wikiOwner}}: The wiki owner.  | {{List<PermissionEntry>}}: List of permission entry. |Get the permission of wiki. |
+|*setWikiPermission*(String wikiType, String wikiOwner, List<PermissionEntry> permissionEntries) throws Exception; |{{wikiType}}: The wiki type.  {example}{example}  {{wikiOwner}}: The wiki owner.  {example}{example}  {{permissionEntries}}: The list of permission entry to set to permissions of the wiki. |{{void}} |Set the permission for wiki. |
+|*getPageById*(String wikiType, String wikiOwner, String pageId) throws Exception; |{{wikiType}}: The wiki type.  {example}{example}  {{wikiOwner}}: The wiki owner.  {example}{example}  {{pageId}}: The page Id. | {{Page}} |Get a wiki page specified by parameters. |
+|*getRelatedPage*(String wikiType, String wikiOwner, String pageId) throws Exception; |{{wikiType}}: The wiki type.  {example}{example}  {{wikiOwner}}: The wiki owner.  {example}{example}  {{pageId}}: The old page Id of the wiki page. | {{Page}}: The wiki page. |Get a renamed wiki page by its old Id. After renaming, the wiki page Id was changed. The old Id of the wiki page is stored to the link registry of wiki and used to get the wiki page. |
+|*getExsitedOrNewDraftPageById*(String wikiType, String wikiOwner, String pageId) throws Exception; |{{wikiType}}: The wiki type.  {example}{example}  {{wikiOwner}}: The wiki owner.  {example}{example}  {{pageId}}: The page Id. |{{Page}}: The wiki page for the draft page. |Get a wiki page or create a draft for it if it does not exist. |
+|*getPageByUUID*(String uuid) throws Exception |{{uuid}}: The JCR node UUID of the wiki page. |{{Page}}: The wiki page. |Get a wiki page by the node UUID. |
+|*getTemplatePage*(WikiPageParams params, String templateId) throws Exception |{{params}}: The location of the template.  {example}{example}  {{templateId}}: The template Id.|{{Template}} |Get a template specified by the parameters. |
+|*searchContent*(WikiSearchData data) throws Exception; |{{data}}: The wiki search data that contain the search query. |{{PageList<SearchResult>}} |Search through the content of wiki pages and return search results. |
+|*getBreadcumb*(String wikiType, String wikiOwner, String pageId) throws Exception; |{{wikiType}}: The wiki type.  {example}{example}  {{wikiOwner}}: The wiki owner.  {example}{example}  {{pageId}}: The page Id. |{{List<BreadcrumbData>}} |Get a list of breadcrumb data of a wiki page. |
+|*getWikiPageParams*(BreadcrumbData data) throws Exception |{{data}}: The breadcrumb data.|{{WikiPageParams}} |Get the wiki page param from breadcrumb data. |
+|*search*(WikiSearchData data) throws Exception |{{data}}: The Wiki Search data that contain the search query.  |{{PageList<SearchResult>}} |Search for wiki pages that match the search query in the input search data. |
+|*searchTemplate*(TemplateSearchData data) throws Exception |{{data}}: The Wiki Search data that contain the search query. |{{List<TemplateSearchResult>}} |Search for wiki templates that match the search query in input search data. |
+|*searchRenamedPage*(String wikiType, String wikiOwner, String pageId) throws Exception |{{wikiType}}: The wiki type.  {example}{example}  {{wikiOwner}}: The wiki owner.  {example}{example}  {{pageId}}: The page Id.|{{List<SearchResult>}} |Get a list of renamed wiki pages. |
+|*searchDataByTitle*(WikiSearchData data) throws Exception |{{data}}: The wiki search data that contain the search query. |{{List<TitleSearchResult>}} |Search for the title of wiki pages and return search results. |
+|*findByPath*(String path, String objectNodeType) throws Exception |{{path}}: The JCR node path to get the object.  {example}{example}  {{objectNodeType}}: The node type of the JCR node. |{{Object}}: The object that has been got from the JCR node. |Get a wiki object (PageImpl, AttachmentImpl, Template) by the JCR path. |
+|*getDefaultWikiSyntaxId*() |N/A |{{String}}: The default wiki syntax Id. |Get the default wiki syntax Id. |
+|*getPageTitleOfAttachment*(String path) throws Exception; |{{path}}: The JCR path of the attachment. |{{String}}: The page title. |Get the page title of an attachment. |
+|*getAttachmentAsStream*(String path) throws Exception |{{path}}: The path of the attachment. |{{InputStream}}: The input stream. |Get the attachment as an stream. |
+|*getHelpSyntaxPage*(String syntaxId) throws Exception |{{syntaxId}}: The syntax Id to get the *Help* page. |{{PageImpl}}: The wiki page that contents the syntax help content. |Get the wiki page that contains the content of the syntax help. |
+|*getMetaDataPage*(MetaDataPage metaPage) throws Exception |{{metaPage}}: The type of Metadata. |{{Page}}: The wiki page that contains the metadata information.  |Get the wiki page that contains the metadata information. |
+|*getTemplates*(WikiPageParams params) throws Exception |{{params}}: The location of templates. |{{Map<String, Template>}}: The map of templates. |Get the map of template specified by the parameters. |
+|*getTemplatesContainer*(WikiPageParams params) throws Exception |{{params}}: The location of the template container. |{{TemplateContainer}}: The template container. |Get the template container specified by the parameters. |
+|*modifyTemplate*(WikiPageParams params, Template template, String newName, String newDescription, String newContent, String newSyntaxId) throws Exception |{{params}}: The location of the template.  {example}{example}  {{template}}: The template to modify.  {example}{example}  {{newName}}: The new name of the template.  {example}{example}  {{newDescription}}: The new description of the template.  {example}{example}  {{newContent}}: The new content of the template.  {example}{example}  {{newSyntaxId}}: The new syntax Id of the template. |{{void}} |Modify the wiki template. |
+|*isExisting*(String wikiType, String wikiOwner, String pageId) throws Exception |{{wikiType}}: The wiki type.  {example}{example}  {{wikiOwner}}: The wiki owner.  {example}{example}  {{pageId}}: The page Id. |{{boolean}} |Check if the wiki page exists or not. |
+|*addComponentPlugin*(ComponentPlugin plugin) |{{plugin}}: The component plugin.  |{{void}} |Register a _PageWikiListener_. |
+|*addWikiTemplatePagePlugin*(WikiTemplatePagePlugin templatePlugin) |{{templatePlugin}}: The template plugin. |{{void}} |Add a wiki template plugin. |
+|*getPageListeners*() |N/A |{{List<PageWikiListener>}}: The list of _PageWikiListener_. |Get page listeners. |
+|*addRelatedPage*(WikiPageParams orginaryPageParams, WikiPageParams relatedPageParams) throws Exception |{{orginaryPageParams}}: The parameter of the target page to which related pages are added.  {example}{example}  {{relatedPageParams}}: The parameter of the related page. |{{boolean}} |Add related pages. |
+|*getRelatedPage*(WikiPageParams pageParams) throws Exception |{{pageParams}}: The parameter which refers to the wiki page. |{{List<Page>}}: The list of related pages. | Get a list of related pages of a wiki page.|
+|*removeRelatedPage*(WikiPageParams orginaryPageParams, WikiPageParams relatedPageParams) throws Exception |{{orginaryPageParams}}: The parameter of the target page from which related pages are removed.  {example}{example}  {{relatedPageParams}}: The parameter of the related page. |{{boolean}} |Remove related pages from the related pages list of a wiki page. |
+
+
+
+
+
