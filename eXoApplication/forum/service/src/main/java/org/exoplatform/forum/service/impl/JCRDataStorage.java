@@ -104,6 +104,7 @@ import org.exoplatform.forum.service.conf.ForumInitialDataPlugin;
 import org.exoplatform.forum.service.conf.PostData;
 import org.exoplatform.forum.service.conf.StatisticEventListener;
 import org.exoplatform.forum.service.conf.TopicData;
+import org.exoplatform.forum.service.impl.model.PostFilter;
 import org.exoplatform.forum.service.user.AutoPruneJob;
 import org.exoplatform.ks.common.CommonUtils;
 import org.exoplatform.ks.common.TransformHTML;
@@ -2826,6 +2827,61 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
     } catch (PathNotFoundException e) {
       return null;
     }
+  }
+  
+  private String makePostsQuery(PostFilter filter) throws Exception {
+    String topicPath = filter.getTopicPath();
+    if(Utils.isEmpty(topicPath)) {
+    topicPath = new StringBuffer("/"+dataLocator.getForumCategoriesLocation())
+    .append("/").append(filter.getCategoryId()).append("/")
+    .append(filter.getForumId()).append("/").append(filter.getTopicId()).toString();
+    }
+
+    StringBuilder strBuilder = new StringBuilder(JCR_ROOT)
+    .append(topicPath).append("//element(*,").append(EXO_POST).append(")")
+    .append(Utils.getPathQuery(filter.getIsApproved(), filter.getIsHidden(), filter.getIsWaiting(), filter.getUserLogin()))
+    .append(" order by @exo:createdDate ascending");
+   
+    return strBuilder.toString();
+  }
+  
+  @Override
+  public List<Post> getPosts(PostFilter filter, int offset, int limit) throws Exception {
+    SessionProvider sProvider = CommonUtils.createSystemProvider();
+    try {
+      QueryManager qm = getForumHomeNode(sProvider).getSession().getWorkspace().getQueryManager();
+      QueryImpl query = (QueryImpl) qm.createQuery(makePostsQuery(filter), Query.XPATH);
+      query.setOffset(offset);
+      query.setLimit(limit);
+      QueryResult result = query.execute();
+      NodeIterator iter = result.getNodes();
+      Node currentNode = null;
+      List<Post> posts = new ArrayList<Post>((int)iter.getSize());
+      while (iter.hasNext()) {
+        currentNode = iter.nextNode();
+        posts.add(getPost(currentNode));
+      }
+      return posts;
+     } catch(Exception e) {
+      logDebug("Failed to get posts by filter of topic " + filter.getTopicId(), e);
+      return new ArrayList<Post>();
+    }
+    
+  }
+
+  public int getPostsCount(PostFilter filter) throws Exception {
+    SessionProvider sProvider = CommonUtils.createSystemProvider();
+    try {
+      //
+      QueryManager qm = getForumHomeNode(sProvider).getSession().getWorkspace().getQueryManager();
+      Query query = qm.createQuery(makePostsQuery(filter).toString(), Query.XPATH);
+      QueryResult result = query.execute();
+      
+      return (int)result.getNodes().getSize();
+    } catch(Exception e) {
+      return 0;
+    }
+    
   }
 
   public long getAvailablePost(String categoryId, String forumId, String topicId, String isApproved, String isHidden, String userLogin) throws Exception {

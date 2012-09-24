@@ -18,6 +18,8 @@ public enum CacheType {
   FORUM_LIST("forum.ForumList"),
   TOPIC_DATA("forum.TopicData"),
   TOPIC_LIST("forum.TopicList"),
+  POST_DATA("forum.PostData"),
+  POST_LIST("forum.PostList"),
   WATCH_LIST_DATA("forum.WatchListData"),
   LINK_LIST_DATA("forum.LinkListData"),
   OBJECT_NAME_DATA("forum.ObjectNameData"),

@@ -21,7 +21,13 @@ public class PostKey extends ScopeCacheKey {
   }
 
   public PostKey(Post post) {
-    this.category = null; // TODO : improve
+
+    int endPos = post.getPath().indexOf(post.getForumId()) - 1;
+    String catId = post.getPath().substring(0, endPos);
+    int startPos = catId.lastIndexOf("/") + 1;
+    catId = catId.substring(startPos);
+
+    this.category = catId;
     this.forum = post.getForumId();
     this.topic = post.getTopicId();
     this.post = post.getId();

@@ -13,6 +13,8 @@ import java.util.List;
  */
 public class PostData  implements CachedData<Post> {
   
+  public final static PostData NULL = new PostData(new Post());
+  
   private final String id;
   private final String path;
   private final String owner;
@@ -61,6 +63,10 @@ public class PostData  implements CachedData<Post> {
 
   public Post build() {
 
+    if (this == NULL) {
+      return null;
+    }
+    
     Post post = new Post();
 
     post.setId(this.id);

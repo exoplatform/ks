@@ -30,6 +30,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.jcr.NodeIterator;
 
+import org.exoplatform.commons.utils.ListAccess;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
@@ -63,6 +64,8 @@ import org.exoplatform.forum.service.UserLoginLogEntry;
 import org.exoplatform.forum.service.UserProfile;
 import org.exoplatform.forum.service.Utils;
 import org.exoplatform.forum.service.Watch;
+import org.exoplatform.forum.service.impl.model.PostFilter;
+import org.exoplatform.forum.service.impl.model.PostListAccess;
 import org.exoplatform.ks.common.CommonUtils;
 import org.exoplatform.ks.common.conf.RoleRulesPlugin;
 import org.exoplatform.management.annotations.ManagedBy;
@@ -513,6 +516,13 @@ public class ForumServiceImpl implements ForumService, Startable {
    */
   public JCRPageList getPosts(String categoryId, String forumId, String topicId, String isApproved, String isHidden, String strQuery, String userLogin) throws Exception {
     return storage.getPosts(categoryId, forumId, topicId, isApproved, isHidden, strQuery, userLogin);
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public ListAccess<Post> getPosts(PostFilter filter) throws Exception {
+    return new PostListAccess(PostListAccess.Type.POSTS, storage, filter);
   }
 
   /**

@@ -28,7 +28,9 @@ import java.util.Map;
 
 import javax.jcr.NodeIterator;
 
+import org.exoplatform.commons.utils.ListAccess;
 import org.exoplatform.container.component.ComponentPlugin;
+import org.exoplatform.forum.service.impl.model.PostFilter;
 import org.exoplatform.ks.bbcode.api.BBCode;
 import org.exoplatform.services.organization.User;
 
@@ -772,6 +774,12 @@ public class FakeForumService implements ForumService {
   @Override
   public void calculateDeletedGroup(String groupId, String groupName) throws Exception {
     
+  }
+
+  @Override
+  public ListAccess<Post> getPosts(PostFilter filter) throws Exception {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }

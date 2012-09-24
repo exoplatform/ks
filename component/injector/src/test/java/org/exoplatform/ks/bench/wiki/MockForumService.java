@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.jcr.NodeIterator;
 
+import org.exoplatform.commons.utils.ListAccess;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.forum.service.Category;
 import org.exoplatform.forum.service.Forum;
@@ -48,6 +49,7 @@ import org.exoplatform.forum.service.Topic;
 import org.exoplatform.forum.service.TopicType;
 import org.exoplatform.forum.service.UserProfile;
 import org.exoplatform.forum.service.Watch;
+import org.exoplatform.forum.service.impl.model.PostFilter;
 import org.exoplatform.services.organization.User;
 
 /**
@@ -1283,6 +1285,12 @@ public class MockForumService implements ForumService {
   @Override
   public void removeCacheUserProfile(String userName) throws Exception {
 
+  }
+
+  @Override
+  public ListAccess<Post> getPosts(PostFilter filter) throws Exception {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }
