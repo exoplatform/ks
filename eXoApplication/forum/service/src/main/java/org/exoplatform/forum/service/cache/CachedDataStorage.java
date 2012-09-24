@@ -145,6 +145,10 @@ public class CachedDataStorage implements DataStorage, Startable {
     forumList.select(new ScopeCacheSelector<ForumListKey, ListForumData>());
   }
   
+  private void clearPostListCache() throws Exception {
+    postList.select(new ScopeCacheSelector<PostListKey, ListPostData>());
+  }
+  
   private void clearLinkListCache() throws Exception {
     linkListData.select(new ScopeCacheSelector<LinkListKey, ListLinkData>());
   }
@@ -746,6 +750,7 @@ public class CachedDataStorage implements DataStorage, Startable {
     clearForumCache(categoryId, forumId, false);
     clearForumListCache();
     clearTopicCache(categoryId, forumId, topicId);
+    clearPostListCache();
     //
     if (isNew == false) {
       clearPostCache(categoryId, forumId, topicId, post.getId());
@@ -755,6 +760,17 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   public void modifyPost(List<Post> posts, int type) {
     storage.modifyPost(posts, type);
+    //clear caching
+    try {
+      clearPostListCache();
+      //
+      for(Post post : posts) {
+        String categoryId = Utils.getCategoryId(post.getPath());
+        clearPostCache(categoryId, post.getForumId(), post.getTopicId(), post.getId());
+      }
+    } catch (Exception e) {
+      LOG.error(e.getMessage(), e);
+    }
   }
 
   public Post removePost(String categoryId, String forumId, String topicId, String postId) {
@@ -762,6 +778,7 @@ public class CachedDataStorage implements DataStorage, Startable {
       clearForumCache(categoryId, forumId, false);
       clearForumListCache();
       clearTopicCache(categoryId, forumId, topicId);
+      clearPostListCache();
       clearPostCache(categoryId, forumId, topicId, postId);
       statistic = null;
     } catch (Exception e) {

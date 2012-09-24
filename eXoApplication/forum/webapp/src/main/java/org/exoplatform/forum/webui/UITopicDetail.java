@@ -603,6 +603,9 @@ public class UITopicDetail extends UIForumKeepStickPageIterator {
 
       int pageSize = (int)this.userProfile.getMaxPostInPage();
       postListAccess.initialize(pageSize, pageSelect);
+      if (IdPostView.equals("lastpost")) {
+        this.pageSelect = postListAccess.getTotalPages();
+      }
     } catch (Exception e) {
       log.warn("Failed to init topic page: " + e.getMessage(), e);
     }
