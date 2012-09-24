@@ -635,22 +635,25 @@ public class UITopicDetail extends UIForumKeepStickPageIterator {
       } catch (Exception e) {
         log.warn("Failed to find last read index for topic: " + e.getMessage(), e);
       }
-      posts = pageList.getPage(pageSelect);
-      pageSelect = pageList.getCurrentPage();
-      pagePostRemember.put(topicId, pageSelect);
-      if (posts == null)
-        posts = new ArrayList<Post>();
-      List<String> userNames = new ArrayList<String>();
-      mapUserProfile.clear();
-      for (Post post : posts) {
-        if (!userNames.contains(post.getOwner()))
-          userNames.add(post.getOwner());
-        if (getUICheckBoxInput(post.getId()) != null) {
-          getUICheckBoxInput(post.getId()).setChecked(false);
-        } else {
-          addUIFormInput(new UICheckBoxInput(post.getId(), post.getId(), false));
-        }
-        this.IdLastPost = post.getId();
+      List<String> userNames = null;
+      synchronized (this) {
+        posts = pageList.getPage(pageSelect);
+        pageSelect = pageList.getCurrentPage();
+        pagePostRemember.put(topicId, pageSelect);
+        if (posts == null)
+          posts = new ArrayList<Post>();
+        userNames = new ArrayList<String>();
+        mapUserProfile.clear();
+        for (Post post : posts) {
+          if (!userNames.contains(post.getOwner()))
+            userNames.add(post.getOwner());
+          if (getUICheckBoxInput(post.getId()) != null) {
+            getUICheckBoxInput(post.getId()).setChecked(false);
+          } else {
+            addUIFormInput(new UICheckBoxInput(post.getId(), post.getId(), false));
+          }
+          this.IdLastPost = post.getId();
+        } 
       }
       if (!lastPoistIdSave.equals(IdLastPost)) {
         lastPoistIdSave = IdLastPost;
@@ -661,7 +664,7 @@ public class UITopicDetail extends UIForumKeepStickPageIterator {
         }
       }
       // updateUserProfiles
-      if (userNames.size() > 0) {
+      if (userNames != null && userNames.size() > 0) {
         try {
           List<UserProfile> profiles = getForumService().getQuickProfiles(userNames);
           for (UserProfile profile : profiles) {

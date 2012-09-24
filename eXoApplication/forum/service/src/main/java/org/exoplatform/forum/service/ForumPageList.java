@@ -42,8 +42,6 @@ public class ForumPageList extends JCRPageList {
 
   private SessionManager sessionManager;
 
-  private NodeIterator   iter_      = null;
-
   private List           listValue_ = null;
 
   public ForumPageList(int pageSize, int size) {
@@ -55,19 +53,17 @@ public class ForumPageList extends JCRPageList {
     super(pageSize);
     value_ = value;
     isQuery_ = isQuery;
-
     this.sessionManager = ForumServiceUtils.getSessionManager();
     try {
       if (iter == null) {
-        sessionManager.openSession();
         iter = setQuery(isQuery_, value_);
-        iter_ = iter;
       }
       if (iter != null) {
         setAvailablePage((int) iter.getSize());
       }
+      iter = null;
     } finally {
-      // sessionManager.closeSession();
+      this.sessionManager.closeSession();
     }
   }
 
@@ -84,15 +80,13 @@ public class ForumPageList extends JCRPageList {
 
   @SuppressWarnings("unchecked")
   protected void populateCurrentPage(int page) throws Exception {
-    if (iter_ == null) {
-      iter_ = setQuery(isQuery_, value_);
-      setAvailablePage((int) iter_.getSize());
-      if (page == 0)
-        currentPage_ = 0; // nasty trick for getAll()
-      else
-        checkAndSetPage(page);
-      page = currentPage_;
-    }
+    NodeIterator iter = setQuery(isQuery_, value_);
+    setAvailablePage((int) iter.getSize());
+    if (page == 0)
+      currentPage_ = 0; // nasty trick for getAll()
+    else
+      checkAndSetPage(page);
+    page = currentPage_;
     Node currentNode;
     long pageSize = 0;
     if (page > 0) {
@@ -102,16 +96,16 @@ public class ForumPageList extends JCRPageList {
         position = 0;
       else {
         position = (page - 1) * pageSize;
-        iter_.skip(position);
+        iter.skip(position);
       }
     } else {
-      pageSize = iter_.getSize();
+      pageSize = iter.getSize();
     }
 
     currentListPage_ = new ArrayList<Object>();
     for (int i = 0; i < pageSize; i++) {
-      if (iter_.hasNext()) {
-        currentNode = iter_.nextNode();
+      if (iter.hasNext()) {
+        currentNode = iter.nextNode();
         if (currentNode.isNodeType("exo:post")) {
           currentListPage_.add(getPost(currentNode));
         } else if (currentNode.isNodeType(Utils.TYPE_TOPIC)) {
@@ -125,7 +119,7 @@ public class ForumPageList extends JCRPageList {
         break;
       }
     }
-    iter_ = null;
+    iter = null;
     if (sessionManager.getCurrentSession() != null && sessionManager.getCurrentSession().isLive()) {
       sessionManager.closeSession();
     }
@@ -134,12 +128,9 @@ public class ForumPageList extends JCRPageList {
   @SuppressWarnings("unchecked")
   protected void populateCurrentPage(String valueString) throws Exception {
     NodeIterator nodeIterator = setQuery(isQuery_, value_);
-    if (iter_ == null) {
-      iter_ = setQuery(isQuery_, value_);
-    }
     int pos = 0;
     for (int i = 0; i < nodeIterator.getSize(); i++) {
-      if (getUserProfile(nodeIterator.nextNode()).getUserId().equals(valueString)) {
+      if (nodeIterator.nextNode().getName().equals(valueString)) {
         pos = i + 1;
         break;
       }
@@ -154,6 +145,7 @@ public class ForumPageList extends JCRPageList {
         page = page + 1;
       }
     }
+    NodeIterator iter_ = setQuery(isQuery_, value_);
     this.pageSelected = page;
     iter_.skip((page - 1) * pageSize);
     currentListPage_ = new ArrayList<Object>();
@@ -200,7 +192,7 @@ public class ForumPageList extends JCRPageList {
   }
 
   private NodeIterator setQuery(boolean isQuery, String value) throws Exception {
-    NodeIterator iter;
+    NodeIterator iter = null;
     Session session = sessionManager.getCurrentSession();
     if (session == null || !session.isLive()) {
       sessionManager.openSession();
