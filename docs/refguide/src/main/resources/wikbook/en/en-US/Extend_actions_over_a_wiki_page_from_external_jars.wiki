@@ -47,6 +47,7 @@ The toolbar in Wiki is built basing on the UI Extension Framework, so you can ad
 {docbook}
 * [Extension points|#KSref.DeveloperReference.ExtensionPoints]
 * [Internal API|#KSref.DeveloperReference.InternalAPI]
+* [Wiki Service API|#KSref.DeveloperReference.WikiService]
 * [FAQ Template Configuration|#KSref.DeveloperReference.FAQTemplateConfiguration]
 * [JCR structure|#KSref.JCRStructure]
 

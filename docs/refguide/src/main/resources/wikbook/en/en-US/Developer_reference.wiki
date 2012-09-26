@@ -21,6 +21,13 @@ you will know how to set up a default template for the FAQ portlet, and how to c
       <listitem>
         <para>
           <emphasis role="bold">
+            <link linkend="KSref.DeveloperReference.WikiService">Wiki Service API</link>
+          </emphasis> </para>
+          <para>Description of Wiki Service API used in the Knowledge function.</para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
             <link linkend="KSref.DeveloperReference.FAQTemplateConfiguration">FAQ Template Configuration</link>
           </emphasis> </para>
           <para>Instructions on how to configure the FQA template and to change its look and feel, information of APIs provided by the UIComponent. </para>

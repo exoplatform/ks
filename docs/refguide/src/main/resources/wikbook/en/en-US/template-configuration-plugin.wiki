@@ -35,6 +35,7 @@
 {docbook}
 * [Extension points|#KSref.DeveloperReference.ExtensionPoints]
 * [Internal API|#KSref.DeveloperReference.InternalAPI]
+* [Wiki Service API|#KSref.DeveloperReference.WikiService]
 * [Actions over a wiki page from external jars|#KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars]
 * [JCR structure|#KSref.JCRStructure]
 

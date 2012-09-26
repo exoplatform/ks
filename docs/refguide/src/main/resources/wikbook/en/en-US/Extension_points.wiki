@@ -37,6 +37,7 @@ There are some extension points in Knowledge, so that you can control how these 
 {docbook}
 
 * [Internal API|#KSref.DeveloperReference.InternalAPI]
+* [Wiki Service API|#KSref.DeveloperReference.WikiService]
 * [FAQ Template Configuration|#KSref.DeveloperReference.FAQTemplateConfiguration]
 * [Actions over a wiki page from external jars|#KSref.DeveloperReference.Extend_actions_over_a_wiki_page_from_external_jars]
 * [JCR structure|#KSref.JCRStructure]
