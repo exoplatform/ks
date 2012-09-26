@@ -302,6 +302,12 @@ public interface DataStorage {
   // void updateDataImported() throws Exception;
 
   void updateTopicAccess(String userId, String topicId);
+  
+  /**
+   * write user access a topic
+   * @since 2.2.11
+   */
+  void writeReads();
 
   void updateForumAccess(String userId, String forumId);
 
@@ -382,6 +388,12 @@ public interface DataStorage {
   KSDataLocation getDataLocation();
 
   void setViewCountTopic(String path, String userRead);
+  
+  /**
+   * Write the number of topic viewers.
+   * @since 2.2.11
+   */
+  void writeViews();
 
   JCRPageList getPostForSplitTopic(String topicPath) throws Exception;
 

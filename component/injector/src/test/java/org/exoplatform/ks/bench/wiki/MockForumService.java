@@ -267,6 +267,13 @@ public class MockForumService implements ForumService {
   public void setViewCountTopic(String path, String userRead) {
 
   }
+  
+  /* (non-Javadoc)
+   * @see org.exoplatform.forum.service.ForumService#writeViews()
+   */
+  @Override
+  public void writeViews() {
+  }
 
   /* (non-Javadoc)
    * @see org.exoplatform.forum.service.ForumService#getTopicByPath(java.lang.String, boolean)
@@ -879,6 +886,14 @@ public class MockForumService implements ForumService {
    */
   @Override
   public void updateTopicAccess(String userId, String topicId) {
+
+  }
+  
+  /* (non-Javadoc)
+   * @see org.exoplatform.forum.service.ForumService#writeReads()
+   */
+  @Override
+  public void writeReads() {
 
   }
 

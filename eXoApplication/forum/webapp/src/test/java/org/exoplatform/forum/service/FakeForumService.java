@@ -668,6 +668,9 @@ public class FakeForumService implements ForumService {
 
   public void setViewCountTopic(String path, String userRead) {
   }
+  
+  public void writeViews() {
+  }
 
   public void unRegisterListenerForCategory(String path) throws Exception {
   }
@@ -691,6 +694,9 @@ public class FakeForumService implements ForumService {
   }
 
   public void updateTopicAccess(String userId, String topicId) {
+  }
+  
+  public void writeReads() {
   }
 
   public void updateUserProfile(User user) throws Exception {

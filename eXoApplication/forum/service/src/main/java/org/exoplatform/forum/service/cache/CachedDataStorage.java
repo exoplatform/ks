@@ -1146,6 +1146,10 @@ public class CachedDataStorage implements DataStorage, Startable {
   public void updateTopicAccess(String userId, String topicId) {
     storage.updateTopicAccess(userId, topicId);
   }
+  
+  public void writeReads() {
+    storage.writeReads();
+  }
 
   public void updateForumAccess(String userId, String forumId) {
     storage.updateForumAccess(userId, forumId);
@@ -1298,6 +1302,10 @@ public class CachedDataStorage implements DataStorage, Startable {
   public void setViewCountTopic(String path, String userRead) {
     storage.setViewCountTopic(path, userRead);
   }
+  
+  public void writeViews() {
+    storage.writeViews();
+  }
 
   public JCRPageList getPostForSplitTopic(String topicPath) throws Exception {
     return storage.getPostForSplitTopic(topicPath);
@@ -1349,8 +1357,22 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   }
 
-  public int getPostsCount(PostFilter filter) throws Exception {
-    return storage.getPostsCount(filter);
+  public int getPostsCount(final PostFilter filter) throws Exception {
+
+    SimpleCacheKey key = new SimpleCacheKey("postsCount", filter.toString());
+
+    SimpleCacheData<Integer> data = miscDataFuture.get(new ServiceContext<SimpleCacheData>() {
+      public SimpleCacheData execute() {
+        try {
+          return new SimpleCacheData<Integer>(storage.getPostsCount(filter));
+        } catch (Exception e) {
+          throw new RuntimeException(e);
+        }
+      }
+    }, key);
+
+    return data.build();
+
   }
 
  

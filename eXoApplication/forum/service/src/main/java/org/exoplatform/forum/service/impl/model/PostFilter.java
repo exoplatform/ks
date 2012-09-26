@@ -77,6 +77,17 @@ public class PostFilter {
     return userLogin;
   }
   
-  
-  
+  @Override
+  public String toString() {
+    return "PostFilter{" +
+        "categoryId='" + categoryId + '\'' +
+        ", forumId='" + forumId + '\'' +
+        ", topicId='" + topicId + '\'' +
+        ", isApproved='" + isApproved + '\'' +
+        ", isWaiting='" + isWaiting + '\'' +
+        ", isHidden='" + isHidden + '\'' +
+        ", userLogin='" + userLogin + '\'' +
+        ", topicPath='" + topicPath + '\'' +
+        '}';
+  }
 }

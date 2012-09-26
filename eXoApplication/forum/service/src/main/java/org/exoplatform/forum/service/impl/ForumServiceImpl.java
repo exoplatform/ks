@@ -434,6 +434,13 @@ public class ForumServiceImpl implements ForumService, Startable {
   public void setViewCountTopic(String path, String userRead){
     storage.setViewCountTopic(path, userRead);
   }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public void writeViews() {
+    storage.writeViews();
+  }
 
   /**
    * {@inheritDoc}
@@ -1085,6 +1092,13 @@ public class ForumServiceImpl implements ForumService, Startable {
    */
   public void updateTopicAccess(String userId, String topicId) {
     storage.updateTopicAccess(userId, topicId);
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public void writeReads() {
+    storage.writeReads();
   }
 
   /**

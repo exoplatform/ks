@@ -131,6 +131,28 @@
         </properties-param>
       </init-params>
     </component-plugin>
+    
+    <!--Topic delays write user number of view topic and number of read topic-->
+    <component-plugin>
+      <name>DelayWritesJob</name>
+      <set-method>addPeriodJob</set-method>
+      <type>org.exoplatform.services.scheduler.PeriodJob</type>
+      <description>update view count</description>
+      <init-params>
+        <properties-param>
+          <name>job.info</name>
+          <description>save view count</description>
+          <property name="jobName" value="DelayWritesJob"/>
+          <property name="groupName" value="KnowlegedSuite"/>
+          <property name="job" value="org.exoplatform.forum.service.conf.DelayWritesJob"/>
+          <property name="repeatCount" value="0"/>
+          <property name="period" value="30000"/> <!-- 1 minute -->
+          <property name="startTime" value="+0"/>
+          <property name="endTime" value=""/>
+        </properties-param>
+      </init-params>
+    </component-plugin>
+    
   </external-component-plugins>
 
 

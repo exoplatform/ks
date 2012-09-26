@@ -283,6 +283,12 @@ public interface ForumService extends ForumServiceLegacy {
    * @param userRead the user read
    */
   void setViewCountTopic(String path, String userRead);
+  
+  /**
+   * Write the number of topic viewers.
+   * @since 2.2.11
+   */
+  void writeViews();
 
   /**
    * Gets the topic by path.
@@ -993,6 +999,12 @@ public interface ForumService extends ForumServiceLegacy {
    * @param topicId id of a topic
    */
   void updateTopicAccess(String userId, String topicId);
+  
+  /**
+   * write user access a topic
+   * @since 2.2.11
+   */
+  void writeReads();
 
   /**
    * update user access a forum 
