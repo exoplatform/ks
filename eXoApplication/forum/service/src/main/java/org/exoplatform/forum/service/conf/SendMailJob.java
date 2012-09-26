@@ -23,7 +23,7 @@ import java.util.List;
 import org.exoplatform.forum.service.ForumService;
 import org.exoplatform.forum.service.SendMessageInfo;
 import org.exoplatform.ks.common.CommonUtils;
-import org.exoplatform.ks.common.job.MultiTenancyJob;
+import org.exoplatform.job.MultiTenancyJob;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.services.mail.MailService;

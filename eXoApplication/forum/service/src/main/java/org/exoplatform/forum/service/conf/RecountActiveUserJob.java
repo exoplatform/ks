@@ -19,12 +19,10 @@ package org.exoplatform.forum.service.conf;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import javax.jcr.RepositoryException;
-
 import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.forum.service.ForumService;
 import org.exoplatform.forum.service.Utils;
-import org.exoplatform.ks.common.job.MultiTenancyJob;
+import org.exoplatform.job.MultiTenancyJob;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.quartz.JobDataMap;
