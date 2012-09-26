@@ -4,7 +4,7 @@
       <listitem>
         <para>
           <emphasis role="bold">
-            <link linkend="KSref.Configuration.Data_Injectior_Service.Configuration">Configuration</link>
+            <link linkend="KSref.Configuration.Data_Injector_Service.Configuration">Configuration</link>
           </emphasis> </para>
           <para>Instructions on how to activate the <emphasis>DataInjectorService</emphasis> component and the detailed configuration of plugins (including ForumDataInjector, WikiDatainjector and AnswerDataInjector) attached to it.</para>
       </listitem>
@@ -80,7 +80,7 @@ public abstract class DataInjector extends BaseComponentPlugin {
 * [Components|#KSref.Configuration.Components]
 * [External Component Plugins|#KSref.Configuration.External-component-plugins]
 
-h1. Configuration {anchor:id=KSref.Configuration.Data_Injectior_Service.ConfigurationRoleNotInToc}
+h1. Configuration {anchor:id=KSref.Configuration.Data_Injector_Service.ConfigurationRoleNotInToc}
 
 To activate _DataInjectorService_, you must register this component to a portal container by the following configuration:
 
@@ -96,7 +96,7 @@ In Knowledge, there are three plugins attached to the _DataInjectorService_ comp
 * AnswerDataInjector
 
 
-h2. ForumDataInjector {anchor:id=KSref.Configuration.Data_Injectior_Service.Configuration.Forum_Data_Injectior}
+h2. ForumDataInjector {anchor:id=KSref.Configuration.Data_Injector_Service.Configuration.Forum_Data_Injector}
 
 The Forum Data injector is configured to register to DataInjectorService by the following code:
 
@@ -128,7 +128,7 @@ The query parameters description:
 * Every created topic can only  be read/modified by user 'root' to grant permission to other members.
 
 
-h2. WikiDatainjector  {anchor:id=KSref.Configuration.Data_Injectior_Service.Wiki_data_injectior}
+h2. WikiDatainjector  {anchor:id=KSref.Configuration.Data_Injector_Service.Wiki_data_injector}
 The Data injector for Wiki is configured as follow:
 
 {code:xml}
@@ -153,13 +153,17 @@ In which, parameters mean:
 
 || Param || Value || Description ||
 | type | \[data \| perm]| Type of injector. It can be data or perm which injects data or permission respectively. |
-| q | Number | The number of pages in each depth, separated by commas. For example, if value is 1,2,3 then the injector will create 1 new child of WikiHome, 2 children per each page created in depth 1 and 3 children for each page created in depth 2. |
-| pre | String | Prefix for page id in each depth, separated by commas. For example, if value is abc,def,ghk then pages in depth 1 have title starting with "abc", title of pages in depth 2 start with "def" and in depth 3 is "ghk". |
+| q | Number | The number of pages in each depth, separated by commas. For example, if the value is 1,2,3, then the injector will create 1 new child of WikiHome, 2 children per each page created in depth 1 and 3 children for each page created in depth 2. |
+| pre | String | Prefix for page Id in each depth, separated by commas. For example, if the value is abc,def,ghk, then pages in depth 1 have title starting with "abc", title of pages in depth 2 start with "def" and in depth 3 is "ghk". |
 | wo | String | Wiki owner. |
 | wt | String | Wiki type. The value can be: 'portal', 'user', 'group'.|
 | maxAtt | Number | The size of attachment in created pages. the value is evaluated in KByte. If the value is 0 or not set, no attachment is created. |
 | mP | Number | The maximum pages in each injection. The number of created pages must not exceed this value. |
 
+For example: To create 1000 child pages under the _root_ permission, the link request is as follows:
+{code}
+http://hosthost:8080/rest/private/bench/inject/WikiDataInjector?type=data&q=1,1000&pre=Administrator,subAdministrator&wo=intranet&wt=portal&maxAtt=5&mP=100
+{code}
 To grant permission, the request link is in the following format:
 
 {code}
@@ -181,7 +185,7 @@ You can use these parameters to set up permissions for pages:
 | perm | \[number\]\[number\] | The declared permissions. The value must be a string with 2 numbers. The first number is to define Read permission of identity while the other one is for Edit permission. If the number is "zero", the privilege is denied and vise versa. For example, 11 means that both Read and Edit pages permmission are granted. |
 | rcs | Boolean | Recursive or not. If the value is true, all pages that meet the constraint will be set permission, or deepest pages (smallest descendants) will be affected. |
 
-h2. AnswerDataInjector {anchor:id=KSref.Configuration.Data_Injectior_Service.Answer_data_injectior}
+h2. AnswerDataInjector {anchor:id=KSref.Configuration.Data_Injector_Service.Answer_data_injector}
 
 The following configuration is used for the Answer Data injector:
 
@@ -246,7 +250,7 @@ In which:
 In the other way, such settings have been declared in "ksdemo.war/WEB-INF/conf/ksdemo/ks/bench-configuration.xml", therefore, to save time and effort, you can import it to "ksdemo.war/WEB-INF/conf/configuration.xml" and then modify it rather than create new one.
 {note}
 
-h1. How to use {anchor:id=KSref.Configuration.Data_Injectior_Service.How_to_useRoleNotInToc}
+h1. How to use {anchor:id=KSref.Configuration.Data_Injector_Service.How_to_useRoleNotInToc}
 
 You can use RESTful service to request to inject or reject data. The format of request link is:
 
