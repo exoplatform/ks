@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2003-2012 eXo Platform SAS.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.exoplatform.org/xml/ns/kernel_1_2.xsd http://www.exoplatform.org/xml/ns/kernel_1_2.xsd"
+  xmlns="http://www.exoplatform.org/xml/ns/kernel_1_2.xsd">
+
+  <!-- Forum Injector Definition-->
+  <component>
+    <type>org.exoplatform.ks.extras.injection.forum.ProfileInjector</type>
+  </component>
+
+  <component>
+    <type>org.exoplatform.ks.extras.injection.forum.CategoryInjector</type>
+  </component>
+  
+    <component>
+    <type>org.exoplatform.ks.extras.injection.forum.ForumInjector</type>
+  </component>
+
+  <component>
+    <type>org.exoplatform.ks.extras.injection.forum.TopicInjector</type>
+  </component>
+  
+  <component>
+    <type>org.exoplatform.ks.extras.injection.forum.PostInjector</type>
+  </component>
+
+  <component>
+    <type>org.exoplatform.ks.extras.injection.forum.AttachmentInjector</type>
+  </component>
+  
+  <component>
+    <type>org.exoplatform.ks.extras.injection.forum.MembershipInjector</type>
+  </component>
+  
+  <component>
+    <type>org.exoplatform.services.bench.DataInjectorService</type>
+  </component>
+  
+  <!-- FAQ Injector Definition-->
+  <component>
+    <type>org.exoplatform.ks.extras.injection.faq.CategoryInjector</type>
+  </component>
+
+  <component>
+    <type>org.exoplatform.ks.extras.injection.faq.AnswerInjector</type>
+  </component>
+
+  <component>
+    <type>org.exoplatform.ks.extras.injection.faq.ProfileInjector</type>
+  </component>
+
+  <component>
+    <type>org.exoplatform.ks.extras.injection.faq.QuestionInjector</type>
+  </component>
+
+  <component>
+    <type>org.exoplatform.ks.extras.injection.faq.CommentInjector</type>
+  </component>
+
+  <component>
+    <type>org.exoplatform.ks.extras.injection.faq.AttachmentInjector</type>
+  </component>
+
+  <component>
+    <type>org.exoplatform.ks.extras.injection.faq.MembershipInjector</type>
+  </component>
+  
+  <!-- Poll Injector Definition-->
+  <component>
+    <type>org.exoplatform.ks.extras.injection.poll.GroupInjector</type>
+  </component>
+
+  <component>
+    <type>org.exoplatform.ks.extras.injection.poll.PollInjector</type>
+  </component>
+
+  <component>
+    <type>org.exoplatform.ks.extras.injection.poll.VoteInjector</type>
+  </component>
+
+  <external-component-plugins>
+    <target-component>org.exoplatform.services.bench.DataInjectorService</target-component>
+
+    <component-plugin>
+      <name>forumProfile</name>
+      <set-method>addInjector</set-method>
+      <type>org.exoplatform.ks.extras.injection.forum.ProfileInjector</type>
+    </component-plugin>
+    <component-plugin>
+      <name>forumCategory</name>
+      <set-method>addInjector</set-method>
+      <type>org.exoplatform.ks.extras.injection.forum.CategoryInjector</type>
+    </component-plugin>
+    <component-plugin>
+      <name>forumForum</name>
+      <set-method>addInjector</set-method>
+      <type>org.exoplatform.ks.extras.injection.forum.ForumInjector</type>
+    </component-plugin>
+    <component-plugin>
+      <name>forumTopic</name>
+      <set-method>addInjector</set-method>
+      <type>org.exoplatform.ks.extras.injection.forum.TopicInjector</type>
+    </component-plugin>
+    <component-plugin>
+      <name>forumPost</name>
+      <set-method>addInjector</set-method>
+      <type>org.exoplatform.ks.extras.injection.forum.PostInjector</type>
+    </component-plugin>
+    <component-plugin>
+      <name>forumMembership</name>
+      <set-method>addInjector</set-method>
+      <type>org.exoplatform.ks.extras.injection.forum.MembershipInjector</type>
+    </component-plugin>
+    <component-plugin>
+      <name>forumAttachment</name>
+      <set-method>addInjector</set-method>
+      <type>org.exoplatform.ks.extras.injection.forum.AttachmentInjector</type>
+    </component-plugin>
+
+    <component-plugin>
+      <name>faqProfile</name>
+      <set-method>addInjector</set-method>
+      <type>org.exoplatform.ks.extras.injection.faq.ProfileInjector</type>
+    </component-plugin>
+    <component-plugin>
+      <name>faqCategory</name>
+      <set-method>addInjector</set-method>
+      <type>org.exoplatform.ks.extras.injection.faq.CategoryInjector</type>
+    </component-plugin>
+    <component-plugin>
+      <name>faqQuestion</name>
+      <set-method>addInjector</set-method>
+      <type>org.exoplatform.ks.extras.injection.faq.QuestionInjector</type>
+    </component-plugin>
+    <component-plugin>
+      <name>faqAnswer</name>
+      <set-method>addInjector</set-method>
+      <type>org.exoplatform.ks.extras.injection.faq.AnswerInjector</type>
+    </component-plugin>
+    <component-plugin>
+      <name>faqComment</name>
+      <set-method>addInjector</set-method>
+      <type>org.exoplatform.ks.extras.injection.faq.CommentInjector</type>
+    </component-plugin>
+    <component-plugin>
+      <name>faqAttachment</name>
+      <set-method>addInjector</set-method>
+      <type>org.exoplatform.ks.extras.injection.faq.AttachmentInjector</type>
+    </component-plugin>
+    <component-plugin>
+      <name>faqMembership</name>
+      <set-method>addInjector</set-method>
+      <type>org.exoplatform.ks.extras.injection.faq.MembershipInjector</type>
+    </component-plugin>
+
+    <component-plugin>
+      <name>pollGroup</name>
+      <set-method>addInjector</set-method>
+      <type>org.exoplatform.ks.extras.injection.poll.GroupInjector</type>
+    </component-plugin>
+    <component-plugin>
+      <name>pollPoll</name>
+      <set-method>addInjector</set-method>
+      <type>org.exoplatform.ks.extras.injection.poll.PollInjector</type>
+    </component-plugin>
+    <component-plugin>
+      <name>pollVote</name>
+      <set-method>addInjector</set-method>
+      <type>org.exoplatform.ks.extras.injection.poll.VoteInjector</type>
+    </component-plugin>
+
+  </external-component-plugins>
+</configuration>
