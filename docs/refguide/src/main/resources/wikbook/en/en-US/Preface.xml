@@ -1,21 +1,32 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <preface xml:id="KSRef.Prerequisites">
-	<title>Prerequisites</title>
-<abstract>
-<para>There are 2 prerequisites you may need to learn before thoroughly going into Knowledge as follows:</para>
-	<itemizedlist>
-	  <listitem>
-		<para>
-		  <emphasis role="bold">
-			<ulink url="http://wiki.exoplatform.org/xwiki/bin/view/Portal/Portal%20Manual#HDevelopment">Portlets &amp; Gadgets</ulink>
-		  </emphasis></para>
-	  </listitem>
-	  <listitem>
-		<para>
-		  <emphasis role="bold">
-			<ulink url="http://wiki.exoplatform.org/xwiki/bin/view/WS/">REST APIs</ulink>
-		  </emphasis></para>
-	  </listitem>
-	</itemizedlist>
-</abstract>
+  <title>Prerequisites</title>
+  <abstract>
+    <para>There are 2 prerequisites you may need to learn before thoroughly going into Knowledge as follows:</para>
+    <itemizedlist>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <ulink url="../../reference/html/GateInReferenceGuide.html">GateIn
+              Reference Guide
+            </ulink>
+          </emphasis>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <ulink url="http://opensocial-resources.googlecode.com/svn/spec/1.1/Social-Gadget.xml">OpenSocial Core Gadget Specification v1.1</ulink>
+          </emphasis>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">
+            <ulink url="../../reference/html/chapter-eXoWS.html">WebService</ulink>
+          </emphasis>
+        </para>
+      </listitem>	  
+    </itemizedlist>
+  </abstract>
 </preface>
