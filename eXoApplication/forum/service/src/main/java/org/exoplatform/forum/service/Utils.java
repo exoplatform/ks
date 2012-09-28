@@ -19,6 +19,7 @@ package org.exoplatform.forum.service;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -586,6 +587,10 @@ public class Utils implements ForumNodeTypes {
   
   static public String getCurrentTenantName() {
     RepositoryService repositoryService = (RepositoryService) ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(RepositoryService.class);
+    if (repositoryService == null) {
+      LOG.warn("Can not get current repository!");
+      return null;
+    }
     try {
       return repositoryService.getCurrentRepository().getConfiguration().getName();
     } catch (Exception e) {
@@ -599,6 +604,12 @@ public class Utils implements ForumNodeTypes {
   static public List<String> getOnlineUserByTenantName(Map<String, List<String>> onlineUserMap) {
     List<String> onlinUsers = new ArrayList<String>();
     String currentTenant = getCurrentTenantName();
+    //
+    if(currentTenant == null) {
+      return Collections.emptyList();
+    }
+    
+    //
     if (onlineUserMap != null && onlineUserMap.get(currentTenant) != null) {
       onlinUsers.addAll(onlineUserMap.get(currentTenant));
     }

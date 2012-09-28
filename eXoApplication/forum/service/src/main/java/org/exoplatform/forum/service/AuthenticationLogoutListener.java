@@ -20,6 +20,8 @@ import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.listener.Event;
 import org.exoplatform.services.listener.Listener;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.services.security.ConversationRegistry;
 import org.exoplatform.services.security.ConversationState;
 
@@ -30,6 +32,7 @@ import org.exoplatform.services.security.ConversationState;
 public class AuthenticationLogoutListener extends Listener<ConversationRegistry, ConversationState> {
 
   private ExoContainerContext context;
+  private final static Log   LOG                   = ExoLogger.getLogger(Utils.class);
 
   public AuthenticationLogoutListener(ExoContainerContext context) throws Exception {
     this.context = context;
@@ -37,10 +40,12 @@ public class AuthenticationLogoutListener extends Listener<ConversationRegistry,
 
   @Override
   public void onEvent(Event<ConversationRegistry, ConversationState> event) throws Exception {
-    String name = context.getPortalContainerName();
-    ExoContainer container = ExoContainerContext.getContainerByName(name);
-
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
     ForumService fservice = (ForumService) container.getComponentInstanceOfType(ForumService.class);
+    if (fservice == null) {
+      LOG.warn("Can not get forum service!");
+      return;
+    }
     fservice.userLogout(event.getData().getIdentity().getUserId());
 
   }
