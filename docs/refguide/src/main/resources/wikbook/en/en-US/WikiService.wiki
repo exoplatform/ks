@@ -14,6 +14,13 @@
             <link linkend="KSref.DeveloperReference.WikiService.LinkService">LinkService</link>
           </emphasis> </para>
           <para>This service is used for the WYSIWYG editor to get the configuration.</para>
+       </listitem>
+       <listitem>
+        <para>
+          <emphasis role="bold">
+            <link linkend="KSref.DeveloperReference.WikiService.PageRenderingCacheService">PageRenderingCacheService</link>
+          </emphasis> </para>
+          <para>This service is used to get the rendered content of a wiki page with the support of the cache.</para>
       </listitem>
       <listitem>
         <para>
@@ -76,6 +83,15 @@ This service is used for the WYSIWYG editor to get the configuration.
 |*getEntityConfig*(EntityReference origin, ResourceReference destination); |{{origin}}: The origin of the link.  {example}{example}  {{destination}}: The destination of the link. |{{EntityConfig}}: The link configuration object that can be used to insert the link in the origin page. |Create an entity link configuration object (URL, link reference) for a link with the specified origin and destination. The link reference in the returned {{EntityConfig}} is relative to the link origin. |
 |*parseLinkReference*(String linkReference, EntityReference baseReference); |{{linkReference}}: A link reference pointing to an entity of the specified type.   {example}{example}  {{baseReference}}: The entity reference used to resolve the linked entity reference.  | {{ResourceReference}}: A reference to the linked entity. |Parse the given link reference and extract a reference to the linked entity. The returned entity reference is resolved relative to the given base entity reference. |
 
+h1. PageRenderingCacheService  {anchor:id=KSref.DeveloperReference.WikiService.PageRenderingCacheServiceRoleNotInToc}
+This service is used to get the rendered content of a wiki page with the support of the cache.
+
+|| *Method* ||*Param*|| *Return* || *Description* ||
+|*getRenderedContent*(WikiPageParams param, String targetSyntax);| {{param}}: The identity parameter of a page to get content. {example}{example} {{targetSyntax}}: The syntax to be displayed.| {{String}}: The rendered content. |Get the rendered content of a wiki page. |
+|*getRenderingCache*(); | {{N/A}}| {{ExoCache<MarkupKey, MarkupData>}}: The rendering cache. |Get the rendering cache. |
+|*getPageLinksMap*()|{{N/A}} |{{Map<WikiPageParams, List<WikiPageParams>>}}: The map of connection. |Return the collection of page connections. In details, a connection is built if the page content includes a link to another page.|
+|*addPageLink*(WikiPageParams param, WikiPageParams entity)| {{param}}: The identity parameter of a source page. {example}{example} {{entity}}: The identity parameter of a target page.|{{void}}| Record a link between two pages. |
+|*invalidateCache*(WikiPageParams param)|{{param}}: The identity parameter of a page to remove in cache. | {{void}} |Invalidate all cache entries linking to a page in case this page is removed, changed or renamed.|
 
 h1. ResizeImageService {anchor:id=KSref.DeveloperReference.WikiService.ResizeImageService}
 This service is used to resize the image to a desired size.
