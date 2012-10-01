@@ -67,6 +67,9 @@ public class PageRenderingCacheServiceImpl implements PageRenderingCacheService 
     this.renderingCache = cacheService.getCacheInstance(CACHE_NAME);
   }
   
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public String getRenderedContent(WikiPageParams param, String targetSyntax) {
     String renderedContent = StringUtils.EMPTY;
@@ -95,16 +98,25 @@ public class PageRenderingCacheServiceImpl implements PageRenderingCacheService 
     return renderedContent;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public final ExoCache<MarkupKey, MarkupData> getRenderingCache() {
     return renderingCache;
   }
   
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Map<WikiPageParams, List<WikiPageParams>> getPageLinksMap() {
     return pageLinksMap;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void addPageLink(WikiPageParams param, WikiPageParams entity) {
     List<WikiPageParams> linkParams = this.pageLinksMap.get(entity);
@@ -115,6 +127,9 @@ public class PageRenderingCacheServiceImpl implements PageRenderingCacheService 
     linkParams.add(param);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void invalidateCache(WikiPageParams param) {
     List<WikiPageParams> linkedPages = pageLinksMap.get(param);
@@ -139,5 +154,4 @@ public class PageRenderingCacheServiceImpl implements PageRenderingCacheService 
       }
     }
   }
-
 }
