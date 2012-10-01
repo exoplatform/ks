@@ -1464,9 +1464,9 @@ table.UIFormGrid div.Id {
 	display: block;
 	float: left;
 	line-height: 15px;
-	width: 60px;
 	color: #636363;
 	margin-top: 5px;
+	margin-right: 10px;
 }
 
 .UIWikiPageEditForm .CommentInput input {
