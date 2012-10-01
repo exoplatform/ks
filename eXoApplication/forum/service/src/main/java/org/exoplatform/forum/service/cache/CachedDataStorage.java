@@ -97,6 +97,7 @@ public class CachedDataStorage implements DataStorage, Startable {
   private ExoCache<ForumListKey, ListForumData> forumList;
   private ExoCache<PostKey, PostData> postData;
   private ExoCache<PostListKey, ListPostData> postList;
+  private ExoCache<SimpleCacheKey, SimpleCacheData> postListCount;
   private ExoCache<TopicKey, TopicData> topicData;
   private ExoCache<SimpleCacheKey, ListWatchData> watchListData;
   private ExoCache<LinkListKey, ListLinkData> linkListData;
@@ -110,6 +111,7 @@ public class CachedDataStorage implements DataStorage, Startable {
   private FutureExoCache<ForumListKey, ListForumData, ServiceContext<ListForumData>> forumListFuture;
   private FutureExoCache<PostKey, PostData, ServiceContext<PostData>> postDataFuture;
   private FutureExoCache<PostListKey, ListPostData, ServiceContext<ListPostData>> postListFuture;
+  private FutureExoCache<SimpleCacheKey, SimpleCacheData, ServiceContext<SimpleCacheData>> postListCountFuture;
   private FutureExoCache<TopicKey, TopicData, ServiceContext<TopicData>> topicDataFuture;
   private FutureExoCache<SimpleCacheKey, ListWatchData, ServiceContext<ListWatchData>> watchListDataFuture;
   private FutureExoCache<LinkListKey, ListLinkData, ServiceContext<ListLinkData>> linkListDataFuture;
@@ -147,6 +149,7 @@ public class CachedDataStorage implements DataStorage, Startable {
   
   private void clearPostListCache() throws Exception {
     postList.select(new ScopeCacheSelector<PostListKey, ListPostData>());
+    postListCount.select(new ScopeCacheSelector<SimpleCacheKey, SimpleCacheData>());
   }
   
   private void clearLinkListCache() throws Exception {
@@ -222,6 +225,7 @@ public class CachedDataStorage implements DataStorage, Startable {
     this.forumList = CacheType.FORUM_LIST.getFromService(service);
     this.postData = CacheType.POST_DATA.getFromService(service);
     this.postList = CacheType.POST_LIST.getFromService(service);
+    this.postListCount = CacheType.POST_LIST_COUNT.getFromService(service);
     this.topicData = CacheType.TOPIC_DATA.getFromService(service);
     this.objectNameData = CacheType.OBJECT_NAME_DATA.getFromService(service);
     this.miscData = CacheType.MISC_DATA.getFromService(service);
@@ -235,6 +239,7 @@ public class CachedDataStorage implements DataStorage, Startable {
     this.forumListFuture = CacheType.FORUM_LIST.createFutureCache(forumList);
     this.postDataFuture = CacheType.POST_DATA.createFutureCache(postData);
     this.postListFuture = CacheType.POST_LIST.createFutureCache(postList);
+    this.postListCountFuture = CacheType.POST_LIST_COUNT.createFutureCache(postListCount);
     this.topicDataFuture = CacheType.TOPIC_DATA.createFutureCache(topicData);
     this.watchListDataFuture = CacheType.WATCH_LIST_DATA.createFutureCache(watchListData);
     this.linkListDataFuture = CacheType.LINK_LIST_DATA.createFutureCache(linkListData);
@@ -1361,7 +1366,7 @@ public class CachedDataStorage implements DataStorage, Startable {
 
     SimpleCacheKey key = new SimpleCacheKey("postsCount", filter.toString());
 
-    SimpleCacheData<Integer> data = miscDataFuture.get(new ServiceContext<SimpleCacheData>() {
+    SimpleCacheData<Integer> data = postListCountFuture.get(new ServiceContext<SimpleCacheData>() {
       public SimpleCacheData execute() {
         try {
           return new SimpleCacheData<Integer>(storage.getPostsCount(filter));
