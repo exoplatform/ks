@@ -119,6 +119,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     }
   }
   
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public void initDefaultTemplatePage(String path) {
     Model model = getModel();
     WikiStoreImpl wStore = (WikiStoreImpl) model.getWikiStore();
@@ -126,6 +130,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     jcrDataStorage.initDefaultTemplatePage(session, configManager, path);
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public Page createPage(String wikiType, String wikiOwner, String title, String parentId) throws Exception {
     String pageId = TitleResolver.getId(title, false);
     if(isExisting(wikiType, wikiOwner, pageId)) throw new Exception();
@@ -167,6 +175,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     return page;
   }
   
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public void createDraftNewPage(String draftNewPageId) throws Exception {
     Model model = getModel();
     WikiStoreImpl wStore = (WikiStoreImpl) model.getWikiStore();
@@ -180,6 +192,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     draftNewPagesContainer.addPublicPage(draftNewPage);
   }
   
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public boolean isExisting(String wikiType, String wikiOwner, String pageId) throws Exception {
     Model model = getModel();
     WikiStoreImpl wStore = (WikiStoreImpl) model.getWikiStore();
@@ -202,6 +218,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     return false;
   }
   
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public boolean deletePage(String wikiType, String wikiOwner, String pageId) throws Exception {
     if (WikiNodeType.Definition.WIKI_HOME_NAME.equals(pageId) || pageId == null)
       return false;
@@ -241,6 +261,9 @@ public class WikiServiceImpl implements WikiService, Startable {
     return true;    
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void deleteTemplatePage(String wikiType, String wikiOwner, String templateId) throws Exception {
 
@@ -248,6 +271,10 @@ public class WikiServiceImpl implements WikiService, Startable {
    getTemplatePage(params, templateId).remove();
   }  
   
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public void deleteDraftNewPage(String newDraftPageId) throws Exception {
     RepositoryService repoService = (RepositoryService) PortalContainer.getInstance()
                                                                        .getComponentInstanceOfType(RepositoryService.class);
@@ -266,6 +293,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public boolean renamePage(String wikiType,
                             String wikiOwner,
                             String pageName,
@@ -314,6 +345,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     return true ;    
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public boolean movePage(WikiPageParams currentLocationParams, WikiPageParams newLocationParams) throws Exception {
     try {
       PageImpl destPage = (PageImpl) getPageById(newLocationParams.getType(),
@@ -366,6 +401,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     return true;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public List<PermissionEntry> getWikiPermission(String wikiType, String wikiOwner) throws Exception {
     List<PermissionEntry> permissionEntries = new ArrayList<PermissionEntry>();
     Model model = getModel();
@@ -439,6 +478,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     return permissionEntries;
   }
   
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public void setWikiPermission(String wikiType, String wikiOwner, List<PermissionEntry> permissionEntries) throws Exception {
     Model model = getModel();
     WikiImpl wiki = (WikiImpl) getWiki(wikiType, wikiOwner, model);
@@ -482,6 +525,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     updateAllPagesPermissions(wikiType, wikiOwner, permMap);
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public Page getPageById(String wikiType, String wikiOwner, String pageId) throws Exception {
     PageImpl page = null;
 
@@ -508,6 +555,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     return null;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public Page getRelatedPage(String wikiType, String wikiOwner, String pageId) throws Exception {
     Model model = getModel();
     WikiImpl wiki = (WikiImpl) getWiki(wikiType, wikiOwner, model);
@@ -544,6 +595,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     return getPageWithLinkEntry(newLinkEntry);
   }
   
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public Page getExsitedOrNewDraftPageById(String wikiType, String wikiOwner, String pageId) throws Exception {
     Page existedPage = getPageById(wikiType, wikiOwner, pageId);
     if (existedPage != null) {
@@ -555,21 +610,25 @@ public class WikiServiceImpl implements WikiService, Startable {
     return draftNewPagesContainer.getChildPages().get(pageId);
   }
   
-  public Page getPageByUUID(String uuid) throws Exception {
-
-    return null;
-  }
-  
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Template getTemplatePage(WikiPageParams params, String templateId) throws Exception {
     return getTemplatesContainer(params).getTemplate(templateId);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Map<String,Template> getTemplates(WikiPageParams params) throws Exception {
     return getTemplatesContainer(params).getTemplates();
   }
   
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public TemplateContainer getTemplatesContainer(WikiPageParams params) throws Exception {
     Model model = getModel();
@@ -577,6 +636,9 @@ public class WikiServiceImpl implements WikiService, Startable {
     return wiki.getPreferences().getTemplateContainer();
   }
   
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void modifyTemplate(WikiPageParams params,
                              Template template,
@@ -592,7 +654,11 @@ public class WikiServiceImpl implements WikiService, Startable {
       template.setSyntax(newSyntaxId);
     }
   }
-
+  
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public PageList<SearchResult> searchContent(WikiSearchData data) throws Exception {
     List<SearchResult> results = search(data).getAll();
     for (SearchResult result : results) {
@@ -603,8 +669,11 @@ public class WikiServiceImpl implements WikiService, Startable {
     return new ObjectPageList<SearchResult>(results, 10);
   }
   
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public PageList<SearchResult> search(WikiSearchData data) throws Exception {
-
     Model model = getModel();
     try {
       WikiStoreImpl wStore = (WikiStoreImpl) model.getWikiStore();
@@ -634,9 +703,11 @@ public class WikiServiceImpl implements WikiService, Startable {
     return null;
   }
   
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public List<TemplateSearchResult> searchTemplate(TemplateSearchData data) throws Exception {
-
     Model model = getModel();
     try {
       WikiStoreImpl wStore = (WikiStoreImpl) model.getWikiStore();
@@ -649,6 +720,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     return null;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public List<SearchResult> searchRenamedPage(String wikiType, String wikiOwner, String pageId) throws Exception {
     Model model = getModel();
     WikiStoreImpl wStore = (WikiStoreImpl) model.getWikiStore();
@@ -656,6 +731,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     return jcrDataStorage.searchRenamedPage(wStore.getSession(), data);
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public Object findByPath(String path, String objectNodeType) {    
     String relPath = path;
     if (relPath.startsWith("/"))
@@ -676,6 +755,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     return null;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public String getPageTitleOfAttachment(String path) throws Exception {
     try {
       String relPath = path;
@@ -692,6 +775,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public InputStream getAttachmentAsStream(String path) throws Exception {
     Model model = getModel();
     try {
@@ -702,10 +789,18 @@ public class WikiServiceImpl implements WikiService, Startable {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public List<BreadcrumbData> getBreadcumb(String wikiType, String wikiOwner, String pageId) throws Exception {
     return getBreadcumb(null, wikiType, wikiOwner, pageId);
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public PageImpl getHelpSyntaxPage(String syntaxId) throws Exception {
     Model model = getModel();
     WikiStoreImpl wStore = (WikiStoreImpl) model.getWikiStore();
@@ -725,6 +820,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     return null;
   }
   
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public Page getMetaDataPage(MetaDataPage metaPage) throws Exception {
     if (MetaDataPage.EMOTION_ICONS_PAGE.equals(metaPage)) {
       Model model = getModel();
@@ -734,6 +833,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     return null;
   }
   
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public String getDefaultWikiSyntaxId() {
     if (preferencesParams != null) {
       return preferencesParams.getProperty(DEFAULT_SYNTAX);
@@ -741,6 +844,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     return Syntax.XWIKI_2_0.toIdString();
   }
   
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public WikiPageParams getWikiPageParams(BreadcrumbData data) {
     if (data != null) {
       return new WikiPageParams(data.getWikiType(), data.getWikiOwner(), data.getId());
@@ -748,6 +855,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     return null;
   }
   
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public List<TitleSearchResult> searchDataByTitle(WikiSearchData data) throws Exception {
     try {
       Model model = getModel();
@@ -759,12 +870,23 @@ public class WikiServiceImpl implements WikiService, Startable {
     return null;
   }
   
+  /**
+   * Get wiki model
+   * 
+   * @return The wiki model
+   */
   private Model getModel() {
-    MOWService mowService = (MOWService) ExoContainerContext.getCurrentContainer()
-                                                            .getComponentInstanceOfType(MOWService.class);
-    return mowService.getModel();
+    return ((MOWService) ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(MOWService.class)).getModel();
   }
 
+  /**
+   * Get the wiki page that match the query statement
+   * 
+   * @param statement The search query
+   * @param session The chromattic session
+   * @return The wiki page that match the search query
+   * @throws Exception
+   */
   private PageImpl searchPage(String statement, ChromatticSession session) throws Exception {
     PageImpl wikiPage = null;
     if (statement != null) {
@@ -788,6 +910,14 @@ public class WikiServiceImpl implements WikiService, Startable {
     return wikiPage;
   }
 
+  /**
+   * Get the wiki that specify by wikiType and owner
+   * 
+   * @param wikiType Wiki type
+   * @param owner Wiki owner
+   * @param model The model
+   * @return The wiki that match with wikiType and owner
+   */
   private Wiki getWiki(String wikiType, String owner, Model model) {
     WikiStoreImpl wStore = (WikiStoreImpl) model.getWikiStore();
     WikiImpl wiki = null;
@@ -803,7 +933,6 @@ public class WikiServiceImpl implements WikiService, Startable {
         boolean hasEditWiki = hasPermission(wikiType, owner);
         WikiContainer<UserWiki> userWikiContainer = wStore.getWikiContainer(WikiType.USER);
         wiki = userWikiContainer.getWiki(owner, hasEditWiki);
-
       }
       model.save();
     } catch (Exception e) {
@@ -814,6 +943,14 @@ public class WikiServiceImpl implements WikiService, Startable {
     return wiki;
   }
   
+  /**
+   * Get the default access control list for the wiki that specify by wikiType and owner
+   * 
+   * @param wikiType The wiki type
+   * @param wikiOwner The wiki owner
+   * @return The list of access control that match with wikiType and wikiOwner
+   * @throws Exception
+   */
   private List<AccessControlEntry> getAccessControls(String wikiType, String wikiOwner) throws Exception{
     List<AccessControlEntry> aces = new ArrayList<AccessControlEntry>();
     try {
@@ -832,6 +969,14 @@ public class WikiServiceImpl implements WikiService, Startable {
     return aces;
   }
   
+  /**
+   * Check if the current user has admin permission in a wiki that specify by wikiType and owner
+   * 
+   * @param wikiType The wiki type
+   * @param owner The wiki owner
+   * @return user has permission or not
+   * @throws Exception
+   */
   private  boolean hasPermission(String wikiType, String owner) throws Exception {
     ConversationState conversationState = ConversationState.getCurrent();
     Identity user = null;
@@ -851,6 +996,14 @@ public class WikiServiceImpl implements WikiService, Startable {
     return Utils.hasPermission(acl, permission, user);
   }
 
+  /**
+   * Get the wiki home of the wiki that specify by wikiType and owner
+   * 
+   * @param wikiType The wiki type
+   * @param owner The wiki owner
+   * @return Wiki home page
+   * @throws Exception
+   */
   private WikiHome getWikiHome(String wikiType, String owner) throws Exception {
     Model model = getModel();
     WikiImpl wiki = (WikiImpl) getWiki(wikiType, owner, model);
@@ -860,9 +1013,18 @@ public class WikiServiceImpl implements WikiService, Startable {
     } else {
       return null;
     }
-
   }
 
+  /**
+   * Get the breadcrum of a specify wiki page
+   * 
+   * @param list The list to store breadcrum
+   * @param wikiType The wiki type
+   * @param wikiOwner The wiki owner
+   * @param pageId The page id
+   * @return
+   * @throws Exception
+   */
   private List<BreadcrumbData> getBreadcumb(List<BreadcrumbData> list,
                                            String wikiType,
                                            String wikiOwner,
@@ -886,6 +1048,11 @@ public class WikiServiceImpl implements WikiService, Startable {
     return list;
   }
 
+  /**
+   * Create help page and store to jcr
+   * 
+   * @param wStore The store where help page to be saved to
+   */
   private void createHelpPages(WikiStoreImpl wStore) {
     PageImpl helpPage = wStore.getHelpPagesContainer();
     while (syntaxHelpParams.hasNext()) {
@@ -903,6 +1070,9 @@ public class WikiServiceImpl implements WikiService, Startable {
     }
   }
   
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Template createTemplatePage(String title, WikiPageParams params) throws Exception {
     Model model = getModel();
@@ -928,6 +1098,17 @@ public class WikiServiceImpl implements WikiService, Startable {
     return null;
   }
 
+  /**
+   * Store a help page to wiki store
+   * 
+   * @param wStore The wiki store to store the help page
+   * @param parentPage The parent page of help page
+   * @param name The syntax name
+   * @param path The path of text file where contain the help content
+   * @param type The type of help page
+   * @return The help page
+   * @throws Exception
+   */
   private HelpPage addSyntaxPage(WikiStoreImpl wStore,
                                  PageImpl parentPage,
                                  String name,
@@ -957,6 +1138,9 @@ public class WikiServiceImpl implements WikiService, Startable {
     return syntaxPage;
   }
   
+  /**
+   * Initialize the emoticons and save to wiki store
+   */
   private void addEmotionIcons() {
     SessionProvider sessionProvider = SessionProvider.createSystemProvider();
     try {
@@ -976,6 +1160,11 @@ public class WikiServiceImpl implements WikiService, Startable {
     }
   }
 
+  /**
+   * Get emoticon plugin 
+   *  
+   * @return The emoticon plugin
+   */
   private XMLDeploymentPlugin getEmotionIconsPlugin() {
     for (ComponentPlugin c : plugins_) {
       if (c instanceof XMLDeploymentPlugin) {
@@ -985,6 +1174,14 @@ public class WikiServiceImpl implements WikiService, Startable {
     return null;
   }
 
+  /**
+   * Get link entry name of wiki page that specify by parameters
+   * 
+   * @param wikiType The wiki type
+   * @param wikiOwner The wiki owner
+   * @param pageId The page id
+   * @return The link entry name of wiki page
+   */
   private String getLinkEntryName(String wikiType, String wikiOwner, String pageId) {
     if (PortalConfig.GROUP_TYPE.equals(wikiType)) {
       wikiOwner = wikiOwner.replace("/", "-");
@@ -992,10 +1189,24 @@ public class WikiServiceImpl implements WikiService, Startable {
     return wikiType + "@" + wikiOwner + "@" + pageId;
   }
   
+  /**
+   * Get link entry alias of wiki page that specify by parameters
+   * 
+   * @param wikiType The wiki type
+   * @param wikiOwner The wiki owner
+   * @param pageId The page id
+   * @return The link entry alias of wiki page
+   */
   private String getLinkEntryAlias(String wikiType, String wikiOwner, String pageId) {
     return wikiType + "@" + wikiOwner + "@" + pageId;
   }
   
+  /**
+   * Check and fix in the case circular rename
+   * 
+   * @param entry The last rename entry of page
+   * @param newEntry The new rename entry of page
+   */
   private void processCircularRename(LinkEntry entry, LinkEntry newEntry) {
     // Check circular rename
     boolean isCircular = true;
@@ -1027,6 +1238,13 @@ public class WikiServiceImpl implements WikiService, Startable {
     newEntry.setNewLink(newEntry);
   }
   
+  /**
+   * Get a wiki page from the link entry
+   * 
+   * @param entry The link entry
+   * @return The wiki page that the entry refer to
+   * @throws Exception
+   */
   private Page getPageWithLinkEntry(LinkEntry entry) throws Exception {
     String linkEntryAlias = entry.getAlias();
     String[] splits = linkEntryAlias.split("@");
@@ -1036,6 +1254,14 @@ public class WikiServiceImpl implements WikiService, Startable {
     return getPageById(wikiType, wikiOwner, pageId);
   }
   
+  /**
+   * Update the space permission to all the children page that allow override permisson
+   * 
+   * @param wikiType The wiki type of space
+   * @param wikiOwner The wiki owner of space
+   * @param permMap Permission map
+   * @throws Exception
+   */
   private void updateAllPagesPermissions(String wikiType, String wikiOwner, HashMap<String, String[]> permMap) throws Exception {    
     PageImpl page = getWikiHome(wikiType, wikiOwner);
     Queue<PageImpl> queue = new LinkedList<PageImpl>();
@@ -1052,6 +1278,14 @@ public class WikiServiceImpl implements WikiService, Startable {
     }
   }
   
+  /**
+   * Get the default permission for wiki space
+   * 
+   * @param wikiType The wiki type of space
+   * @param wikiOwner The wiki owner of space
+   * @return List of permission as default for the wiki space
+   * @throws Exception
+   */
   private List<String> getWikiDefaultPermissions(String wikiType, String wikiOwner) throws Exception {
     String view = new StringBuilder().append(PermissionType.VIEWPAGE).toString();
     String viewEdit = new StringBuilder().append(PermissionType.VIEWPAGE).append(",").append(PermissionType.EDITPAGE).toString();
@@ -1113,6 +1347,9 @@ public class WikiServiceImpl implements WikiService, Startable {
     return permissions;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void addComponentPlugin(ComponentPlugin plugin) {
     if (plugin != null) {
@@ -1120,6 +1357,9 @@ public class WikiServiceImpl implements WikiService, Startable {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void addWikiTemplatePagePlugin(WikiTemplatePagePlugin plugin) {
     if (plugin != null) {
@@ -1127,6 +1367,9 @@ public class WikiServiceImpl implements WikiService, Startable {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public List<PageWikiListener> getPageListeners() {
     List<PageWikiListener> pageListeners = new ArrayList<PageWikiListener>();
@@ -1144,6 +1387,9 @@ public class WikiServiceImpl implements WikiService, Startable {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean addRelatedPage(WikiPageParams orginaryPageParams, WikiPageParams relatedPageParams) throws Exception {
     
@@ -1153,6 +1399,9 @@ public class WikiServiceImpl implements WikiService, Startable {
     return orginary.addRelatedPage(related) != null;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public List<Page> getRelatedPage(WikiPageParams pageParams) throws Exception {
     PageImpl page = (PageImpl) getPageById(pageParams.getType(), pageParams.getOwner(), pageParams.getPageId());
@@ -1160,6 +1409,9 @@ public class WikiServiceImpl implements WikiService, Startable {
     return new ArrayList<Page>(pages);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean removeRelatedPage(WikiPageParams orginaryPageParams,
                                    WikiPageParams relatedPageParams) throws Exception {
@@ -1168,6 +1420,9 @@ public class WikiServiceImpl implements WikiService, Startable {
     return orginary.removeRelatedPage(related) != null;
   }
   
+  /**
+   * Remove draft page container
+   */
   private void removeDraftPages() {
     try {
       Model model = getModel();
@@ -1179,6 +1434,9 @@ public class WikiServiceImpl implements WikiService, Startable {
     }
   }
   
+  /**
+   * Remove help page container
+   */
   private void removeHelpPages() {
     try {
       Model model = getModel();
@@ -1190,6 +1448,9 @@ public class WikiServiceImpl implements WikiService, Startable {
     }
   }
   
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void start() {
     try {
@@ -1216,9 +1477,10 @@ public class WikiServiceImpl implements WikiService, Startable {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void stop() {
-    
   }
-  
 }

@@ -131,6 +131,7 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
   @POST
   @Path("/content/")
   @Produces(MediaType.TEXT_HTML)
+  @Override
   public Response getWikiPageContent(@QueryParam("sessionKey") String sessionKey,
                                      @QueryParam("wikiContext") String wikiContextKey,
                                      @QueryParam("markup") boolean isMarkup,
@@ -180,8 +181,12 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
     return Response.ok(data, MediaType.TEXT_HTML).cacheControl(cc).build();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @POST
   @Path("/upload/{wikiType}/{wikiOwner:.+}/{pageId}/")
+  @Override
   public Response upload(@PathParam("wikiType") String wikiType,
                          @PathParam("wikiOwner") String wikiOwner,
                          @PathParam("pageId") String pageId) {
@@ -231,9 +236,13 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
     return Response.ok().build();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @GET
   @Path("/tree/{type}")
   @Produces(MediaType.APPLICATION_JSON)
+  @Override
   public Response getTreeData(@PathParam("type") String type,
                               @QueryParam(TreeNode.PATH) String path,
                               @QueryParam(TreeNode.CURRENT_PATH) String currentPath,
@@ -274,9 +283,13 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
     }
   }
   
+  /**
+   * {@inheritDoc}
+   */
   @GET
   @Path("/related/")
   @Produces(MediaType.APPLICATION_JSON)
+  @Override
   public Response getRelated(@QueryParam(TreeNode.PATH) String path) {
     if (path == null) {
       return Response.status(Status.NOT_FOUND).build();
@@ -295,6 +308,15 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
     
   }
   
+  /**
+   * Get the list of spaces
+   * 
+   * @param uriInfo the base uri
+   * @param wikiType The wiki type
+   * @param start The start index of space in list to get
+   * @param number Number of space to get
+   * @return The {@link Spaces} object that contains a list of spaces
+   */
   @GET
   @Path("/{wikiType}/spaces")
   @Produces("application/xml")
@@ -319,6 +341,14 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
     return spaces;
   }
 
+  /**
+   * Get a space that specify by wikiType and wikiOwner
+   * 
+   * @param uriInfo The base uri
+   * @param wikiType The wiki type
+   * @param wikiOwner The wiki owner
+   * @return A space that specify by wikiType and wikiOwner
+   */
   @GET
   @Path("/{wikiType}/spaces/{wikiOwner:.+}/")
   @Produces("application/xml")
@@ -335,6 +365,17 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
     return createSpace(objectFactory, uriInfo.getBaseUri(), wikiType, wikiOwner, page);
   }
 
+  /**
+   * Get a list of wiki page 
+   * 
+   * @param uriInfo The base uri
+   * @param wikiType The wiki type
+   * @param wikiOwner The wiki owner
+   * @param start The start index of wiki page in list to get
+   * @param number The number of wiki page to get
+   * @param parentFilterExpression The parent id
+   * @return The {@link Pages} object that contains the list of wiki page.
+   */
   @GET
   @Path("/{wikiType}/spaces/{wikiOwner:.+}/pages")
   @Produces("application/xml")
@@ -370,10 +411,18 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
     } catch (Exception e) {
       log.error("Can't get children pages of:" + parentFilterExpression, e);
     }
-
     return pages;
   }
   
+  /**
+   * Get a wiki page that specify by the parameters
+   * 
+   * @param uriInfo Object {@link UriInfo} that contains the base uri
+   * @param wikiType The wiki type
+   * @param wikiOwner The wiki owner
+   * @param pageId The page id
+   * @return A wiki page that specify by the parameters
+   */
   @GET
   @Path("/{wikiType}/spaces/{wikiOwner:.+}/pages/{pageId}")
   @Produces("application/xml")
@@ -393,6 +442,17 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
     return objectFactory.createPage();
   }
   
+  /**
+   * Get a list of attachment
+   * 
+   * @param uriInfo The {@link UriInfo} that contains base uri
+   * @param wikiType The wiki type
+   * @param wikiOwner The wiki owner
+   * @param pageId The page id
+   * @param start The start index of attachment in list to get
+   * @param number The number of attachment to get
+   * @return The {@link Attachments} object that contains the list of attachment.
+   */
   @GET
   @Path("/{wikiType}/spaces/{wikiOwner:.+}/pages/{pageId}/attachments")
   @Produces("application/xml")
@@ -416,9 +476,13 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
     return attachments;
   }
   
+  /**
+   * {@inheritDoc}
+   */
   @GET
   @Path("contextsearch/")
   @Produces(MediaType.APPLICATION_JSON)
+  @Override
   public Response searchData(@QueryParam("keyword") String keyword,
                              @QueryParam("wikiType") String wikiType,
                              @QueryParam("wikiOwner") String wikiOwner) throws Exception {
@@ -434,9 +498,13 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
     }
   }
   
+  /**
+   * {@inheritDoc}
+   */
   @GET
   @Path("/images/{wikiType}/space/{wikiOwner:.+}/page/{pageId}/{imageId}")
   @Produces("image")
+  @Override
   public Response getImage(@Context UriInfo uriInfo,
                            @PathParam("wikiType") String wikiType,
                            @PathParam("wikiOwner") String wikiOwner,
@@ -463,7 +531,17 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
     }
   }
 
-  public Space createSpace(ObjectFactory objectFactory,
+  /**
+   * Create a wiki space
+   * 
+   * @param objectFactory The factory to create space and link
+   * @param baseUri The base uri to create other url
+   * @param wikiName The wiki name
+   * @param spaceName The space name
+   * @param home The wiki home page of this space
+   * @return New wiki space
+   */
+  private Space createSpace(ObjectFactory objectFactory,
                            URI baseUri,
                            String wikiName,
                            String spaceName,
@@ -508,10 +586,19 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
     space.getLinks().add(searchLink);
 
     return space;
-
   }
 
-  public org.exoplatform.wiki.service.rest.model.Page createPage(ObjectFactory objectFactory,
+  /**
+   * Create a wiki page
+   * 
+   * @param objectFactory The factory to create link
+   * @param baseUri The base uri
+   * @param self The url to link to this page
+   * @param doc The page content (see {@link PageImpl})
+   * @return A new wiki page
+   * @throws Exception
+   */
+  private org.exoplatform.wiki.service.rest.model.Page createPage(ObjectFactory objectFactory,
                                                                  URI baseUri,
                                                                  URI self,
                                                                  PageImpl doc) throws Exception {
@@ -544,7 +631,18 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
     return page;
   }
 
-  public PageSummary createPageSummary(ObjectFactory objectFactory, URI baseUri, PageImpl doc) throws IllegalArgumentException, UriBuilderException, Exception {
+  /**
+   * Create a page summary base on page content
+   * 
+   * @param objectFactory The factory to create link
+   * @param baseUri The base uri
+   * @param doc The wiki page
+   * @return Page summay
+   * @throws IllegalArgumentException
+   * @throws UriBuilderException
+   * @throws Exception
+   */
+  private PageSummary createPageSummary(ObjectFactory objectFactory, URI baseUri, PageImpl doc) throws IllegalArgumentException, UriBuilderException, Exception {
     PageSummary pageSummary = objectFactory.createPageSummary();
     fillPageSummary(pageSummary, objectFactory, baseUri, doc);
     String wikiName = doc.getWiki().getType();
@@ -557,11 +655,21 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
     pageLink.setHref(pageUri);
     pageLink.setRel(Relations.PAGE);
     pageSummary.getLinks().add(pageLink);
-
     return pageSummary;
   }
   
-  public Attachment createAttachment(ObjectFactory objectFactory,
+  /**
+   * Create an attachment
+   * 
+   * @param objectFactory The factory to create the attachment and create the link
+   * @param baseUri The base uri
+   * @param pageAttachment The wiki attachment
+   * @param xwikiRelativeUrl The relative url
+   * @param xwikiAbsoluteUrl The absolute url
+   * @return A new attachment
+   * @throws Exception
+   */
+  private Attachment createAttachment(ObjectFactory objectFactory,
                                      URI baseUri,
                                      AttachmentImpl pageAttachment,
                                      String xwikiRelativeUrl,
@@ -584,6 +692,14 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
     return attachment;
   }  
  
+  /**
+   * Get the json tree data list to display in Wiki tree
+   * 
+   * @param params The identity refers to the space
+   * @param context Current context
+   * @return The json data list
+   * @throws Exception
+   */
   private List<JsonNodeData> getJsonTree(WikiPageParams params,HashMap<String, Object> context) throws Exception {
     List<JsonNodeData> responseData = new ArrayList<JsonNodeData>();
     String currentPath = (String) context.get(TreeNode.CURRENT_PATH);
@@ -594,12 +710,31 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
     return responseData;
   }
 
+  /**
+   * Get the list in json data of descendants of a wiki page
+   * 
+   * @param params The wiki page param refers to a wiki page
+   * @param context The current context
+   * @return The list of json data
+   * @throws Exception
+   */
   private List<JsonNodeData> getJsonDescendants(WikiPageParams params,
                                                 HashMap<String, Object> context) throws Exception {
     TreeNode treeNode = TreeUtils.getDescendants(params, context);
     return TreeUtils.tranformToJson(treeNode, context);
   }
 
+  /**
+   * Get summary data from page content and fill to object {@link PageSummary}
+   * 
+   * @param pageSummary Object that contains page summary
+   * @param objectFactory The factory that' used to create link
+   * @param baseUri The base url
+   * @param doc The wiki page
+   * @throws IllegalArgumentException
+   * @throws UriBuilderException
+   * @throws Exception
+   */
   private static void fillPageSummary(PageSummary pageSummary,
                                       ObjectFactory objectFactory,
                                       URI baseUri,
@@ -675,9 +810,19 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
       attachmentsLink.setRel(Relations.ATTACHMENTS);
       pageSummary.getLinks().add(attachmentsLink);
     }
-
   }
   
+  /**
+   * Prepare all the properties for new attachment
+   * 
+   * @param attachment The new attachment
+   * @param objectFactory The factory to create page link
+   * @param baseUri The base uri to create page url
+   * @param pageAttachment
+   * @param xwikiRelativeUrl
+   * @param xwikiAbsoluteUrl
+   * @throws Exception
+   */
   private void fillAttachment(Attachment attachment,
                               ObjectFactory objectFactory,
                               URI baseUri,
@@ -713,21 +858,12 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
   }
   
   /**
-   * Return the help syntax page.
-   * The syntax id have to replaced all special characters: 
-   *  Character '/' have to replace to "SLASH"
-   *  Character '.' have to replace to "DOT"
-   * TODO: This function will be added the parameter "portalUrl" in the next version of wiki
-   *
-   * Sample:
-   * "confluence/1.0" will be replaced to "confluenceSLASH1DOT0"
-   *  
-   * @param syntaxId The id of syntax to show in help page
-   * @return The response that contains help page
+   * {@inheritDoc}
    */
   @GET
   @Path("/help/{syntaxId}")
   @Produces(MediaType.TEXT_HTML)
+  @Override
   public Response getHelpSyntaxPage(@PathParam("syntaxId") String syntaxId) {
     CacheControl cacheControl = new CacheControl();
     

@@ -70,28 +70,40 @@ public class RenderingServiceImpl implements RenderingService, Startable {
   
   private EmbeddableComponentManager componentManager = null;
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public Execution getExecution() throws ComponentLookupException, ComponentRepositoryException{
     return componentManager.lookup(Execution.class);
   }
   
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public ComponentManager getComponentManager() {
     return componentManager;
   }
 
+  /**
+   * Get a component by its class
+   * 
+   * @param clazz The class of component
+   * @return The component
+   */
   public <T> T getComponent(Class<T> clazz) {
     return getComponent(clazz, "default");
   }
   
-  /*
-   * (non-Javadoc)
-   * @see org.exoplatform.wiki.rendering.RenderingService#render(java.lang.String, java.lang.String, java.lang.String)
+  /**
+   * {@inheritDoc}
    */
+  @Override
   public String render(String markup, String sourceSyntax, String targetSyntax, boolean supportSectionEdit) throws Exception {
-
     XDOM xdom = parse(markup, sourceSyntax);
     Syntax sSyntax = (sourceSyntax == null) ? Syntax.XWIKI_2_0 : getSyntax(sourceSyntax);
     Syntax tSyntax = (targetSyntax == null) ? Syntax.XHTML_1_0 : getSyntax(targetSyntax);
-    
     
     try {
       BlockConverter refiner = componentManager.lookup(BlockConverter.class, sSyntax.toIdString());
@@ -108,8 +120,11 @@ public class RenderingServiceImpl implements RenderingService, Startable {
     return printer.toString();
   }
   
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public String getContentOfSection(String markup, String sourceSyntax, String sectionIndex) throws Exception {
-
     XDOM xdom = parse(markup, sourceSyntax);
     Syntax sSyntax = (sourceSyntax == null) ? Syntax.XWIKI_2_0 : getSyntax(sourceSyntax);
 
@@ -123,8 +138,11 @@ public class RenderingServiceImpl implements RenderingService, Startable {
     return content;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public String updateContentOfSection(String markup, String sourceSyntax, String sectionIndex, String newSectionContent) throws Exception {
-
     XDOM xdom = parse(markup, sourceSyntax);
     Syntax sSyntax = (sourceSyntax == null) ? Syntax.XWIKI_2_0 : getSyntax(sourceSyntax);
 
@@ -148,8 +166,13 @@ public class RenderingServiceImpl implements RenderingService, Startable {
     return content;
   }
 
-  private String clean(String dirtyHTML)
-  {
+  /**
+   * Transforms any HTML content into valid XHTML
+   * 
+   * @param dirtyHTML The HTML code before transform
+   * @return The cleaned XHTML
+   */
+  private String clean(String dirtyHTML) {
     HTMLCleaner cleaner = getComponent(HTMLCleaner.class);
     HTMLCleanerConfiguration config = cleaner.getDefaultConfiguration();
     Document document = cleaner.clean(new StringReader(dirtyHTML), config);
@@ -166,6 +189,13 @@ public class RenderingServiceImpl implements RenderingService, Startable {
   public void stop() {
   }
   
+  /**
+   * Get a component by its class
+   * 
+   * @param clazz The class of component
+   * @param hint The hint to get component
+   * @return The component
+   */
   private <T> T getComponent(Class<T> clazz, String hint) {
     T component = null;
     if (componentManager != null) {
@@ -181,6 +211,12 @@ public class RenderingServiceImpl implements RenderingService, Startable {
     return component;
   }
 
+  /**
+   * Log out the tree node
+   * 
+   * @param parent The parent node
+   * @param level current depth level in tree node
+   */
   private void outputTree(Block parent, int level) {
     StringBuffer buf = new StringBuffer();
     int i = 0;
@@ -197,16 +233,17 @@ public class RenderingServiceImpl implements RenderingService, Startable {
     }
   }
 
-  /*
-   * private XDOM traverseTo(Block parent, int level) { StringBuffer buf = new
-   * StringBuffer(); int i = 0; while(i++<level) { buf.append("  "); }
-   * buf.append(parent.getClass().getSimpleName());
-   * System.out.println(buf.toString()); List<Block> children =
-   * parent.getChildren(); for (Block block : children) { outputTree(block,
-   * level+1); } }
+  /**
+   * Convert the xdom from sourceSyntax to targetSyntax
+   * 
+   * @param xdom The node tree 
+   * @param sourceSyntax The source syntax
+   * @param targetSyntax The target syntax
+   * @param supportSectionEdit is there section for edit or not
+   * @return The WikiPrinter that contains the converted result
+   * @throws Exception
    */
   private WikiPrinter convert(XDOM xdom, Syntax sourceSyntax, Syntax targetSyntax, boolean supportSectionEdit) throws Exception {
-
     // Step 2: Run transformations
     try {
       TransformationManager transformationManager = componentManager.lookup(TransformationManager.class);
@@ -221,8 +258,7 @@ public class RenderingServiceImpl implements RenderingService, Startable {
     try {
       renderer = componentManager.lookup(BlockRenderer.class, targetSyntax.toIdString());
     } catch (ComponentLookupException e) {
-      throw new ConversionException("Failed to locate Renderer for syntax [" + targetSyntax + "]",
-                                    e);
+      throw new ConversionException("Failed to locate Renderer for syntax [" + targetSyntax + "]", e);
     }
 
     if (supportSectionEdit) {
@@ -257,9 +293,12 @@ public class RenderingServiceImpl implements RenderingService, Startable {
     
     renderer.render(xdom, printer);
     return printer;
-
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public XDOM parse(String markup, String sourceSyntax) throws Exception {
     XDOM xdom;
     Syntax sSyntax = (sourceSyntax == null) ? Syntax.XWIKI_2_0 : getSyntax(sourceSyntax);
@@ -280,6 +319,14 @@ public class RenderingServiceImpl implements RenderingService, Startable {
     return xdom;
   }
 
+  /**
+   * Renders a {@link Block} into the target syntax.
+   * 
+   * @param content The block to be rendered to target syntax
+   * @param targetSyntax The target syntax to render to
+   * @return The markup in target syntax
+   * @throws Exception
+   */
   private String renderXDOM(Block content, Syntax targetSyntax) throws Exception {
     try {
       BlockRenderer renderer = componentManager.lookup(BlockRenderer.class, targetSyntax.toIdString());
@@ -291,6 +338,12 @@ public class RenderingServiceImpl implements RenderingService, Startable {
     }
   }
 
+  /**
+   * Get all header of xdom that have level less than 3
+   * 
+   * @param xdom The source xdom
+   * @return The list of header block that have level less than 3
+   */
   private List<HeaderBlock> getFilteredHeaders(XDOM xdom) {
     List<HeaderBlock> filteredHeaders = new ArrayList<HeaderBlock>();
     // get the headers
@@ -305,7 +358,13 @@ public class RenderingServiceImpl implements RenderingService, Startable {
     }
     return filteredHeaders;
   }
-  
+
+  /**
+   * Get the syntax Enum from the syntax id
+   * 
+   * @param syntaxId The syntax id
+   * @return The syntax enum
+   */
   private Syntax getSyntax(String syntaxId) {
     Syntax syntax = Syntax.XWIKI_2_0;
     if (Syntax.XWIKI_2_0.toIdString().equals(syntaxId)) {
@@ -335,14 +394,21 @@ public class RenderingServiceImpl implements RenderingService, Startable {
     } else if (Syntax.EVENT_1_0.toIdString().equals(syntaxId)) {
       syntax = Syntax.EVENT_1_0;
     }
-
     return syntax;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public String getCssURL() {
     return cssURL;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public void setCssURL(String cssURL) {
     this.cssURL = cssURL;
   }

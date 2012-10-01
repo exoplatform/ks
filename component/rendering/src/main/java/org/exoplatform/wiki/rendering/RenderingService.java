@@ -28,20 +28,76 @@ import org.xwiki.rendering.block.XDOM;
  */
 public interface RenderingService {
   
+  /**
+   * Get the excution from xwiki component manager
+   * 
+   * @return The excution
+   * ComponentLookupException in case the component cannot be found
+   */
   public Execution getExecution() throws ComponentLookupException, ComponentRepositoryException;
   
+  /**
+   * Get xwiki component manager
+   * 
+   * @return The xwiki coponent manager
+   */
   public ComponentManager getComponentManager();
 
+  /**
+   * Render the markup from source syntax to target syntax
+   * 
+   * @param markup The text base to convert
+   * @param sourceSyntax The original syntax of markup
+   * @param targetSyntax The syntax to convert markup to
+   * @param supportSectionEdit is suport the section for user to edit or not
+   * @return The markup in target syntax
+   * @throws Exception
+   */
   public String render(String markup, String sourceSyntax, String targetSyntax, boolean supportSectionEdit) throws Exception;
 
+  /**
+   * Get the content of a section that specify by sectionIndex
+   * 
+   * @param markup The markup that contain sections
+   * @param sourceSyntax The syntax of the markup
+   * @param sectionIndex The index of section that to get the content
+   * @return The content of section
+   * @throws Exception
+   */
   public String getContentOfSection(String markup, String sourceSyntax, String sectionIndex) throws Exception;
 
+  /**
+   * Get the content of a section that specify by sectionIndex
+   * 
+   * @param markup The markup that contain sections
+   * @param sourceSyntax The syntax of the markup
+   * @param sectionIndex The index of section that to get the content
+   * @param newSectionContent The new content to update to section
+   * @return The new content of markup after 
+   * @throws Exception
+   */
   public String updateContentOfSection(String markup, String sourceSyntax, String sectionIndex, String newSectionContent) throws Exception;
   
+  /**
+   * Parse the markup to XDOM
+   * 
+   * @param markup The markup to parse
+   * @param The syntax of markup
+   * @return the tree representation of the content as {@link org.xwiki.rendering.block.Block}s
+   */
   public XDOM parse(String markup, String sourceSyntax) throws Exception;
   
+  /**
+   * Get CSS url
+   * 
+   * @return The url of css
+   */
   public String getCssURL();
 
+  /**
+   * Set CSS url
+   * 
+   * @param cssURL The url of css
+   */
   public void setCssURL(String cssURL);
-
 }
