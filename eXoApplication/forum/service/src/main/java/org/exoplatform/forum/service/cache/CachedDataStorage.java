@@ -59,11 +59,13 @@ import org.exoplatform.forum.service.cache.model.key.ForumListKey;
 import org.exoplatform.forum.service.cache.model.key.LinkListKey;
 import org.exoplatform.forum.service.cache.model.key.ObjectNameKey;
 import org.exoplatform.forum.service.cache.model.key.PostKey;
+import org.exoplatform.forum.service.cache.model.key.PostListCountKey;
 import org.exoplatform.forum.service.cache.model.key.PostListKey;
 import org.exoplatform.forum.service.cache.model.key.SimpleCacheKey;
 import org.exoplatform.forum.service.cache.model.key.TopicKey;
 import org.exoplatform.forum.service.cache.model.selector.CategoryIdSelector;
 import org.exoplatform.forum.service.cache.model.selector.ForumPathSelector;
+import org.exoplatform.forum.service.cache.model.selector.PostListCountSelector;
 import org.exoplatform.forum.service.cache.model.selector.ScopeCacheSelector;
 import org.exoplatform.forum.service.impl.JCRDataStorage;
 import org.exoplatform.forum.service.impl.model.PostFilter;
@@ -97,7 +99,7 @@ public class CachedDataStorage implements DataStorage, Startable {
   private ExoCache<ForumListKey, ListForumData> forumList;
   private ExoCache<PostKey, PostData> postData;
   private ExoCache<PostListKey, ListPostData> postList;
-  private ExoCache<SimpleCacheKey, SimpleCacheData> postListCount;
+  private ExoCache<PostListCountKey, SimpleCacheData> postListCount;
   private ExoCache<TopicKey, TopicData> topicData;
   private ExoCache<SimpleCacheKey, ListWatchData> watchListData;
   private ExoCache<LinkListKey, ListLinkData> linkListData;
@@ -111,7 +113,7 @@ public class CachedDataStorage implements DataStorage, Startable {
   private FutureExoCache<ForumListKey, ListForumData, ServiceContext<ListForumData>> forumListFuture;
   private FutureExoCache<PostKey, PostData, ServiceContext<PostData>> postDataFuture;
   private FutureExoCache<PostListKey, ListPostData, ServiceContext<ListPostData>> postListFuture;
-  private FutureExoCache<SimpleCacheKey, SimpleCacheData, ServiceContext<SimpleCacheData>> postListCountFuture;
+  private FutureExoCache<PostListCountKey, SimpleCacheData, ServiceContext<SimpleCacheData>> postListCountFuture;
   private FutureExoCache<TopicKey, TopicData, ServiceContext<TopicData>> topicDataFuture;
   private FutureExoCache<SimpleCacheKey, ListWatchData, ServiceContext<ListWatchData>> watchListDataFuture;
   private FutureExoCache<LinkListKey, ListLinkData, ServiceContext<ListLinkData>> linkListDataFuture;
@@ -149,7 +151,10 @@ public class CachedDataStorage implements DataStorage, Startable {
   
   private void clearPostListCache() throws Exception {
     postList.select(new ScopeCacheSelector<PostListKey, ListPostData>());
-    postListCount.select(new ScopeCacheSelector<SimpleCacheKey, SimpleCacheData>());
+  }
+  
+  private void clearPostListCountCache(String topicId) throws Exception {   
+    postListCount.select(new PostListCountSelector(topicId));
   }
   
   private void clearLinkListCache() throws Exception {
@@ -747,8 +752,6 @@ public class CachedDataStorage implements DataStorage, Startable {
   public JCRPageList getListPostsByIP(String ip, String strOrderBy) throws Exception {
     return storage.getListPostsByIP(ip, strOrderBy);
   }
-
-  
   
   public void savePost(String categoryId, String forumId, String topicId, Post post, boolean isNew, MessageBuilder messageBuilder) throws Exception {
     storage.savePost(categoryId, forumId, topicId, post, isNew, messageBuilder);
@@ -756,9 +759,12 @@ public class CachedDataStorage implements DataStorage, Startable {
     clearForumListCache();
     clearTopicCache(categoryId, forumId, topicId);
     clearPostListCache();
+    
     //
     if (isNew == false) {
       clearPostCache(categoryId, forumId, topicId, post.getId());
+    } else {
+      clearPostListCountCache(topicId);
     }
     statistic = null;
   }
@@ -772,6 +778,7 @@ public class CachedDataStorage implements DataStorage, Startable {
       for(Post post : posts) {
         String categoryId = Utils.getCategoryId(post.getPath());
         clearPostCache(categoryId, post.getForumId(), post.getTopicId(), post.getId());
+        clearPostListCountCache(post.getTopicId());
       }
     } catch (Exception e) {
       LOG.error(e.getMessage(), e);
@@ -785,6 +792,7 @@ public class CachedDataStorage implements DataStorage, Startable {
       clearTopicCache(categoryId, forumId, topicId);
       clearPostListCache();
       clearPostCache(categoryId, forumId, topicId, postId);
+      clearPostListCountCache(topicId);
       statistic = null;
     } catch (Exception e) {
       LOG.error(e.getMessage(), e);
@@ -1319,11 +1327,21 @@ public class CachedDataStorage implements DataStorage, Startable {
   public void movePost(String[] postPaths, String destTopicPath, boolean isCreatNewTopic, String mailContent, String link) throws Exception {
     forumData.select(new ForumPathSelector(new String[] {Utils.getForumPath(postPaths[0]), Utils.getForumPath(destTopicPath)}, forumData));
     clearForumListCache();
+    String srcTopicPath = null;
+    
     for (String postPath : postPaths) {
-      clearTopicCache(postPath.substring(0, postPath.lastIndexOf("/")));
+      srcTopicPath = postPath.substring(0, postPath.lastIndexOf("/"));
+      clearTopicCache(srcTopicPath);
+      //
+      Topic topic = getTopicByPath(srcTopicPath, false);
+      clearPostListCountCache(topic.getId());
     }
     storage.movePost(postPaths, destTopicPath, isCreatNewTopic, mailContent, link);
     clearTopicCache(destTopicPath);
+    //clear PostListCount caching.
+    Topic topic = getTopicByPath(destTopicPath, false);
+    clearPostListCountCache(topic.getId());
+    clearPostListCache();
   }
 
   public void mergeTopic(String srcTopicPath, String destTopicPath, String mailContent, String link) throws Exception {
@@ -1364,7 +1382,7 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   public int getPostsCount(final PostFilter filter) throws Exception {
 
-    SimpleCacheKey key = new SimpleCacheKey("postsCount", filter.toString());
+    PostListCountKey key = new PostListCountKey("postsCount", filter.toString(), filter.getTopicId());
 
     SimpleCacheData<Integer> data = postListCountFuture.get(new ServiceContext<SimpleCacheData>() {
       public SimpleCacheData execute() {
