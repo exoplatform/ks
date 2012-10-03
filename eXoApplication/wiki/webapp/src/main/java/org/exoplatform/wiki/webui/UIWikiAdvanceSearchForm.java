@@ -18,6 +18,8 @@ package org.exoplatform.wiki.webui;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -83,15 +85,28 @@ public class UIWikiAdvanceSearchForm extends UIForm {
   
   public List<SelectOptionGroup> renderWikisOptions() throws Exception {
     List<SelectOptionGroup> listOptions = new ArrayList<SelectOptionGroup>();
-
-    if (getAllWikiOptions().getOptions().size() > 0)
+    if (getAllWikiOptions().getOptions().size() > 0) {
       listOptions.add(getAllWikiOptions());
-    if (getPortalWikiOptions().getOptions().size() > 0)
-      listOptions.add(getPortalWikiOptions());
-    if (getGroupWikiOptions().getOptions().size() > 0)
-      listOptions.add(getGroupWikiOptions());
-    if (getUserWikiOptions().getOptions().size() > 0)
-      listOptions.add(getUserWikiOptions());
+    }
+    if (getPortalWikiOptions().getOptions().size() > 0) {
+    	listOptions.add(getPortalWikiOptions());
+    }
+    if (getGroupWikiOptions().getOptions().size() > 0) {
+		SelectOptionGroup selectOptionGroup = getGroupWikiOptions();
+		List<SelectOption> options = selectOptionGroup.getOptions();
+
+		Collections.sort(options, new Comparator<SelectOption>() {
+			@Override
+			public int compare(SelectOption o1, SelectOption o2) {
+				return (o1.getLabel().compareTo(o2.getLabel()));
+			}
+		});
+        listOptions.add(selectOptionGroup);
+    }
+    
+    if (getUserWikiOptions().getOptions().size() > 0) {
+    	listOptions.add(getUserWikiOptions());
+    }
     return listOptions;
   }
 
