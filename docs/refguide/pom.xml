@@ -10,13 +10,18 @@
   </parent>
 
   <artifactId>exo.ks.docs.refguide</artifactId>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
 
 
   <name>Knowledge Reference Guide</name>
   <profiles>
     <profile>
       <id>distrib</id>
+      <activation>
+        <property>
+          <name>!skip.doc</name>
+        </property>
+      </activation>      
       <properties>
         <wikbook.source>${project.basedir}/src/main/resources/wikbook/en/en-US</wikbook.source>
         <docbook.source>${project.build.directory}/docbook-src</docbook.source>
