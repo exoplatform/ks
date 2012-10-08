@@ -220,7 +220,7 @@ The Forum node is stored in {{/exo:applications/ForumService/ForumData/CategoryH
 | exo:tempModerators | String | true | The list of user ids who are the temporary moderators. |
 | exo:banIPs | String | true | The list of banned IP addresses. |
 
-- The child node pruneSetting has the following perperties:
+- The child node pruneSetting has the following properties:
 
 || Properties name || Required type || Multiple || Description ||
 | exo:id | String | False | The forum id. |
@@ -541,7 +541,15 @@ These node types have the super type "wiki:wiki" that has the following properti
 |wikiPermissions|String|true|The property consists of the permission information of the wiki. The permission string has the format: VIEWPAGE,EDITPAGE,ADMINPAGE,ADMINSPACE:USER:john; VIEWPAGE:GROUP:/platform/users; VIEWPAGE,EDITPAGE,ADMINPAGE,ADMINSPACE:MEMBERSHIP:manager:/platform/administrators.|
 |isDefaultPermissionsInited|Boolean|true|Check whether the default permission is applied to all the wiki tree or not. Its default value is "false".|
 
-h3. WikiHome {anchor:id=KSref.JCRStructure.WikiJCRStructure.WikiData.WikiHome}
+{docbook}
+<para xml:id="KSref.JCRStructure.WikiJCRStructure.WikiData.WikiHome">
+<citetitle>
+<emphasis role="bold">
+WikiHome
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 The WikiHome node stores the root page of a Wiki. It has the node type "exo:wikihome" that has the super type "wiki:page" inherited from "nt:folder". The super type has the following properties:
 
 || Properties name || Required type || Multiple ||Description ||
@@ -583,7 +591,15 @@ The mixin node type "wiki:watched" has the following properties:
 |watcher|String|false|The Id of the person who is watching the page.|
 
 
-h3. Preferences  {anchor:id=KSref.JCRStructure.WikiJCRStructure.WikiData.Preferences}
+{docbook}
+<para xml:id="KSref.JCRStructure.WikiJCRStructure.WikiData.Preferences">
+<citetitle>
+<emphasis role="bold">
+Preferences
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 The "Preferences" node stores the default syntax and page templates of the Wiki. It has the node type "wiki:preferences" and two child nodes "PreferencesSyntax" and "TemplateContainer".
 
 * The "PreferencesSyntax" node has the node type "wiki:preferencessyntax" that has the following properties:
@@ -598,17 +614,41 @@ The node type "wiki:template" has the following properties:
 |description|String|false|The description of the template.|
 
 
-h3. LinkRegistry {anchor:id=KSref.JCRStructure.WikiJCRStructure.WikiData.LinkRegistry}
+{docbook}
+<para xml:id="KSref.JCRStructure.WikiJCRStructure.WikiData.LinkRegistry">
+<citetitle>
+<emphasis role="bold">
+LinkRegistry
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 
 The "LinkRegistry" node stores the entries to keep track of renaming or moving pages. Each link entry has the node type "wiki:linkentry" that has the following properties:
 || Properties name || Required type || Multiple ||Description ||
 |alias|String|false|The Id of a page that is moved or renamed. Its format is "wikitype@wikiowner@page_name".|
 |newlink|Path|false|A new path to the wiki page that has been moved or renamed.|
 
-h3. Trash  {anchor:id=KSref.JCRStructure.WikiJCRStructure.WikiData.Trash}
+{docbook}
+<para xml:id="KSref.JCRStructure.WikiJCRStructure.WikiData.Trash">
+<citetitle>
+<emphasis role="bold">
+Trash
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 The "Trash" node stores deleted pages.
 
-h3. Template Container {anchor:id=KSref.JCRStructure.WikiJCRStructure.WikiData.TemplateContainer}
+{docbook}
+<para xml:id="KSref.JCRStructure.WikiJCRStructure.WikiData.TemplateContainer">
+<citetitle>
+<emphasis role="bold">
+Template Container
+</emphasis>
+</citetitle>
+</para>
+{docbook}
 
 The "Template Container" node stores the templates to create Wiki pages.
 
