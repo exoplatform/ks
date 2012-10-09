@@ -115,16 +115,28 @@ public class ChildrenMacro extends AbstractMacro<ChildrenMacroParameters> {
         WikiContext wikiContext = (WikiContext) ec.getProperty(WikiContext.WIKICONTEXT);
         params = wikiContext;
       }
-    }    
+    }
+    
     Block root;
     try {
+      WikiService wikiService = (WikiService) ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(WikiService.class);
+      
+      // Check if root page exist
+      PageImpl wikiPage = (PageImpl) wikiService.getPageById(params.getType(), params.getOwner(), params.getPageId());
+      if (wikiPage == null) {
+        // if root page was renamed then find it
+        wikiPage = (PageImpl) wikiService.getRelatedPage(params.getType(), params.getOwner(), params.getPageId());
+        if (wikiPage != null) {
+          params = new WikiPageParams(wikiPage.getWiki().getType(), wikiPage.getWiki().getOwner(), wikiPage.getName());
+        }
+      }
+      
       root = generateTree(params, descendant, childrenNum, depth, context);
-
       PageRenderingCacheService renderingCacheService = (PageRenderingCacheService) ExoContainerContext.getCurrentContainer()
-                                                                                                       .getComponentInstanceOfType(PageRenderingCacheService.class);
+          .getComponentInstanceOfType(PageRenderingCacheService.class);
       WikiContext wikiContext = getWikiContext();
-      renderingCacheService.addPageLink(new WikiPageParams(wikiContext.getType(), wikiContext.getOwner(), wikiContext.getPageId()),
-                                        new WikiPageParams(params.getType(), params.getOwner(), params.getPageId()));
+      renderingCacheService.addPageLink(new WikiPageParams(wikiContext.getType(), wikiContext.getOwner(), wikiContext.getPageId()), 
+          new WikiPageParams(params.getType(), params.getOwner(), params.getPageId()));
       return Collections.singletonList(root);
     } catch (Exception e) {
       log.debug("Failed to ", e);
