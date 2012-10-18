@@ -510,6 +510,8 @@ public class UIQuestionForm extends BaseUIFAQForm implements UIPopupComponent {
         String author = questionForm.inputAuthor.getValue();
         String emailAddress = questionForm.inputEmailAddress.getValue();
         String questionContent = questionForm.inputQuestionContent.getValue();
+        UICheckBoxInput inputIsApproved = questionForm.getUICheckBoxInput(IS_APPROVED);
+        UICheckBoxInput inputIsActivated = questionForm.getUICheckBoxInput(IS_ACTIVATED);
         if (author == null || author.trim().length() < 1) {
           warning("UIQuestionForm.msg.author-is-null");
           return;
@@ -567,9 +569,9 @@ public class UIQuestionForm extends BaseUIFAQForm implements UIPopupComponent {
         }
 
         question.setApproved(!questionForm.isModerate || (questionForm.isMode && isNew)) ;
-        if(questionForm.isAddCheckBox){
-          question.setApproved(questionForm.getUICheckBoxInput(IS_APPROVED).isChecked()) ;
-          question.setActivated(questionForm.getUICheckBoxInput(IS_ACTIVATED).isChecked()) ;
+        if(questionForm.isAddCheckBox && inputIsApproved != null && inputIsActivated != null){
+          question.setApproved(inputIsApproved.isChecked()) ;
+          question.setActivated(inputIsActivated.isChecked()) ;
         }
 
         question.setLanguage(questionForm.getDefaultLanguage());
@@ -635,7 +637,7 @@ public class UIQuestionForm extends BaseUIFAQForm implements UIPopupComponent {
         } catch (Exception e) {
           questionForm.log.error("Can not run discuss question in to forum portlet", false);
         }
-        if(!(questionForm.isModerate) || questionForm.getUICheckBoxInput(IS_APPROVED).isChecked()){
+        if(!(questionForm.isModerate) || (inputIsApproved != null && inputIsApproved.isChecked())){
           if(isNew) info("UIQuestionForm.msg.add-new-question-successful", false) ;
         } else {
           info("UIQuestionForm.msg.question-not-is-approved", false) ;
