@@ -1,4 +1,6 @@
 <%
+import org.apache.commons.lang.StringEscapeUtils;
+
 import org.exoplatform.wiki.mow.api.Page ;
 import org.exoplatform.wiki.mow.api.WikiNodeType ;
 import org.exoplatform.wiki.mow.core.api.wiki.AttachmentImpl ;
@@ -14,7 +16,7 @@ import org.exoplatform.wiki.service.WikiPageParams;
 		resultInfo = resultInfo.replace("{0}", String.valueOf(results.getFrom()+1));
 		resultInfo = resultInfo.replace("{1}", results.getTo().toString());
 		resultInfo = resultInfo.replace("{2}", results.getAll().size().toString());
-		resultInfo = resultInfo.replace("{3}", "<strong>" + uicomponent.getKeyword() + "</strong>");
+		resultInfo = resultInfo.replace("{3}", "<strong>" + StringEscapeUtils.escapeHtml(uicomponent.getKeyword()) + "</strong>");
 %>		
 		<div class="UIWikiAdvanceSearchResult" id="$uicomponent.id">
 			<div class="ResultInfo"><%=resultInfo%></div>
