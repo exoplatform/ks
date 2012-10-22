@@ -319,13 +319,18 @@ public class JCRDataStorage implements DataStorage, FAQNodeTypes {
     try {
       Node faqServiceHome = getFAQServiceHome(sProvider);
       if (faqServiceHome.hasNode(Utils.CATEGORY_HOME)) {
-        log.debug("root category is already created");
-        return false;
+      Node categoryHome = faqServiceHome.getNode(Utils.CATEGORY_HOME);
+      categoryHome.setProperty(EXO_NAME, "Root");
+      categoryHome.setProperty(EXO_IS_VIEW, true);
+      categoryHome.setProperty(EXO_INDEX, 0);
+      faqServiceHome.save();
+      return false;
       }
       Node categoryHome = faqServiceHome.addNode(Utils.CATEGORY_HOME, EXO_FAQ_CATEGORY);
       categoryHome.addMixin(MIX_FAQ_SUB_CATEGORY);
-      categoryHome.setProperty(EXO_NAME, "Answers");
+      categoryHome.setProperty(EXO_NAME, "Root");
       categoryHome.setProperty(EXO_IS_VIEW, true);
+      categoryHome.setProperty(EXO_INDEX, 0);
       faqServiceHome.save();
       log.info("Initialized root category : " + categoryHome.getPath());
       return true;
@@ -333,7 +338,7 @@ public class JCRDataStorage implements DataStorage, FAQNodeTypes {
       log.error("Could not initialize root category", e);
       return false;
     }
-  }
+ }
 
   @Override
   public byte[] getTemplate() throws Exception {
