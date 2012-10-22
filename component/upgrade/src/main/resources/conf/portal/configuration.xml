@@ -5,7 +5,7 @@
 
   <external-component-plugins>
     <target-component>org.exoplatform.commons.upgrade.UpgradeProductService</target-component>
-    <component-plugin>
+    <component-plugin  profiles="knowledge,default,all">
       <name>UpgradeForumPlugin</name>
       <set-method>addUpgradePlugin</set-method>
       <type>org.exoplatform.ks.upgrade.UpgradeForumPlugin</type>
@@ -18,7 +18,7 @@
         </value-param>
       </init-params>
     </component-plugin>
-    <component-plugin>
+    <component-plugin  profiles="knowledge,default,all">
       <name>UpgradeWikiPlugin</name>
       <set-method>addUpgradePlugin</set-method>
       <type>org.exoplatform.ks.upgrade.UpgradeWikiPlugin</type>
@@ -32,7 +32,7 @@
       </init-params>
     </component-plugin>
     
-    <component-plugin>
+    <component-plugin profiles="knowledge,default,all">
       <name>WikiPermissionRepairPlugin</name>
       <set-method>addUpgradePlugin</set-method>
       <type>org.exoplatform.ks.upgrade.WikiPermissionRepairPlugin</type>
@@ -46,7 +46,7 @@
       </init-params>
     </component-plugin>
     
-    <component-plugin>
+    <component-plugin profiles="knowledge,default,all">
       <name>WikiGroupPermissionRepairPlugin</name>
       <set-method>addUpgradePlugin</set-method>
       <type>org.exoplatform.ks.upgrade.WikiGroupPermissionRepairPlugin</type>
@@ -60,7 +60,7 @@
       </init-params>
     </component-plugin>
     
-    <component-plugin>
+    <component-plugin  profiles="knowledge,default,all">
       <name>UpgradeAnswerPlugin</name>
       <set-method>addUpgradePlugin</set-method>
       <type>org.exoplatform.ks.upgrade.UpgradeAnswerPlugin</type>
