@@ -1190,6 +1190,9 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
       getTotalJobWatting(sProvider, users);
       return category;
     } catch (Exception e) {
+      if (e instanceof PathNotFoundException) {
+        throw new PathNotFoundException(e);
+      }
       log.error("failed to remove category " + categoryId);
       return null;
     }
