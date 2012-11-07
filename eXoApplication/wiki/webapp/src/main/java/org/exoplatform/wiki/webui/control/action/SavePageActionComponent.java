@@ -117,6 +117,16 @@ public class SavePageActionComponent extends UIComponent {
       try {
         WikiNameValidator.validate(titleInput.getValue());
       } catch (IllegalNameException ex) {
+    	  if (wikiRichTextArea.isRendered()) {
+    	        String htmlContent = wikiRichTextArea.getUIFormTextAreaInput().getValue();
+    	        String markupContent = renderingService.render(htmlContent,
+    	                                                       Syntax.XHTML_1_0.toIdString(),
+    	                                                       syntaxId,
+    	                                                       false);
+    	        markupInput.setValue(markupContent);
+    	        wikiPortlet.changeMode(WikiMode.VIEW);
+    	        super.processEvent(event);
+    	      }
         String msg = ex.getMessage();
         ApplicationMessage appMsg = new ApplicationMessage("WikiPageNameValidator.msg.EmptyTitle",
                                                            null,
