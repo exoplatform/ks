@@ -35,7 +35,7 @@
 
 {anchor:id=KSref.Extend_actions_over_a_wiki_page_from_external_jars.Overview}
 
-The toolbar in Wiki is built basing on the UI Extension Framework, so you can add your own actions packaged in external jars to it. After reading this section, you will know how to extend actions over a wiki page from external jars.
+The toolbar in Wiki is built basing on the [UI Extension Framework|../../../developer-guide/html/DEV.UI_Extension_Framework.html], so you can add your own actions packaged in external jars to it. After reading this section, you will know how to extend actions over a wiki page from external jars.
 {anchor:id=KSref.Extend_actions_over_a_wiki_page_from_external_jars.How_to_add_action_extension_to_the_Wiki_toolbar}
 
 {docbook}
