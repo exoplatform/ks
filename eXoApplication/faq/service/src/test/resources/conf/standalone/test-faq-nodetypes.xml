@@ -8,9 +8,6 @@
       <propertyDefinition name="exo:id" requiredType="String" autoCreated="false" mandatory="true" onParentVersion="COPY" protected="false" multiple="false">
   			<valueConstraints/>  			
   		</propertyDefinition>
-  		<!--propertyDefinition name="exo:answerPath" requiredType="String" autoCreated="false" mandatory="true" onParentVersion="COPY" protected="false" multiple="false">
-  			<valueConstraints/>  			
-  		</propertyDefinition-->
   		<propertyDefinition name="exo:questionId" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false">
   			<valueConstraints/>
   		</propertyDefinition>
@@ -205,12 +202,6 @@
      	<propertyDefinition name="exo:link" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false">
 			<valueConstraints/>
 		</propertyDefinition>
-      <!--new properties-->
-      <!--propertyDefinition name="exo:questionPath" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false">
-  			<valueConstraints/>
-	  	</propertyDefinition-->
-      
-      
       <!-- Propreties for migration data 1.0 to 1.1-->
       <propertyDefinition name="exo:responses" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="true">
   			<valueConstraints/>
@@ -356,65 +347,6 @@
     </childNodeDefinitions>
   </nodeType>
   
-  <!--nodeType name="exo:faqCategoryHome" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
-   <supertypes>
-    <supertype>nt:base</supertype>
-   </supertypes>   
-   <propertyDefinitions>
-  		<propertyDefinition name="exo:name" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false">
-  			<valueConstraints/>
-        <defaultValues>
-					<defaultValue>Home</defaultValue>
-				</defaultValues>
-  		</propertyDefinition>  			
-  		<propertyDefinition name="exo:description" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false">
-  			<valueConstraints/>
-  		</propertyDefinition>  
-  		<propertyDefinition name="exo:isModerateQuestions" requiredType="Boolean" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false">
-  			<valueConstraints/>
-        <defaultValues>
-					<defaultValue>false</defaultValue>
-				</defaultValues>
-  		</propertyDefinition>			
-  		<propertyDefinition name="exo:isModerateAnswers" requiredType="Boolean" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false">
-  			<valueConstraints/>
-        <defaultValues>
-					<defaultValue>false</defaultValue>
-				</defaultValues>
-  		</propertyDefinition>			
-  		<propertyDefinition name="exo:viewAuthorInfor" requiredType="Boolean" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false">
-  			<valueConstraints/>
-        <defaultValues>
-					<defaultValue>false</defaultValue>
-				</defaultValues>
-  		</propertyDefinition>			
-  		<propertyDefinition name="exo:moderators" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="true">
-  			<valueConstraints/>
-  		</propertyDefinition>	
-   </propertyDefinitions>
-   <childNodeDefinitions>
-     <childNodeDefinition name="*" defaultPrimaryType="exo:faqCategory" autoCreated="false" mandatory="false"
-       onParentVersion="COPY" protected="false" sameNameSiblings="false">
-       <requiredPrimaryTypes>
-         <requiredPrimaryType>exo:faqCategory</requiredPrimaryType>
-       </requiredPrimaryTypes>
-     </childNodeDefinition>
-     <childNodeDefinition name="*" defaultPrimaryType="exo:faqQuestionHome" autoCreated="false" mandatory="false"
-       onParentVersion="COPY" protected="false" sameNameSiblings="false">
-       <requiredPrimaryTypes>
-         <requiredPrimaryType>exo:faqQuestionHome</requiredPrimaryType>
-       </requiredPrimaryTypes>
-     </childNodeDefinition>
-      
-     <childNodeDefinition name="*" defaultPrimaryType="exo:faqRSS" autoCreated="false" mandatory="false" 
-      	onParentVersion="COPY" protected="false" sameNameSiblings="false">
-				<requiredPrimaryTypes>
-					<requiredPrimaryType>nt:base</requiredPrimaryType>
-				</requiredPrimaryTypes>
-			</childNodeDefinition>
-    </childNodeDefinitions>
-  </nodeType-->
-  
   <nodeType name="exo:faqWatching" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
     <propertyDefinitions>
       <propertyDefinition name="exo:emailWatching" requiredType="String" autoCreated="false" mandatory="true" onParentVersion="COPY" protected="false" multiple="true">
@@ -495,26 +427,6 @@
       </childNodeDefinition>      
     </childNodeDefinitions>
   </nodeType>
-  
-  
-  <!--nodeType name="mix:faqi18n" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
-    <propertyDefinitions>
-      <propertyDefinition name="exo:language" requiredType="String" autoCreated="true" mandatory="false"
-        onParentVersion="COPY" protected="false" multiple="false">
-        <valueConstraints/>
-        <defaultValues>
-          <defaultValue>English</defaultValue>
-        </defaultValues>
-      </propertyDefinition>
-    </propertyDefinitions>
-    <childNodeDefinitions>
-      <childNodeDefinition name="*" defaultPrimaryType="nt:unstructured" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" sameNameSiblings="false">
-        <requiredPrimaryTypes>
-          <requiredPrimaryType>nt:unstructured</requiredPrimaryType>
-        </requiredPrimaryTypes>
-      </childNodeDefinition>
-    </childNodeDefinitions>
-  </nodeType-->
   
   <nodeType name="exo:faqUserSetting" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
     <supertypes>
@@ -1124,12 +1036,6 @@
           <requiredPrimaryType>exo:forumCategory</requiredPrimaryType>
         </requiredPrimaryTypes>
       </childNodeDefinition>
-    
-      <!--childNodeDefinition name="*" defaultPrimaryType="exo:categoryHome" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" sameNameSiblings="false">
-        <requiredPrimaryTypes>
-          <requiredPrimaryType>nt:base</requiredPrimaryType>
-        </requiredPrimaryTypes>
-      </childNodeDefinition-->
     </childNodeDefinitions>
   </nodeType> 
   
@@ -1158,11 +1064,6 @@
       <supertype>nt:base</supertype>
     </supertypes>
     <childNodeDefinitions>
-      <!--childNodeDefinition name="*" defaultPrimaryType="exo:tagHome" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" sameNameSiblings="false">
-        <requiredPrimaryTypes>
-          <requiredPrimaryType>nt:base</requiredPrimaryType>
-        </requiredPrimaryTypes>
-      </childNodeDefinition-->
       <childNodeDefinition name="*" defaultPrimaryType="exo:forumTag" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" sameNameSiblings="false">
         <requiredPrimaryTypes>
           <requiredPrimaryType>exo:forumTag</requiredPrimaryType>
@@ -1193,11 +1094,6 @@
       <supertype>nt:base</supertype>
     </supertypes>
     <childNodeDefinitions>
-      <!--childNodeDefinition name="*" defaultPrimaryType="exo:topicTypeHome" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" sameNameSiblings="false">
-        <requiredPrimaryTypes>
-          <requiredPrimaryType>nt:base</requiredPrimaryType>
-        </requiredPrimaryTypes>
-      </childNodeDefinition-->
       <childNodeDefinition name="*" defaultPrimaryType="exo:topicType" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" sameNameSiblings="false">
         <requiredPrimaryTypes>
           <requiredPrimaryType>exo:topicType</requiredPrimaryType>

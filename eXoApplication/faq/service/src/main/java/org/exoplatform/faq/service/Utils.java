@@ -115,20 +115,35 @@ public class Utils {
   }
 
   static public boolean hasPermission(List<String> listPlugin, List<String> listOfUser) {
-    List<String> tem = new ArrayList<String>();
+    List<String> groups = new ArrayList<String>();
+    List<String> groupsAllmembershipType = new ArrayList<String>();
     for (String str : listOfUser) {
-      if (listPlugin.contains(str))
+      if(str.indexOf("/") >= 0) {
+        groups.add(str.substring(str.indexOf("/")));
+      }
+      if (str.indexOf("*") >= 0) {// user has membershipType *
+        str = str.substring(str.indexOf("/"));
+        groupsAllmembershipType.add(str);
+      }
+      if (listPlugin.contains(str)) {
         return true;
-      if (str.contains("*")) {
-        str = str.substring(str.indexOf("/"), str.length());
-        tem.add(str);
-        if (listPlugin.contains(str))
-          return true;
       }
     }
-    for (String s : tem) {
-      if (listPlugin.contains(s))
-        return true;
+    if(groups.size() > 0 || groupsAllmembershipType.size() > 0) {
+      for (String str : listPlugin) {
+        if (str.indexOf("*") >= 0) {// listPlugin has membershipType * 
+          str = str.substring(str.indexOf("/"));
+          if(groups.contains(str)){
+            return true;
+          }
+        }
+        if(str.indexOf(":") > 0) {
+          str = str.substring(str.indexOf("/"));
+        }
+        if(groupsAllmembershipType.contains(str)) {
+          return true;
+        }
+      }
     }
     return false;
   }

@@ -121,13 +121,13 @@ public class UIAnswersContainer extends UIContainer {
         } else if (category.getModerators() != null && category.getModerators().length > 0 && category.getModerators()[0].trim().length() > 0) {
           if (propetyOfUser.isEmpty())
             propetyOfUser = UserHelper.getAllGroupAndMembershipOfUser(null);
-          faqSetting_.setCanEdit(Utils.hasPermission(propetyOfUser, Arrays.asList(category.getModerators())));
+          faqSetting_.setCanEdit(Utils.hasPermission(Arrays.asList(category.getModerators()), propetyOfUser));
         }
       }
       if (!faqSetting_.isCanEdit() && category.getUserPrivate() != null && category.getUserPrivate().length > 0 && category.getUserPrivate()[0].trim().length() > 0) {
         if (propetyOfUser.isEmpty())
           propetyOfUser = UserHelper.getAllGroupAndMembershipOfUser(null);
-        return Utils.hasPermission(propetyOfUser, Arrays.asList(category.getUserPrivate()));        
+        return Utils.hasPermission(Arrays.asList(category.getUserPrivate()), propetyOfUser);        
       }
       return true;
     } catch (Exception e) {

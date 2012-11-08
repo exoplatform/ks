@@ -16,16 +16,16 @@
  */
 package org.exoplatform.faq.service;
 
-import org.exoplatform.commons.testing.AssertUtils;
-import org.exoplatform.commons.testing.Closure;
-import org.exoplatform.commons.testing.KernelUtils;
+import junit.framework.TestCase;
+
 import org.exoplatform.container.xml.InitParams;
-import org.exoplatform.faq.test.FAQTestCase;
+import org.exoplatform.faq.base.AssertUtils;
+import org.exoplatform.faq.base.KernelUtils;
 
 /**
  * Unit Tests for {@link InitialDataPlugin}
  */
-public class TestInitialDataPluginSimple extends FAQTestCase {
+public class InitialDataPluginSimpleTestCase extends TestCase {
 
   private static final String DATAZIP_LOCATION = "jar:/conf/Category752b877dc0a8000d0011d6845cfe7ad9.xml";
 
@@ -37,8 +37,8 @@ public class TestInitialDataPluginSimple extends FAQTestCase {
     KernelUtils.addValueParam(params, "forceXML", "true");
     KernelUtils.addValueParam(params, "category", "Foo");
     InitialDataPlugin plugin = new InitialDataPlugin(params);
-    assertTrue(plugin.isForceXML());
-    assertEquals(DATAZIP_LOCATION, plugin.getLocation());
+    AssertUtils.assertTrue(plugin.isForceXML());
+    AssertUtils.assertEquals(DATAZIP_LOCATION, plugin.getLocation());
 
     // check defaults
     params = new InitParams();
@@ -58,11 +58,10 @@ public class TestInitialDataPluginSimple extends FAQTestCase {
     assertTrue(plugin.isZip("toto.zip"));
     assertFalse(plugin.isZip("toto.xml"));
 
-    AssertUtils.assertException(new Closure() {
+    AssertUtils.assertException(new InitialDataPluginTestCase.Closure() {
       public void dothis() {
         plugin.isZip("toto.unsupported");
       }
     });
   }
-
 }
