@@ -1,11 +1,11 @@
 package org.exoplatform.ks.common.jcr;
 
-import static org.exoplatform.commons.testing.AssertUtils.assertContains;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -161,4 +161,32 @@ public class TestPropertyReader extends TestCase {
     return stub;
   }
 
+  /**
+   * Assert a set of expected items to be all contained in a collection
+   * 
+   * @param actual containment
+   * @param expected items expected to be contained
+   */
+  private <T> void assertContains(Collection<T> actual, T... expected) {
+
+    for (T item : expected) {
+      boolean found = false;
+      for (T obj : actual) {
+        if (obj.equals(item)) {
+          found = true;
+        }
+      }
+      assertTrue("expected item was not found " + item + "@" + item.hashCode(), found);
+    }
+  }
+
+  /**
+   * Assert a set of expected string items to be all contained in a string array
+   * 
+   * @param actual containment
+   * @param expected items expected to be contained
+   */
+  private void assertContains(String[] actual, String... expected) {
+    assertTrue(Arrays.asList(actual).containsAll(Arrays.asList(expected)));
+  }
 }

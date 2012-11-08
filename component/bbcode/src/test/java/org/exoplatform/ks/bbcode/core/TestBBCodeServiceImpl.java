@@ -16,87 +16,110 @@
  */
 package org.exoplatform.ks.bbcode.core;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNotNull;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.Session;
 
-import org.exoplatform.commons.testing.AssertUtils;
-import org.exoplatform.commons.testing.jcr.AbstractJCRTestCase;
+import org.exoplatform.component.test.AbstractKernelTest;
 import org.exoplatform.component.test.ConfigurationUnit;
 import org.exoplatform.component.test.ConfiguredBy;
 import org.exoplatform.component.test.ContainerScope;
 import org.exoplatform.ks.bbcode.api.BBCode;
+import org.exoplatform.ks.bbcode.api.BBCodeService;
 import org.exoplatform.ks.bbcode.spi.BBCodeData;
 import org.exoplatform.ks.bbcode.spi.BBCodePlugin;
 import org.exoplatform.ks.common.jcr.KSDataLocation;
-import org.exoplatform.services.jcr.RepositoryService;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.exoplatform.ks.common.jcr.SessionManager;
 
 /**
  * @author <a href="mailto:patrice.lamarque@exoplatform.com">Patrice Lamarque</a>
  * @version $Revision$
  */
-@ConfiguredBy( { @ConfigurationUnit(scope = ContainerScope.PORTAL, path = "conf/exo.portal.component.test.jcr-configuration.xml"), @ConfigurationUnit(scope = ContainerScope.PORTAL, path = "conf/jcr/bbcodes-configuration.xml") })
-public class TestBBCodeServiceImpl extends AbstractJCRTestCase {
+@ConfiguredBy({
+  @ConfigurationUnit(scope = ContainerScope.PORTAL, path = "conf/exo.portal.component.portal-configuration.xml"),
+  @ConfigurationUnit(scope = ContainerScope.PORTAL, path = "conf/exo.portal.component.test.jcr-configuration.xml"),
+  @ConfigurationUnit(scope = ContainerScope.PORTAL, path = "conf/exo.portal.component.identity-configuration.xml"),
+  @ConfigurationUnit(scope = ContainerScope.PORTAL, path = "conf/standalone/exo.bbcode.component.core.test.configuration.xml"),
+  @ConfigurationUnit(scope = ContainerScope.PORTAL, path = "conf/standalone/exo.bbcode.test.jcr-configuration.xml"),
+  @ConfigurationUnit(scope = ContainerScope.PORTAL, path = "conf/standalone/exo.bbcode.test.portal-configuration.xml")
+})
 
-  private BBCodeServiceImpl bbcodeService;
+public class TestBBCodeServiceImpl extends AbstractKernelTest {
+
+  private BBCodeServiceImpl bbcodeServiceImpl;
+
+  private BBCodeService     bbcodeService;
+
+  private KSDataLocation    locator;
+
+  private SessionManager    sessionManager;
 
   private String            bbcodesPath;
-
-  @BeforeMethod
-  protected void setUp() throws Exception {
-    bbcodeService = new BBCodeServiceImpl();
-    RepositoryService repos = getComponent(RepositoryService.class);
-    KSDataLocation locator = new KSDataLocation(getWorkspace(), repos);
-    bbcodeService.setDataLocator(locator);
-
-    bbcodesPath = bbcodeService.getDataLocator().getBBCodesLocation();
-    addNode(bbcodesPath, BBCodeServiceImpl.BBCODE_HOME_NODE_TYPE); // create node /bbcodes
+  @Override
+  public void setUp() throws Exception {
+    super.setUp();
+    //
+    begin();
+    
+    bbcodeServiceImpl = new BBCodeServiceImpl();
+    locator = getService(KSDataLocation.class);
+    bbcodeService = getService(BBCodeService.class);
+    
+    bbcodeServiceImpl.setDataLocator(locator);
+    sessionManager = locator.getSessionManager();
+    bbcodesPath = bbcodeServiceImpl.getDataLocator().getBBCodesLocation();
+    
   }
 
-  @AfterMethod
-  protected void tearDown() throws Exception {
-    deleteNode(bbcodesPath); // create node /bbcodes
+  @Override
+  public void tearDown() throws Exception {
+    for (BBCode bbcode : bbcodeService.getAll()) {
+      bbcodeService.delete(bbcode.getId());
+    }
+    //
+    end();
   }
+  
+  @SuppressWarnings("unchecked")
+  public <T> T getService(Class<T> clazz) {
+    return (T) getContainer().getComponentInstanceOfType(clazz);
+  }
+  
+  
 
-  @Test
   public void testRegisterBBCodePlugin() throws Exception {
     BBCodePlugin plugin = new BBCodePlugin();
     plugin.setName("plugin1");
-    bbcodeService.registerBBCodePlugin(plugin);
-    List<BBCodePlugin> plugins = bbcodeService.getPlugins();
+    bbcodeServiceImpl.registerBBCodePlugin(plugin);
+    List<BBCodePlugin> plugins = bbcodeServiceImpl.getPlugins();
     assertEquals(1, plugins.size());
     assertEquals("plugin1", plugins.get(0).getName());
 
     // registerPlugin() adds elements (does not replace)
     BBCodePlugin plugin2 = new BBCodePlugin();
     plugin2.setName("plugin2");
-    bbcodeService.registerBBCodePlugin(plugin2);
-    List<BBCodePlugin> plugins2 = bbcodeService.getPlugins();
+    bbcodeServiceImpl.registerBBCodePlugin(plugin2);
+    List<BBCodePlugin> plugins2 = bbcodeServiceImpl.getPlugins();
     assertEquals("BBCode plugins list size was not incremented", 2, plugins2.size());
     assertEquals("plugin2", plugins.get(1).getName());
   }
 
-  @Test
+
   public void testInitDefaultBBCodes() throws Exception {
 
     BBCodePlugin plugin = new BBCodePlugin();
     plugin.setBbcodeData(Arrays.asList(new BBCodeData("foo", "bar", false, false)));
-    bbcodeService.registerBBCodePlugin(plugin);
-    bbcodeService.initDefaultBBCodes();
+    bbcodeServiceImpl.registerBBCodePlugin(plugin);
+    bbcodeServiceImpl.initDefaultBBCodes();
     String targetPath = bbcodesPath + "/" + "foo";
     assertNodeExists(targetPath);
 
   }
 
-  @Test
+
   public void testSave() throws Exception {
     List<BBCode> bbcodes = Arrays.asList(createBBCode("foo", "replacement", "description", "example", false, false));
     bbcodeService.save(bbcodes);
@@ -111,7 +134,7 @@ public class TestBBCodeServiceImpl extends AbstractJCRTestCase {
     assertEquals(false, n.getProperty("exo:isActive").getBoolean());
   }
 
-  @Test
+
   public void testGetAll() throws Exception {
     List<BBCode> bbcodes = new ArrayList<BBCode>();
     bbcodes.add(createBBCode("foo", "replacement", "description", "example", false, true));
@@ -124,7 +147,7 @@ public class TestBBCodeServiceImpl extends AbstractJCRTestCase {
     assertEquals(bbcodes.size(), actual.size());
   }
 
-  @Test
+
   public void testGetActive() throws Exception {
     List<BBCode> bbcodes = new ArrayList<BBCode>();
     bbcodes.add(createBBCode("foo", "replacement", "description", "example", false, true));
@@ -135,15 +158,15 @@ public class TestBBCodeServiceImpl extends AbstractJCRTestCase {
     bbcodeService.save(bbcodes);
     List<String> actual = bbcodeService.getActive();
     assertEquals(bbcodes.size() - 1, actual.size());
-    AssertUtils.assertContains(actual, "foo", "foo2=", "foo3", "foo4");
+    assertContains(actual, "foo", "foo2=", "foo3", "foo4");
   }
 
-  @Test
+
   public void testFindById() throws Exception {
     List<BBCode> bbcodes = Arrays.asList(createBBCode("foo", "replacement", "description", "example", true, true));
     bbcodeService.save(bbcodes);
     assertNodeExists(bbcodesPath + "/" + "foo=");
-    BBCode actual = bbcodeService.findById("foo=");
+    BBCode actual = bbcodeServiceImpl.findById("foo=");
     assertNotNull(actual);
     assertEquals("foo", actual.getTagName());
     assertEquals("replacement", actual.getReplacement());
@@ -153,7 +176,7 @@ public class TestBBCodeServiceImpl extends AbstractJCRTestCase {
     assertEquals(true, actual.isActive());
   }
 
-  @Test
+
   public void testDelete() throws Exception {
     List<BBCode> bbcodes = Arrays.asList(createBBCode("foo", "replacement", "description", "example", false, false));
     bbcodeService.save(bbcodes);
@@ -173,5 +196,51 @@ public class TestBBCodeServiceImpl extends AbstractJCRTestCase {
     bbc.setActive(active);
     return bbc;
   }
+  
+  private Session getSession() {
+    Session session = sessionManager.getCurrentSession();
+    if (session == null) {
+      session = sessionManager.openSession();
+    }
+    return session;
+  }
+  
+  private void assertNodeExists(String path) {
+    Session session = getSession();
+    if(path.indexOf("/") == 0) path = path.substring(0);
+    try {
+      session.getRootNode().getNode(path);
+      assertTrue(true);
+    } catch (Exception e) {
+      assertTrue(false);
+    } finally{
+      session.logout();
+    }
+  }
 
+  private void assertNodeNotExists(String path) {
+    Session session = getSession();
+    if(path.indexOf("/") == 0) path = path.substring(0);
+    try {
+      session.getRootNode().getNode(path);
+      assertTrue(false);
+    } catch (Exception e) {
+      assertTrue(true);
+    } finally{
+      session.logout();
+    }
+  }
+  
+  private Node getNode(String path) throws Exception {
+    return getSession().getRootNode().getNode(path);
+  }
+  
+  private void assertContains(List<String> actual, String... strs) {
+    for (int i = 0; i < strs.length; i++) {
+      if(!actual.contains(strs[i])) {
+        assertTrue(false);
+      }
+    }
+    assertTrue(true);
+  }
 }

@@ -47,7 +47,6 @@
     <org.aspectj.version>1.6.10</org.aspectj.version>
     <ehcache.version>1.6.0</ehcache.version>
     <juel.version>2.1.2</juel.version>
-    <org.testng.version>5.10</org.testng.version>
     <org.hibernate.version>3.3.2.GA</org.hibernate.version>
     <commons-collections.version>3.2.1</commons-collections.version>
     <org.jboss.version>2.2.9.GA</org.jboss.version>
@@ -351,21 +350,9 @@
         <version>${mockito.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.testng</groupId>
-        <artifactId>testng</artifactId>
-        <version>${org.testng.version}</version>
-        <classifier>jdk15</classifier>
-		<scope>test</scope>
-      </dependency>
-      <dependency>
         <groupId>commons-collections</groupId>
         <artifactId>commons-collections</artifactId>
         <version>${commons-collections.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.exoplatform.commons</groupId>
-        <artifactId>exo.platform.commons.testing</artifactId>
-        <version>${org.exoplatform.commons.version}</version>
       </dependency>
       <dependency>
         <groupId>net.sourceforge.nekohtml</groupId>

@@ -16,7 +16,7 @@
  ***************************************************************************/
 package org.exoplatform.forum.webui;
 
-import org.exoplatform.commons.testing.webui.AbstractUIComponentTestCase;
+import org.exoplatform.forum.base.AbstractUIComponentTestCase;
 import org.exoplatform.forum.service.Category;
 import org.exoplatform.forum.service.Forum;
 import org.exoplatform.forum.service.Topic;

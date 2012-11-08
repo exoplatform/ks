@@ -18,10 +18,10 @@ package org.exoplatform.ks.rendering;
 
 import junit.framework.TestCase;
 
-import org.exoplatform.commons.testing.AssertUtils;
-import org.exoplatform.commons.testing.Closure;
 import org.exoplatform.ks.rendering.api.Renderer;
 import org.exoplatform.ks.rendering.api.UnsupportedSyntaxException;
+import org.exoplatform.ks.rendering.base.AssertUtils;
+import org.exoplatform.ks.rendering.base.Closure;
 import org.exoplatform.ks.rendering.spi.MarkupRenderDelegate;
 
 /**

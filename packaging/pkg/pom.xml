@@ -562,12 +562,6 @@
       <version>${hibernate-validator.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>${org.testng.version}</version>
-      <classifier>jdk15</classifier>
-    </dependency>
-    <dependency>
       <groupId>org.jboss</groupId>
       <artifactId>jboss-common-core</artifactId>
       <version>${org.jboss.version}</version>

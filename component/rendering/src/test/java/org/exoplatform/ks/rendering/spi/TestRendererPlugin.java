@@ -18,11 +18,12 @@ package org.exoplatform.ks.rendering.spi;
 
 import junit.framework.TestCase;
 
-import org.exoplatform.commons.testing.AssertUtils;
-import org.exoplatform.commons.testing.Closure;
-import org.exoplatform.commons.testing.KernelUtils;
 import org.exoplatform.container.xml.InitParams;
+import org.exoplatform.container.xml.ObjectParameter;
+import org.exoplatform.container.xml.ValueParam;
 import org.exoplatform.ks.rendering.api.Renderer;
+import org.exoplatform.ks.rendering.base.AssertUtils;
+import org.exoplatform.ks.rendering.base.Closure;
 
 /**
  * @author <a href="mailto:patrice.lamarque@exoplatform.com">Patrice Lamarque</a>
@@ -47,7 +48,7 @@ public class TestRendererPlugin extends TestCase {
       }
     });
 
-    KernelUtils.addValueParam(params, "class", "FOO");
+    addValueParam(params, "class", "FOO");
     // class should be an accessible type
     AssertUtils.assertException(new Closure() {
       public void dothis() {
@@ -68,9 +69,22 @@ public class TestRendererPlugin extends TestCase {
 
   private RendererPlugin createSampleRendererPlugin() {
     final InitParams params = new InitParams();
-    KernelUtils.addObjectParam(params, "renderer", new SampleRenderer());
+    addObjectParam(params, "renderer", new SampleRenderer());
     RendererPlugin plugin = new RendererPlugin(params);
     return plugin;
   }
 
+  private void addValueParam(InitParams params, String name, String value) {
+    ValueParam param = new ValueParam();
+    param.setName(name);
+    param.setValue(value);
+    params.addParameter(param);
+  }
+   
+  private void addObjectParam(InitParams params, String name, Object value) {
+    ObjectParameter param = new ObjectParameter();
+    param.setName(name);
+    param.setObject(value);
+    params.addParameter(param);
+  }
 }

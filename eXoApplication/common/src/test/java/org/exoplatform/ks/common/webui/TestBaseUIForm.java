@@ -16,9 +16,9 @@
  */
 package org.exoplatform.ks.common.webui;
 
+import org.exoplatform.ks.common.base.AbstractUIComponentTestCase;
 
 
-import org.exoplatform.commons.testing.webui.AbstractUIComponentTestCase;
 
 /**
  * 

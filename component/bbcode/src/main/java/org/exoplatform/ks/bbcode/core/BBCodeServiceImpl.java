@@ -31,6 +31,7 @@ import org.exoplatform.ks.bbcode.api.BBCodeService;
 import org.exoplatform.ks.bbcode.spi.BBCodeData;
 import org.exoplatform.ks.bbcode.spi.BBCodePlugin;
 import org.exoplatform.ks.common.jcr.KSDataLocation;
+import org.exoplatform.ks.common.jcr.PropertyReader;
 import org.exoplatform.ks.common.jcr.SessionManager;
 import org.exoplatform.management.ManagementAware;
 import org.exoplatform.management.ManagementContext;
@@ -213,13 +214,13 @@ public class BBCodeServiceImpl implements Startable, BBCodeService, ManagementAw
   private BBCode nodeToBBCode(Node bbcNode) throws Exception {
     BBCode bbCode = new BBCode();
     bbCode.setId(bbcNode.getName());
-    bbCode.setTagName(bbcNode.getProperty("exo:tagName").getString());
-    bbCode.setReplacement(bbcNode.getProperty("exo:replacement").getString());
-    bbCode.setExample(bbcNode.getProperty("exo:example").getString());
-    if (bbcNode.hasProperty("exo:description"))
-      bbCode.setDescription(bbcNode.getProperty("exo:description").getString());
-    bbCode.setActive(bbcNode.getProperty("exo:isActive").getBoolean());
-    bbCode.setOption(bbcNode.getProperty("exo:isOption").getBoolean());
+    PropertyReader reader = new PropertyReader(bbcNode);
+    bbCode.setTagName(reader.string("exo:tagName"));
+    bbCode.setReplacement(reader.string("exo:replacement"));
+    bbCode.setExample(reader.string("exo:example", ""));
+    bbCode.setDescription(reader.string("exo:description"));
+    bbCode.setActive(reader.bool("exo:isActive"));
+    bbCode.setOption(reader.bool("exo:isOption"));
     return bbCode;
   }
 

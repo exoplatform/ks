@@ -16,7 +16,7 @@
  */
 package org.exoplatform.forum.webui.popup;
 
-import org.exoplatform.commons.testing.webui.AbstractUIComponentTestCase;
+import org.exoplatform.forum.base.AbstractUIComponentTestCase;
 
 /**
  * @author <a href="mailto:patrice.lamarque@exoplatform.com">Patrice Lamarque</a>
