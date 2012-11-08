@@ -16,12 +16,11 @@
  */
 package org.exoplatform.faq.service;
 
-import org.exoplatform.commons.testing.AssertUtils;
-import org.exoplatform.commons.testing.Closure;
-import org.exoplatform.commons.testing.KernelUtils;
 import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.container.xml.InitParams;
-import org.exoplatform.faq.test.FAQServiceTestCase;
+import org.exoplatform.faq.base.AssertUtils;
+import org.exoplatform.faq.base.FAQServiceBaseTestCase;
+import org.exoplatform.faq.base.KernelUtils;
 
 /**
  * Created by The eXo Platform SAS
@@ -29,15 +28,10 @@ import org.exoplatform.faq.test.FAQServiceTestCase;
  *          exo@exoplatform.com
  * Sep 1, 2009  
  */
-public class ITInitialDataPlugin extends FAQServiceTestCase {
+
+public class InitialDataPluginTestCase extends FAQServiceBaseTestCase {
 
   private static final String DATAZIP_LOCATION = "jar:/conf/faqdata.zip";
-
-  public ITInitialDataPlugin() throws Exception {
-    super();
-    faq = (FAQService) KernelUtils.getService(FAQService.class);
-    conf = (ConfigurationManager) KernelUtils.getService(ConfigurationManager.class);
-  }
 
   FAQService           faq;
 
@@ -45,13 +39,24 @@ public class ITInitialDataPlugin extends FAQServiceTestCase {
 
   InitialDataPlugin    plugin;
 
+  public InitialDataPluginTestCase() throws Exception {
+    super();
+  }
+
   public void setUp() throws Exception {
+    begin();
+    faq = (FAQService) getService(FAQService.class);
+    conf = (ConfigurationManager)getService(ConfigurationManager.class);
     InitParams params = new InitParams();
     KernelUtils.addValueParam(params, "location", DATAZIP_LOCATION);
     KernelUtils.addValueParam(params, "forceXML", "true");
     plugin = new InitialDataPlugin(params);
   }
 
+  public void tearDown() throws Exception {
+    end();
+  }
+  
   public void testImportData() throws Exception {
     InitParams params = new InitParams();
     plugin = new InitialDataPlugin(params);
@@ -79,5 +84,8 @@ public class ITInitialDataPlugin extends FAQServiceTestCase {
     assertFalse(plugin.importData(faq, conf));
 
   }
-
+  
+  public interface Closure {
+    void dothis();
+  }
 }

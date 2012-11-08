@@ -28,7 +28,7 @@ import org.exoplatform.commons.utils.ISO8601;
  * @author <a href="mailto:patrice.lamarque@exoplatform.com">Patrice Lamarque</a>
  * @version $Revision$
  */
-public class TestFAQEventQuery extends TestCase {
+public class FAQEventQueryTestCase extends TestCase {
 
   protected void setUp() throws Exception {
     super.setUp();
