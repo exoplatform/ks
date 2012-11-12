@@ -49,6 +49,8 @@ import org.exoplatform.forum.service.Tag;
 import org.exoplatform.forum.service.Topic;
 import org.exoplatform.forum.service.UserProfile;
 import org.exoplatform.forum.service.Utils;
+import org.exoplatform.forum.service.impl.model.PostFilter;
+import org.exoplatform.forum.service.impl.model.PostListAccess;
 import org.exoplatform.forum.webui.popup.UIMovePostForm;
 import org.exoplatform.forum.webui.popup.UIMoveTopicForm;
 import org.exoplatform.forum.webui.popup.UIPageListPostHidden;
@@ -207,7 +209,9 @@ public class UITopicDetail extends UIForumKeepStickPageIterator {
   public static final String         SIGNATURE               = "SignatureTypeID";
 
   RenderHelper                       renderHelper            = new RenderHelper();
-
+  
+  private PostListAccess             postListAccess;
+  
   public UITopicDetail() throws Exception {
     isDoubleClickQuickReply = false;
 
@@ -595,14 +599,12 @@ public class UITopicDetail extends UIForumKeepStickPageIterator {
         if (!isMod && !(this.topic.getOwner().equals(userName)))
           isApprove = "true";
       }
-      pageList = getForumService().getPosts(this.categoryId, this.forumId, topicId, isApprove, isHidden, isWaiting, userName);
-      int maxPost = (int)this.userProfile.getMaxPostInPage();
-      if (maxPost <= 0)
-        maxPost = 10;
-      pageList.setPageSize(maxPost);
-      maxPage = pageList.getAvailablePage();
-      if (IdPostView.equals("lastpost") || this.pageSelect > maxPage) {
-        this.pageSelect = maxPage;
+      this.postListAccess = (PostListAccess) getForumService().getPosts(new PostFilter(this.categoryId, this.forumId, topicId, isApprove, isHidden, isWaiting, userName));
+
+      int pageSize = (int)this.userProfile.getMaxPostInPage();
+      postListAccess.initialize(pageSize, pageSelect);
+      if (IdPostView.equals("lastpost")) {
+        this.pageSelect = postListAccess.getTotalPages();
       }
     } catch (Exception e) {
       log.warn("Failed to init topic page: " + e.getMessage(), e);
@@ -613,21 +615,37 @@ public class UITopicDetail extends UIForumKeepStickPageIterator {
     return this.isModeratePost;
   }
 
-  @SuppressWarnings("unchecked")
+  @Override
+  public List<Integer> getInfoPage() throws Exception {
+    List<Integer> temp = new ArrayList<Integer>();
+    try {
+      temp.add(postListAccess.getPageSize());
+      temp.add(postListAccess.getCurrentPage());
+      temp.add(postListAccess.getSize());
+      temp.add(postListAccess.getTotalPages());
+    } catch (Exception e) {
+      temp.add(1);
+      temp.add(1);
+      temp.add(1);
+      temp.add(1);
+    }
+    return temp;
+  }
+  
   public List<Post> getPostPageList() throws Exception {
-    List<Post> posts = new ArrayList<Post>();
-    if (this.pageList == null)
-      return posts;
+    Post[] posts = null;
+    
+    int pageSize = (int)this.userProfile.getMaxPostInPage();
     try {
       try {
         if (!ForumUtils.isEmpty(lastPostId)) {
-          int maxPost = (int)this.userProfile.getMaxPostInPage();
+          
           Long index = getForumService().getLastReadIndex((categoryId + ForumUtils.SLASH + forumId + ForumUtils.SLASH + topicId + ForumUtils.SLASH + lastPostId), isApprove, isHidden, userName);
-          if (index.intValue() <= maxPost)
+          if (index.intValue() <= pageSize)
             pageSelect = 1;
           else {
-            pageSelect = (int) (index / maxPost);
-            if (maxPost * pageSelect < index)
+            pageSelect = (int) (index / pageSize);
+            if (pageSize * pageSelect < index)
               pageSelect = pageSelect + 1;
           }
           lastPostId = ForumUtils.EMPTY_STR;
@@ -635,20 +653,27 @@ public class UITopicDetail extends UIForumKeepStickPageIterator {
       } catch (Exception e) {
         log.warn("Failed to find last read index for topic: " + e.getMessage(), e);
       }
-      posts = pageList.getPage(pageSelect);
-      pageSelect = pageList.getCurrentPage();
+      postListAccess.setCurrentPage(pageSelect);
+      this.pageSelect = postListAccess.getCurrentPage();
+
+      maxPage = postListAccess.getTotalPages();
+      
+      posts = postListAccess.load(pageSelect);
+      this.pageSelect = postListAccess.getCurrentPage();
+      
       pagePostRemember.put(topicId, pageSelect);
-      if (posts == null)
-        posts = new ArrayList<Post>();
+
       List<String> userNames = new ArrayList<String>();
       mapUserProfile.clear();
       for (Post post : posts) {
         if (!userNames.contains(post.getOwner()))
           userNames.add(post.getOwner());
-        if (getUICheckBoxInput(post.getId()) != null) {
-          getUICheckBoxInput(post.getId()).setChecked(false);
-        } else {
-          addUIFormInput(new UICheckBoxInput(post.getId(), post.getId(), false));
+        synchronized(this) {
+          if (getUICheckBoxInput(post.getId()) != null) {
+            getUICheckBoxInput(post.getId()).setChecked(false);
+          } else {
+            addUIFormInput(new UICheckBoxInput(post.getId(), post.getId(), false));
+          }
         }
         this.IdLastPost = post.getId();
       }
@@ -674,7 +699,7 @@ public class UITopicDetail extends UIForumKeepStickPageIterator {
     } catch (Exception e) {
       log.warn("Failed to load posts page: " + e.getMessage(), e);
     }
-    return posts;
+    return Arrays.asList(posts);
   }
 
   public List<Tag> getTagsByTopic() throws Exception {
@@ -924,8 +949,8 @@ public class UITopicDetail extends UIForumKeepStickPageIterator {
           } else {
             if (page == 0) {
               page = 1;
-            } else if (page > topicDetail.pageList.getAvailablePage()) {
-              page = topicDetail.pageList.getAvailablePage();
+            } else if (page > topicDetail.postListAccess.getTotalPages()) {
+              page = topicDetail.postListAccess.getTotalPages();
             }
             topicDetail.pageSelect = page;
             refresh();

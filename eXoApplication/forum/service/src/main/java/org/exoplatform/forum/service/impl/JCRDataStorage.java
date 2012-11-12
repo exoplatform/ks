@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -104,6 +105,7 @@ import org.exoplatform.forum.service.conf.ForumInitialDataPlugin;
 import org.exoplatform.forum.service.conf.PostData;
 import org.exoplatform.forum.service.conf.StatisticEventListener;
 import org.exoplatform.forum.service.conf.TopicData;
+import org.exoplatform.forum.service.impl.model.PostFilter;
 import org.exoplatform.forum.service.user.AutoPruneJob;
 import org.exoplatform.ks.common.CommonUtils;
 import org.exoplatform.ks.common.TransformHTML;
@@ -173,6 +175,10 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
 
   private List<InitializeForumPlugin>  defaultPlugins       = new ArrayList<InitializeForumPlugin>();
 
+  private Map<String, Integer>         updatingView         = new ConcurrentHashMap<String, Integer>();
+  
+  private Map<String, List<String>>    updatingRead         = new ConcurrentHashMap<String, List<String>>();
+  
   private List<ForumInitialDataPlugin> dataPlugins          = new ArrayList<ForumInitialDataPlugin>();
 
   private Map<String, EventListener>   listeners            = new HashMap<String, EventListener>();
@@ -1896,24 +1902,45 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
     return topics;
   }
 
-  public void setViewCountTopic(String path, String userRead){
+  public void setViewCountTopic(String path, String userRead) {
+
+    if (userRead != null && userRead.length() > 0 && !userRead.equals(UserProfile.USER_GUEST)) {
+      if (updatingView.containsKey(path)) {
+        int value = updatingView.get((path));
+        updatingView.put(path, value + 1);
+      } else {
+        updatingView.put(path, 1);
+      }
+    }
+
+  }
+
+  public void writeViews() {
+    //
+    Map<String, Integer> map = updatingView;
+    updatingView = new ConcurrentHashMap<String, Integer>();
+
+    //
     SessionProvider sProvider = CommonUtils.createSystemProvider();
-    try {
-      Node topicNode = getCategoryHome(sProvider).getNode(path);
-      if (userRead != null && userRead.length() > 0 && !userRead.equals(UserProfile.USER_GUEST)) {
-        long newViewCount = new PropertyReader(topicNode).l(EXO_VIEW_COUNT) + 1;
+
+    for (Map.Entry<String, Integer> entry : map.entrySet()) {
+
+      try {
+        Node topicNode = getCategoryHome(sProvider).getNode(entry.getKey());
+        long newViewCount = new PropertyReader(topicNode).l(EXO_VIEW_COUNT) + entry.getValue();
         topicNode.setProperty(EXO_VIEW_COUNT, newViewCount);
         if (topicNode.isNew()) {
           topicNode.getSession().save();
         } else {
           topicNode.save();
         }
-      }
-    } catch (Exception e) {
-      if (log.isDebugEnabled()) {
-        log.debug(String.format("Failed to set view number for topic with path %s", path), e);
+      } catch (Exception e) {
+        if (log.isDebugEnabled()) {
+          log.debug(String.format("Failed to set view number for topic with path %s", entry.getKey()), e);
+        }
       }
     }
+
   }
 
   public Topic getTopic(String categoryId, String forumId, String topicId, String userRead) throws Exception {
@@ -2826,6 +2853,61 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
     } catch (PathNotFoundException e) {
       return null;
     }
+  }
+  
+  private String makePostsQuery(PostFilter filter) throws Exception {
+    String topicPath = filter.getTopicPath();
+    if(Utils.isEmpty(topicPath)) {
+    topicPath = new StringBuffer("/"+dataLocator.getForumCategoriesLocation())
+    .append("/").append(filter.getCategoryId()).append("/")
+    .append(filter.getForumId()).append("/").append(filter.getTopicId()).toString();
+    }
+
+    StringBuilder strBuilder = new StringBuilder(JCR_ROOT)
+    .append(topicPath).append("//element(*,").append(EXO_POST).append(")")
+    .append(Utils.getPathQuery(filter.getIsApproved(), filter.getIsHidden(), filter.getIsWaiting(), filter.getUserLogin()))
+    .append(" order by @exo:createdDate ascending");
+   
+    return strBuilder.toString();
+  }
+  
+  @Override
+  public List<Post> getPosts(PostFilter filter, int offset, int limit) throws Exception {
+    SessionProvider sProvider = CommonUtils.createSystemProvider();
+    try {
+      QueryManager qm = getForumHomeNode(sProvider).getSession().getWorkspace().getQueryManager();
+      QueryImpl query = (QueryImpl) qm.createQuery(makePostsQuery(filter), Query.XPATH);
+      query.setOffset(offset);
+      query.setLimit(limit);
+      QueryResult result = query.execute();
+      NodeIterator iter = result.getNodes();
+      Node currentNode = null;
+      List<Post> posts = new ArrayList<Post>((int)iter.getSize());
+      while (iter.hasNext()) {
+        currentNode = iter.nextNode();
+        posts.add(getPost(currentNode));
+      }
+      return posts;
+     } catch(Exception e) {
+      logDebug("Failed to get posts by filter of topic " + filter.getTopicId(), e);
+      return new ArrayList<Post>();
+    }
+    
+  }
+
+  public int getPostsCount(PostFilter filter) throws Exception {
+    SessionProvider sProvider = CommonUtils.createSystemProvider();
+    try {
+      //
+      QueryManager qm = getForumHomeNode(sProvider).getSession().getWorkspace().getQueryManager();
+      Query query = qm.createQuery(makePostsQuery(filter).toString(), Query.XPATH);
+      QueryResult result = query.execute();
+      
+      return (int)result.getNodes().getSize();
+    } catch(Exception e) {
+      return 0;
+    }
+    
   }
 
   public long getAvailablePost(String categoryId, String forumId, String topicId, String isApproved, String isHidden, String userLogin) throws Exception {
@@ -6632,36 +6714,66 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
   }
 
   public void updateTopicAccess(String userId, String topicId){
-    SessionProvider sysSession = CommonUtils.createSystemProvider();
-    try {
-      if (!getUserProfileHome(sysSession).hasNode(userId)) {
-        return;
-      }
-      Node profile = getUserProfileHome(sysSession).getNode(userId);
-      List<String> values = new ArrayList<String>();
-      if (profile.hasProperty(EXO_READ_TOPIC)) {
-        values = Utils.valuesToList(profile.getProperty(EXO_READ_TOPIC).getValues());
-      }
-      int i = 0;
-      boolean isUpdated = false;
-      for (String vl : values) {
-        if (vl.indexOf(topicId) == 0) {
-          values.set(i, topicId + ":" + getGreenwichMeanTime().getTimeInMillis());
-          isUpdated = true;
-          break;
-        }
-        i++;
-      }
-      if (!isUpdated) {
-        values.add(topicId + ":" + getGreenwichMeanTime().getTimeInMillis());
-      }
-      if (values.size() == 2 && Utils.isEmpty(values.get(0)))
-        values.remove(0);
-      profile.setProperty(EXO_READ_TOPIC, values.toArray(new String[values.size()]));
-      profile.save();
-    } catch (Exception e) {
-      logDebug(String.format("Failed to update user %s acess for topic %s", userId, topicId), e);
+
+    if (updatingRead.containsKey(userId)) {
+      updatingRead.get(userId).add(topicId);
+    } else {
+      List<String> value = new ArrayList<String>();
+      value.add(topicId);
+      updatingRead.put(userId, value);
     }
+
+  }
+
+  public void writeReads() {
+
+    //
+    Map<String, List<String>> map = updatingRead;
+    updatingRead = new ConcurrentHashMap<String, List<String>>();
+
+    //
+    SessionProvider sysSession = CommonUtils.createSystemProvider();
+
+    for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+
+      try {
+        if (!getUserProfileHome(sysSession).hasNode(entry.getKey())) {
+          return;
+        }
+
+        //
+        Node profile = getUserProfileHome(sysSession).getNode(entry.getKey());
+        List<String> values = new PropertyReader(profile).list(EXO_READ_TOPIC, Collections.EMPTY_LIST);
+
+        //
+        for (String topicId : entry.getValue()) {
+          
+          //
+          int i = 0;
+          boolean isUpdated = false;
+          for (String vl : values) {
+            if (vl.indexOf(topicId) == 0) {
+              values.set(i, topicId + ":" + getGreenwichMeanTime().getTimeInMillis());
+              isUpdated = true;
+              break;
+            }
+            i++;
+          }
+
+          //
+          if (!isUpdated) {
+            values.add(topicId + ":" + getGreenwichMeanTime().getTimeInMillis());
+          }
+          
+          profile.setProperty(EXO_READ_TOPIC, values.toArray(new String[values.size()]));
+          profile.save();
+        }
+
+      } catch (Exception e) {
+        logDebug(String.format("Failed to update user %s acess for topic %s", entry.getKey(), "bar"), e);
+      }
+    }
+
   }
 
   public void updateForumAccess(String userId, String forumId){

@@ -39,6 +39,8 @@ import org.exoplatform.forum.service.TopicType;
 import org.exoplatform.forum.service.UserProfile;
 import org.exoplatform.forum.service.Utils;
 import org.exoplatform.forum.service.Watch;
+import org.exoplatform.forum.service.impl.model.PostFilter;
+import org.exoplatform.forum.service.impl.model.PostListAccess;
 import org.exoplatform.ks.common.UserHelper;
 import org.exoplatform.ks.common.jcr.KSDataLocation;
 import org.exoplatform.ks.common.jcr.PropertyReader;
@@ -563,6 +565,38 @@ public class TestForumService extends ForumServiceTestCase {
     assertEquals(24, forumService_.getTopic(categoryId, forumId, topicId, "").getPostCount());
 
     // getViewPost
+  }
+  
+  public void testPostListAccess() throws Exception {
+    // set Data
+    setData();
+
+    List<Post> posts = new ArrayList<Post>();
+    for (int i = 0; i < 25; ++i) {
+      Post post = createdPost();
+      posts.add(post);
+      forumService_.savePost(categoryId, forumId, topicId, post, true, new MessageBuilder());
+    }
+    // getPost
+    assertNotNull(forumService_.getPost(categoryId, forumId, topicId, posts.get(0).getId()));
+    assertEquals(25, forumService_.getTopic(categoryId, forumId, topicId, "").getPostCount());
+
+    // get ListPost
+    PostListAccess listAccess = (PostListAccess) forumService_.getPosts(new PostFilter(categoryId, forumId, topicId, "", "", "", "root"));
+    listAccess.initialize(10, 1);
+    assertEquals(listAccess.getSize(), posts.size() + 1);// size = 26 (first post and new postList)
+    
+    //Page 1
+    List<Post> got = Arrays.asList(listAccess.load(1));
+    assertEquals(got.size(), 10);
+    
+    //Page 2
+    got = Arrays.asList(listAccess.load(2));
+    assertEquals(got.size(), 10);
+    
+    //Page 3
+    got = Arrays.asList(listAccess.load(3));
+    assertEquals(got.size(), 6);
   }
 
   // BookMark
