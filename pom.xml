@@ -459,7 +459,6 @@
     <module>extension</module>
     <module>demo</module>
     <module>docs</module>
-    <module>testsuite</module>
     <module>server/tomcat/patch</module>
     <module>server/jboss/patch-ear</module>
     <module>packaging</module>
