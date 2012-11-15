@@ -58,6 +58,11 @@
 	padding:0 9px;
 	white-space:nowrap;
 	border-bottom: 1px solid #dbdbdb;
+	background-position-x: 5px;
+	background-position-y: 6px;
+}
+.UIWikiPortlet .SearchPopup .MenuItem:hover {
+	background-color: #ffffff;
 }
 
 .UIWikiPortlet .SearchPopup .MenuResult {
@@ -80,17 +85,18 @@
 
 .UIWikiPortlet .SearchPopup .MenuItem .MenuText {	
 }
+UIWikiPortlet .SearchPopup .page {
+	background: url("background/PageIcon.png") no-repeat 6px 6px;
 
-.UIWikiPortlet .SearchPopup  .TextItem {	
-  background: url("background/UIWikiSearchBG.png") no-repeat 12px -118px;	
+.UIWikiPortlet .TextItem {
+	background: url("background/PageIcon.png") no-repeat;
 }
 
-.UIWikiPortlet .SearchPopup  .TextItem:hover {	
-  background: #ffffff url("background/UIWikiSearchBG.png") no-repeat 12px -118px;	
+.UIWikiPortlet .SearchPopup .SearchIcon {
+	background: url('background/SearchIcon.png') no-repeat 0px 0px;
 }
-
 .UIWikiPortlet .SearchPopup .MenuItem a:hover {	
-  text-decoration:none;
+  	text-decoration:none;
 }
 
 .UIWikiPortlet .SearchPopup .ItemOver {

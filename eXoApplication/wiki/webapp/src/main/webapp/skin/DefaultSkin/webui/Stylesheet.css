@@ -764,200 +764,200 @@ table.UIFormGrid div.Id {
 	margin: 20px 0 10px;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .TxtTitle {
+.UIWikiPortlet .TxtTitle {
 	line-height: 20px;
 	padding: 2px 20px;
 	text-decoration: none;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .TxtTitFeed {
+.UIWikiPortlet .TxtTitFeed {
 	color: #ff9403;
 	font-weight: bold;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .page {
+.UIWikiPortlet .page {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/background/UIWikiSearchBG.png") no-repeat scroll 0px -124px transparent;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .attach {
+.UIWikiPortlet .attach {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/AttachFileIcon.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .doc {
+.UIWikiPortlet .doc {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/doc.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .docx {
+.UIWikiPortlet .docx {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/doc.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .mdb {
+.UIWikiPortlet .mdb {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/AccessFileIcon.png") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .xml {
+.UIWikiPortlet .xml {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/xml.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .xls {
+.UIWikiPortlet .xls {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/ExcelFileIcon.png") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .xlsx {
+.UIWikiPortlet .xlsx {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/ExcelFileIcon.png") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .rss {
+.UIWikiPortlet .rss {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/FeedFileIcon.png") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .avi {
+.UIWikiPortlet .avi {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/FilmFileIcon.png") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .flv {
+.UIWikiPortlet .flv {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/FlashFileIcon.png") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .html {
+.UIWikiPortlet .html {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/html.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .jpg {
+.UIWikiPortlet .jpg {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/ImageFileIcon.png") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .mp3 {
+.UIWikiPortlet .mp3 {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/MusicFileIcon.png") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .pdf {
+.UIWikiPortlet .pdf {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/pdf.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .psd {
+.UIWikiPortlet .psd {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/PhotoshopFileIcon.png") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .ppt {
+.UIWikiPortlet .ppt {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/ppt.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .pptx {
+.UIWikiPortlet .pptx {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/ppt.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .txt {
+.UIWikiPortlet .txt {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/TxtFileIcon.png") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .zip {
+.UIWikiPortlet .zip {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/ZipFileIcon.png") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .bmp {
+.UIWikiPortlet .bmp {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/bmp.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .css {
+.UIWikiPortlet .css {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/css.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .exe {
+.UIWikiPortlet .exe {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/exe.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .flash {
+.UIWikiPortlet .flash {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/flash.png") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .gif {
+.UIWikiPortlet .gif {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/gif.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .jpg {
+.UIWikiPortlet .jpg {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/jpg.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .js {
+.UIWikiPortlet .js {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/js.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .mp3 {
+.UIWikiPortlet .mp3 {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/mp3.png") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .mp4 {
+.UIWikiPortlet .mp4 {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/mp4.png") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .mpeg {
+.UIWikiPortlet .mpeg {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/mpeg.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .mpp {
+.UIWikiPortlet .mpp {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/mpp.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .odb {
+.UIWikiPortlet .odb {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/odb.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .odf {
+.UIWikiPortlet .odf {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/odf.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .odg {
+.UIWikiPortlet .odg {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/odg.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .odp {
+.UIWikiPortlet .odp {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/odp.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .ods {
+.UIWikiPortlet .ods {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/ods.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .odt {
+.UIWikiPortlet .odt {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/odt.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .png {
+.UIWikiPortlet .png {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/png.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .rar {
+.UIWikiPortlet .rar {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/rar.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .rtf {
+.UIWikiPortlet .rtf {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/rtf.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .tiff {
+.UIWikiPortlet .tiff {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/tiff.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .vsd {
+.UIWikiPortlet .vsd {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/vsd.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .wmv {
+.UIWikiPortlet .wmv {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/wmv.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .asc {
+.UIWikiPortlet .asc {
 	background: url("/wiki/skin/DefaultSkin/webui/UIWikiSearchBox/icons/16x16/txt.gif") no-repeat left top;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .TxtDetail {
+.UIWikiPortlet .TxtDetail {
 	color: #363636;
 	padding: 8px 0;
 	text-align: justify;
 }
 
-.UIWikiAdvanceSearchResult .BlockResultFeed .TxtMark {
+.UIWikiPortlet .TxtMark {
 	color: #b7b7b7;
 	font-size: 11px;
 }
@@ -1032,15 +1032,15 @@ table.UIFormGrid div.Id {
 }
 
 .UIWikiBottomArea {
+	position: absolute;
+	bottom:0px;
+	left: 15px;
 	padding: 0px 0px 5px;
 	width: 97.5%;
-    margin-left: 15px;
 }
 
 *+html .UIWikiBottomArea {
 	position: static;
-	padding: 5px 15px;
-	width: auto;
 }
 
 .UIWikiPageInfoArea {
@@ -1745,51 +1745,4 @@ table.UIFormGrid div.Id {
 .UIWikiPortlet .TitleInfo:HOVER {
   background-color: whitesmoke;
   cursor: pointer;
-}
-
-@media print
-{
-  body {
-    position:relative;
-    overflow:visible  !important;
-  }   
-  body * {
-	visibility: hidden;
-  }
-  #UIWikiPageContentArea, #UIWikiPageContentArea * {
-    visibility:visible;
-    overflow: visible !important;
-  }
-  #UIWikiPageContentArea {
-	visibility:visible;
-    position:absolute;
-    left:0;
-    top:0;
-    width:100%;
-  }
-  #UIWikiPageControlArea_PageToolBar, #UIWikiPageControlArea_PageToolBar * {
-    visibility:hidden;
-  }
-  .UIWikiPortlet .UIWikiMiddleArea .UIWikiPageContainer {
-    position: static !important;
-  }
-  .UIWikiPortlet .WikiLayout {
-    position: static !important;
-  }
-  .UILeftContainerArea {
-	  border: solid 1px magenta;
-	  height: auto !important;
-	  min-height:0px !important;
-  }
-  .WikiLayout {
-	  height: auto !important;
-  }
-  .Spliter {
-	  height: auto !important;
-  }
-  .UIRightContainerArea {
-	  overflow: visible !important;
-	  width: auto !important;
-	  height: auto !important;
-  }
 }
