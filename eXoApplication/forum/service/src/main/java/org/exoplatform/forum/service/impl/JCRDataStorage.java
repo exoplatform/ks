@@ -5137,7 +5137,7 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
     try {
       if (path.indexOf(KSDataLocation.Locations.FORUM_CATEGORIES_HOME) < 0 && (path.indexOf(Utils.CATEGORY) >= 0)) {
         path = getCategoryHome(sProvider).getPath() + "/" + path;
-      } else {
+      } else if(path.indexOf(Utils.TAG) == 0){
         path = getTagHome(sProvider).getPath() + "/" + path;
       }
       Node myNode = (Node) getForumHomeNode(sProvider).getSession().getItem(path);
@@ -6691,7 +6691,7 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
       profile.save();
 
     } catch (Exception e) {
-      log.error(String.format("Failed to update user %s acess for forum %s", userId, forumId), e);
+      log.warn(String.format("Failed to update user %s acess for forum %s", userId, forumId));
     }
   }
 

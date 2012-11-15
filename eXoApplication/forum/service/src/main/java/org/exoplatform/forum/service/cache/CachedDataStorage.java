@@ -147,9 +147,16 @@ public class CachedDataStorage implements DataStorage, Startable {
 
   private void clearTopicCache(String categoryId, String forumId, String topicId) throws Exception {
     Topic topic = getTopic(categoryId, forumId, topicId, null);
+    clearTopicCache(topic);
+  }
+
+  private void clearTopicCache(Topic topic) throws Exception {
     if (topic != null) {
       clearTopicCache(topic.getPath());
+      objectNameData.remove(new ObjectNameKey(topic.getPath()));
+      objectNameData.remove(new ObjectNameKey(topic.getId(), Utils.TOPIC));
     }
+    
   }
   
   private void clearObjectCache(Forum forum, boolean isPutNewKey) throws Exception {
@@ -649,6 +656,9 @@ public class CachedDataStorage implements DataStorage, Startable {
     if (topics != null && topics.size() > 0) {
       forumData.select(new ForumPathSelector(new String[] {Utils.getForumPath(topics.get(0).getPath()), destForumPath}, forumData));
       clearForumListCache();
+      for (Topic topic : topics) {
+        clearTopicCache(topic);
+      }
     }
   }
 

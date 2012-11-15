@@ -1,5 +1,6 @@
 package org.exoplatform.forum.service.cache.model.key;
 
+import org.exoplatform.forum.service.Utils;
 import org.exoplatform.forum.service.cache.model.ScopeCacheKey;
 
 /**
@@ -12,6 +13,9 @@ public class ObjectNameKey extends ScopeCacheKey {
   private final String type;
 
   public ObjectNameKey(String path) {
+    if (!Utils.isEmpty(path) && path.indexOf(Utils.CATEGORY) > 0) {
+      path = path.substring(path.indexOf(Utils.CATEGORY));
+    }
     this.path = path;
     this.id = null;
     this.type = null;

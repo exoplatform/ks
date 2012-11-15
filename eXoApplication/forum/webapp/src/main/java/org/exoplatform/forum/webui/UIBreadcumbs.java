@@ -244,7 +244,7 @@ public class UIBreadcumbs extends UIContainer {
   }
 
   protected List<String> getBreadcumbs() throws Exception {
-    return breadcumbs_;
+    return new ArrayList<String>(breadcumbs_);
   }
 
   protected String getType(String id) {
@@ -261,45 +261,45 @@ public class UIBreadcumbs extends UIContainer {
         Topic topic = (Topic) this.forumService.getObjectNameById(id, Utils.TOPIC);
         if (topic != null) {
           if (topic.getIsClosed() || !topic.getIsActiveByForum() || !topic.getIsActive() || topic.getIsWaiting()
-              || (Utils.isEmpty(topic.getCanView()))) {
+              || !(Utils.isEmpty(topic.getCanView()))) {
             return true;
           } else {
-            return isForumPrivate(topic.getPath());
+            return isForumPrivate(topic.getPath(), true);
           }
         }
       } catch (Exception e) {
         log.warn("\nThe " + id + " must exist");
       }
     } else if (id.indexOf(Utils.CATEGORY) == 0) {
-      return isCategoryPrivate(id);
+      return isCategoryPrivate(id, false);
     } else if (id.indexOf(Utils.FORUM) == 0) {
-      return isForumPrivate(id);
+      return isForumPrivate(id, false);
     }
     return false;
   }
 
-  private boolean isCategoryPrivate(String id) throws Exception {
+  private boolean isCategoryPrivate(String id, boolean isForTopic) throws Exception {
     Category cate = (Category) this.forumService.getCategory(id);
     if(cate != null) {
-      return !Utils.isEmpty(cate.getUserPrivate());
+      return !Utils.isEmpty(cate.getUserPrivate()) || (isForTopic && !Utils.isEmpty(cate.getViewer()));
     } else {
       return true;
     }
   }
   
-  private boolean isForumPrivate(String id) throws Exception {
+  private boolean isForumPrivate(String id, boolean isForTopic) throws Exception {
     Forum forum = null;
-    if (id.indexOf("/") > 0) {
+    if (id.indexOf("/") >= 0) {
       String[] arr = id.split("/");
       forum = forumService.getForum(arr[arr.length - 3], arr[arr.length - 2]);
     } else {
       forum = (Forum) this.forumService.getObjectNameById(id, Utils.FORUM);
     }
     if (forum != null) {
-      if (forum.getIsClosed()) {
+      if (forum.getIsClosed() || (isForTopic && !Utils.isEmpty(forum.getViewer()))) {
         return true;
       } else {
-        return isCategoryPrivate(forum.getCategoryId());
+        return isCategoryPrivate(forum.getCategoryId(), isForTopic);
       }
     }
     return true;

@@ -505,6 +505,40 @@ public class TestForumService extends ForumServiceTestCase {
     assertEquals(1, forumService_.getForum(cat.getId(), forum.getId()).getTopicCount());
   }
 
+  public void testMoveTopicClearCache() throws Exception {
+    // set Data
+    setData();
+
+    String catId = new Category().getId();
+    forumService_.saveCategory(createCategory(catId), true);
+    Forum destForum = createdForum();
+    String forId =destForum.getId();
+    forumService_.saveForum(catId, destForum, true);
+    destForum = forumService_.getForum(catId, forId);
+    
+    List<Topic> topics = new ArrayList<Topic>();
+    Topic topic = forumService_.getTopic(categoryId, forumId, topicId, USER_ROOT);
+    topics.add(topic);
+    String oldPath = topic.getPath();
+
+    //
+    forumService_.moveTopic(topics, destForum.getPath(), "", "");
+    
+    String expected = destForum.getPath()+"/" + topicId;
+    
+    topic = (Topic) forumService_.getObjectNameById(topicId, Utils.TOPIC);
+    assertEquals(expected, topic.getPath());
+    
+    topic = (Topic) forumService_.getObjectNameByPath(oldPath);
+    assertNull(topic);
+    
+    topic = (Topic) forumService_.getObjectNameByPath(expected);
+    assertNotNull(topic);
+    assertEquals(expected, topic.getPath());
+
+    killData();
+  }
+
   public void testTopicType() throws Exception {
     // set Data
     setData();
