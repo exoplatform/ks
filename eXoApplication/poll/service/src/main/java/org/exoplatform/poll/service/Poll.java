@@ -76,6 +76,10 @@ public class Poll {
     vote = new String[] {};
     userVote = new String[] {};
   }
+  
+  public Poll(String id){
+    this.id=id;
+  }
 
   public String getId() {
     return id;

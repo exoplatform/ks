@@ -39,6 +39,7 @@ import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.services.rest.impl.RuntimeDelegateImpl;
 import org.exoplatform.services.rest.resource.ResourceContainer;
+import org.exoplatform.services.security.ConversationState;
 import org.exoplatform.services.security.IdentityConstants;
 
 /**
@@ -73,6 +74,10 @@ public class PollWebservice implements ResourceContainer {
   }
   
   private String getUserId(SecurityContext sc, UriInfo uriInfo) {
+    ConversationState state = ConversationState.getCurrent();
+    if (state != null) {
+      return state.getIdentity().getUserId();
+    }
     if (sc != null && sc.getUserPrincipal() != null) {
       return sc.getUserPrincipal().getName();
     } else if (uriInfo != null) {
