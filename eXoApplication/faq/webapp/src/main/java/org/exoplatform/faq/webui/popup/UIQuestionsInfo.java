@@ -369,7 +369,7 @@ public class UIQuestionsInfo extends BaseUIFAQForm implements UIPopupComponent {
         UIDeleteQuestion deleteQuestion = popupAction.activate(UIDeleteQuestion.class, 500);
         deleteQuestion.setQuestionId(question);
         deleteQuestion.setIsManagement(true);
-        deleteQuestion.setId("Confirm Delete");
+        //deleteQuestion.setId("Confirm Delete");
         UIQuestionManagerForm questionManagerForm = questionsInfo.getParent();
         if (questionManagerForm.isEditQuestion) {
           UIQuestionForm questionForm = questionManagerForm.getChild(UIQuestionForm.class);
