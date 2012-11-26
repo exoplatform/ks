@@ -154,6 +154,3 @@ h2. Service
 | public InputStream createForumRss(String objectId, String link) |  |  |  |
 | public InputStream createUserRss(String userId, String link) |  |  |  |
 | public void addListenerPlugin(ForumEventListener listener) |  |  |  |
-
-
-

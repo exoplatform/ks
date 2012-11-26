@@ -94,6 +94,18 @@ public class PollWebservice implements ResourceContainer {
     return null;
   }
 
+  /**
+   * Return information of a poll via the poll's Id.
+   * 
+   * @param pollId The poll Id.
+   * @param sc SecurityContext - used to get userId of current user.
+   * @param uriInfo UriInfo - used to get userId of current user.
+   * @return Response in JSON format.
+   * @throws Exception The exception
+   * 
+   * @anchor KSref.DevelopersReferences.PublicRestAPIs.PollWebservice.viewPoll
+   */
+
   @GET
   @Path("/viewpoll/{resourceid}")
   @Produces(MediaType.APPLICATION_JSON)
@@ -135,6 +147,19 @@ public class PollWebservice implements ResourceContainer {
     pollSummary.setIsAdmin("true");
     return Response.ok(pollSummary, MediaType.APPLICATION_JSON).cacheControl(cc).build();
   }
+
+  /**
+   * Allow saving the vote information of a user for a poll.
+   * 
+   * @param pollId The poll Id.
+   * @param indexVote Index of the option that is selected by a user.
+   * @param sc SecurityContext - used to get userId of current user.
+   * @param uriInfo UriInfo - used to get userId of current user.
+   * @return Response in JSON format.
+   * @throws Exception The exception
+   * 
+   * @anchor KSref.DevelopersReferences.PublicRestAPIs.PollWebservice.votePoll
+   */
 
   @GET
   @Path("/votepoll/{pollId}/{indexVote}")

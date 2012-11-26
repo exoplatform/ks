@@ -24,10 +24,34 @@
       <properties>
         <wikbook.source>${project.basedir}/src/main/resources/wikbook/en/en-US</wikbook.source>
         <docbook.source>${project.build.directory}/docbook-src</docbook.source>
+        <wikbook.jaxrs.source>${project.basedir}/target/wikbook-src</wikbook.jaxrs.source>
       </properties>
 
 
       <dependencies>
+				<dependency>
+					<groupId>org.wikbook</groupId>
+					<artifactId>wikbook.docbkxstyle</artifactId>
+					<version>${version.wikbook.plugin}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.exoplatform.ks</groupId>
+					<artifactId>exo.ks.eXoApplication.poll.service</artifactId>
+					<version>${project.version}</version>
+					<classifier>doc-jaxrs</classifier>
+				</dependency>
+				<dependency>
+					<groupId>org.exoplatform.ks</groupId>
+					<artifactId>exo.ks.eXoApplication.faq.service</artifactId>
+					<version>${project.version}</version>
+					<classifier>doc-jaxrs</classifier>
+				</dependency>
+				<dependency>
+					<groupId>org.exoplatform.ks</groupId>
+					<artifactId>exo.ks.eXoApplication.forum.service</artifactId>
+					<version>${project.version}</version>
+					<classifier>doc-jaxrs</classifier>
+				</dependency>
         <dependency>
           <groupId>org.exoplatform.doc</groupId>
           <artifactId>doc-style</artifactId>
@@ -110,6 +134,20 @@
             <artifactId>maven-dependency-plugin</artifactId>
             <version>2.1</version>
             <executions>
+							<execution>
+								<id>unpack-jaxrs</id>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>unpack-dependencies</goal>
+								</goals>
+								<configuration>
+									<includeGroupIds>org.exoplatform.ks</includeGroupIds>
+									<includeArtifactIds>exo.ks.eXoApplication.poll.service,exo.ks.eXoApplication.faq.service,exo.ks.eXoApplication.forum.service</includeArtifactIds>
+									<includeClassifiers>doc-jaxrs</includeClassifiers>
+									<excludes>META-INF/**</excludes>
+									<outputDirectory>${wikbook.jaxrs.source}/DeveloperReference/jaxrs</outputDirectory>
+								</configuration>
+							</execution>
               <execution>
                 <id>a-unpack</id>
                 <phase>generate-sources</phase>
