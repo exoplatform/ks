@@ -129,7 +129,7 @@ public class ForumWebservice implements ResourceContainer {
    * @return Response in JSON format.
    * @throws Exception The exception
    * 
-   * @author KSref.DevelopersReferences.PublicRestAPIs.ForumWebservice.getPulicMessage
+   * @anchor KSref.DevelopersReferences.PublicRestAPIs.ForumWebservice.getPulicMessage
    */
 
   @GET
