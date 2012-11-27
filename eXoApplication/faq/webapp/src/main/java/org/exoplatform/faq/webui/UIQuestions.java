@@ -28,6 +28,8 @@ import java.util.Map;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.container.PortalContainer;
+import org.exoplatform.download.DownloadService;
+import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.faq.rendering.RenderHelper;
 import org.exoplatform.faq.rendering.RenderingException;
 import org.exoplatform.faq.service.Answer;
@@ -36,6 +38,7 @@ import org.exoplatform.faq.service.Comment;
 import org.exoplatform.faq.service.FAQService;
 import org.exoplatform.faq.service.FAQServiceUtils;
 import org.exoplatform.faq.service.FAQSetting;
+import org.exoplatform.faq.service.FileAttachment;
 import org.exoplatform.faq.service.JCRPageList;
 import org.exoplatform.faq.service.Question;
 import org.exoplatform.faq.service.QuestionLanguage;
@@ -549,12 +552,35 @@ public class UIQuestions extends UIContainer {
     return this.language_;
   }
   
- 
+  private FileAttachment findAttachmentById(String attId) {
+    Question question = this.questionMap_.get(viewingQuestionId_.substring(viewingQuestionId_.lastIndexOf("/")+1));
+    List<FileAttachment> attachments = question.getAttachMent();
+    for (FileAttachment fileAttachment : attachments) {
+      if (fileAttachment.getNodeName().equals(attId)) {
+        return fileAttachment;
+      }
+    }
+    return null;
+  }
 
   static public class DownloadAttachActionListener extends EventListener<UIQuestions> {
     public void execute(Event<UIQuestions> event) throws Exception {
-      UIQuestions question = event.getSource();
-      event.getRequestContext().addUIComponentToUpdateByAjax(question);
+      UIQuestions uiQuestions = event.getSource();
+
+      String attId = event.getRequestContext().getRequestParameter(OBJECTID);
+      FileAttachment attachment = uiQuestions.findAttachmentById(attId);
+      if (attachment != null) {
+        DownloadService dservice = uiQuestions.getApplicationComponent(DownloadService.class);
+        InputStreamDownloadResource dresource = new InputStreamDownloadResource(attachment.getInputStream(), "application/octet-stream");
+        dresource.setDownloadName(attachment.getName());
+        String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource));
+        event.getRequestContext()
+             .getJavascriptManager()
+             .addJavascript("window.open('" + downloadLink.replaceAll("&amp;", "&")
+                 + "', '_self', '', false); setTimeout( function() { eXo.ks.MaskLayerControl.loadImageAgain('AttachmentContent');}, 50);");
+      }
+
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiQuestions);
     }
   }
 

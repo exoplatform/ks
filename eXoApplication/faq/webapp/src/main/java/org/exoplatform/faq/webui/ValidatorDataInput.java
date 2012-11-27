@@ -16,8 +16,6 @@
  */
 package org.exoplatform.faq.webui;
 
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by The eXo Platform SARL
@@ -26,20 +24,6 @@ import java.util.List;
  * May 3, 2008 ,1:48:11 AM
  */
 public class ValidatorDataInput {
-  static private List<String> typeImage = Arrays.asList(new String[] { "gif", "jpg", "jpeg", "tiff", "bmp", "png", "tif" });
-
-  public static boolean isNotEmptyInput(String inputString) {
-    if (inputString == null || inputString.trim().length() < 1)
-      return false;
-    return true;
-  }
-
-  public static boolean isImage(String fileName) {
-    String fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
-    if (typeImage.contains(fileType.toLowerCase()))
-      return true;
-    return false;
-  }
 
   public static boolean fckContentIsNotEmpty(String input) {
     if (input == null || input.trim().length() < 1)

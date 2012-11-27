@@ -4,7 +4,6 @@
   import org.exoplatform.faq.service.Question;
   import org.exoplatform.faq.service.Answer;
   import org.exoplatform.faq.service.Comment;
-  import org.exoplatform.faq.webui.ValidatorDataInput;
   import org.exoplatform.faq.webui.FAQUtils;
   import org.exoplatform.web.application.JavascriptManager;
 
@@ -582,71 +581,40 @@
                     
                       <!--  View attachment files  -->
                       <%if(!question.getAttachMent().isEmpty()) {%>
-                          <div class="AttachmentContent ClearFix">
+                          <div class="AttachmentContent ClearFix" id="AttachmentContent">
                             <%
-                              for(FileAttachment fileAttachment :question.getAttachMent()){
+                            	List attachments = question.getAttachMent();
+                              for(FileAttachment fileAttachment : attachments) {
                                 String fileName = fileAttachment.getName();
                                 long fileSize = fileAttachment.getSize();
                                 String size = uicomponent.convertSize(fileSize);
-                                String fileType = fileAttachment.getMimeType();
                                 String fileWorkSpace = fileAttachment.getWorkspace();
-                                ValidatorDataInput validate = new ValidatorDataInput();
-                                String linkImage = FAQUtils.getFileSource(fileAttachment);
-                                String typeFileIcon = fileAttachment.getMimeType().substring((fileAttachment.getMimeType().indexOf("/")+1));
-                                if(validate.isImage(fileName)) {
+                                String fileType = fileAttachment.getMimeType();
+                                String fileTypeIcon = fileType.substring((fileType.indexOf("/")+1));
+                                String attId = fileAttachment.getNodeName();
+                              %>
+                              <div class="FileAttachment" id="divId<%=attId%>">
+                              <%
+                                if(fileType.indexOf("image") >= 0) {
                                   String attLink = uicomponent.getImageUrl(fileAttachment.getPath());
                               %>
-                                  <div class="FileAttachment" id="divId${fileName}">
-                                    <div class="Image ClearFix">
-                                      <div onclick="eXo.faq.UIAnswersPortlet.showPicture('$attLink');">
-                                        <img id="imgView${fileName}" src="$attLink" width="100px" height="100px" alt="$fileName" class="AttachmentFile"/>
-                                      </div>
-                                    </div>
-                                    
-                                    <div class="LabelBox ClearFix">
-
-                                        <div class="AttachmentLabel">
-                                          <%
-                                            String downloadAtt = uicomponent.event("DownloadAttach");
-                                          if(fileName.length() > 60){
-                                          %>
-                                            <a class="AttachmentLabel" title="$fileName" onclick="ajaxRedirect('$linkImage'); if(eXo.core.Browser.browserType === 'ie') {$downloadAtt ; } return false;" href="javaScript:void(0);">
-                                              <span><%=FAQUtils.getSubString(fileName, 60);%></span>
-                                            </a>
-                                          <%}else{%>
-                                            <a class="AttachmentLabel" onclick="ajaxRedirect('$linkImage'); if(eXo.core.Browser.browserType === 'ie') {$downloadAtt ; } return false;" href="javaScript:void(0);">
-                                              <span>$fileName</span>
-                                            </a>
-                                          <%}%>
-                                        </div>
-                                        <div class="SizeLabel">
-                                          <span>&nbsp;- </span><span>$size</span>
-                                        </div>
-                                      
+                                  <div class="Image">
+                                    <div onclick="eXo.faq.UIAnswersPortlet.showPicture('$attLink');">
+                                      <img id="imgView<%=attId%>" src="$attLink" width="100px" height="100px" alt="$fileName" class="AttachmentFile"/>
                                     </div>
                                   </div>
-                              <%} else { %>
+                              <%} %>
                                   <div class="LabelBox ClearFix">
-                                    <div class="AttachmentIcon FileAttachmentIcon">
-                                    <%
-                                    if(fileName.length() > 60){
-                                    %>
-                                      <a title="$fileName" class="AttachmentLabel" onclick="if(eXo.core.Browser.browserType === 'ie') {<%=uicomponent.event("DownloadAttach");%>; } ajaxRedirect('$linkImage'); return false;" href="javaScript:void(0);">
-                                        <%=FAQUtils.getSubString(fileName, 60);%>
+                                    <div class="AttachmentIcon ${fileTypeIcon}Icon">
+                                      <a title="$fileName" class="AttachmentLabel" onclick="<%=uicomponent.event("DownloadAttach", attId);%>" href="javaScript:void(0);">
+                                        <%=FAQUtils.getSubString(fileName, 15);%>
                                       </a>
-                                    <%}else{%>
-                                      <a class="AttachmentLabel" onclick="if(eXo.core.Browser.browserType === 'ie') {<%=uicomponent.event("DownloadAttach");%>; } ajaxRedirect('$linkImage'); return false;" href="javaScript:void(0);">
-                                        $fileName
-                                      </a>
-                                    <%}%>
                                     </div>
                                     <div class="SizeLabel">&nbsp;-&nbsp;<span>$size</span></div>
-                                    
                                   </div>
-                              <%}
-                              }%>
-                            
-                          </div>
+			                          </div>
+                            <%}%>
+                            </div>
                       <%}%>
                       
                       <!--  view relation question  -->

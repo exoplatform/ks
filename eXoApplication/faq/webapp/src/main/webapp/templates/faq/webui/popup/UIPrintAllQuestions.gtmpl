@@ -4,7 +4,6 @@
 	import org.exoplatform.faq.service.Comment;
 	import org.exoplatform.faq.webui.FAQUtils;
 	import org.exoplatform.faq.service.FileAttachment;
-	import org.exoplatform.faq.webui.ValidatorDataInput;
 	import org.exoplatform.web.application.JavascriptManager;
 	def rcontext = _ctx.getRequestContext();
 	JavascriptManager jsmanager = rcontext.getJavascriptManager();
@@ -155,46 +154,29 @@
 									<%if(!question.getAttachMent().isEmpty()) {%>
 											<div class="AttachmentContent ClearFix" style="background:white;">
 												<%
-													for(FileAttachment fileAttachment :question.getAttachMent()){
+													List attachments = question.getAttachMent();
+													for(FileAttachment fileAttachment : attachments){
 														String fileName = fileAttachment.getName();
 														long fileSize = fileAttachment.getSize();
 														if(fileSize > 0){
 															String size = uicomponent.convertSize(fileSize);
-															String dataPath = "" ;
-															String fileStream = "" ;
-															try{
-																dataPath = fileAttachment.getDataPath();
-																fileStream = fileAttachment.getInputStream();
-															} catch(Exception e) {
-																dataPath = "null" ;
-																fileStream = "null" ;
-															}
 															String fileType = fileAttachment.getMimeType();
 															String fileWorkSpace = fileAttachment.getWorkspace();
-															ValidatorDataInput validate = new ValidatorDataInput();															
-															String typeFileIcon = fileAttachment.getMimeType().substring((fileAttachment.getMimeType().indexOf("/")+1));
-															if(validate.isImage(fileName)) {
+															String typeFileIcon = fileType.substring(fileType.indexOf("/")+1);
+															if(fileType.indexOf("image") >= 0) {
 																String attLink = uicomponent.getImageUrl(fileAttachment.getPath());
 														%>
-																<div style="float:left; margin:10px 5px 0px 12px;" id="divId${fileName}" class="ClearFix">
+																<div style="float:left; margin:10px 5px 0px 12px;" class="ClearFix">
 																	<div class="Image">
-																		<img style="cursor:pointer;" id="imgView${fileName}" src="$attLink" width="100px" height="100px" alt="$fileName" class="AttachmentFile"/>
+																		<img src="$attLink" width="100px" height="100px" alt="$fileName" class="AttachmentFile"/>
 																	</div>
 																	
 											 						<div class="LabelBox ClearFix">
 												 						<div style="line-height:20px; white-space:nowrap;">
 													 						<div class="Size AttachmentLabel">
-													 							<%
-													 							if(fileName.length() > 60){
-													 							%>
-				 																	<div class="AttachmentLabel">
-					 																	<%=FAQUtils.getSubString(fileName, 60);%>
-					 																</div>
-				 																<%}else{%>
-				 																	<div class="AttachmentLabel">
-					 																	$fileName
-					 																</div>
-				 																<%}%>
+			 																	<div class="AttachmentLabel">
+				 																	<%=FAQUtils.getSubString(fileName, 15);%>
+				 																</div>
 													 						</div>
 													 						<div style="color:#1052b5; float:left;">
 													 							&nbsp;- <span style="color:gray;font-size:11px;">$size</span>
@@ -205,21 +187,12 @@
 											 					</div>
 														<%} else { %>
 																<div class="LabelBox ClearFix" style="margin:10px 5px 0px 12px; line-height:20px; float:left;">
-																	<div class="AttachmentIcon FileAttachmentIcon" style="width:auto; height:auto;float:left;">
-																		<%
-																		if(fileName.length() > 60){
-											 							%>
-		 																	<a class="AttachmentLabel">
-			 																	<%=FAQUtils.getSubString(fileName, 60);%>
-			 																</a>
-		 																<%}else{%>
-																			<a class="AttachmentLabel">
-																				$fileName
-																			</a>
-		 																<%}%>
+																	<div class="AttachmentIcon ${typeFileIcon}Icon" style="width:auto; height:auto;float:left;">
+	 																	<div class="AttachmentLabel">
+		 																	<%=FAQUtils.getSubString(fileName, 15);%>
+		 																</div>
 																	</div>
 																	<div style=" float:left;">&nbsp;-&nbsp;<span style="color:gray;">$size</span></div>
-														
 																</div>
 														<%}
 														} else {

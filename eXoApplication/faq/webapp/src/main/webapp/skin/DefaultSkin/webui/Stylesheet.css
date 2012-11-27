@@ -1031,6 +1031,7 @@
 
 .UIAnswersPortlet .ResponseContent .AttachmentContent .Image {
 	width: 100px; height: 100px;
+	cursor: pointer;
 }
 
 .UIAnswersPortlet .ResponseContent .AttachmentContent .AttachmentIcon {
