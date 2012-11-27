@@ -16,7 +16,7 @@
        String fileName = ForumUtils.getSubString(titleFile, 30);
        long sizeNumber = attachment.getSize() ;
        String size = ForumUtils.getSizeFile(sizeNumber) ;
-       String typeFile = attachment.mimeType ;
+       String typeFile = attachment.getMimeType() ;
   %>
       <div class="AttachmentBox">
       <% if(typeFile.indexOf("image") >= 0) {

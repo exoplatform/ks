@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
+import org.exoplatform.forum.ForumSessionUtils;
 import org.exoplatform.forum.service.ForumAttachment;
 import org.exoplatform.forum.service.Post;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -77,21 +78,12 @@ public class UIAttachmentContainer extends UIContainer {
     return this.attachments;
   }
 
-  public ForumAttachment getAttachment(String id) {
-    for (ForumAttachment att : this.attachments) {
-      if (att.getId().equals(id)) {
-        return att;
-      }
-    }
-    return null;
-  }
-  
   static public class DownloadAttachActionListener extends EventListener<UIAttachmentContainer> {
     @Override
     public void execute(Event<UIAttachmentContainer> event) throws Exception {
       UIAttachmentContainer attContainer = event.getSource();
       String attId = event.getRequestContext().getRequestParameter(OBJECTID);
-      ForumAttachment attachment = attContainer.getAttachment(attId);
+      ForumAttachment attachment = ForumSessionUtils.findAttachmentById(attContainer.getAttachments(), attId);
       if(attachment != null) {
         DownloadService dservice = attContainer.getApplicationComponent(DownloadService.class);
         InputStreamDownloadResource dresource = new InputStreamDownloadResource(attachment.getInputStream(), "application/octet-stream");
@@ -99,7 +91,7 @@ public class UIAttachmentContainer extends UIContainer {
         String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource));
         event.getRequestContext().getJavascriptManager()
              .addJavascript("window.open('" + downloadLink.replaceAll("&amp;", "&") + 
-                            "', '_self', '', false); setTimeout( function() { eXo.forum.UIForumPortlet.loadImageAgain('" +
+                            "', '_self', '', false); setTimeout( function() { eXo.ks.MaskLayerControl.loadImageAgain('" +
                             attContainer.getId() + "');}, 50);");
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(attContainer);

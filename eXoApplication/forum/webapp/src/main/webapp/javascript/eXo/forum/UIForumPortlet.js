@@ -468,33 +468,6 @@ UIForumPortlet.prototype.showPicture = function(src) {
 	*/
 };
 
-UIForumPortlet.prototype.loadImageAgain = function(componentId) {
-  var cont = document.getElementById(componentId);  
-  var imgs = cont.getElementsByTagName('img');
-  for(var i = 0; i < imgs.length; ++i) {
-    imgs[i].src = imgs[i].src;
-    imgs[i].style.opacity = 0;
-    imgs[i].style.filter = 'alpha(opacity=0)';
-    imgs[i].setAttribute('op', 0);
-    imgs[i].onload = eXo.forum.UIForumPortlet.imageEffect;
-  }
-}
-
-UIForumPortlet.prototype.imageEffect = function() {
-  var img = this;
-  var interV = setInterval(function() {
-    var op = parseInt(img.getAttribute('op'));
-    if(op < 100) {
-      op += 5;
-      img.style.opacity = (op / 100);
-      img.style.filter = 'alpha(opacity=' + op + ')';
-      img.setAttribute('op', op);
-    } else {
-      clearInterval(interV);
-    }
-  }, 50);
-};
-
 UIForumPortlet.prototype.getImageSize = function(imageNode){
 	var tmp = imageNode.cloneNode(true);
 	tmp.style.visibility = "hidden";

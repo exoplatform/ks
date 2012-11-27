@@ -145,9 +145,9 @@
 							<div class="PostContentContainer">
 						<% 
 						 boolean hasAttachment = false ;
-            
-            UIAttachmentContainer attContainer = uicomponent.getUIAttachmentContainer(postId);
-            if(isDisplayAvatar && !attContainer.isHasAttachment()) { 
+
+						UIAttachmentContainer attContainer = uicomponent.getUIAttachmentContainer(postId);
+						if(isDisplayAvatar && !attContainer.isHasAttachment()) { 
 						%>	
 							<div class="PostContent">
 						<% } else { %>
@@ -156,13 +156,13 @@
 								<div id="$idMessage">$message</div>
 							</div>
 
-              <!-- Attachment -->
-              
-              <%
+							<!-- Attachment -->
+
+							<%
 								uicomponent.renderChild(attContainer) ;		
 							%>
-              
-              <!-- /Attachment -->
+
+							<!-- /Attachment -->
 							<%if(userInfo.getIsDisplaySignature() && userInfo.getSignature() != null && userInfo.getSignature().length() > 0) {
 									post.setMessage(userInfo.getSignature());
 									post.setId(uicomponent.SIGNATURE);

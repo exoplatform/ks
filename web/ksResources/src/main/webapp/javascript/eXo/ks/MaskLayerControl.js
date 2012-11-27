@@ -1,67 +1,4 @@
-/**
- * @author uocnb
- */
-//TODO : fix bug masklayer don't scroll with browser scrollbar(when show picture in cs and ks), remove this method when portal team fix it./
-/*
-eXo.core.UIMaskLayer.createMask = function(blockContainerId, object, opacity, position) {
-	try {
-		var Browser = eXo.core.Browser ;
-		var blockContainer = document.getElementById(blockContainerId) ;
-		var maskLayer = document.createElement("div") ;
-		
-		this.object = object ;
-		this.blockContainer = blockContainer ;
-		this.position = position ;
-		
-		if (document.getElementById("MaskLayer")) {
-			document.getElementById("MaskLayer").id = "subMaskLayer";
-		}
-		blockContainer.appendChild(maskLayer) ;
-		
-		maskLayer.className = "MaskLayer" ;
-		maskLayer.id = "MaskLayer" ;
-		maskLayer.maxZIndex = 3 ;
-		maskLayer.style.width = "100%"  ;
-		maskLayer.style.height = "100%" ;
-		maskLayer.style.top = "1px" ;
-		maskLayer.style.left = "0px" ;
-		maskLayer.style.zIndex = maskLayer.maxZIndex ;
 
-		if(opacity) {
-	    Browser.setOpacity(maskLayer, opacity) ;
-		}
-		
-		if(object != null){
-			if(object.nextSibling) {
-			  maskLayer.nextSiblingOfObject = object.nextSibling ;
-			  maskLayer.parentOfObject = null ;
-			} else {
-			  maskLayer.nextSiblingOfObject = null ;
-			  maskLayer.parentOfObject = object.parentNode ;
-			}
-			
-			object.style.zIndex = maskLayer.maxZIndex + 1 ;
-			object.style.display = "block" ;
-			
-			blockContainer.appendChild(object) ;
-		
-			eXo.core.UIMaskLayer.setPosition() ;
-			
-			if((blockContainer.offsetWidth > object.offsetLeft + object.offsetWidth) && (position == "TOP-RIGHT") || (position == "BOTTOM-RIGHT")) {
-		    object.style.left = blockContainer.offsetWidth - object.offsetWidth + "px" ;
-			}
-			eXo.core.UIMaskLayer.doScroll() ;
-	  }
-		if(maskLayer.parentNode.id == "UIPage") {
-			eXo.core.UIMaskLayer.enablePageDesktop(false);
-	  }
-	}catch(err) {
-		alert(err) ;
-	}
-	if(object) eXo.core.UIMaskLayer.objectTop = eXo.core.UIMaskLayer.object.offsetTop - document.documentElement.scrollTop;
-	return maskLayer ;
-};
-*/
 function MaskLayerControl() {
   this.domUtil = eXo.core.DOMUtil ;
 }
@@ -106,15 +43,30 @@ MaskLayerControl.prototype.showPicture = function(node) {
 	  containerNode.onclick = this.hidePicture ;
 		document.getElementById("UIPortalApplication").appendChild(containerNode)
 	}else containerNode = document.getElementById("UIPictutreContainer");
-	var imgSize = this.getImageSize(imgSrcNode);
-	var windowHeight = document.documentElement.clientHeight;
-	var windowWidth = document.documentElement.clientWidth;
-	var marginTop = (windowHeight < parseInt(imgSize.height))?0:parseInt((windowHeight - parseInt(imgSize.height))/2);
-	var imgHeight = (windowHeight < parseInt(imgSize.height))?windowHeight + "px":"auto";
-	var imgWidth = (windowWidth < parseInt(imgSize.width))?windowWidth + "px":"auto";
-	var imageNode = "<img src='" + imgSrcNode.src +"' style='height:" + imgHeight + ";width:"+ imgWidth +";margin-top:" + marginTop + "px;' alt='Click to close'/>";
-  containerNode.innerHTML = imageNode;
-  var maskNode = eXo.core.UIMaskLayer.createMask('UIPortalApplication', containerNode, 30, 'CENTER') ;
+	containerNode.appendChild(imgSrcNode);
+	imgSrcNode.onload = function() {
+		var imgSize = {'height':this.height, 'width' : this.width};
+		var windowHeight = document.documentElement.clientHeight;
+		var windowWidth = document.documentElement.clientWidth;
+		
+		var marginTop = (windowHeight < parseInt(imgSize.height))?0:parseInt((windowHeight - parseInt(imgSize.height))/2);
+		
+		var imgHeight = (windowHeight < parseInt(imgSize.height))?windowHeight + "px":"auto";
+		var imgWidth = (windowWidth < parseInt(imgSize.width))?windowWidth + "px":"auto";
+		var imageNode = "<img id='ShowImage' src='" + imgSrcNode.src +"' style='height:" + imgHeight + ";width:"+ imgWidth +";margin-top:0px;' alt='Click to close'/>";
+    containerNode.innerHTML = imageNode;
+    var interV = setInterval(function() {
+      var showImage = document.getElementById('ShowImage');
+      var mrTop = parseInt(showImage.style.marginTop);
+      if (mrTop < marginTop) {
+        mrTop += 5;
+        showImage.style.marginTop = mrTop + 'px';
+      } else {
+        clearInterval(interV);
+      }
+    }, 10);
+	}
+	var maskNode = eXo.core.UIMaskLayer.createMask('UIPortalApplication', containerNode, 30, 'CENTER') ;
 	this.scrollHandler();	
 } ;
 
@@ -137,6 +89,33 @@ MaskLayerControl.prototype.getImageSize = function(img) {
 	var imgNode = new Image();
 	imgNode.src = img.src;
 	return {"height":imgNode.height,"width":imgNode.width};
+};
+
+MaskLayerControl.prototype.loadImageAgain = function(componentId) {
+  var cont = document.getElementById(componentId);  
+  var imgs = cont.getElementsByTagName('img');
+  for(var i = 0; i < imgs.length; ++i) {
+    imgs[i].src = imgs[i].src;
+    imgs[i].style.opacity = 0;
+    imgs[i].style.filter = 'alpha(opacity=0)';
+    imgs[i].setAttribute('op', 0);
+    imgs[i].onload = eXo.ks.MaskLayerControl.imageEffect;
+  }
+}
+
+MaskLayerControl.prototype.imageEffect = function() {
+  var img = this;
+  var interV = setInterval(function() {
+    var op = parseInt(img.getAttribute('op'));
+    if(op < 100) {
+      op += 5;
+      img.style.opacity = (op / 100);
+      img.style.filter = 'alpha(opacity=' + op + ')';
+      img.setAttribute('op', op);
+    } else {
+      clearInterval(interV);
+    }
+  }, 50);
 };
 
 if (!eXo.ks) eXo.ks = {} ;

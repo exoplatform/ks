@@ -16,11 +16,8 @@
  ***************************************************************************/
 package org.exoplatform.forum.webui.popup;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.jcr.PathNotFoundException;
 
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.download.DownloadService;
@@ -37,7 +34,6 @@ import org.exoplatform.forum.service.UserProfile;
 import org.exoplatform.forum.service.Utils;
 import org.exoplatform.forum.webui.UIForumPortlet;
 import org.exoplatform.ks.common.CommonUtils;
-import org.exoplatform.ks.common.UserHelper;
 import org.exoplatform.ks.common.webui.UIPopupAction;
 import org.exoplatform.ks.common.webui.UIPopupContainer;
 import org.exoplatform.services.log.ExoLogger;
@@ -50,8 +46,8 @@ import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
-import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.form.UIForm;
 
 /**
@@ -137,22 +133,15 @@ public class UIViewPost extends UIForm implements UIPopupComponent {
     public void execute(Event<UIViewPost> event) throws Exception {
       UIViewPost viewPost = event.getSource();
       String attId = event.getRequestContext().getRequestParameter(OBJECTID);
-      Post post = viewPost.getPostView();
-      List<ForumAttachment> attachments = post.getAttachments();
-      for (ForumAttachment attachment : attachments) {
-        if(attachment.getId().equals(attId)) {
-          DownloadService dservice = viewPost.getApplicationComponent(DownloadService.class);
-          InputStreamDownloadResource dresource = new InputStreamDownloadResource(attachment.getInputStream(), "application/octet-stream");
-          dresource.setDownloadName(attachment.getName());
-          String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource));
-          System.out.println(attachment.getMimeType());
-          event.getRequestContext().getJavascriptManager()
-          .addJavascript("window.open('" + downloadLink.replaceAll("&amp;", "&") + 
-                         "', '_self', '', false); setTimeout( function() { eXo.forum.UIForumPortlet.loadImageAgain('" +
-                         viewPost.getId() + "');}, 50);");
-          break;
-        }
-      }
+      ForumAttachment attachment = ForumSessionUtils.findAttachmentById(viewPost.getPostView().getAttachments(), attId);
+      DownloadService dservice = viewPost.getApplicationComponent(DownloadService.class);
+      InputStreamDownloadResource dresource = new InputStreamDownloadResource(attachment.getInputStream(), "application/octet-stream");
+      dresource.setDownloadName(attachment.getName());
+      String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource));
+      event.getRequestContext().getJavascriptManager()
+      .addJavascript("window.open('" + downloadLink.replaceAll("&amp;", "&") + 
+                     "', '_self', '', false); setTimeout( function() { eXo.ks.MaskLayerControl.loadImageAgain('" +
+                     viewPost.getId() + "');}, 50);");
       event.getRequestContext().addUIComponentToUpdateByAjax(viewPost);
     }
   }

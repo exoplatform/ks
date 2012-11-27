@@ -16,14 +16,10 @@
  ***************************************************************************/
 package org.exoplatform.forum;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.exoplatform.container.PortalContainer;
-import org.exoplatform.download.DownloadService;
-import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.forum.service.ForumAttachment;
 import org.exoplatform.forum.service.ForumService;
 import org.exoplatform.forum.service.Utils;
@@ -75,6 +71,16 @@ public class ForumSessionUtils {
       url = (url == null || url.trim().length() < 1) ? DEFAULT_AVATAR : url;
     }
     return url;
+  }
+
+  public static ForumAttachment findAttachmentById(List<ForumAttachment> attachments, String attId) {
+    if (attachments == null) return null;
+    for (ForumAttachment attachment : attachments) {
+      if (attachment.getId().equals(attId)) {
+        return attachment;
+      }
+    }
+    return null;
   }
 
   public static CommonContact getPersonalContact(String userId) {
