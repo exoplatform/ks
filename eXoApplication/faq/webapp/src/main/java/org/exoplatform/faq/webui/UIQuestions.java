@@ -576,8 +576,7 @@ public class UIQuestions extends UIContainer {
         String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource));
         event.getRequestContext()
              .getJavascriptManager()
-             .addJavascript("window.open('" + downloadLink.replaceAll("&amp;", "&")
-                 + "', '_self', '', false); setTimeout( function() { eXo.ks.MaskLayerControl.loadImageAgain('AttachmentContent');}, 50);");
+             .addJavascript("window.open('" + downloadLink.replaceAll("&amp;", "&") + "', '_self', '', false);");
       }
 
       event.getRequestContext().addUIComponentToUpdateByAjax(uiQuestions);
