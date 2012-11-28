@@ -17,32 +17,39 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-if(!eXo.wiki) eXo.wiki = {};
+(function () 
+  var window_ = this;
 
-function UIForm() {
-};
+  function UIForm() {
+  };
 
-/*ie bug  you cannot have more than one button tag*/
-/**
- * Submits a form with the given action and the given parameters
- */
-UIForm.prototype.submitPageEvent = function(formId, action, params) {
-  var form = eXo.webui.UIForm.getFormElemt(formId) ;
-	 try {
-	  if (FCKeditorAPI && typeof FCKeditorAPI == "object") {
-	 	  for ( var name in FCKeditorAPI.__Instances ) {
-	 	  	var oEditor = FCKeditorAPI.__Instances[name] ;
-	 	  	if ( oEditor.GetParentForm && oEditor.GetParentForm() == form ) {
-	 	  		oEditor.UpdateLinkedField() ;
-	 	  	}
-	  	}
-	  }
-	 } catch(e) {}
-  form.elements['formOp'].value = action ; 
-  if(!form.originalAction) form.originalAction = form.action ; 
-  form.action =  form.originalAction +  encodeURI(params) ;
-  form.submit();
-  eXo.wiki.UIWikiSavePage.disableButton(form, action);
-} ;
+  /*ie bug  you cannot have more than one button tag*/
+  /**
+   * Submits a form with the given action and the given parameters
+   */
+  UIForm.prototype.submitPageEvent = function(formId, action, params) {
+    var form = eXo.webui.UIForm.getFormElemt(formId) ;
+  	   try {
+	     if (FCKeditorAPI && typeof FCKeditorAPI == "object") {
+               for ( var name in FCKeditorAPI.__Instances ) {
+                 var oEditor = FCKeditorAPI.__Instances[name] ;
+                 if ( oEditor.GetParentForm && oEditor.GetParentForm() == form ) {
+                   oEditor.UpdateLinkedField() ;
+                 }
+               }
+             }
+           }
+           catch(e) {}
+    form.elements['formOp'].value = action ; 
+    if(!form.originalAction) form.originalAction = form.action ; 
+    form.action =  form.originalAction +  encodeURI(params) ;
+    form.submit();
+    eXo.wiki.UIWikiSavePage.disableButton(form, action);
+  } ;
 
-eXo.wiki.UIForm = new UIForm();
+     //expose
+  window_.eXo = window_.eXo || {};
+  window_.eXo.wiki = window_.eXo.wiki || {};
+  window_.eXo.wiki.UIForm = UIForm;
+
+)();
