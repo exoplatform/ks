@@ -162,6 +162,8 @@ import com.sun.syndication.io.SyndFeedOutput;
 public class JCRDataStorage implements DataStorage, ForumNodeTypes {
 
   private static final Log             log                  = ExoLogger.getLogger(JCRDataStorage.class);
+  
+  private static final ThreadLocal<Node> nodeThreadLocal    = new ThreadLocal<Node>();
 
   private Map<String, String>          serverConfig         = new HashMap<String, String>();
 
@@ -2806,11 +2808,13 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
   }
 
   public JCRPageList getPosts(String categoryId, String forumId, String topicId, String isApproved, String isHidden, String strQuery, String userLogin) throws Exception {
-    SessionProvider sProvider = CommonUtils.createSystemProvider();
     try {
-      Node topicNode = getCategoryHome(sProvider).getNode(categoryId + "/" + forumId + "/" + topicId);
-      StringBuilder strBuilder = new StringBuilder(JCR_ROOT)
-        .append(topicNode.getPath()).append("//element(*,").append(EXO_POST).append(")");
+      StringBuilder strBuilder = new StringBuilder().append(JCR_ROOT).append("/")
+                                                    .append(dataLocator.getForumCategoriesLocation()).append("/")
+                                                    .append(categoryId).append("/")
+                                                    .append(forumId).append("/")
+                                                    .append(topicId)
+                                                    .append("//element(*,").append(EXO_POST).append(")");
       String isWaiting = strQuery.equals("true") || strQuery.equals("false") ? strQuery : "";
       StringBuilder qr = Utils.getPathQuery(isApproved, isHidden, isWaiting, userLogin);
       if (!Utils.isEmpty(strQuery) && Utils.isEmpty(isWaiting)) {
@@ -2996,6 +3000,7 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
     try {
       Node CategoryNode = getCategoryHome(sProvider).getNode(categoryId);
       Node forumNode = CategoryNode.getNode(forumId);
+      nodeThreadLocal.set(forumNode);
       Node topicNode = forumNode.getNode(topicId);
       Node postNode;
       Calendar calendar = getGreenwichMeanTime();
@@ -3185,7 +3190,11 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
       }
       postNode.setProperty(EXO_NUMBER_ATTACH, numberAttach);
       if (isNew) {
-        forumNode.getSession().save();
+        try {
+          forumNode.getSession().save();
+        } catch (RepositoryException e) {
+          nodeThreadLocal.get().getSession().save();
+        }
       } else {
         forumNode.save();
       }
@@ -3208,6 +3217,8 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
       }
     } catch (Exception e) {
       log.error("Failed to save post" + post.getName(), e);
+    } finally {
+      nodeThreadLocal.set(null);
     }
   }
 
