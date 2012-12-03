@@ -158,10 +158,4 @@ public class CodeMacro extends AbstractBoxMacro<CodeMacroParameters> {
     }
     return result;
   }
-
-  @Override
-  public boolean supportsInlineMode() {
-    return false;
-  }
-  
 }
