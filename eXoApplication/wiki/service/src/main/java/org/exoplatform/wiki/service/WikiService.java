@@ -82,6 +82,8 @@ public interface WikiService {
   public List<BreadcrumbData> getBreadcumb(String wikiType, String wikiOwner, String pageId) throws Exception;
 
   public WikiPageParams getWikiPageParams(BreadcrumbData data) throws Exception;
+  
+  public String getSpaceNamebyGroupId(String groupId) throws Exception;
 
   public PageList<SearchResult> search(WikiSearchData data) throws Exception;
 

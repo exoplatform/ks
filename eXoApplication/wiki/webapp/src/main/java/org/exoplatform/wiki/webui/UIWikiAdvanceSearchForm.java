@@ -117,9 +117,15 @@ public class UIWikiAdvanceSearchForm extends UIForm {
   public SelectOptionGroup getGroupWikiOptions() throws Exception {
     SelectOptionGroup groupSpaceOptions = new SelectOptionGroup(getLabel("GroupWikis"));
     Collection<Wiki> groupWikis = Utils.getWikisByType(WikiType.GROUP);
+    WikiService wservice = (WikiService) PortalContainer.getComponent(WikiService.class);
     for (Wiki wiki : groupWikis) {
-      groupSpaceOptions.addOption(new SelectOption(wiki.getOwner(), PortalConfig.GROUP_TYPE + "/"
-          + Utils.validateWikiOwner(wiki.getType(), wiki.getOwner())));
+    	if(wiki.getOwner().startsWith("/spaces/")){
+    		 String spaceName = wservice.getSpaceNamebyGroupId(wiki.getOwner());
+    		 groupSpaceOptions.addOption(new SelectOption(spaceName));
+    	}else{
+    		String groupLabelNavigation= org.exoplatform.webui.organization.OrganizationUtils.getGroupLabel(wiki.getOwner());
+    		groupSpaceOptions.addOption(new SelectOption(groupLabelNavigation));
+    	}
     }
     return groupSpaceOptions;
   }

@@ -29,6 +29,7 @@ import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.PropertiesParam;
 import org.exoplatform.container.xml.ValuesParam;
+import org.exoplatform.portal.config.GroupPortalConfigListener;
 import org.exoplatform.portal.config.UserACL;
 import org.exoplatform.portal.config.UserPortalConfigService;
 import org.exoplatform.portal.config.model.PortalConfig;
@@ -1220,5 +1221,21 @@ public class WikiServiceImpl implements WikiService, Startable {
   public void stop() {
     
   }
-  
+
+@Override
+@SuppressWarnings({"rawtypes", "unchecked"})
+public String getSpaceNamebyGroupId(String groupId) throws Exception {
+  try {
+	Class spaceServiceClass = Class.forName("org.exoplatform.social.core.space.spi.SpaceService");
+	Object spaceService = ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(spaceServiceClass);
+	      
+	Class spaceClass = Class.forName("org.exoplatform.social.core.space.model.Space");
+	Object space = spaceServiceClass.getDeclaredMethod("getSpaceByGroupId", String.class).invoke(spaceService, groupId);
+	return String.valueOf(spaceClass.getDeclaredMethod("getDisplayName").invoke(space));
+	} catch (ClassNotFoundException e) {
+	  Model model = getModel();
+	  Wiki wiki = getWiki(PortalConfig.GROUP_TYPE, groupId.substring(1), model);
+	  return wiki.getName();
+	}
+ }
 }
