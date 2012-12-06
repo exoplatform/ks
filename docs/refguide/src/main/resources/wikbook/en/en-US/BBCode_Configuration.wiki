@@ -16,8 +16,7 @@ The default BBCode data is configured in the _bbcodes-configuration.xml_ file.
 
 In particular, at runtime of BBCode Service, the BBCode plug-in component is called. Then, the _bbcodes-configuration.xml_ file will be executed, and the component-plugin named _registerBBCodePlugin_ will be referred to _org.exoplatform.ks.bbcode.spi.BBCodePlugin_ to execute some objects that will generate default data. 
 
-{code:xml}
-<component-plugin>
+{code:xml}<component-plugin>
   <name>forum.default.bbcodes</name>
   <set-method>registerBBCodePlugin</set-method>
   <type>org.exoplatform.ks.bbcode.spi.BBCodePlugin</type>
@@ -633,8 +632,7 @@ In particular, at runtime of BBCode Service, the BBCode plug-in component is cal
       </object>
     </object-param>
   </init-params>
-</component-plugin>
-{code}
+</component-plugin>{code}
 
 
 * In which,
@@ -642,8 +640,7 @@ In particular, at runtime of BBCode Service, the BBCode plug-in component is cal
 | *forum.default.bbcodes* | registerBBCodePlugin | org.exoplatform.ks.bbcode. spi.BBCodePlugin | Define formats for data displayed on UI. |
 
 - The BBCode array is defined by the _org.exoplatform.ks.bbcode.spi.BBCodeData_ object as below:
-{code:xml}
-<object type="org.exoplatform.ks.bbcode.spi.BBCodeData">
+{code:xml}<object type="org.exoplatform.ks.bbcode.spi.BBCodeData">
   <field name="tagName">
     <string>I</string>
   </field>
@@ -662,12 +659,10 @@ In particular, at runtime of BBCode Service, the BBCode plug-in component is cal
   <field name="isActive">
     <string>true</string>
   </field>
-</object> 
-{code}
+</object> {code}
 - The BBCode includes basic data which are defined in the field tag with a specific name as below:
 
-{code:xml}
-<field name="tagName">
+{code:xml}<field name="tagName">
   <string>I</string>
 </field>
 <field name="replacement">
@@ -684,8 +679,7 @@ In particular, at runtime of BBCode Service, the BBCode plug-in component is cal
 </field>
 <field name="isActive">
   <string>true</string>
-</field>
-{code}
+</field>{code}
 
 In which:
 || Field name || Value || Description ||

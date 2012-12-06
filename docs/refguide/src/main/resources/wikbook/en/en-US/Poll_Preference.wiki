@@ -23,15 +23,13 @@ Portlet.xml
 {docbook}
 * See the _portlet.xml_ file in the project following this path: _poll/WEB-INF/portlet.xml_.
 
-{code:xml}
-<portlet-preferences>
+{code:xml}<portlet-preferences>
   <preference>
     <name>pollIdShow</name>
     <value></value> <!-- PollId -->
     <read-only>false</read-only>
   </preference>
-</portlet-preferences>
-{code}
+</portlet-preferences>{code}
  
 {docbook}
 <para xml:id="KSref.PollPortlet.PollPortletPreferences">

@@ -19,8 +19,7 @@ The properties of Auto-count Active Users plug-in is configured in the _{{{war:w
 
 In details, at runtime of Job Scheduler, the Auto-count Active Users plug-in component is called. Then, the _statistics-configuration.xml_ file is executed. The component-plugin named _RecountActiveUserJob_ will refer to _org.exoplatform.forum.service.conf.RecountActiveUserPeriodJob_ to calculate the number of active users.
 
-{code:xml}
-<component-plugin>
+{code:xml}<component-plugin>
   <name>RecountActiveUserJob</name>
   <set-method>addPeriodJob</set-method>
   <type>org.exoplatform.forum.service.conf.RecountActiveUserPeriodJob</type>
@@ -43,8 +42,7 @@ In details, at runtime of Job Scheduler, the Auto-count Active Users plug-in com
       <property name="lastPost" value="15"/> <!-- users are active if have last posts in 15 day -->
     </properties-param>
   </init-params>
-</component-plugin>
-{code}
+</component-plugin>{code}
 
 * In which, 
 || Name || Method || Type || Description ||
@@ -52,8 +50,7 @@ In details, at runtime of Job Scheduler, the Auto-count Active Users plug-in com
 
 * The properties for Auto-count Active Members plug-in are defined in the ~~property~~ tag as below:
 
-{code:xml}
-...
+{code:xml}...
 <property name="jobName" value="RecountActiveUserJob"/>
 <property name="groupName" value="KnowlegedSuite"/>
 <property name="job" value="org.exoplatform.forum.service.conf.RecountActiveUserJob"/>
@@ -63,8 +60,7 @@ In details, at runtime of Job Scheduler, the Auto-count Active Users plug-in com
 <property name="endTime" value=""/>     
 ...
 <property name="lastPost" value="15"/> 
-...
-{code}
+...{code}
 
 In which:
 

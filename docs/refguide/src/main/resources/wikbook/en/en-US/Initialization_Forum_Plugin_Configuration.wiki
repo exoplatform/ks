@@ -14,8 +14,7 @@ The default forum data is configured in the _{{{war:webapp/WEB-INF/conf/ksdemo/k
 
 In particular, when the ForumService starts, the Initialization plug-in component is called. Next, the _services-configuration.xml_ file is executed. The component-plugin named _addInitialDefaultDataPlugin_ will refer to _org.exoplatform.forum.service.conf.InitializeForumPlugin_ to execute some objects to create default data for the Forum application. 
 
-{code:xml}
-<component-plugin>
+{code:xml}<component-plugin>
   <name>default.data</name>
   <set-method>addInitialDefaultDataPlugin</set-method>
   <type>org.exoplatform.forum.service.conf.InitializeForumPlugin</type>
@@ -78,8 +77,7 @@ In particular, when the ForumService starts, the Initialization plug-in componen
       </object>
     </object-param>
   </init-params>
-</component-plugin>
-{code}
+</component-plugin>{code}
 
 
 * In which,
@@ -95,8 +93,7 @@ In particular, when the ForumService starts, the Initialization plug-in componen
 
 After the _org.exoplatform.forum.service.conf.InitializeForumPlugin_ object has been executed, the _org.exoplatform.forum.service.conf.ForumInitialData_ object will be called. It returns a category array. The value of category array is defined by the _org.exoplatform.forum.service.conf.CategoryData_ object as below:
 
-{code:xml}
-<object-param>
+{code:xml}<object-param>
   <name>livedemo.default.configuration</name>
   <description>initial data for live demo</description>
   <object type="org.exoplatform.forum.service.conf.ForumInitialData">
@@ -119,13 +116,11 @@ After the _org.exoplatform.forum.service.conf.InitializeForumPlugin_ object has 
       </collection>
      </field>
   </object>
-</object-param>
-{code}
+</object-param>{code}
 
 * Category includes some basic data which are defined in the *field* tag with a specific name as below:
 
-{code:xml}                              
-<field name="owner">
+{code:xml}<field name="owner">
   <string>root</string>
 </field>
 <field name="name">
@@ -133,8 +128,7 @@ After the _org.exoplatform.forum.service.conf.InitializeForumPlugin_ object has 
 </field>
 <field name="description">
   <string>All about eXo KS</string>
-</field>
-{code}
+</field>{code}
 
 In which:
 
@@ -148,22 +142,19 @@ In which:
 Values of the default Category can be changed by editing text values in the _string_ tag of each _field_ by the other one.
 In the sample code above, the _org.exoplatform.forum.service.conf.CategoryData_ object is called. It means that only one default Category is defined. If you want to define more default Categories, repeat calling the _org.exoplatform.forum.service.conf.CategoryData_ object and define values for the new Category with the sample code as below:
 
-{code:xml}
-<value>
+{code:xml}<value>
   <object type="org.exoplatform.forum.service.conf.CategoryData">
     <field name= " ">                             
       ...  
     </field> 
   </object>
-</value>
-{code}
+</value>{code}
 
 h2. Forum array {anchor:id=KSref.ForumInitializer.ForumArray}
 
 Category may contain one or more Forums. The value of the Forum is defined in the *forums* field. It returns a forum array. The value of forum array is defined by the *org.exoplatform.forum.service.conf.ForumData* object as below:
 
-{code:xml}
-<field name="forums">
+{code:xml}<field name="forums">
   <collection type="java.util.ArrayList">
     <value>
       <object type="org.exoplatform.forum.service.conf.ForumData">
@@ -174,8 +165,7 @@ Category may contain one or more Forums. The value of the Forum is defined in th
       </object>
     </value>
   </collection>
-</field>
-{code}
+</field>{code}
 
 - Basic Forum data
 
@@ -192,22 +182,19 @@ The default Forum values can be changed by editing text values in the _string_ t
 
 In the sample code above, the _org.exoplatform.forum.service.conf.ForumData_ object is called only one time. It means that only one default Forum is defined inside the default Category named _Knowledge Suite_. If you want to define more default Forums, repeat calling the _org.exoplatform.forum.service.conf.ForumData_ object and define values for the new Forum with the sample code as below:
 
-{code:xml}
-<value>
+{code:xml}<value>
   <object type="org.exoplatform.forum.service.conf.ForumData">
     <field name=" ">
       ...
     </field>
   </object>
-</value>
-{code}
+</value>{code}
 
 h2. Forum topics {anchor:id=KSref.ForumInitializer.ForumTopics}
 
 * Forum may contain one or more topics. The value of topic is defined in the *topics* field. It returns a topic array. The value of topic array is defined by the _org.exoplatform.forum.service.conf.TopicData_ object as below:
 
-{code:xml}
-<field name="topics">
+{code:xml}<field name="topics">
   <collection type="java.util.ArrayList">
     <value>
       <object type="org.exoplatform.forum.service.conf.TopicData">
@@ -219,8 +206,7 @@ h2. Forum topics {anchor:id=KSref.ForumInitializer.ForumTopics}
       </object>
     </value>
   </collection>
-</field>
-{code}
+</field>{code}
 
 A topic includes some basic data which are defined in the _field_ tag with a specific name as above.
 
@@ -236,20 +222,17 @@ The values of default topic can be changed by editing text values in the _string
 
 With the sample code above, the _org.exoplatform.forum.service.conf.TopicData_ object is called only one time. It means that only one default topic is defined inside the default Forum named _Live demo_. If you want to define more default topics, repeat calling the _org.exoplatform.forum.service.conf.TopicData_ object and define values for the new topic with the sample code as below:
 
-{code:xml}
-<value>
+{code:xml}<value>
   <object type="org.exoplatform.forum.service.conf.TopicData">
     <field name=" ">
       ...
     </field> 
   </object>
-</value>
-{code}
+</value>{code}
 
 * Topic may contain one or more posts. The value of the post is defined in the _posts_ field. It returns a post array. The value of the post array is defined by the _org.exoplatform.forum.service.conf.PostData_ object as below:
 
-{code:xml}
-<field name="posts">
+{code:xml}<field name="posts">
   <collection type="java.util.ArrayList">
     <value>
       <object type="org.exoplatform.forum.service.conf.PostData">
@@ -261,8 +244,7 @@ With the sample code above, the _org.exoplatform.forum.service.conf.TopicData_ o
       </object>
     </value>
   </collection>
-</field>
-{code}
+</field>{code}
 
 A post includes some basic data which are defined in the _field_ tag with a specific name as above.
 
@@ -278,15 +260,13 @@ The default post values can be changed by editing text values in the _string_ ta
 
 With the sample code above, the *org.exoplatform.forum.service.conf.PostData* object is called only one time. It means that only one default post is defined inside the default topic named *Demo data policy*. If you want to define more default posts, repeat calling the *org.exoplatform.forum.service.conf.PostData* object and define values for the new post with the sample code as below:
 
-{code:xml}
-<value>
+{code:xml}<value>
   <object type="org.exoplatform.forum.service.conf.PostData">
     <field name=" ">
       ...
     </field> 
   </object>
-</value>
-{code}
+</value>{code}
 
 By default, the default Forum data can only be changed by modifying the _services-configuration.xml_ file.
 
@@ -298,8 +278,7 @@ The Initial Data plugin is configured in the _services-configuration.xml_ file.
 In details, at runtime of Forum Service, the Initialization plugin component is called, the _services-configuration.xml_ file will be executed. The component-plugin named _addInitialDataPlugin_ will refer to _org.exoplatform.forum.service.conf.ForumInitialDataPlugin_ to import some objects to create data for the Forum service.
 The default data in the .zip or .xml file is initialized as follows:
 
-{code:xml}
-<component-plugin>
+{code:xml}<component-plugin>
   <name>technical.forum</name>
   <set-method>addInitialDataPlugin</set-method>
   <type>org.exoplatform.forum.service.conf.ForumInitialDataPlugin</type>
@@ -312,8 +291,7 @@ The default data in the .zip or .xml file is initialized as follows:
       <!-- value>war:/data/forum/forumCategory.xml</value -->
     </values-param>
   </init-params>
-</component-plugin>
-{code}
+</component-plugin>{code}
 
 - In which:
 

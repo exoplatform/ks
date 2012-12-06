@@ -65,10 +65,7 @@ Navigating in the project's folder, you will see the following structure:
 
 Here is the content of the _pom.xml_ file:
 
-{code:xml}
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+{code:xml}<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.acme</groupId>
   <artifactId>example</artifactId>
@@ -114,15 +111,13 @@ Here is the content of the _pom.xml_ file:
       </plugin>
     </plugins>
   </build>
-</project>
-{code}
+</project>{code}
 
 h1. Create new actions and their corresponding listeners    {anchor:id=KSref.Extend_actions_over_a_wiki_page_from_external_jars.Create_new_actions_and_their_corresponding_listenersRoleNotInToc}
 
 Edit the _ViewSourceActionComponent_ class as below:
 
-{code:java}
-package com.acme;
+{code:java}package com.acme;
 
 import java.util.Arrays;
 import java.util.List;
@@ -181,19 +176,14 @@ public class ViewSourceActionComponent extends AbstractEventActionComponent {
 
   }
 
-}
-{code}
+}{code}
 
 h1. Register new actions with UIExtensionManager      {anchor:id=KSref.Extend_actions_over_a_wiki_page_from_external_jars.Register_new_actions_with_UIExtensionManagerRoleNotInToc}
 
 Edit the _configuration.xml_ file as below:
 
-{code:xml}
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.exoplatform.org/xml/ns/kernel_1_2.xsd http://www.exoplatform.org/xml/ns/kernel_1_2.xsd"
+{code:xml}<?xml version="1.0" encoding="ISO-8859-1"?><configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.exoplatform.org/xml/ns/kernel_1_2.xsd http://www.exoplatform.org/xml/ns/kernel_1_2.xsd"
   xmlns="http://www.exoplatform.org/xml/ns/kernel_1_2.xsd">
-
   <external-component-plugins>
     <target-component>org.exoplatform.webui.ext.UIExtensionManager</target-component>
     <component-plugin>
@@ -213,9 +203,7 @@ Edit the _configuration.xml_ file as below:
       </init-params>
     </component-plugin>
   </external-component-plugins>
-
-</configuration>
-{code}
+</configuration>{code}
 
 Besides the _MoreExtensionContainer_ type, action extension may be one of these following types:
 

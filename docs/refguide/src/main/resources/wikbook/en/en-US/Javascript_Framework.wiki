@@ -40,8 +40,7 @@ To register an event on a {{DOM node}}.
 To register a _doClick()_ funtion to the onclick of an element, do as follows:
 
 {code}var element = document.getElementById("test"); 
-eXo.core.EventManager.addEvent(element, "click", doClick);
-{code} 
+eXo.core.EventManager.addEvent(element, "click", doClick);{code} 
 
 
 h2. EventManager.removeEvent
@@ -61,8 +60,7 @@ To remove events which have been attached on the {{DOM node}}.
 * *Example*
 Supposing that the _doClick_ function has been registered in the "test" element. If the developer unregisters the _doClick_ function, do as follows:
 {code}var element = document.getElementById("test"); 
-eXo.core.EventManager.removeEvent(element, "click", doClick);
-{code} 
+eXo.core.EventManager.removeEvent(element, "click", doClick);{code} 
 
 
 h2. EventManager.getMouseButton
@@ -117,8 +115,7 @@ eXo.core.EventManager.addEvent(element, "click", doClick);
 function doClick(evt){
  var node = eXo.core.EventManager.getEventTarget(evt);
  alert(node.tagName);
-}
-{code} 
+}{code} 
 
 
 h2. EventManager.getEventTargetByClass
@@ -137,8 +134,7 @@ To get the HTML element on which the event took place by the class selector.
 | target | {{DOM node}} | The HTML element the event took place on. |
 
 * *Example*
-{code}
-<div class="TestClass" onclick="test(event);">
+{code}<div class="TestClass" onclick="test(event);">
         Click me
 </div>
 <div onclick="test(event);">
@@ -150,8 +146,7 @@ function test(evt){
         var srcElement = evtMgr.getEventTargetByClass(evt,"TestClass");
         if(!srcElement) alert(srcElement.innerHTML); // Comment
 }
-</script>
-{code}
+</script>{code}
 
 h2. EventManager.getEventTargetByTagName
 
@@ -170,8 +165,7 @@ To get the HTML element the event took place on by the tag name.
 | target |  {{DOM node}} | The HTML element the event took place on. |
 
 * *Example*
-{code}
- <div onclick="test(event);">
+{code}<div onclick="test(event);">
         Click me
 </div>
 <span onclick="test(event);">
@@ -183,8 +177,7 @@ function test(evt){
         var srcElement = evtMgr.getEventTargetByTagName(evt,"div");
         if(!srcElement) alert(srcElement.innerHTML); // Comment
 }
-</script>
-{code}
+</script>{code}
 
 
 h2. EventManager.cancelBubble
@@ -207,8 +200,7 @@ To cancel the event bubbling.
 
 * *Example*
 To cancel the event bubbling, do as follows:
-{code} 
-<div onclick="test1();">
+{code}<div onclick="test1();">
         <div>abc</div>
         <div onclick="test2(event);">cancel bubble</div>
 </div>
@@ -220,8 +212,7 @@ To cancel the event bubbling, do as follows:
                 eXo.core.EventManager.cancelBubble(evt);
                 alert("Child");
         }
-</script>
-{code}
+</script>{code}
 
 h2. EventManager.cancelEvent
 * * Description*
@@ -237,16 +228,14 @@ To cancel any default action associated with the event.
 * *Example*
 The following example is to disable the default action of all links on the page that proceeds the script when clicked on, then goes to the URL specified in its "href" attribute:
 
-{code}
-function disablelink(e){
+{code}function disablelink(e){
         eXo.core.EventManager.cancelEvent(e);
 }
 
 var alllinks=document.getElementsByTagName("a")
 for (var i=0; i<alllinks.length; i++){
  alllinks[i].onclick=disablelink
-}
-{code}
+}{code}
 
 
 h1. Javascript Framework of Forum
@@ -256,6 +245,7 @@ h2. UIForumPortlet.numberIsCheckedForum
 To inform the number of selected items.
 * *Prototype*
 {code} UIForumPortlet.prototype.numberIsCheckedForum = function(formName, checkAllName, multiAns, onlyAns, notChecked) {code}
+
 * *Parameter*
 || Name || Type || Description ||
 | *formName* | {{string}} | The name of form |
@@ -271,13 +261,11 @@ To inform the number of selected items.
 
 * * Example*
 To check the number of items selected on the UICategory form, do as follows:
-{code} 
-<div class="ItemIcon $classIconItem">
+{code} <div class="ItemIcon $classIconItem">
   <a class="MenuItem" style="display:block" onclick="javaScript:if(eXo.forum.UIForumPortlet.numberIsCheckedForum('UICategory', 'UIFORUMCheckAllForum', '<%=_ctx.appRes("UICategory.confirm.DeleteMoreForum")%>', '<%=_ctx.appRes("UITopicContainer.confirm.RemoveForum")%>', '<%=_ctx.appRes("UITopicDetail.msg.notCheckForum")%>')){$link;}">
 	<%=nameItem%>
   </a>
-</div>
-{code}
+</div>{code}
 
 
 h2. UIForumPortlet.showTreeNode
@@ -294,13 +282,11 @@ To show/hide the tree.
 | *isShow* | {{string}} | The initial status of tree. |
 
 * *Example* 
-{code}
-<div class="NodeLabel" onclick ='eXo.faq.UIAnswersPortlet.showTreeNode(this,"$isShow");'>
+{code}<div class="NodeLabel" onclick ='eXo.faq.UIAnswersPortlet.showTreeNode(this,"$isShow");'>
    <div class="NodeSelected">
       <a>$categoryName</a>
    </div> 
-</div>
-{code}
+</div>{code}
 
 h2. UIForumPortlet.checkedNode
 
@@ -316,11 +302,9 @@ h2. UIForumPortlet.checkedNode
 
 * *Description*
 
-{code} 
-<div class="ParentCheckBox" onclick='eXo.forum.UIForumPortlet.checkedNode(this);' style="float:left; padding-top:4px;">
+{code} <div class="ParentCheckBox" onclick='eXo.forum.UIForumPortlet.checkedNode(this);' style="float:left; padding-top:4px;">
   <%uicomponent.renderChild(category.getId())%>
-</div>
-{code}
+</div>{code}
 
 
 h2. UIForumPortlet.setSizeImages
@@ -339,11 +323,9 @@ To resize the image size to the container size.
 * *Example*
 To set the size for images in UITopicDetail in Forum, do as follows:
 
-{code}
-UIForumPortlet.prototype.reSizeImages = function() {
+{code}UIForumPortlet.prototype.reSizeImages = function() {
   setTimeout('eXo.forum.UIForumPortlet.setSizeImages(225, "UITopicDetail")', 500);
-};
-{code}
+};{code}
 
 
 h2. UIForumPortlet.executeLink
@@ -358,8 +340,7 @@ To get and execute the action when the user clicks the HTML node with the _actio
 
 * *Example*
 To perform the action when the user clicks the tag A on a specific UI component, do as follows:
-{code}
- UIForumPortlet.prototype.addLink = function(cpId, clazzAction) {
+{code}UIForumPortlet.prototype.addLink = function(cpId, clazzAction) {
     var comp = document.getElementById(cpId);
     var uiCategoryTitle = eXo.core.DOMUtil.findDescendantsByClass(comp,"a", clazzAction);
     var i = uiCategoryTitle.length;
@@ -367,8 +348,7 @@ To perform the action when the user clicks the tag A on a specific UI component,
     while(i--){
        uiCategoryTitle[i].onclick = this.executeLink ;
     }
-};
-{code}
+};{code}
 
 h2. UIForumPortlet.createLink
 
@@ -385,9 +365,7 @@ To create a link based on the user's setting (with Ajax or not).
 
 * *Example*
 To create a link for a component, do as follows:
-{code}
- jsmanager.addJavascript("eXo.forum.UIForumPortlet.createLink('"+uicomponent.id+"','" + uicomponent.useAjax + "');") ;
-{code}
+{code}jsmanager.addJavascript("eXo.forum.UIForumPortlet.createLink('"+uicomponent.id+"','" + uicomponent.useAjax + "');") ;{code}
 
 h2. UIForumPortlet.showBBCodeHelp
 
@@ -404,9 +382,7 @@ To show/hide the help pop-up to create BBCodes.
 
 * *Example*
 To show the BBCodeHelp pop-up when the user clicks the element with $id, do as follows:
-{code}
-eXo.forum.UIForumPortlet.showBBCodeHelp('$id', 'true')"  
-{code}
+{code}eXo.forum.UIForumPortlet.showBBCodeHelp('$id', 'true')"  {code}
 
 
 h1. Javascript Framework of Answers & FAQ
@@ -425,16 +401,14 @@ To initialize data, then set up and process functions when the user clicks the c
 
 * *Example*
 To install the drag and drop feature for items with the class selector _FAQCategory_ in the component with _compid_, do the following:
-{code}
-function init(compid){
+{code}function init(compid){
 	var comp = document.getElementById(compid);
 	var elements = eXo.core.DOMUtil.findDescendantsByClass(comp,"div","FAQCategory");
 	var i = elements.length;
 	while(i--){
 		elements[i].onmousedown = this.attach;
 	}
-}
-{code}
+}{code}
 
 
 

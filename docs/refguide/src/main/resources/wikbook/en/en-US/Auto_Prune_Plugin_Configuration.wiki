@@ -17,8 +17,7 @@ The properties of Auto-prune plug-in are configured in the _{{{war:webapp/WEB-IN
 
 In particular, at runtime of Job Scheduler, the Auto-prune plugin component is called. Then, the _prune-configuration.xml_ file will be executed. The component-plugin named _ForumDeactiveJob_ will refer to _org.exoplatform.forum.service.conf.DeactivePeriodJob_ to inactivate topics in Forum which meets predefined inactivation properties.
 
-{code:xml}
-<component-plugin>
+{code:xml}<component-plugin>
   <name>ForumDeactiveJob</name>
   <set-method>addPeriodJob</set-method>
   <type>org.exoplatform.forum.service.conf.DeactivePeriodJob</type>
@@ -42,8 +41,7 @@ In particular, at runtime of Job Scheduler, the Auto-prune plugin component is c
       <property name="forumName" value="Live demo"/>          
     </properties-param>
   </init-params>
-</component-plugin>
-{code}
+</component-plugin>{code}
 
 * In which,
 || Name || Set-method || Type || Description ||
@@ -51,8 +49,7 @@ In particular, at runtime of Job Scheduler, the Auto-prune plugin component is c
 
 * The properties for the Auto-prune plug-in are defined in the _property_ tag with the format as below:
 
-{code:xml}
-...
+{code:xml}...
 <property name="jobName" value="DeactiveJob"/>
 <property name="groupName" value="KnowlegedSuite"/>
 <property name="job" value="org.exoplatform.forum.service.conf.DeactiveJob"/>
@@ -63,8 +60,7 @@ In particular, at runtime of Job Scheduler, the Auto-prune plugin component is c
 ...
 <property name="inactiveDays" value="15"/>          
 <property name="forumName" value="Live demo"/>    
-...
-{code}
+...{code}
 
 In details:
 

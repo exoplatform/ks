@@ -15,8 +15,7 @@ To implement a new macro, you will need to write 2 classes:
 * The first class is a pure Java bean and represents the parameters allowed for that macro, including mandatory parameters, default values, parameter descriptions. An instance of this class will be automatically populated when the user calls the macro Wiki syntax.
 * The second class is the macro itself. This class should implement the _macro_ interface. However, you are recommended to extend _AbstractMacro_ which does some heavy lifting for you. By doing so, you will only have to implement 2 methods:
 
-{code}
-/**
+{code}/**
  * @return true if the macro can be inserted in some existing content such as a paragraph, a list item, and more. For
  *         example if I have <code>== hello {{velocity}}world{{/velocity}}</code> then the Velocity macro must
  *         support the inline mode and not generate a paragraph.
@@ -31,14 +30,11 @@ boolean supportsInlineMode();
  * @throws MacroExecutionException error when executing the macro
  */
 List<Block> execute(P parameters, String content, MacroTransformationContext context)
-    throws MacroExecutionException;
-{code}
+    throws MacroExecutionException;{code}
 
 Then, you will need to register your macro class with the [Component Manager|http://platform.xwiki.org/xwiki/bin/view/DevGuide/WritingComponents] so that it can be called from a wiki page. Register your macro with a _Macro.class_ role and a hint corresponding to the macro name. For example, if you have registered your macro under the _mymacro_ hint, you will be able to call:
 
-{code}
-{{mymacro .../}}
-{code}
+{code}{{mymacro .../}}{code}
 
 In addition, you can register your macro for all syntaxes or only for a given syntax. To register a given syntax only, you must use a hint in the format _macroname/syntaxid_. For example: _mymacro/xwiki/2.0_.
 
@@ -66,8 +62,7 @@ If you are a XWiki developer or you just want to see [more examples of implement
 
 Here is the content of the _pom.xml_ file:
 
-{code}
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+{code:xml}<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.acme</groupId>
@@ -118,16 +113,14 @@ Here is the content of the _pom.xml_ file:
       <scope>test</scope>
     </dependency>
   </dependencies>
-</project>
-{code}
+</project>{code}
 
 
 h2. Macro Code {anchor:id=KSref.ExtendMacrosFromExternalJar.MacroMode}
 
 Here is the content of the generated _ExampleMacro.java_.
 
-{code}
-package com.acme.internal;
+{code}package com.acme.internal;
 
 import java.util.Arrays;
 import java.util.List;
@@ -189,16 +182,13 @@ public class ExampleMacro extends AbstractMacro<ExampleMacroParameters> {
   public boolean supportsInlineMode() {
     return true;
   }
-}
-{code}
+}{code}
 
 As explained in the [Rendering Architecture|http://rendering.xwiki.org/xwiki/bin/view/Main/Architecture], the macro's execution method returns a list of Blocks. In the case of this simple macro, it simply returns a Word Block with the value in the _parameter_ parameter (i.e. hello if the macro is called with _ example parameter="hello"/_).
 
 Here is the _ExampleMacroParameters.java_ file:
 
-{code}
-
-package com.acme;
+{code}package com.acme;
 
 import org.xwiki.properties.annotation.PropertyDescription;
 import org.xwiki.properties.annotation.PropertyMandatory;
@@ -227,21 +217,17 @@ public class ExampleMacroParameters {
   public void setParameter(String parameter) {
     this.parameter = parameter;
   }
-}
-{code}
+}{code}
 
 And here is the _components.txt_ file:
 
-{code}
-com.acme.internal.ExampleMacro
-{code}
+{code}com.acme.internal.ExampleMacro{code}
 
 h2. Test the macro {anchor:id=KSref.ExtendMacrosFromExternalJar.TestTheMacro}
 
 The XWiki Rendering system has a pretty advanced Test framework to make it easy to test macros.
 
-{code}
-.runTransformations
+{code}.runTransformations
 .#-----------------------------------------------------
 .input|xwiki/2.0
 .# Test the macro in standalone mode
@@ -260,14 +246,11 @@ beginParagraph
 onWord [hello]
 endParagraph
 endMacroMarkerStandalone [example] [parameter=hello]
-endDocument
-{code}
+endDocument{code}
 
 Here is the test declaration for your macro (_example1.test_):
 
-{code}
-
-.runTransformations
+{code}.runTransformations
 .#-----------------------------------------------------
 .input|xwiki/2.0
 .# Test the macro in inline mode
@@ -292,15 +275,13 @@ beginMacroMarkerInline [example] [parameter=hello]
 onWord [hello]
 endMacroMarkerInline [example] [parameter=hello]
 endParagraph
-endDocument
-{code}
+endDocument{code}
 
 This instructs the test framework to execute the macro with the given input and to compare to all specific outputs (defined using the expected keyword). In this example, you are going to input XWiki Syntax 2.0 and compare the result against XHTML 1.0 and against the internal events generated by the parser. These events are the pivot format used internally by the XWiki Rendering system. All the Renderers take those events to generate some outputs.
 
 Finally, this is how the _IntegrationTests.java_ file looks like:
 
-{code}
-package com.acme;
+{code}package com.acme;
 
 import junit.framework.TestCase;
 import org.xwiki.test.ComponentManagerTestSetup;
@@ -314,8 +295,7 @@ public class IntegrationTests extends TestCase {
     suite.addTestsFromResource("example2.test");
     return new ComponentManagerTestSetup(suite);
   }
-}
-{code}
+}{code}
 
 h1. Deploy the macro {anchor:id=KSref.ExtendMacrosFromExternalJar.DeployTheMacro}
 

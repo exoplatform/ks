@@ -46,8 +46,7 @@ Alternatively, you can configure the portlet in the _portet-preferences.xml_ fil
 
 As a reference, the  default _portlet.xml_ for the FAQ application is: 
 
-{code:xml}
-<portlet-preferences>
+{code:xml}<portlet-preferences>
   <preference>
     <name>display</name>
     <value>both</value> <!-approved/both ->
@@ -98,5 +97,4 @@ As a reference, the  default _portlet.xml_ for the FAQ application is:
       <value>true</value> <!- true/false ->
       <read-only>false</read-only>
   </preference>
-</portlet-preferences>    
-{code}
+</portlet-preferences>{code}

@@ -13,8 +13,7 @@ Configuration
 
 The properties of Forum's UpdateDataJob is configured in _/WEB-INF/ks-extension/ks/forum/statistics-configuration.xml_ which is located in ks-extension webapp.
 
-{code:xml}
-<component-plugin>
+{code:xml}<component-plugin>
   <name>UpdateDataJob</name>
   <set-method>addPeriodJob</set-method>
   <type>org.exoplatform.services.scheduler.PeriodJob</type>
@@ -32,8 +31,7 @@ The properties of Forum's UpdateDataJob is configured in _/WEB-INF/ks-extension/
       <property name="endTime" value=""/>               
     </properties-param>        
   </init-params>
-</component-plugin>
-{code}
+</component-plugin>{code}
 
 In which:
 
@@ -42,15 +40,13 @@ In which:
 
 - The properties for Auto-count Active Members plug-in are defined in the property tag as below:
 
-{code:xml}
-<property name="jobName" value="UpdateDataJob"/>
+{code:xml}<property name="jobName" value="UpdateDataJob"/>
 <property name="groupName" value="KnowledgeSuite-forum"/>
 <property name="job" value="org.exoplatform.forum.service.conf.UpdateDataJob"/>
 <property name="repeatCount" value="1"/>
 <property name="period" value="30000"/>    
 <property name="startTime" value="+0"/>
-<property name="endTime" value=""/>     
-{code}
+<property name="endTime" value=""/>{code}
 
 
 || Property name || Possible value || Default value || Description ||

@@ -18,8 +18,7 @@ When the user signs in, his or her username, group and membership will be compar
 
 In particular, at runtime of ForumService, the roles plug-in component is called. The role plug-in is configured in the _roles-configuration.xml_ file. The plug-in component named _add.role.rules.plugin_ will be referred to _org.exoplatform.ks.common.conf.RoleRulesPlugin_ to create users for Forum corresponding to users who exist in the organization database. In addition, the list of users who have _administration_ roles are also defined.
 
-{code:xml}
-<component-plugin>
+{code:xml}<component-plugin>
   <name>add.role.rules.plugin</name>
   <set-method>addRolePlugin</set-method>
   <type>org.exoplatform.ks.common.conf.RoleRulesPlugin</type>
@@ -44,8 +43,7 @@ In particular, at runtime of ForumService, the roles plug-in component is called
       <!--value>manager:/somegroup/someothergroup</value-->
     </values-param>
   </init-params>
-</component-plugin>
-{code}
+</component-plugin>{code}
 
 In which:
 
@@ -60,21 +58,17 @@ In which:
 
 * When the _role-configuration.xml_ file is executed, the administration role (with {{ADMIN}} value) will be checked and assigned to a matrix of _users/groups/memberships_ defined inside the "value" tags as below:
 
-{code:xml}
-<value>...</value>
-{code}
+{code:xml}<value>...</value>{code}
  
 For example:
 
-{code:xml}
-...
+{code:xml}...
 <value>root</value>
 <value>john</value> 
 <value>/platform/administrators</value> 
 <value>member:/VIP</value>
 <value>validator:/VIP</value>
-...
-{code}
+...{code}
 
 In the example above, the default administrators of Forum include _root_, _john_, users in _/platform/administrators_ group and users who have _member/validator_ memberships in the VIP group. 
 
@@ -82,15 +76,13 @@ When being _root_, the users who belong to the _/platform/administrators_ group 
 
 To add or remove the default administrator of the Forum, simply edit the _roles-configuration.xml_ file, add or remove the relevant "value" tags.
 
-{code:xml}
-...             
+{code:xml}...             
 <values-param>
   ...
   <value>...</value>
   ...
 </values-param>
-...
-{code}
+...{code}
 
 The default administrators of the Forum can only change their roles by editing in the _roles-configuration.xml_ file.
 

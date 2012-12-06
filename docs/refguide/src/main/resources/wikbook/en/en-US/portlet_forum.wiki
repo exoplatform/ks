@@ -80,8 +80,7 @@ To receive ForumLinkEvent, you must use the _ForumParameter_ class with two prop
 
 For example:
 
-{code:java}
-PortletRequestContext pcontext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance();
+{code:java}PortletRequestContext pcontext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance();
 ActionResponse actionRes = (ActionResponse) pcontext.getResponse();
 ForumParameter param = new ForumParameter();
 String path = forum.getPath();
@@ -91,8 +90,7 @@ if ( ...condition to render the UIForumLinkPortlet... ) {
 } else {
   param.setRenderForumLink(false);
 }
-actionRes.setEvent(new QName("ForumLinkEvent"), param) ;
-{code}
+actionRes.setEvent(new QName("ForumLinkEvent"), param) ;{code}
 
 *ReLoadPortletEvent* {anchor:id=KSref.ForumPortlet.ReLoadPortletEvent}
 This event is fired through UIForumPortlet. 
@@ -104,15 +102,13 @@ To receive ReLoadPortletEvent, you must use the _ForumParameter_ class with two 
 
 For example:
 
-{code:java}
-....
+{code:java}....
 ActionResponse actionRes = pcontext.getResponse() ;
 ForumParameter param = new ForumParameter() ;
 param.setRenderPoll(true);
 param.setTopicId(topic.get());
 actionRes.setEvent(new QName("ReLoadPortletEvent"), param) ;
-....
-{code}
+....{code}
 
 *OpenLink* {anchor:id=KSref.ForumPortlet.OpenLink}
 This event is fired through UIForumPortlet. 
@@ -123,14 +119,12 @@ To receive OpenLink, you must use the _ForumParameter_ class with one property:
 
 For example:
 
-{code:java}
-....
+{code:java}....
 ActionResponse actionRes = pcontext.getResponse() ;
 ForumParameter param = new ForumParameter() ;
 param.setPath(path);
 actionRes.setEvent(new QName("OpenLink"), param) ;
-....
-{code}
+....{code}
 
 *ForumPollEvent* {anchor:id=KSref.ForumPortlet.ForumPollEvent}
 This event is fired through UIForumPollPortlet.
@@ -144,8 +138,7 @@ To receive ForumPollEvent, you must use the _ForumParameter_ class with four pro
 
 For example:
 
-{code:java}
-....
+{code:java}....
 ActionResponse actionRes = pcontext.getResponse() ;
 ForumParameter param = new ForumParameter() ;
 param.setCategoryId(categoryId) ; 
@@ -153,8 +146,7 @@ param.setForumId(forumId);
 param.setTopicId(topicId);
 param.setRenderPoll(topic.getIsPoll());
 actionRes.setEvent(new QName("ForumPollEvent"), param);
-....
-{code}
+....{code}
 
 *ForumModerateEvent* {anchor:id=KSref.ForumPortlet.ForumModerateEvent}
 This event is fired through UIForumModeratePortlet.
@@ -166,16 +158,14 @@ To receive ForumModerateEvent, you must use the _ForumParameter_ class with two 
 
 For example:
 
-{code:java}
-....
+{code:java}....
 List<String> moderators = Arays.asList(forum.getModerators());
 ActionResponse actionRes = pcontext.getResponse() ;
 ForumParameter param = new ForumParameter() ;
 param.setModerators(moderators);
 param.setRenderModerator(true);
 actionRes.setEvent(new QName("ForumPollEvent"), param);
-....
-{code}
+....{code}
 
 *ForumRuleEvent* {anchor:id=KSref.ForumPortlet.ForumRuleEvent}
 This event is fired through UIForumRulePortlet.
@@ -187,8 +177,7 @@ To receive ForumRuleEvent, you must use the _ForumParameter_ class with two prop
 
 For example:
 
-{code:java}
-....
+{code:java}....
 ActionResponse actionRes = pcontext.getResponse() ;
 ForumParameter param = new ForumParameter() ;
 List<String> list = param.getInfoRules();
@@ -202,8 +191,7 @@ list.set(2, String.valueOf(isCanPost));
 param.setInfoRules(list);
 param.setRenderRule(true);
 actionRes.setEvent(new QName("ForumRuleEvent"), param) ;
-....
-{code}
+....{code}
 
 *QuickReplyEvent* {anchor:id=KSref.ForumPortlet.QuickReplyEvent}
 This event is fired through UIQuickReplyPortlet.
@@ -218,8 +206,7 @@ To receive QuickReplyEvent, you must use the _ForumParameter_ class with five pr
 
 For example:
 
-{code:java}
-....
+{code:java}....
 ActionResponse actionRes = pcontext.getResponse() ;
 ForumParameter param = new ForumParameter() ;
 param.setRenderQuickReply(isCanPost);
@@ -228,5 +215,4 @@ param.setCategoryId(categoryId) ;
 param.setForumId(forumId); 
 param.setTopicId(topicId);
 actionRes.setEvent(new QName("QuickReplyEvent"), param) ;;
-....
-{code}
+....{code}

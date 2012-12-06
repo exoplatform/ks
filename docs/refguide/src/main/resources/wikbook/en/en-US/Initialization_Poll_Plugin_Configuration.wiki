@@ -17,8 +17,7 @@ The default Poll data are configured in the _{{{war:webapp/WEB-INF/conf/ksdemo/k
 In particular, when the Poll service starts, the Initialization plug-in component is called. Next, the _services-configuration.xml_ file is executed.
 The component-plugin named _addInitialDefaultDataPlugin_ will refer to _org.exoplatform.poll.service.InitialDeafaultDataPlugin_ to execute some objects to create default data for the Poll application.
 
-{code:xml}
-<component-plugin>
+{code:xml}<component-plugin>
   <name>default.data</name>
   <set-method>addInitialDefaultDataPlugin</set-method>
   <type>org.exoplatform.poll.service.InitialDefaultDataPlugin</type>
@@ -70,8 +69,7 @@ The component-plugin named _addInitialDefaultDataPlugin_ will refer to _org.exop
        </object>
      </object-param>
   </init-params>
-</component-plugin>
-{code}
+</component-plugin>{code}
 
 * In which,
 || Name || Set-method || Type || Description ||
@@ -85,8 +83,7 @@ The component-plugin named _addInitialDefaultDataPlugin_ will refer to _org.exop
 
 After the _org.exoplatform.poll.service.InitialDefaultDataPlugin_ object has been executed, the _org.exoplatform.poll.service.PollInitialData_ object will be called. It returns a polls array. The value of poll array is defined by the _org.exoplatform.poll.service.PollData_ object as below:
 
-{code:xml}
-<name>livedemo.default.configuration</name>
+{code:xml}<name>livedemo.default.configuration</name>
 <description>initial data for live demo</description>
 <object type="org.exoplatform.poll.service.PollInitialData">
   <field name="pollDatas">
@@ -98,13 +95,11 @@ After the _org.exoplatform.poll.service.InitialDefaultDataPlugin_ object has bee
       </value>
     </collection>
   </field>
-</object>
-{code}
+</object>{code}
 
 * A Poll includes some basic data which are defined in the _field_ tag with a specific name as below:
 
-{code:xml}
-....
+{code:xml}....
 <field name="parentPath">
   <string>ksdemo/Polls</string>
 </field>
@@ -136,8 +131,7 @@ After the _org.exoplatform.poll.service.InitialDefaultDataPlugin_ object has bee
     <value><string>Purple</string></value>
   </collection>
 </field>
-....
-{code}
+....{code}
 
 In which:
 

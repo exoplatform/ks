@@ -13,8 +13,7 @@ h1. Initialize the conf-part for loading repository-configuration.xml {anchor:id
 
 When the server starts, the _jcr-configuration.xml_ file is initialized. The component-plugin named addConfig will be referred to org.exoplatform.services.jcr.impl.config.RepositoryServiceConfigurationPlugin to load the _war:/ks-extension/jcr/repository-configuration.xml_ file.
 
-{code:xml}
-<component-plugin>
+{code:xml}<component-plugin>
   <!-- The name of the plugin -->
   <name>Sample RepositoryServiceConfiguration Plugin</name>
   <!-- The name of the method to call on the RepositoryServiceConfiguration 
@@ -29,8 +28,7 @@ When the server starts, the _jcr-configuration.xml_ file is initialized. The com
       <value>war:/ks-extension/jcr/repository-configuration.xml</value>
     </value-param>
   </init-params>
-</component-plugin>
-{code}
+</component-plugin>{code}
 
 * In which:
 || Name || Set-method || Type || Description ||
@@ -47,8 +45,7 @@ In details:
 
 Once the _{{{war:/ks-extension/jcr/repository-configuration.xml}}}_ file has been initialized, the server will load the _storage\-configuration.xml_ file, and the _setLocation_ function in the _org.exoplatform.ks.common.conf.DataLocationPlugin_ component will run.
 
-{code:xml}
-<external-component-plugins>
+{code:xml}<external-component-plugins>
   <target-component>org.exoplatform.ks.common.jcr.KSDataLocation</target-component>
   <component-plugin>
     <name>ks.data.location</name>
@@ -67,8 +64,7 @@ Once the _{{{war:/ks-extension/jcr/repository-configuration.xml}}}_ file has bee
       </value-param>
     </init-params>
   </component-plugin>
-</external-component-plugins>
-{code}
+</external-component-plugins>{code}
 
 In which, 
 || Value-param || Possible value || Default value || Description ||
@@ -79,8 +75,7 @@ h1. Initialize data {anchor:id=KSref.InitDataConfiguration.InitializeData}
 
 Once the workspace name and repository name are registered, the server will load org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator and the _addPaths_ function in org.exoplatform.services.jcr.ext.hierarchy.impl.AddPathPlugin is called. Then, the data location will be built. 
 
-{code:xml}
-<component-plugin>
+{code:xml}<component-plugin>
   <name>addPaths</name>
   <set-method>addPlugin</set-method>
   <type>org.exoplatform.services.jcr.ext.hierarchy.impl.AddPathPlugin</type>
@@ -940,5 +935,4 @@ Once the workspace name and repository name are registered, the server will load
       </object>
     </object-param>
   </init-params>
-</component-plugin>
-{code}
+</component-plugin>{code}

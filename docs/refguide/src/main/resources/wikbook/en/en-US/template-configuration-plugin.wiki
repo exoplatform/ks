@@ -48,8 +48,7 @@ In details:
 
 At runtime of the FAQ Service, _FAQService_ component is called, then _templates-configuration.xml_ file is executed. The component-plugin named _addTemplatePlugin_ will be referred to _org.exoplatform.faq.service.TemplatePlugin_ to execute some objects and create default data for the *Forum* application.
 
-{code:xml}
-<external-component-plugins>
+{code:xml}<external-component-plugins>
   <target-component>org.exoplatform.faq.service.FAQService</target-component>
   <component-plugin>
     <name>faq.default.template</name>
@@ -62,19 +61,16 @@ At runtime of the FAQ Service, _FAQService_ component is called, then _templates
       </value-param>
     </init-params>
   </component-plugin>
-</external-component-plugins>
-{code}
+</external-component-plugins>{code}
 
 The properties of template configuration plug-in are defined in the _init-params_ tag as follows:
 
-{code:xml}
-<init-params>
+{code:xml}<init-params>
   <value-param>
     <name>viewerTemplate</name>
     <value>war:/ks-extension/ks/faq/templates/FAQViewerPortlet.gtmpl</value>
   </value-param>
-</init-params>
-{code}
+</init-params>{code}
 
 || Name || Description || Value ||
 |*viewerTemplate* | Path of file template. | war:/ks-extension/ks/faq/templates/ FAQViewerPortlet.gtmpl |
@@ -133,16 +129,14 @@ h1. API provided by the UIComponent (UIViewer.java) {anchor:id=KSref.FAQTemplate
 
 * The *CategoryInfo* class:{anchor:id=Category-info}
 
-{code:java}
-...
+{code:java}...
 private String id;
 private String path;
 private String name;
 private List<String> pathName;
 private List<QuestionInfo> questionInfos = new ArrayList<QuestionInfo>();
 private List<SubCategoryInfo> subCateInfos = new ArrayList<SubCategoryInfo>();
-...
-{code}
+...{code}
 
 ||Param|| Type || Description ||
 |*id*|{{String}}| The jcr node name of the category node. |
@@ -154,14 +148,12 @@ private List<SubCategoryInfo> subCateInfos = new ArrayList<SubCategoryInfo>();
 
 * The *QuestionInfo* class:
 
-{code:java}
-...
+{code:java}...
 private String id;
 private String question;
 private String detail;
 private List<String> answers = new ArrayList<String>();
-...
-{code}
+...{code}
 
 ||Param|| Type || Description ||
 |*id*| {{String}} | The jcr node name of the question node. |

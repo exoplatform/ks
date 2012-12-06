@@ -23,8 +23,7 @@ In details, at runtime of Answers Service, the Initialization plug-in component 
 
 The default data in the _.zip_ file is initialized as follows:
 
-{code:xml}
-<component-plugin>
+{code:xml}<component-plugin>
   <name>technical-faq</name>
   <set-method>addInitialDataPlugin</set-method>
   <type>org.exoplatform.faq.service.InitialDataPlugin</type>
@@ -36,8 +35,7 @@ The default data in the _.zip_ file is initialized as follows:
       <value>war:/data/Technical-FAQ.zip</value>
     </value-param>
   </init-params>
-</component-plugin>
-{code}
+</component-plugin>{code}
 
 * In which,
 || Name || Set-Method || Type || Description ||
@@ -49,18 +47,12 @@ The default data in the _.zip_ file is initialized as follows:
 
 If the default data is in the _XML_ format:
 
-{code:xml}
-<value>war:/data/Technical-FAQ.xml</value>
-{code}
+{code:xml}<value>war:/data/Technical-FAQ.xml</value>{code}
 
 By default, the default Answers data can only import if the importing categories do not exist in database.
 
 To initialize default data in multiple files, it is required to declare them in multiple plugins.
 
-{code:xml}
-<component-plugin>
-
+{code:xml}<component-plugin>
 ....
-
-</component-plugin>
-{code}
+</component-plugin>{code}
