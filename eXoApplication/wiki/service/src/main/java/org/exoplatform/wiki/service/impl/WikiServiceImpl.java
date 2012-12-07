@@ -17,6 +17,8 @@ import java.util.Queue;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.chromattic.api.ChromatticSession;
+import org.chromattic.api.annotations.Create;
+import org.chromattic.api.annotations.OneToMany;
 import org.exoplatform.commons.chromattic.ChromatticManager;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
@@ -226,13 +228,6 @@ public class WikiServiceImpl implements WikiService, Startable {
         trash.addChild(newName, oldDeleted) ;        
       }      
       trash.addRemovedWikiPage(page);      
-      
-      //update LinkRegistry
-      LinkRegistry linkRegistry = wiki.getLinkRegistry();
-      if (linkRegistry.getLinkEntries().get(getLinkEntryName(wikiType, wikiOwner, pageId)) != null) {
-        linkRegistry.getLinkEntries().get(getLinkEntryName(wikiType, wikiOwner, pageId)).setNewLink(null);
-      }
-      
       session.save();
     } catch (Exception e) {
       log.error("Can't delete page '" + pageId + "' ", e) ;
@@ -271,8 +266,9 @@ public class WikiServiceImpl implements WikiService, Startable {
                             String pageName,
                             String newName,
                             String newTitle) throws Exception {
-    if (WikiNodeType.Definition.WIKI_HOME_NAME.equals(pageName) || pageName == null)
-      return false;
+    if (WikiNodeType.Definition.WIKI_HOME_NAME.equals(pageName) || pageName == null){
+    	return false;	
+    }
     PageImpl currentPage = (PageImpl) getPageById(wikiType, wikiOwner, pageName);
     PageImpl parentPage = currentPage.getParentPage();
 
@@ -1013,6 +1009,7 @@ public class WikiServiceImpl implements WikiService, Startable {
       entry.setNewLink(newEntry);
     } else {
       LinkEntry nextEntry = newEntry.getNewLink();
+      
       while (!nextEntry.equals(newEntry)) {
         LinkEntry deletedEntry = nextEntry;
         nextEntry = nextEntry.getNewLink();
