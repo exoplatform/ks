@@ -1749,13 +1749,6 @@ table.UIFormGrid div.Id {
 
 @media print
 {
-  body {
-    position:relative;
-    overflow:visible  !important;
-  }   
-  body * {
-	visibility: hidden;
-  }
   #UIWikiPageContentArea, #UIWikiPageContentArea * {
     visibility:visible;
     overflow: visible !important;

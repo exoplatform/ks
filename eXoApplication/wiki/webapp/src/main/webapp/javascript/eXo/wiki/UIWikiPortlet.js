@@ -31,21 +31,12 @@ UIWikiPortlet.prototype.init = function(portletId, linkId) {
   me.wikiportlet = document.getElementById(portletId);
   me.changeWindowTite(me.wikiportlet);
   me.changeModeLink = document.getElementById(linkId);
-
-  // window.onload = function(event) {me.changeMode(event);};
-  /*window.onbeforeunload = function(event) {
-    me.changeMode(event);
-  };*/
-
-  /*if (document.attachEvent)
-    me.wikiportlet.attachEvent("onmouseup", me.onMouseUp);
-  else
-    me.wikiportlet.onmouseup = function(event) {
-      me.onMouseUp(event);
-    };
-  me.wikiportlet.onkeyup = function(event) {
-    me.onKeyUp(event);
-  };*/
+  var head = document.getElementsByTagName('head')[0];
+  var newStyle = document.createElement('style');
+  newStyle.setAttribute('type', 'text/css');
+  newStyle.setAttribute('media', 'print');
+  newStyle.appendChild(document.createTextNode('body { position:relative;overflow:visible  !important; } body * {       visibility: hidden;  }'));
+  head.appendChild(newStyle);
 }
 
 UIWikiPortlet.prototype.changeWindowTite = function(elm) {
