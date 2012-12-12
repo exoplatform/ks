@@ -42,32 +42,25 @@ import org.exoplatform.wiki.webui.core.UIAdvancePageIterator;
  */
 @ComponentConfig(lifecycle = Lifecycle.class, template = "app:/templates/wiki/webui/UIWikiAdvanceSearchResult.gtmpl")
 public class UIWikiAdvanceSearchResult extends UIContainer {
-
-  private String keyword;
+  
+  private PageList<SearchResult> results;
 
   public UIWikiAdvanceSearchResult() throws Exception {
     addChild(UIAdvancePageIterator.class, null, "SearchResultPageIterator");
   }
 
-  public void setResult(PageList<SearchResult> results) throws Exception {
-    UIAdvancePageIterator pageIterator = this.getChild(UIAdvancePageIterator.class);
-    pageIterator.setPageList(results);
-    if(pageIterator.getPageList() != null){
-      pageIterator.getPageList().getPage(1);
-    }
-  }
-
   public PageList<SearchResult> getResults() {
-    UIAdvancePageIterator pageIterator = this.getChild(UIAdvancePageIterator.class);
-    return pageIterator.getPageList();
+    return results;
   }
 
-  public void setKeyword(String keyword) {
-    this.keyword = keyword;
+  public void setResults(PageList<SearchResult> results) {
+    this.results = results;
   }
-
-  protected String getKeyword() {
-    return keyword;
+  
+  public String getKeyword() {
+    UIWikiPortlet wikiPortlet = getAncestorOfType(UIWikiPortlet.class);
+    UIWikiAdvanceSearchForm advanceSearchForm = wikiPortlet.findFirstComponentOfType(UIWikiAdvanceSearchForm.class);
+    return advanceSearchForm.getKeyword();
   }
 
   protected String getDateFormat(Calendar cal) throws Exception {
@@ -96,6 +89,9 @@ public class UIWikiAdvanceSearchResult extends UIContainer {
   }
 
   protected String getOldPageTitleInSearchResult(PageImpl page, String pageTitle) throws Exception {
+    UIWikiPortlet wikiPortlet = getAncestorOfType(UIWikiPortlet.class);
+    UIWikiAdvanceSearchForm advanceSearchForm = wikiPortlet.findFirstComponentOfType(UIWikiAdvanceSearchForm.class);
+    String keyword = advanceSearchForm.getKeyword();
     if (pageTitle.indexOf(keyword) >= 0) {
       return "";
     }
@@ -120,6 +116,5 @@ public class UIWikiAdvanceSearchResult extends UIContainer {
       sb.append(" ").append(st.nextElement());
     return sb.toString();
   }
-  
 }
 

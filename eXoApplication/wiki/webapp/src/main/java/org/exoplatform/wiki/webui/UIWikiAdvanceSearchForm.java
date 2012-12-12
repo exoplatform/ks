@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.exoplatform.commons.utils.PageList;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ks.common.CommonUtils;
 import org.exoplatform.portal.config.model.PortalConfig;
@@ -40,9 +39,9 @@ import org.exoplatform.wiki.mow.api.Wiki;
 import org.exoplatform.wiki.mow.api.WikiType;
 import org.exoplatform.wiki.service.WikiPageParams;
 import org.exoplatform.wiki.service.WikiService;
-import org.exoplatform.wiki.service.search.SearchResult;
 import org.exoplatform.wiki.service.search.WikiSearchData;
 import org.exoplatform.wiki.utils.Utils;
+import org.exoplatform.wiki.webui.core.UIAdvancePageIterator;
 
 /**
  * Created by The eXo Platform SAS
@@ -57,11 +56,14 @@ import org.exoplatform.wiki.utils.Utils;
       @EventConfig(listeners = UIWikiAdvanceSearchForm.SearchActionListener.class)            
     }
 )
-
 public class UIWikiAdvanceSearchForm extends UIForm {
   final static String TEXT  = "text".intern();
 
   final static String WIKIS = "wikis".intern();
+  
+  private static final int NUMBER_OF_RESULT_PER_PAGE = 10;
+  
+  private static long numberOfSearchResult;
   
   public UIWikiAdvanceSearchForm() throws Exception {
     addChild(new UIFormStringInput(TEXT, TEXT, null));
@@ -128,16 +130,50 @@ public class UIWikiAdvanceSearchForm extends UIForm {
     SelectOptionGroup userSpaceOptions = new SelectOptionGroup(getLabel("UserWikis"));
     Collection<Wiki> userWikis = Utils.getWikisByType(WikiType.USER);
     for (Wiki wiki : userWikis) {
-      userSpaceOptions.addOption(new SelectOption(wiki.getOwner(), PortalConfig.USER_TYPE + "/"
-          + wiki.getOwner()));
+      userSpaceOptions.addOption(new SelectOption(wiki.getOwner(), PortalConfig.USER_TYPE + "/" + wiki.getOwner()));
     }
     return userSpaceOptions;
   }
   
   public void processSearchAction() throws Exception {
-    WikiService wservice = (WikiService) PortalContainer.getComponent(WikiService.class);
+    WikiSearchData data = createSearchData();
+    numberOfSearchResult = Utils.countSearchResult(data);
+    gotoSearchPage(1);
+  }
+  
+  public static long getNumberOfSearchResult() {
+    return numberOfSearchResult;
+  }
+
+  public void gotoSearchPage(int pageIndex) throws Exception {
+    pageIndex = (int) Math.min(pageIndex, getPageAvailable());
+    WikiSearchData data = createSearchData();
+    data.setOffset((pageIndex - 1) * NUMBER_OF_RESULT_PER_PAGE);
+    data.setLimit(NUMBER_OF_RESULT_PER_PAGE);
+    
+    WikiService wikiservice = (WikiService) PortalContainer.getComponent(WikiService.class);
+    UIWikiAdvanceSearchResult uiSearchResults = getParent().findFirstComponentOfType(UIWikiAdvanceSearchResult.class);
+    uiSearchResults.setResults(wikiservice.search(data));
+    
+    UIAdvancePageIterator uiAdvancePageIterator = getParent().findFirstComponentOfType(UIAdvancePageIterator.class);
+    uiAdvancePageIterator.setCurrentPage(pageIndex);
+  }
+  
+  public String getKeyword() {
     String text = getUIStringInput(TEXT).getValue();
-    text = (text == null) ? StringUtils.EMPTY : text.trim();
+    return (text == null) ? StringUtils.EMPTY : text.trim();
+  }
+  
+  public int getPageAvailable() {
+    double pageAvailabe = numberOfSearchResult * 1.0 / NUMBER_OF_RESULT_PER_PAGE;
+    if (pageAvailabe > (int) pageAvailabe) {
+      pageAvailabe = (int) pageAvailabe + 1;
+    }
+    return (int) pageAvailabe;
+  }
+  
+  private WikiSearchData createSearchData() {
+    String text = getKeyword();
     String path = getChild(UIFormSelectBoxWithGroups.class).getValue();
     String wikiType = null;
     String wikiOwner = null;
@@ -149,11 +185,7 @@ public class UIWikiAdvanceSearchForm extends UIForm {
           wikiOwner = StringUtils.replace(path, wikiType + CommonUtils.SLASH, CommonUtils.EMPTY_STR);
       }
     }
-    WikiSearchData data = new WikiSearchData(text, null, null, wikiType, wikiOwner);
-    PageList<SearchResult> results = wservice.search(data);
-    UIWikiAdvanceSearchResult uiSearchResults = getParent().findFirstComponentOfType(UIWikiAdvanceSearchResult.class);
-    uiSearchResults.setKeyword(text);
-    uiSearchResults.setResult(results);
+    return new WikiSearchData(text, null, null, wikiType, wikiOwner);
   }
   
   private String getDefaultSelectWikiValue() throws Exception {

@@ -12,6 +12,7 @@ import java.util.List;
 import javax.jcr.ImportUUIDBehavior;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
@@ -45,8 +46,6 @@ import org.exoplatform.wiki.utils.Utils;
 public class JCRDataStorage implements DataStorage{
   private static final Log log = ExoLogger.getLogger(JCRDataStorage.class);
   
-  private static final int searchSize = 10;
-  
   private WikiTemplatePagePlugin templatePlugin; 
   
   public void setTemplatePagePlugin(WikiTemplatePagePlugin plugin) {
@@ -56,7 +55,9 @@ public class JCRDataStorage implements DataStorage{
   public PageList<SearchResult> search(ChromatticSession session, WikiSearchData data) throws Exception {
     List<SearchResult> resultList = new ArrayList<SearchResult>();
     String statement = data.getStatement();
-    Query q = ((ChromatticSessionImpl) session).getDomainSession().getSessionWrapper().createQuery(statement);
+    QueryImpl q = (QueryImpl) ((ChromatticSessionImpl) session).getDomainSession().getSessionWrapper().createQuery(statement);
+    q.setOffset(data.getOffset());
+    q.setLimit(data.getLimit());
     QueryResult result = q.execute();
     RowIterator iter = result.getRows();
     while (iter.hasNext()) {
@@ -66,7 +67,7 @@ public class JCRDataStorage implements DataStorage{
         resultList.add(tempResult);
       }
     }
-    return new ObjectPageList<SearchResult>(resultList, searchSize);
+    return new ObjectPageList<SearchResult>(resultList, resultList.size());
   }
   
   public void initDefaultTemplatePage(ChromatticSession crmSession, ConfigurationManager configurationManager, String path) {
