@@ -23,11 +23,15 @@ import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.faq.rendering.RenderHelper;
 import org.exoplatform.faq.service.CategoryInfo;
+import org.exoplatform.faq.service.DataStorage.LoadMoreType;
 import org.exoplatform.faq.service.FAQService;
 import org.exoplatform.faq.service.Question;
+import org.exoplatform.faq.service.QuestionInfo;
+import org.exoplatform.faq.service.SubCategoryInfo;
 import org.exoplatform.faq.service.Utils;
 import org.exoplatform.faq.webui.FAQUtils;
 import org.exoplatform.resolver.ResourceResolver;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -44,7 +48,9 @@ import org.exoplatform.webui.event.EventListener;
 
 @ComponentConfig(
     events = { 
-        @EventConfig(listeners = UIViewer.ChangePathActionListener.class)
+        @EventConfig(listeners = UIViewer.ChangePathActionListener.class),
+        @EventConfig(listeners = UIViewer.LoadMoreCategoryActionListener.class),
+        @EventConfig(listeners = UIViewer.LoadMoreQuestionActionListener.class)
     }
 )
 public class UIViewer extends UIContainer {
@@ -57,9 +63,12 @@ public class UIViewer extends UIContainer {
   private boolean      isInSpace    = false;
 
   private RenderHelper renderHelper = new RenderHelper();
+  
+  private CategoryInfo categoryInfo;
 
-  public UIViewer() {
+  public UIViewer() throws Exception {
     fAqService = (FAQService) PortalContainer.getComponent(FAQService.class);
+    categoryInfo = fAqService.getCategoryInfo(path, FAQUtils.getCategoriesIdFAQPortlet());
   }
 
   public void processDecode(WebuiRequestContext context) throws Exception {
@@ -110,7 +119,11 @@ public class UIViewer extends UIContainer {
     } else {
       isInSpace = false;
     }
-    return fAqService.getCategoryInfo(path, FAQUtils.getCategoriesIdFAQPortlet());
+    return categoryInfo;
+  }
+  
+  protected void setCategoryInfo(CategoryInfo categoryInfo) {
+    this.categoryInfo = categoryInfo;
   }
 
   protected String render(String s) {
@@ -123,8 +136,67 @@ public class UIViewer extends UIContainer {
     public void execute(Event<UIViewer> event) throws Exception {
       String path = event.getRequestContext().getRequestParameter(OBJECTID);
       UIViewer viewer = event.getSource();
-      viewer.setPath(path);
+      viewer.setCategoryInfo(viewer.fAqService.getCategoryInfo(path, FAQUtils.getCategoriesIdFAQPortlet()));
       event.getRequestContext().addUIComponentToUpdateByAjax(viewer);
+    }
+  }
+  
+  static public class LoadMoreCategoryActionListener extends EventListener<UIViewer> {
+    public void execute(Event<UIViewer> event) throws Exception {
+      UIViewer viewer = event.getSource();
+      List<SubCategoryInfo> subCategoryInfos = viewer.getCategoryInfo().getSubCateInfos();
+      CategoryInfo categoryInfo = viewer.fAqService.loadMore(LoadMoreType.CATEGORY,
+                                                             viewer.getCategoryInfo().getPath(),
+                                                             FAQUtils.getCategoriesIdFAQPortlet(),
+                                                             viewer.getCategoryInfo().getSubCateInfos().size(),
+                                                             Utils.LIMIT_OF_CATEGORIES_PER_LOADING);
+      subCategoryInfos.addAll(categoryInfo.getSubCateInfos());
+      viewer.getCategoryInfo().setSubCateInfos(subCategoryInfos);
+      viewer.getCategoryInfo().setLoadMore(categoryInfo.hasLoadMore());
+      event.getRequestContext().addUIComponentToUpdateByAjax(viewer);
+    }
+  }
+
+  static public class LoadMoreQuestionActionListener extends EventListener<UIViewer> {
+    public void execute(Event<UIViewer> event) throws Exception {
+      WebuiRequestContext context = event.getRequestContext();
+      String categoryId = context.getRequestParameter(OBJECTID);
+      UIViewer viewer = event.getSource();
+      
+      //
+      List<SubCategoryInfo> subCategoryInfos = viewer.getCategoryInfo().getSubCateInfos();
+      SubCategoryInfo subCategoryInfo = null;
+      for (SubCategoryInfo subCateInfo : subCategoryInfos) {
+        if(categoryId.equals(subCateInfo.getId())) {
+          subCategoryInfo = subCateInfo;
+          break;
+        }
+      }
+      List<String> categoryIdScoped = new ArrayList<String>();
+      categoryIdScoped.add(categoryId);
+      CategoryInfo categoryInfo = null;
+      try {
+        categoryInfo = viewer.fAqService.loadMore(LoadMoreType.QUESTION,
+                                                  viewer.getCategoryInfo().getPath(),
+                                                  categoryIdScoped,
+                                                  subCategoryInfo.getQuestionInfos().size(),
+                                                  Utils.LIMIT_OF_QUESTIONS_PER_LOADING);
+      } catch (Exception e) {
+        context.getUIApplication().addMessage(new ApplicationMessage("UIViewer.msg.LoadMoreQuestionFail", null, ApplicationMessage.WARNING));
+      }
+      
+      //
+      if (categoryInfo != null) {
+        List<SubCategoryInfo> moreSubCategoryInfos = categoryInfo.getSubCateInfos();
+        if (moreSubCategoryInfos.size() > 0) {
+          List<QuestionInfo> questionInfos = subCategoryInfo.getQuestionInfos();
+          questionInfos.addAll(moreSubCategoryInfos.get(0).getQuestionInfos());
+          subCategoryInfo.setQuestionInfos(questionInfos);
+          subCategoryInfo.setLoadMore(moreSubCategoryInfos.get(0).hasLoadMore());
+        }
+      }
+      
+      context.addUIComponentToUpdateByAjax(viewer);
     }
   }
 }

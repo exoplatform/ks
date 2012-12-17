@@ -32,6 +32,11 @@ import org.exoplatform.ks.common.NotifyInfo;
  * Oct 18, 2009  
  */
 public interface DataStorage {
+  
+  public static enum LoadMoreType {
+    CATEGORY,
+    QUESTION
+  }
 
   void addPlugin(ComponentPlugin plugin) throws Exception;
 
@@ -222,6 +227,8 @@ public interface DataStorage {
   String getCategoryNameOf(String categoryPath) throws Exception;
 
   CategoryInfo getCategoryInfo(String categoryPath, List<String> categoryIdScoped) throws Exception;
+  
+  CategoryInfo loadMore(LoadMoreType type, String categoryPath, List<String> categoryIdScoped, int offset, int limit) throws Exception;
 
   void updateQuestionRelatives(String questionPath, String[] relatives) throws Exception;
 

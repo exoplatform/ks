@@ -128,6 +128,14 @@ public class JCRDataStorage implements DataStorage, FAQNodeTypes {
   private SessionManager          sessionManager;
 
   private KSDataLocation          dataLocator;
+  
+  private static final int        ALL_CATEGORY_OFFSET  = -1;
+
+  private static final int        ALL_CATEGORY_LIMIT   = -1;
+
+  private static final int        ALL_QUESTION_OFFSET  = -1;
+
+  private static final int        ALL_QUESTION_LIMIT   = -1;
 
   public JCRDataStorage(KSDataLocation dataLocator) throws Exception {
     this.dataLocator = dataLocator;
@@ -291,9 +299,20 @@ public class JCRDataStorage implements DataStorage, FAQNodeTypes {
   }
 
   private NodeIterator getQuestionsIterator(Node parentNode, String strQuery, boolean isAll) throws Exception {
-    StringBuffer queryString = new StringBuffer(JCR_ROOT).append(parentNode.getPath()).append((isAll) ? "//" : "/").append("element(*,exo:faqQuestion)").append(strQuery);
+    return getQuestionsIterator(parentNode, strQuery, isAll, ALL_QUESTION_OFFSET, ALL_QUESTION_LIMIT);
+  }
+  
+  private NodeIterator getQuestionsIterator(Node parentNode, String strQuery, boolean isAll, int offset, int limit) throws Exception {
+    StringBuffer queryString = new StringBuffer(JCR_ROOT).append(parentNode.getPath()).append((isAll) ? "//" : "/")
+                                                         .append("element(*,").append(EXO_FAQ_QUESTION).append(")").append(strQuery);
     QueryManager qm = parentNode.getSession().getWorkspace().getQueryManager();
     Query query = qm.createQuery(queryString.toString(), Query.XPATH);
+    if (offset != ALL_QUESTION_OFFSET && limit != ALL_QUESTION_LIMIT) {
+      if (query instanceof QueryImpl) {
+        ((QueryImpl) query).setOffset(offset);
+        ((QueryImpl) query).setLimit(limit); 
+      }
+    }
     QueryResult result = query.execute();
     return result.getNodes();
   }
@@ -2788,10 +2807,18 @@ public class JCRDataStorage implements DataStorage, FAQNodeTypes {
   }
 
   private NodeIterator getCategoriesIterator(Node parentCategory) throws Exception {
+    return getCategoriesIterator(parentCategory, ALL_CATEGORY_OFFSET, ALL_CATEGORY_LIMIT);
+  }
+  
+  private NodeIterator getCategoriesIterator(Node parentCategory, int offset, int limit) throws Exception {
     QueryManager qm = parentCategory.getSession().getWorkspace().getQueryManager();
     StringBuffer queryString = new StringBuffer(JCR_ROOT).append(parentCategory.getPath());
-    queryString.append("/element(*,").append(EXO_FAQ_CATEGORY).append(") order by @").append(EXO_INDEX).append(" ascending");
+    queryString.append("/element(*,").append(EXO_FAQ_CATEGORY).append(") order by @").append(EXO_INDEX).append(FAQSetting.ORDERBY_ASC);
     Query query = qm.createQuery(queryString.toString(), Query.XPATH);
+    if (offset != ALL_CATEGORY_OFFSET && limit != ALL_CATEGORY_LIMIT) {
+      ((QueryImpl) query).setOffset(offset);
+      ((QueryImpl) query).setLimit(limit);
+    }
     QueryResult result = query.execute();
     return result.getNodes();
   }
@@ -3179,34 +3206,130 @@ public class JCRDataStorage implements DataStorage, FAQNodeTypes {
       }
       categoryInfo.setPathName(pathName);
       // declare question info
-      categoryInfo.setQuestionInfos(getQuestionInfo(categoryNode));
+      if (Utils.CATEGORY_HOME.equals(categoryPath)) {
+        categoryInfo.setQuestionInfos(getQuestionInfo(categoryNode, 0, Utils.LIMIT_OF_QUESTIONS_PER_LOADING));
+      } else {
+        categoryInfo.setQuestionInfos(getQuestionInfo(categoryNode));
+      }
 
       // declare category info
       if (categoryNode.hasNodes()) {
         List<SubCategoryInfo> subList = new ArrayList<SubCategoryInfo>();
-        NodeIterator subIter = categoryNode.getNodes();
+        NodeIterator subIter = getCategoriesIterator(categoryNode);
         Node sub;
         SubCategoryInfo subCat;
+        List<QuestionInfo> questionInfos;
         while (subIter.hasNext()) {
+          if (KSDataLocation.Locations.FAQ_CATEGORIES_HOME.equals(categoryPath) && subList.size() == Utils.LIMIT_OF_CATEGORIES_PER_LOADING) {
+            break;
+          }
           sub = subIter.nextNode();
           if (categoryIdScoped.isEmpty() || categoryIdScoped.contains(sub.getName())) {
             if (sub.isNodeType(EXO_FAQ_CATEGORY)) {
+              questionInfos = getQuestionInfo(sub, 0, Utils.LIMIT_OF_QUESTIONS_PER_LOADING);
               subCat = new SubCategoryInfo();
               subCat.setId(sub.getName());
               subCat.setName(sub.getProperty(EXO_NAME).getString());
               subCat.setPath(categoryInfo.getPath() + "/" + sub.getName());
               subCat.setSubCateInfos(getSubCategoryInfo(sub, categoryIdScoped));
-              subCat.setQuestionInfos(getQuestionInfo(sub));
+              subCat.setQuestionInfos(questionInfos);
+              subCat.setLoadMore(hasLoadMore(LoadMoreType.QUESTION, sub, questionInfos.size()));
               subList.add(subCat);
             }
           }
         }
         categoryInfo.setSubCateInfos(subList);
+        categoryInfo.setLoadMore(hasLoadMore(LoadMoreType.CATEGORY, categoryNode, categoryInfo.getSubCateInfos().size()));
       }
     } catch (Exception e) {
       return null;
     }
     return categoryInfo;
+  }
+  
+  @Override
+  public CategoryInfo loadMore(LoadMoreType type, String categoryPath, List<String> categoryIdScoped, int offset, int limit) throws Exception {
+    CategoryInfo categoryInfo = new CategoryInfo();
+    if (type == LoadMoreType.CATEGORY) {
+      loadMoreCategories(categoryInfo, offset, limit);
+    } else if (type == LoadMoreType.QUESTION) {
+      loadMoreQuestions(categoryInfo, categoryIdScoped.get(0), offset, limit);
+    }
+    return categoryInfo;
+  }
+  
+  private void loadMoreQuestions(CategoryInfo categoryInfo, String categoryId, int offset, int limit) throws Exception {
+    // Get category Node
+    Node categoryNode = getCategoryNodeById(categoryId);
+    if (categoryNode == null) {
+      throw new PathNotFoundException();
+    }
+    
+    // Load more questions
+    List<QuestionInfo> moreQuestions = getQuestionInfo(categoryNode, offset, limit);
+    if (moreQuestions.size() > 0) {
+      SubCategoryInfo subCategoryInfo = new SubCategoryInfo();
+      subCategoryInfo.getQuestionInfos().addAll(moreQuestions);
+      subCategoryInfo.setLoadMore(hasLoadMore(LoadMoreType.QUESTION, categoryNode, offset + subCategoryInfo.getQuestionInfos().size()));
+      categoryInfo.getSubCateInfos().add(subCategoryInfo);
+    }
+  }
+  
+  private void loadMoreCategories(CategoryInfo categoryInfo, int offset, int limit) throws Exception {
+    SessionProvider sProvider = CommonUtils.createSystemProvider();
+    try {
+      Node categoryNode = getFAQServiceHome(sProvider).getNode(KSDataLocation.Locations.FAQ_CATEGORIES_HOME);
+      if (categoryNode.hasNodes()) {
+        List<SubCategoryInfo> subCateList = new ArrayList<SubCategoryInfo>();
+        List<QuestionInfo> questionInfos;
+        NodeIterator subIter = getCategoriesIterator(categoryNode, offset, limit);
+        Node sub;
+        SubCategoryInfo subCat;
+        while (subIter.hasNext()) {
+          sub = subIter.nextNode();
+          if (sub.isNodeType(EXO_FAQ_CATEGORY)) {
+            questionInfos = getQuestionInfo(sub, 0, Utils.LIMIT_OF_QUESTIONS_PER_LOADING);
+            subCat = new SubCategoryInfo();
+            subCat.setId(sub.getName());
+            subCat.setName(sub.getProperty(EXO_NAME).getString());
+            subCat.setPath(categoryInfo.getPath() + "/" + sub.getName());
+            subCat.setSubCateInfos(getSubCategoryInfo(sub, new ArrayList<String>()));
+            subCat.setQuestionInfos(questionInfos);
+            subCat.setLoadMore(hasLoadMore(LoadMoreType.QUESTION, sub, questionInfos.size()));
+            subCateList.add(subCat);
+          }
+        }
+        
+        if (subCateList.size() > 0) {
+          categoryInfo.setSubCateInfos(subCateList);
+          categoryInfo.setLoadMore(hasLoadMore(LoadMoreType.CATEGORY, categoryNode, offset + subCateList.size()));
+        }
+      }
+    } catch (Exception e) {
+      log.error("Failed to load more categories", e);
+    }
+  }
+  
+  private boolean hasLoadMore(LoadMoreType type, Node node, int currentSize) throws Exception {
+    NodeIterator iterator = null;
+    if (type == LoadMoreType.CATEGORY) {
+      iterator = getCategoriesIterator(node);
+    } else if (type == LoadMoreType.QUESTION) {
+      if (node.hasNode(Utils.QUESTION_HOME)) {
+        StringBuilder strQuery = new StringBuilder();
+        strQuery.append("[@");
+        strQuery.append(EXO_IS_ACTIVATED);
+        strQuery.append("='true'");
+        strQuery.append(" and @");
+        strQuery.append(EXO_IS_APPROVED);
+        strQuery.append("='true']");
+        iterator = getQuestionsIterator(node.getNode(Utils.QUESTION_HOME), strQuery.toString(), false);
+      }
+    }
+    if (iterator != null && iterator.getSize() > currentSize) {
+      return true;
+    }
+    return false;
   }
 
   private void registerQuestionNodeListener(Node questionNode) {
@@ -3421,13 +3544,17 @@ public class JCRDataStorage implements DataStorage, FAQNodeTypes {
     QueryResult result = query.execute();
     return result.getNodes();
   }
-
+  
   private List<QuestionInfo> getQuestionInfo(Node categoryNode) throws Exception {
+    return getQuestionInfo(categoryNode, ALL_QUESTION_OFFSET, ALL_QUESTION_LIMIT);
+  }
+
+  private List<QuestionInfo> getQuestionInfo(Node categoryNode, int offset, int limit) throws Exception {
     List<QuestionInfo> questionInfoList = new ArrayList<QuestionInfo>();
     if (categoryNode.hasNode(Utils.QUESTION_HOME)) {
       QuestionInfo questionInfo;
       String strQuery = "[@exo:isActivated='true' and @exo:isApproved='true']";
-      NodeIterator iter = getQuestionsIterator(categoryNode.getNode(Utils.QUESTION_HOME), strQuery, false);
+      NodeIterator iter = getQuestionsIterator(categoryNode.getNode(Utils.QUESTION_HOME), strQuery, false, offset, limit);
       Node question;
       while (iter.hasNext()) {
         question = iter.nextNode();

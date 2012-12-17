@@ -29,6 +29,7 @@ import org.exoplatform.faq.service.Cate;
 import org.exoplatform.faq.service.Category;
 import org.exoplatform.faq.service.CategoryInfo;
 import org.exoplatform.faq.service.Comment;
+import org.exoplatform.faq.service.DataStorage.LoadMoreType;
 import org.exoplatform.faq.service.FAQEventQuery;
 import org.exoplatform.faq.service.FAQService;
 import org.exoplatform.faq.service.FAQSetting;
@@ -768,6 +769,14 @@ public class MockFAQService implements FAQService {
    */
   @Override
   public CategoryInfo getCategoryInfo(String categoryPath, List<String> categoryIdScoped) throws Exception {
+    return null;
+  }
+
+  /* (non-Javadoc)
+   * @see org.exoplatform.faq.service.FAQService#loadMore(org.exoplatform.faq.service.DataStorage.LoadMoreType, java.lang.String, java.util.List, int, int)
+   */
+  @Override
+  public CategoryInfo loadMore(LoadMoreType type, String categoryPath, List<String> categoryIdScoped, int offset, int limit) throws Exception {
     return null;
   }
 

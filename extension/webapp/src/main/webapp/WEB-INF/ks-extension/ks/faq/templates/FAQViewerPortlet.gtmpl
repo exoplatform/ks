@@ -6,6 +6,8 @@
   def rcontext = _ctx.getRequestContext();
   JavascriptManager jsmanager = rcontext.getJavascriptManager();
   jsmanager.addJavascript("eXo.faq.UIAnswersPortlet.createLink('UIFAQPortlet','"+uicomponent.useAjax+"');") ;
+  def showMoreQuestions = _ctx.appRes("UIViewer.label.ShowMoreQuestions");
+  def showMoreCategories = _ctx.appRes("UIViewer.label.ShowMoreCategories");
 %>
 <div class="FAQViewerContainer" id="$uicomponent.id">
   <%  
@@ -81,6 +83,8 @@
       String categoryName = categoryInfo.getName();
       List questionInfos = categoryInfo.getQuestionInfos();
       List subCategories = categoryInfo.getSubCateInfos();
+      String categoryId = categoryInfo.getId();
+      boolean enabledLoadMore = categoryInfo.hasLoadMore();
     %>
     
       <div class="FAQContainerQuest">
@@ -116,10 +120,19 @@
           <% 
           } %>
         </ul>
+        <% if(enabledLoadMore) { %>
+             <div id="LoadMoreQuestionsButton" class="MoreButton" onclick="<%=uicomponent.event("LoadMoreQuestion", categoryId)%>" >
+               $showMoreQuestions
+             </div>
+        <% } %>
       </div>
     
     <% } %>
-    
+    <% if(Utils.CATEGORY_HOME.equals(path) && cateInfo.hasLoadMore()) { %>
+         <div id="LoadMoreCategoriesButton" class="MoreButton MoreCategoryButton" onclick="<%=uicomponent.event("LoadMoreCategory")%>" >
+           $showMoreCategories
+         </div>
+    <% } %>
   </div>
   
   <div class="FAQAnswerContainer FAQViewerQuestionContent ClearFix">
@@ -131,7 +144,7 @@
       String questionDetail_ = uicomponent.render(questionCate.getDetail());
       
   %>
-    <div class="FAQAnswerIcon"><h4 name="$id_">$question_</h4>
+    <div class="FAQAnswerIcon"><a name="$id_">$question_</a>
 	    <% if (questionDetail_ != null && !questionDetail_.trim().isEmpty()) { %>
 	            <div class="TextDetailStyle">$questionDetail_</div>
 	      <% } %>
@@ -170,7 +183,7 @@
     <div class="QuestionContent">
       
       <div class="FAQAnswerIcon">
-      	<h4 name="${qsId}">$question</h4>
+      	<a name="${qsId}">$question</a>
 	      <% if (questionDetail_ != null && !questionDetail_.trim().isEmpty()) { %>
 	            <div class="TextDetailStyle">$questionDetail_</div>
 	      <% } %>
@@ -456,4 +469,17 @@
   margin: 0px;
 }
 
+.UIFAQPortlet .MoreButton {
+  background: #f8f8f8;
+  border-top: 1px solid #e1e1e1;
+  border-bottom: 1px solid #e1e1e1;
+  color: #535656;
+  cursor: pointer;
+  padding: 4px 0px;
+  text-align: center;
+}
+
+.UIFAQPortlet .MoreCategoryButton {
+  margin: 10px 25px;
+}
 </style>
