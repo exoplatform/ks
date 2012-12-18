@@ -69,6 +69,8 @@ public class Utils {
 
   final private static String MIMETYPE_TEXTHTML = "text/html";
   
+  private static final String ILLEGAL_SEARCH_CHARACTERS= "\\!^()+{}[]:\"-";
+  
   //The path should get from NodeHierarchyCreator 
   public static String getPortalWikisPath() {    
     String path = "/exo:applications/" 
@@ -522,5 +524,17 @@ public class Utils {
     StringBuffer strBuffer = new StringBuffer(url);
     strBuffer.append("?").append(WikiContext.ACTION).append("=").append(COMPARE_REVISION).append("&").append(VER_NAME).append("=").append(verName);
     return strBuffer.toString();
+  }
+  /*
+   * Escape the illegal characters before making the query statement
+   */
+  public static String escapeIllegalCharacterInQuery(String query) {
+    String ret = query;
+    if(ret != null) {
+      for (char c : ILLEGAL_SEARCH_CHARACTERS.toCharArray()) {
+        ret = ret.replace(c + "", "\\" + c);
+      }
+    }
+    return ret;
   }
 }

@@ -68,8 +68,8 @@ public class SearchData {
                     String content,
                     String wikiType,
                     String wikiOwner,
-                    String pageId) {
-    this.text = text;
+                    String pageId) {  
+    this.text = Utils.escapeIllegalCharacterInQuery(text);  	
     this.title = title;
     this.content = content;
     this.wikiType = wikiType;

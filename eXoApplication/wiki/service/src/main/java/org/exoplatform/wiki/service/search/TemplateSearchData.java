@@ -20,6 +20,7 @@ import org.exoplatform.portal.config.model.PortalConfig;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.wiki.mow.api.WikiNodeType;
+import org.exoplatform.wiki.utils.Utils;
 
 /**
  * Created by The eXo Platform SAS
@@ -68,7 +69,7 @@ public class TemplateSearchData extends SearchData {
   public String getStatement() {
     StringBuilder statement = new StringBuilder();
     try {
-      String title = getTitle();
+      String title = Utils.escapeIllegalCharacterInQuery(getTitle());
       statement.append("SELECT title, jcr:primaryType, path,"+WikiNodeType.Definition.DESCRIPTION)
                .append(" FROM ")
                .append(WikiNodeType.WIKI_PAGE)
