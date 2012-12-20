@@ -128,15 +128,17 @@
     <dependency>
      <groupId>org.exoplatform.doc</groupId>
      <artifactId>doc-style</artifactId>
-     <version>1.0.8-SNAPSHOT</version>
+     <version>${doc-style.version}</version>
       <optional>true</optional>
+      <scope>provided</scope>
     </dependency>
     
     <dependency>
      <groupId>org.exoplatform.doc</groupId>
      <artifactId>doc-style</artifactId>
-     <version>1.0.8-SNAPSHOT</version>
+     <version>${doc-style.version}</version>
       <classifier>templates</classifier>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
   <build>
