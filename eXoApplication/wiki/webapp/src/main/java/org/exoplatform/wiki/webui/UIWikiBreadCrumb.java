@@ -16,17 +16,23 @@
  */
 package org.exoplatform.wiki.webui;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.portal.application.PortalRequestContext;
 import org.exoplatform.portal.config.model.PortalConfig;
+import org.exoplatform.portal.mop.SiteType;
 import org.exoplatform.portal.webui.portal.UIPortal;
 import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.web.application.RequestContext;
+import org.exoplatform.web.url.navigation.NavigationResource;
+import org.exoplatform.web.url.navigation.NodeURL;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.lifecycle.Lifecycle;
+import org.exoplatform.wiki.mow.api.WikiType;
 import org.exoplatform.wiki.service.BreadcrumbData;
 import org.exoplatform.wiki.service.WikiPageParams;
 import org.exoplatform.wiki.service.WikiService;
@@ -103,21 +109,27 @@ public class UIWikiBreadCrumb extends UIContainer {
     }
     return null;
   }
-
-  public String createActionLink(BreadcrumbData breadCumbData) throws Exception {  
-    PortalRequestContext portalRequestContext = Util.getPortalRequestContext();
-    StringBuilder sb = new StringBuilder(portalRequestContext.getPortalURI());
-    UIPortal uiPortal = Util.getUIPortal();
-    String pageNodeSelected = uiPortal.getSelectedUserNode().getURI();
-    sb.append(pageNodeSelected);
-    sb.append("/");
-    if (!PortalConfig.PORTAL_TYPE.equalsIgnoreCase(breadCumbData.getWikiType())) {
-      sb.append(breadCumbData.getWikiType());
-      sb.append("/");
-      sb.append(Utils.validateWikiOwner(breadCumbData.getWikiType(), breadCumbData.getWikiOwner()));
-      sb.append("/");
-    }
-    sb.append(breadCumbData.getId());
-    return sb.toString();
+  
+  private String fillPortalName(String url) {
+  	RequestContext ctx = RequestContext.getCurrentInstance();
+  	NodeURL nodeURL =  ctx.createURL(NodeURL.TYPE);
+  	NavigationResource resource = new NavigationResource(SiteType.PORTAL, Util.getPortalRequestContext().getPortalOwner(), url);
+  	return nodeURL.setResource(resource).toString(); 
   }
+  
+  public String createActionLink(BreadcrumbData breadCumbData) throws Exception {
+  	String wikiWebappUri = "wiki";
+  	StringBuilder sb = new StringBuilder(wikiWebappUri);
+  	sb.append("/");
+  	if (!WikiType.PORTAL.toString().equalsIgnoreCase(breadCumbData.getWikiType())) {
+  		sb.append(breadCumbData.getWikiType().toLowerCase());
+  		sb.append("/");
+  		sb.append(org.exoplatform.wiki.utils.Utils.validateWikiOwner(breadCumbData.getWikiType(), breadCumbData.getWikiOwner()));
+  		sb.append("/");
+  	}
+  	if (breadCumbData.getId() != null) {
+  		sb.append(URLEncoder.encode(breadCumbData.getId(), "UTF-8"));
+	  }
+  	return fillPortalName(sb.toString());
+	}
 }
