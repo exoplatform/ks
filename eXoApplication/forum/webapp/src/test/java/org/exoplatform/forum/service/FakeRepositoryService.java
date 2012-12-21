@@ -72,7 +72,8 @@ public class FakeRepositoryService implements RepositoryService {
 
   public void setCurrentRepositoryName(String repositoryName) throws RepositoryConfigurationException {
   }
-
-
+  
+  public void removeRepository(String repositoryName, boolean forceRemove) throws RepositoryException{
+  }
 
 }
