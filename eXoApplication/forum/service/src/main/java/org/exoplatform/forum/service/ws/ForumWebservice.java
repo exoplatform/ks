@@ -92,20 +92,25 @@ public class ForumWebservice implements ResourceContainer {
     return null;
   }
 
+
   /**
-   * The rest can gets response is recent posts for user and limited by number post.
+   * Return a list of recent posts of the current user limited by posts number.
    * 
-   * @param maxcount is max number post for render in gadget
-   * @param sc is SecurityContext for get userId login when we use rest link to render gadget.
-   * @param uriInfo is UriInfo for get userId login when we render gadget via gadgets service
-   * @return the response is json-data content list recent post for user.
-   * @throws Exception the exception
+   * @param maxcount Limitation of returned posts.
+   * @param sc SecurityContext - used to get current user.
+   * @param uriInfo UriInfo - used to get current user.
+   * @return Response in JSON format.
+   * @throws Exception The exception
+   * 
+   * @anchor KSref.DevelopersReferences.PublicRestAPIs.ForumWebservice.getMessage
    */
+
   @GET
   @Path("getmessage/{maxcount}")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getMessage(@PathParam("maxcount") int maxcount, @Context SecurityContext sc,
-                                                                  @Context UriInfo uriInfo) throws Exception {
+  public Response getMessage(@PathParam("maxcount") int maxcount, 
+                             @Context SecurityContext sc,
+                             @Context UriInfo uriInfo) throws Exception {
     try {
       String userName = getUserId(sc, uriInfo);
       MessageBean data = getNewPosts(userName, maxcount);
@@ -116,13 +121,17 @@ public class ForumWebservice implements ResourceContainer {
     }
   }
 
+
   /**
-   * The rest can gets response is recent public post limited by number post.
+   * Return a list of recent public posts limited by posts number.
    * 
-   * @param maxcount is max number post for render in gadget
-   * @return the response is json-data content list recent public post.
-   * @throws Exception the exception
+   * @param maxcount Limitation of returned posts.
+   * @return Response in JSON format.
+   * @throws Exception The exception
+   * 
+   * @anchor KSref.DevelopersReferences.PublicRestAPIs.ForumWebservice.getPulicMessage
    */
+
   @GET
   @Path("getpublicmessage/{maxcount}")
   @Produces(MediaType.APPLICATION_JSON)
@@ -130,6 +139,17 @@ public class ForumWebservice implements ResourceContainer {
     MessageBean data = getNewPosts(null, maxcount);
     return Response.ok(data, MediaType.APPLICATION_JSON).cacheControl(cc).build();
   }
+
+
+  /**
+   * Return a list of banned IPs filtered by the input string.
+   * 
+   * @param str Filter a IPs list. If _strIP_ is set to "_all_", this function will get all banned IPs.
+   * @return Response in JSON format.
+   * @throws Exception The exception
+   * 
+   * @anchor KSref.DevelopersReferences.PublicRestAPIs.ForumWebservice.filterIps
+   */
 
   @GET
   @Path("filter/{strIP}")
@@ -154,6 +174,18 @@ public class ForumWebservice implements ResourceContainer {
     return Response.ok(new BeanToJsons<BanIP>(ipsToJson), JSON_CONTENT_TYPE).cacheControl(cc).build();
   }
 
+
+  /**
+   * Return a list of banned IPs for a forum filtered by the input string.
+   * 
+   * @param forumId The forum Id.
+   * @param str Filter a IPs list. If _strIP_ is set to "_all_", this function will get all banned IPs.
+   * @return Response in JSON format.
+   * @throws Exception The exception
+   * 
+   * @anchor KSref.DevelopersReferences.PublicRestAPIs.ForumWebservice.filterIpBanForum
+   */
+
   @GET
   @Path("filterIpBanforum/{strForumId}/{strIP}")
   @Produces(MediaType.APPLICATION_JSON)
@@ -176,6 +208,21 @@ public class ForumWebservice implements ResourceContainer {
     }
     return Response.ok(new BeanToJsons<BanIP>(ipsToJson), JSON_CONTENT_TYPE).cacheControl(cc).build();
   }
+
+
+  /**
+   * Return a list of tags in a topic of a user filtered by the input string.
+   * 
+   * @param str Filter a tags list. {example}{example}
+   *   If _strTagName_ is " ", the function will return an empty list. {example}{example}
+   *   If _strTagName_ is "_onclickForm_", the function will return all tags of the topic.  {example}{example}
+   *   If _strTagName_str is any, the function will return the tags name based on this filter.
+   * @param userAndTopicId The Id of the current user and topic that has the form of {{{ {userId,topicId} }}}
+   * @return Response in JSON format.
+   * @throws Exception The exception
+   * 
+   * @anchor KSref.DevelopersReferences.PublicRestAPIs.ForumWebservice.filterTagNameForum
+   */
 
   @GET
   @Path("filterTagNameForum/{userAndTopicId}/{strTagName}")
@@ -201,6 +248,17 @@ public class ForumWebservice implements ResourceContainer {
     return Response.ok(new BeanToJsons<BanIP>(ipsToJson), JSON_CONTENT_TYPE).cacheControl(cc).build();
   }
 
+
+  /**
+   * Get public RSS of a given resource via its Id.
+   * 
+   * @param resourceid The resource Id, such as Category, Forum, Topic, and more.
+   * @return RSSFeed file in .xml format.
+   * @throws Exception The exception
+   * 
+   * @anchor KSref.DevelopersReferences.PublicRestAPIs.ForumWebservice.viewrss
+   */
+
   @GET
   @Path("rss/{resourceid}")
   @Produces(MediaType.APPLICATION_XML)
@@ -214,6 +272,17 @@ public class ForumWebservice implements ResourceContainer {
       return Response.status(Status.INTERNAL_SERVER_ERROR).build();
     }
   }
+
+
+  /**
+   * Get public RSS of a given resource of the current user via this resource's Id.
+   * 
+   * @param resourceid The user Id.
+   * @return RSSFeed file in .xml format.
+   * @throws Exception The exception
+   * 
+   * @anchor KSref.DevelopersReferences.PublicRestAPIs.ForumWebservice.userrss
+   */
 
   @GET
   @Path("rss/user/{resourceid}")
