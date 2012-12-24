@@ -32,6 +32,17 @@ public class FAQWebservice implements ResourceContainer {
   public FAQWebservice() {
   }
 
+
+  /**
+   * Get public RSS of a given resource via its Id.
+   * 
+   * @param resourceid The category Id.
+   * @return RSSFeed file in .xml format.
+   * @throws Exception The exception
+   * 
+   * @anchor KSref.DevelopersReferences.PublicRestAPIs.FAQWebservice.viewrss
+   */
+
   @GET
   @Path("rss/{resourceid}")
   @Produces(MediaType.APPLICATION_XML)
