@@ -1,7 +1,8 @@
 package org.exoplatform.forum.service.cache.model;
 
-import org.exoplatform.forum.service.cache.loader.CacheLoader;
-import org.exoplatform.forum.service.cache.loader.ServiceContext;
+import org.exoplatform.ks.common.cache.CacheLoader;
+import org.exoplatform.ks.common.cache.ServiceContext;
+import org.exoplatform.ks.common.cache.model.ScopeCacheKey;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cache.future.FutureExoCache;
@@ -18,6 +19,9 @@ public enum CacheType {
   FORUM_LIST("forum.ForumList"),
   TOPIC_DATA("forum.TopicData"),
   TOPIC_LIST("forum.TopicList"),
+  POST_DATA("forum.PostData"),
+  POST_LIST("forum.PostList"),
+  POST_LIST_COUNT("forum.PostListCount"),
   WATCH_LIST_DATA("forum.WatchListData"),
   LINK_LIST_DATA("forum.LinkListData"),
   OBJECT_NAME_DATA("forum.ObjectNameData"),

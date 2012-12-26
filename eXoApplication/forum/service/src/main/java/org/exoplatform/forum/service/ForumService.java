@@ -24,7 +24,9 @@ import java.util.List;
 
 import javax.jcr.NodeIterator;
 
+import org.exoplatform.commons.utils.ListAccess;
 import org.exoplatform.container.component.ComponentPlugin;
+import org.exoplatform.forum.service.impl.model.PostFilter;
 import org.exoplatform.services.organization.User;
 
 /**
@@ -281,6 +283,12 @@ public interface ForumService extends ForumServiceLegacy {
    * @param userRead the user read
    */
   void setViewCountTopic(String path, String userRead);
+  
+  /**
+   * Write the number of topic viewers.
+   * @since 2.2.11
+   */
+  void writeViews();
 
   /**
    * Gets the topic by path.
@@ -377,6 +385,15 @@ public interface ForumService extends ForumServiceLegacy {
    * @throws Exception the exception
    */
   JCRPageList getPosts(String categoryId, String forumId, String topicId, String isApproved, String isHidden, String strQuery, String userLogin) throws Exception;
+  
+  /**
+   * Gets Posts and return ListAccess
+   * @param filter
+   * @return
+   * @throws Exception
+   * @since 2.2.11
+   */
+  ListAccess<Post> getPosts(PostFilter filter) throws Exception;
 
   /**
    * Gets posts of topic.
@@ -982,6 +999,12 @@ public interface ForumService extends ForumServiceLegacy {
    * @param topicId id of a topic
    */
   void updateTopicAccess(String userId, String topicId);
+  
+  /**
+   * write user access a topic
+   * @since 2.2.11
+   */
+  void writeReads();
 
   /**
    * update user access a forum 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2011 eXo Platform SAS.
+ * Copyright (C) 2003-2012 eXo Platform SAS.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -14,32 +14,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
-package org.exoplatform.forum.service.cache.loader;
-
-import org.exoplatform.forum.service.cache.model.ScopeCacheKey;
-import org.exoplatform.services.cache.future.Loader;
+package org.exoplatform.ks.common.cache.model;
 
 import java.io.Serializable;
 
 /**
- * Used by FutureCache to execute the ServiceContext.
- *
  * @author <a href="mailto:alain.defrance@exoplatform.com">Alain Defrance</a>
- * @version $Revision$
  */
-public class CacheLoader<K extends ScopeCacheKey, V extends Serializable> implements Loader<K, V, ServiceContext<V>> {
+public interface CachedData<T> extends Serializable {
 
-  /**
-   * Execute the context.
-   *
-   * @param cacheContext
-   * @param key
-   * @return
-   * @throws Exception
-   */
-  public V retrieve(final ServiceContext<V> cacheContext, final K key) throws Exception {
-    return cacheContext.execute();
-  }
-  
+  public T build();
+
 }

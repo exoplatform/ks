@@ -39,6 +39,8 @@ import org.exoplatform.forum.service.TopicType;
 import org.exoplatform.forum.service.UserProfile;
 import org.exoplatform.forum.service.Utils;
 import org.exoplatform.forum.service.Watch;
+import org.exoplatform.forum.service.impl.model.PostFilter;
+import org.exoplatform.forum.service.impl.model.PostListAccess;
 import org.exoplatform.ks.common.UserHelper;
 import org.exoplatform.ks.common.jcr.KSDataLocation;
 import org.exoplatform.ks.common.jcr.PropertyReader;
@@ -195,7 +197,7 @@ public class TestForumService extends ForumServiceTestCase {
     Category cat_ = createCategory(catId);
     // check category existing
     assertNull(String.format("The category has ID is %s existed.", catId), forumService_.getCategory(catId));
-    // save new category
+    // save new one category
     forumService_.saveCategory(cat_, true);
     // check again category existing
     assertNotNull(String.format("The category has ID is %s not existing.", catId), forumService_.getCategory(catId));
@@ -215,7 +217,7 @@ public class TestForumService extends ForumServiceTestCase {
     catTest = forumService_.getCategory(catId);
     assertEquals("The moderators of category not contanins user demo.", catTest.getModerators()[0], USER_DEMO);
     
-    // add category
+    // add 3 categories
     forumService_.saveCategory(createCategory(catIds[0]), true);
     forumService_.saveCategory(createCategory(catIds[1]), true);
     forumService_.saveCategory(createCategory(catIds[2]), true);
@@ -230,11 +232,7 @@ public class TestForumService extends ForumServiceTestCase {
     Category updatedCat = forumService_.getCategory(catIds[0]);
     assertEquals("Category name is not change", "ReName Category", updatedCat.getCategoryName());
 
-    // test removeCategory
-    for (int i = 0; i < 3; ++i) {
-      forumService_.removeCategory(catIds[i]);
-    }
-    forumService_.removeCategory(catId);
+    killData();
     categories = forumService_.getCategories();
     assertEquals("Size categories can not equals 0", categories.size(), 0);
   }
@@ -597,6 +595,38 @@ public class TestForumService extends ForumServiceTestCase {
     assertEquals(24, forumService_.getTopic(categoryId, forumId, topicId, "").getPostCount());
 
     // getViewPost
+  }
+  
+  public void testPostListAccess() throws Exception {
+    // set Data
+    setData();
+
+    List<Post> posts = new ArrayList<Post>();
+    for (int i = 0; i < 25; ++i) {
+      Post post = createdPost();
+      posts.add(post);
+      forumService_.savePost(categoryId, forumId, topicId, post, true, new MessageBuilder());
+    }
+    // getPost
+    assertNotNull(forumService_.getPost(categoryId, forumId, topicId, posts.get(0).getId()));
+    assertEquals(25, forumService_.getTopic(categoryId, forumId, topicId, "").getPostCount());
+
+    // get ListPost
+    PostListAccess listAccess = (PostListAccess) forumService_.getPosts(new PostFilter(categoryId, forumId, topicId, "", "", "", "root"));
+    listAccess.initialize(10, 1);
+    assertEquals(listAccess.getSize(), posts.size() + 1);// size = 26 (first post and new postList)
+    
+    //Page 1
+    List<Post> got = Arrays.asList(listAccess.load(1));
+    assertEquals(got.size(), 10);
+    
+    //Page 2
+    got = Arrays.asList(listAccess.load(2));
+    assertEquals(got.size(), 10);
+    
+    //Page 3
+    got = Arrays.asList(listAccess.load(3));
+    assertEquals(got.size(), 6);
   }
 
   // BookMark

@@ -3,10 +3,16 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.exoplatform.org/xml/ns/kernel_1_2.xsd http://www.exoplatform.org/xml/ns/kernel_1_2.xsd"
   xmlns="http://www.exoplatform.org/xml/ns/kernel_1_2.xsd">
   <component>
-    <key>org.exoplatform.ks.bbcode.api.BBCodeService</key>
+    <key>org.exoplatform.ks.bbcode.api.BBCodeServiceImpl</key>
     <type>org.exoplatform.ks.bbcode.core.BBCodeServiceImpl</type>
     <description>Manages CRUD operations on BBCodes</description>
-  </component>    
+  </component>
+  
+  <component>
+    <key>org.exoplatform.ks.bbcode.api.BBCodeService</key>
+    <type>org.exoplatform.ks.bbcode.core.cache.CachedBBCodeService</type>
+    <description>Caching operations on BBCodes</description>
+  </component>        
   
   
   <external-component-plugins>

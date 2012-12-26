@@ -1,6 +1,6 @@
 package org.exoplatform.forum.service.cache.model.data;
 
-import org.exoplatform.forum.service.cache.model.AbstractListData;
+import org.exoplatform.ks.common.cache.model.AbstractListData;
 
 import java.util.List;
 

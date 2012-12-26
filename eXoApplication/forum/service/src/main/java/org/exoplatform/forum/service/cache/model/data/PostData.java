@@ -2,7 +2,7 @@ package org.exoplatform.forum.service.cache.model.data;
 
 import org.exoplatform.forum.service.ForumAttachment;
 import org.exoplatform.forum.service.Post;
-import org.exoplatform.forum.service.cache.model.CachedData;
+import org.exoplatform.ks.common.cache.model.CachedData;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -12,6 +12,8 @@ import java.util.List;
  * @author <a href="mailto:alain.defrance@exoplatform.com">Alain Defrance</a>
  */
 public class PostData  implements CachedData<Post> {
+  
+  public final static PostData NULL = new PostData(new Post());
   
   private final String id;
   private final String path;
@@ -61,6 +63,10 @@ public class PostData  implements CachedData<Post> {
 
   public Post build() {
 
+    if (this == NULL) {
+      return null;
+    }
+    
     Post post = new Post();
 
     post.setId(this.id);

@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.exoplatform.forum.service.Category;
 import org.exoplatform.forum.service.Utils;
-import org.exoplatform.forum.service.cache.model.CachedData;
+import org.exoplatform.ks.common.cache.model.CachedData;
 
 /**
  * @author <a href="mailto:alain.defrance@exoplatform.com">Alain Defrance</a>

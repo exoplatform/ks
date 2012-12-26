@@ -1,7 +1,7 @@
 package org.exoplatform.forum.service.cache.model.key;
 
 import org.exoplatform.forum.service.Forum;
-import org.exoplatform.forum.service.cache.model.ScopeCacheKey;
+import org.exoplatform.ks.common.cache.model.ScopeCacheKey;
 
 /**
  * @author <a href="mailto:alain.defrance@exoplatform.com">Alain Defrance</a>

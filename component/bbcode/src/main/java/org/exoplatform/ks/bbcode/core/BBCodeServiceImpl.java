@@ -18,10 +18,12 @@
 package org.exoplatform.ks.bbcode.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.RepositoryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
@@ -258,10 +260,7 @@ public class BBCodeServiceImpl implements Startable, BBCodeService, ManagementAw
           return activeBBCodesCache;
         }
         QueryManager qm = bbCodeHome.getSession().getWorkspace().getQueryManager();
-        StringBuilder pathQuery = new StringBuilder();
-        // new Query().path(bbCodeHome.getPath()).type(BBCODE_NODE_TYPE).predicate("@exo:isActive='true'").toString();
-        pathQuery.append("/jcr:root").append(bbCodeHome.getPath()).append("/element(*,").append(BBCODE_NODE_TYPE).append(")[@exo:isActive='true']");
-        Query query = qm.createQuery(pathQuery.toString(), Query.XPATH);
+        Query query = qm.createQuery(buildQueryBBCodeActive(bbCodeHome), Query.XPATH);
         QueryResult result = query.execute();
         NodeIterator iter = result.getNodes();
         String tagName = "";
@@ -279,6 +278,49 @@ public class BBCodeServiceImpl implements Startable, BBCodeService, ManagementAw
       }
     }
     return activeBBCodesCache;
+  }
+  
+  private String buildQueryBBCodeActive(Node bbCodeHome) throws RepositoryException {
+    StringBuilder pathQuery = new StringBuilder();
+    // new Query().path(bbCodeHome.getPath()).type(BBCODE_NODE_TYPE).predicate("@exo:isActive='true'").toString();
+    pathQuery.append("/jcr:root").append(bbCodeHome.getPath()).append("/element(*,").append(BBCODE_NODE_TYPE).append(")[@exo:isActive='true']");
+    return pathQuery.toString();
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public List<BBCode> getBBCodeActive() throws Exception {
+    SessionProvider sProvider = SessionProvider.createSystemProvider();
+    List<BBCode> bbcodes = null;
+
+    try {
+      Node bbCodeHome = getBBcodeHome(sProvider);
+      if (bbCodeHome == null) {
+        return Collections.emptyList();
+      }
+      QueryManager qm = bbCodeHome.getSession().getWorkspace().getQueryManager();
+      Query query = qm.createQuery(buildQueryBBCodeActive(bbCodeHome), Query.XPATH);
+      QueryResult result = query.execute();
+      NodeIterator iter = result.getNodes();
+      
+      bbcodes = new ArrayList<BBCode>((int)iter.getSize());
+
+      while (iter.hasNext()) {
+        try {
+          Node bbcNode = iter.nextNode();
+          bbcodes.add(nodeToBBCode(bbcNode));
+          
+        } catch (Exception e) {
+          log.error("Error loading BBCodes", e);
+        }
+      }
+
+    } finally {
+      sProvider.close();
+    }
+
+    return bbcodes;
   }
 
   /**

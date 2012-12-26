@@ -1,6 +1,7 @@
 package org.exoplatform.forum.service.cache.model.selector;
 
-import org.exoplatform.forum.service.cache.model.ScopeCacheKey;
+import org.exoplatform.ks.common.cache.model.ScopeCacheKey;
+import org.exoplatform.ks.common.cache.model.selector.ScopeCacheSelector;
 import org.exoplatform.forum.service.cache.model.data.ForumData;
 import org.exoplatform.forum.service.cache.model.key.ForumKey;
 import org.exoplatform.services.cache.ExoCache;
