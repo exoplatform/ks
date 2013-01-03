@@ -33,9 +33,18 @@ UIWikiPortlet.prototype.init = function(portletId, linkId) {
   me.changeModeLink = document.getElementById(linkId);
   var head = document.getElementsByTagName('head')[0];
   var newStyle = document.createElement('style');
+  var cssStyle =  'body { position:relative;overflow:visible  !important; } body * {       visibility: hidden;  }';
   newStyle.setAttribute('type', 'text/css');
   newStyle.setAttribute('media', 'print');
-  newStyle.appendChild(document.createTextNode('body { position:relative;overflow:visible  !important; } body * {       visibility: hidden;  }'));
+  if(newStyle.styleSheet)
+  {
+    newStyle.styleSheet.cssText= cssStyle;
+  }
+  else
+  {
+    newStyle.appendChild(document.createTextNode(cssStyle));
+  }
+
   head.appendChild(newStyle);
 }
 
