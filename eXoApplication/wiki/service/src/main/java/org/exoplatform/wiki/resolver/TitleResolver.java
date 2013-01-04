@@ -34,21 +34,24 @@ public class TitleResolver {
   private static final Log      log               = ExoLogger.getLogger(TitleResolver.class);
   
   public static String getId(String title, boolean isEncoded) {
-    if (title == null) {
-      return null;
-    }
-    String id = title;
-    if (isEncoded) {
-      try {
-        id = URLDecoder.decode(title, "UTF-8");
-      } catch (UnsupportedEncodingException e1) {
-        if (log.isWarnEnabled()) 
-          log.warn(String.format("Getting Page Id from %s failed because of UnspportedEncodingException. Using page title(%s) instead (Not recommended. Fix it if possible!!!)", title), e1);
-      }
-    }
-    return replaceSpacebyUnderscore(id);
+  	encodeTitle(title, isEncoded);
+    return replaceSpacebyUnderscore(title);
   }
-
+  public static String encodeTitle(String title, boolean isEncoded){
+  	if(title == null){
+  		return null;
+  	}
+  	String id = title;
+  	if(isEncoded){
+  		try{
+  			id = URLDecoder.decode(title, "UTF-8");
+  		}catch(UnsupportedEncodingException e1){
+  			if(log.isWarnEnabled())
+  				log.warn(String.format("Getting Page Id from %s failed because of UnspportedEncodingException. Using page title(%s) instead (Not recommended. Fix it if possible!!!)", title), e1);
+  		}
+  	}
+  	return id;
+  }
   private static String replaceSpacebyUnderscore(String s) {
     StringTokenizer st = new StringTokenizer(s, " ", false);
     StringBuilder sb = new StringBuilder();
@@ -59,5 +62,4 @@ public class TitleResolver {
       sb.append("_").append(st.nextElement());
     return sb.toString();
   }
-
 }
