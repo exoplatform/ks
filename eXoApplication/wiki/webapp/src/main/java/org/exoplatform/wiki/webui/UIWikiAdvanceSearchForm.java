@@ -163,15 +163,19 @@ public class UIWikiAdvanceSearchForm extends UIForm {
   public void gotoSearchPage(int pageIndex) throws Exception {
     pageIndex = (int) Math.min(pageIndex, getPageAvailable());
     WikiSearchData data = createSearchData();
-    data.setOffset((pageIndex - 1) * NUMBER_OF_RESULT_PER_PAGE);
-    data.setLimit(NUMBER_OF_RESULT_PER_PAGE);
-    
     WikiService wikiservice = (WikiService) PortalContainer.getComponent(WikiService.class);
     UIWikiAdvanceSearchResult uiSearchResults = getParent().findFirstComponentOfType(UIWikiAdvanceSearchResult.class);
     uiSearchResults.setResults(wikiservice.search(data));
-    
     UIAdvancePageIterator uiAdvancePageIterator = getParent().findFirstComponentOfType(UIAdvancePageIterator.class);
-    uiAdvancePageIterator.setCurrentPage(pageIndex);
+    
+    if(pageIndex > 0){
+    	data.setOffset((pageIndex - 1) * NUMBER_OF_RESULT_PER_PAGE);
+    	data.setLimit(NUMBER_OF_RESULT_PER_PAGE);
+    	uiAdvancePageIterator.setCurrentPage(pageIndex);
+    }
+    else{
+  	  uiAdvancePageIterator.setCurrentPage(0);
+    }
   }
   
   public String getKeyword() {
