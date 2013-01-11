@@ -54,7 +54,7 @@ public class TestBBCodeServiceImpl extends AbstractJCRTestCase {
   protected void setUp() throws Exception {
     bbcodeService = new BBCodeServiceImpl();
     RepositoryService repos = getComponent(RepositoryService.class);
-    KSDataLocation locator = new KSDataLocation(getWorkspace(), repos);
+    KSDataLocation locator = getComponent(KSDataLocation.class);
     bbcodeService.setDataLocator(locator);
 
     bbcodesPath = bbcodeService.getDataLocator().getBBCodesLocation();
@@ -64,6 +64,12 @@ public class TestBBCodeServiceImpl extends AbstractJCRTestCase {
   @AfterMethod
   protected void tearDown() throws Exception {
     deleteNode(bbcodesPath); // create node /bbcodes
+  }
+
+  @Override
+  public void beforeContainerStart() {
+    String tempDir = "target/temp" + System.nanoTime() + getClass().getCanonicalName();
+    System.setProperty("gatein.test.tmp.dir", tempDir);
   }
 
   @Test

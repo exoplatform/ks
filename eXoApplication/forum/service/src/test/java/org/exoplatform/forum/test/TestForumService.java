@@ -190,6 +190,7 @@ public class TestForumService extends ForumServiceTestCase {
   }
   
   public void testCategory() throws Exception {
+    killData();
     String[] catIds = new String[] { getId(Utils.CATEGORY), getId(Utils.CATEGORY), getId(Utils.CATEGORY) };
 
     // test case failed by KS-4422
