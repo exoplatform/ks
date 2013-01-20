@@ -143,7 +143,7 @@ public class TestRenderingService extends AbstractRenderingTestCase {
     String expectedFreeStandingImageHtml = "<p><img src=\"http://loclahost:8080/portal/rest/jcr/repository/knowledge/exo:applications/eXoWiki/wikis/classic/WikiHome/CreateWikiPage-001/eXoWikiHome.png\" class=\"wikimodel-freestanding\" alt=\"eXoWikiHome.png\"/></p>";
     assertEquals(expectedFreeStandingImageHtml, renderingService.render("image:eXoWikiHome.png", Syntax.XWIKI_2_0.toIdString(), Syntax.XHTML_1_0.toIdString(), false));
     
-    String expectedImageSpaceInName = "<p><img src=\"http://loclahost:8080/portal/rest/jcr/repository/knowledge/exo:applications/eXoWiki/wikis/classic/WikiHome/CreateWikiPage-001/space_in_name.png\" alt=\"space in name.png\"/></p>";
+    String expectedImageSpaceInName = "<p><img src=\"http://loclahost:8080/portal/rest/jcr/repository/knowledge/exo:applications/eXoWiki/wikis/classic/WikiHome/CreateWikiPage-001/space%2520in%2520name.png\" alt=\"space in name.png\"/></p>";
     assertEquals(expectedImageSpaceInName, renderingService.render("[[image:space in name.png]]", Syntax.XWIKI_2_0.toIdString(), Syntax.XHTML_1_0.toIdString(), false));
   }
   
