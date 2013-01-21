@@ -65,7 +65,7 @@ h3. Poll Configuration {anchor:id=KSref.Configuration.PollConfigurationRoleNotIn
 h2. Data Injectors {anchor:id=KSref.Configuration.Data_Injector_Service}
 {include:document="Data_Injector_Service.wiki"}
 
-h1. Developer reference {anchor:id=KSref.DeveloperReference}
+h1. Developer Reference {anchor:id=KSref.DeveloperReference}
 {include:document="Developer_reference.wiki"}
 
 h2. Extension points {anchor:id=KSref.DeveloperReference.ExtensionPoints}
