@@ -695,6 +695,11 @@ public class CachedDataStorage implements DataStorage, Startable {
     storage.saveTopic(categoryId, forumId, topic, isNew, isMove, messageBuilder);
     clearForumCache(categoryId, forumId, false);
     clearForumListCache();
+    
+    // Clear first post cache.
+    if (isNew == false) {
+      clearPostCache(categoryId, forumId, topic.getId(), topic.getId().replace(Utils.TOPIC, Utils.POST));
+    }
   }
 
   public Topic removeTopic(String categoryId, String forumId, String topicId) {
