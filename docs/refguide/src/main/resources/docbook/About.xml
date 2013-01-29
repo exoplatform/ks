@@ -15,7 +15,7 @@
 <para>Details of configurations in Knowledge, including components, external component plugins and data injectors.</para>
 </listitem>
 <listitem>
-<para><emphasis role="bold"><link linkend="KSref.DeveloperReference">Developer reference</link></emphasis></para>
+<para><emphasis role="bold"><link linkend="KSref.DeveloperReference">Developer Reference</link></emphasis></para>
 <para>Details of extension points, internal API, FAQ Template Configuration, actions over a wiki page from external jars and Knowledge JCR structure.</para>
 </listitem>
 </itemizedlist>
