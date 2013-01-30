@@ -131,7 +131,7 @@
       String questionDetail_ = uicomponent.render(questionCate.getDetail());
       
   %>
-    <div class="FAQAnswerIcon"><h4 name="$id_">$question_</h4>
+    <div class="FAQAnswerIcon"><h4 id="$id_">$question_</h4>
 	    <% if (questionDetail_ != null && !questionDetail_.trim().isEmpty()) { %>
 	            <div class="TextDetailStyle">$questionDetail_</div>
 	      <% } %>
@@ -170,7 +170,7 @@
     <div class="QuestionContent">
       
       <div class="FAQAnswerIcon">
-      	<h4 name="${qsId}">$question</h4>
+      	<h4 id="${qsId}">$question</h4>
 	      <% if (questionDetail_ != null && !questionDetail_.trim().isEmpty()) { %>
 	            <div class="TextDetailStyle">$questionDetail_</div>
 	      <% } %>
