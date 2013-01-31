@@ -16,14 +16,6 @@
  ***************************************************************************/
 package org.exoplatform.forum.webui.popup;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.jcr.PathNotFoundException;
-import javax.portlet.ActionResponse;
-import javax.xml.namespace.QName;
-
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.forum.ForumUtils;
 import org.exoplatform.forum.info.ForumParameter;
@@ -47,6 +39,13 @@ import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.exception.MessageException;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
+
+import javax.jcr.PathNotFoundException;
+import javax.portlet.ActionResponse;
+import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by The eXo Platform SAS
@@ -146,6 +145,7 @@ public class UIQuickReplyForm extends UIForm {
           }
         } catch (PathNotFoundException e) {
           throw new MessageException(new ApplicationMessage("UIPostForm.msg.isParentDelete", null, ApplicationMessage.WARNING));
+        } catch (NullPointerException ne) {
         }
         textAreaInput.setValue(ForumUtils.EMPTY_STR);
         if (isOffend || hasTopicMod) {
