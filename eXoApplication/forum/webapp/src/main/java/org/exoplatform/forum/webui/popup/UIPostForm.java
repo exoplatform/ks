@@ -16,19 +16,8 @@
  ***************************************************************************/
 package org.exoplatform.forum.webui.popup;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.jcr.PathNotFoundException;
-
 import org.exoplatform.forum.ForumUtils;
-import org.exoplatform.forum.service.BufferAttachment;
-import org.exoplatform.forum.service.ForumAttachment;
-import org.exoplatform.forum.service.MessageBuilder;
-import org.exoplatform.forum.service.Post;
-import org.exoplatform.forum.service.Topic;
-import org.exoplatform.forum.service.UserProfile;
+import org.exoplatform.forum.service.*;
 import org.exoplatform.forum.webui.BaseForumForm;
 import org.exoplatform.forum.webui.UIForumPortlet;
 import org.exoplatform.forum.webui.UITopicDetail;
@@ -46,13 +35,18 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
-import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.form.UIFormInputIconSelector;
 import org.exoplatform.webui.form.UIFormInputInfo;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.validator.MandatoryValidator;
 import org.exoplatform.webui.form.wysiwyg.UIFormWYSIWYGInput;
+
+import javax.jcr.PathNotFoundException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by The eXo Platform SARL
@@ -425,6 +419,7 @@ public class UIPostForm extends BaseForumForm implements UIPopupComponent {
                     isNew = true;
                   } catch (PathNotFoundException e) {
                     isParentDelete = true;
+                  } catch (NullPointerException ne){
                   }
                   topicDetail.setIdPostView("lastpost");
                 } else {
@@ -438,6 +433,7 @@ public class UIPostForm extends BaseForumForm implements UIPopupComponent {
                     uiForm.getForumService().savePost(uiForm.categoryId, uiForm.forumId, uiForm.topicId, post, false, messageBuilder);
                   } catch (PathNotFoundException e) {
                     isParentDelete = true;
+                  } catch (NullPointerException ne) {
                   }
                   topicDetail.setIdPostView(uiForm.postId);
                 }
@@ -448,6 +444,7 @@ public class UIPostForm extends BaseForumForm implements UIPopupComponent {
                   isNew = true;
                 } catch (PathNotFoundException e) {
                   isParentDelete = true;
+                } catch (NullPointerException ne) {
                 } catch (Exception ex) {
                   uiForm.log.warn(String.format("Failed to save post %s", post.getName()), ex);
                 }

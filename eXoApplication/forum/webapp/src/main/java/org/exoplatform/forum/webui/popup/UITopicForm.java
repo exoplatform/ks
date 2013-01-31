@@ -16,40 +16,17 @@
  ***************************************************************************/
 package org.exoplatform.forum.webui.popup;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.jcr.PathNotFoundException;
-
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
 import org.exoplatform.forum.ForumUtils;
-import org.exoplatform.forum.service.BufferAttachment;
-import org.exoplatform.forum.service.Forum;
-import org.exoplatform.forum.service.ForumAttachment;
-import org.exoplatform.forum.service.Post;
-import org.exoplatform.forum.service.Topic;
-import org.exoplatform.forum.service.TopicType;
-import org.exoplatform.forum.service.UserProfile;
-import org.exoplatform.forum.service.Utils;
-import org.exoplatform.forum.webui.BaseForumForm;
-import org.exoplatform.forum.webui.UIBreadcumbs;
-import org.exoplatform.forum.webui.UICategories;
-import org.exoplatform.forum.webui.UICategoryContainer;
-import org.exoplatform.forum.webui.UIForumPortlet;
-import org.exoplatform.forum.webui.UITopicContainer;
-import org.exoplatform.forum.webui.UITopicDetail;
+import org.exoplatform.forum.service.*;
+import org.exoplatform.forum.webui.*;
 import org.exoplatform.forum.webui.popup.UIForumInputWithActions.ActionData;
 import org.exoplatform.ks.bbcode.core.ExtendedBBCodeProvider;
 import org.exoplatform.ks.common.CommonUtils;
 import org.exoplatform.ks.common.TransformHTML;
 import org.exoplatform.ks.common.UserHelper;
-import org.exoplatform.ks.common.webui.BaseEventListener;
-import org.exoplatform.ks.common.webui.UIGroupSelector;
-import org.exoplatform.ks.common.webui.UIPopupContainer;
-import org.exoplatform.ks.common.webui.UISelector;
-import org.exoplatform.ks.common.webui.UIUserSelect;
-import org.exoplatform.ks.common.webui.WebUIUtils;
+import org.exoplatform.ks.common.webui.*;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -60,15 +37,16 @@ import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.event.EventListener;
-import org.exoplatform.webui.form.UIFormInputIconSelector;
-import org.exoplatform.webui.form.UIFormInputInfo;
-import org.exoplatform.webui.form.UIFormSelectBox;
-import org.exoplatform.webui.form.UIFormStringInput;
-import org.exoplatform.webui.form.UIFormTextAreaInput;
+import org.exoplatform.webui.form.*;
 import org.exoplatform.webui.form.input.UICheckBoxInput;
 import org.exoplatform.webui.form.validator.MandatoryValidator;
 import org.exoplatform.webui.form.wysiwyg.UIFormWYSIWYGInput;
 import org.exoplatform.webui.organization.account.UIUserSelector;
+
+import javax.jcr.PathNotFoundException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by The eXo Platform SARL
@@ -495,7 +473,9 @@ public class UITopicForm extends BaseForumForm implements UISelector {
   }
 
   static public class SubmitThreadActionListener extends BaseEventListener<UITopicForm> {
-    public void onEvent(Event<UITopicForm> event, UITopicForm uiForm, final String objectId) throws Exception {
+      private Log log;
+
+      public void onEvent(Event<UITopicForm> event, UITopicForm uiForm, final String objectId) throws Exception {
       if (uiForm.isDoubleClickSubmit)
         return;
       uiForm.isDoubleClickSubmit = true;
@@ -716,7 +696,10 @@ public class UITopicForm extends BaseForumForm implements UISelector {
           warning("UITopicForm.msg.no-permission", false);
           return;
         }
+      } catch (NullPointerException ne) {
+          log.error(ne);
       } catch (Exception e) {
+        log.error(e);
         forumPortlet.updateIsRendered(ForumUtils.CATEGORIES);
         UICategoryContainer categoryContainer = forumPortlet.getChild(UICategoryContainer.class);
         categoryContainer.updateIsRender(true);
