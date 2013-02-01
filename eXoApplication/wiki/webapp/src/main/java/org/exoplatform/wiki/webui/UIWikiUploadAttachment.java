@@ -34,6 +34,7 @@ import org.exoplatform.wiki.commons.Utils;
 import org.exoplatform.wiki.mow.api.Page;
 import org.exoplatform.wiki.mow.core.api.wiki.AttachmentImpl;
 import org.exoplatform.wiki.mow.core.api.wiki.PageImpl;
+import org.exoplatform.wiki.resolver.TitleResolver;
 import org.exoplatform.wiki.service.WikiResource;
 import org.exoplatform.wiki.utils.WikiNameValidator;
 import org.exoplatform.wiki.webui.control.UIAttachmentContainer;
@@ -91,20 +92,6 @@ public class UIWikiUploadAttachment extends UIWikiForm {
       UIWikiFormUploadInput input = (UIWikiFormUploadInput) wikiAttachmentArea.getUIInput(FIELD_UPLOAD);
       UploadResource uploadResource = input.getUploadResource();
       
-      try {
-        if (uploadResource != null) {
-          String fileName = uploadResource.getFileName();
-          if (fileName != null) {            
-            WikiNameValidator.validateFileName(fileName);
-          }
-        }
-      } catch (IllegalNameException ex) {
-        event.getRequestContext()
-             .getUIApplication()
-             .addMessage(new ApplicationMessage("AttachmentNameValidator.msg.Invalid-char", null, ApplicationMessage.WARNING));        
-        event.getRequestContext().setProcessRender(true);
-      }
-      
       if (event.getRequestContext().getProcessRender()) {        
         resetUploadInput(event);
         return;
@@ -125,7 +112,6 @@ public class UIWikiUploadAttachment extends UIWikiForm {
         }
         
         InputStream is = null;
-        
         try {
           is = input.getUploadDataAsStream();
           if ((is == null) || (is.available() == 0)) {
