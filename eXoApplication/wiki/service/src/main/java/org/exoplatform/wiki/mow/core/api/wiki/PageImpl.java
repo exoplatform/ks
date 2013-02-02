@@ -379,7 +379,7 @@ public abstract class PageImpl extends NTFolder implements Page {
     TreeMap<String, PageImpl> result = new TreeMap<String, PageImpl>(new Comparator<String>() {
       @Override
       public int compare(String o1, String o2) {
-        return o1.toLowerCase().compareTo(o2.toLowerCase());
+        return o1.compareTo(o2);
       }
     });
     List<PageImpl> pages = new ArrayList<PageImpl>(getChildrenContainer().values());
