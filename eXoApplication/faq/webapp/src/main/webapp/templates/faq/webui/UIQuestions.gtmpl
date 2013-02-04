@@ -881,16 +881,17 @@
 	                                </div>
                                         
                                     <div class="IconContainer ClearFix">
-                                        <a class="ItemIcon Delete" title="<%=_ctx.appRes("UIQuestions.action.DeleteComment")%>" href="<%=uicomponent.event("DeleteComment", comment.getId())%>">
-                                       		<span></span>
-                                        </a>
-                                      
-                                        <a class="ItemIcon Edit" title="<%=_ctx.appRes("UIQuestions.action.EditComment")%>" href="<%=uicomponent.event("CommentQuestion", question.getPath() + "/" + comment.getId())%>">
-                                          <span></span>
-                                        </a>
+                                        
 	                                    <%
-	                                    if(canEditComment){
-	                                      if (uicomponent.faqSetting_.isCanEdit()){%>
+	                                    if(canEditComment){%>
+	                                     <a class="ItemIcon Delete" title="<%=_ctx.appRes("UIQuestions.action.DeleteComment")%>" href="<%=uicomponent.event("DeleteComment", comment.getId())%>">
+                                       		<span></span>
+                                         </a>
+                                      
+                                         <a class="ItemIcon Edit" title="<%=_ctx.appRes("UIQuestions.action.EditComment")%>" href="<%=uicomponent.event("CommentQuestion", question.getPath() + "/" + comment.getId())%>">
+                                          <span></span>
+                                         </a>
+	                                      <%if (uicomponent.faqSetting_.isCanEdit()){%>
                                           <a class="ItemIcon CommentToAnswer" title="<%=_ctx.appRes("UIQuestions.action.CommentToAnswer")%>" href="<%=uicomponent.event("CommentToAnswer", comment.getId())%>">
                                                <span></span>
                                           </a>
@@ -901,7 +902,10 @@
 	                                        <a class="ItemIcon CommentToAnswer" title="<%=_ctx.appRes("UIQuestions.action.CommentToAnswer")%>" href="<%=uicomponent.event("CommentToAnswer", comment.getId())%>">
 	                                          <span></span>
 	                                        </a>
-	                                      
+	                                        
+	                                        <a class="ItemIcon Edit" title="<%=_ctx.appRes("UIQuestions.action.EditComment")%>" href="<%=uicomponent.event("CommentQuestion", question.getPath() + "/" + comment.getId())%>">
+                                          	  <span></span>
+                                            </a>
 	                                      
 	                                        <a class="ItemIcon Delete" title="<%=_ctx.appRes("UIQuestions.action.DeleteComment")%>" href="<%=uicomponent.event("DeleteComment", comment.getId())%>">
 	                                           <span></span>
