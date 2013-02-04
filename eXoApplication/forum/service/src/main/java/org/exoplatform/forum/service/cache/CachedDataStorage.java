@@ -699,6 +699,7 @@ public class CachedDataStorage implements DataStorage, Startable {
     // Clear first post cache.
     if (isNew == false) {
       clearPostCache(categoryId, forumId, topic.getId(), topic.getId().replace(Utils.TOPIC, Utils.POST));
+      clearTopicCache(topic);
     }
   }
 
