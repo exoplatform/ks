@@ -128,7 +128,6 @@ public class CachedDataStorage implements DataStorage, Startable {
 
     
   }
-
   private void clearForumCache(Forum forum, boolean isPutNewKey) throws Exception {
     if (isPutNewKey) {
       forumData.put(new ForumKey(forum), new ForumData(forum));
@@ -176,7 +175,16 @@ public class CachedDataStorage implements DataStorage, Startable {
       objectNameData.remove(new ObjectNameKey(topic.getPath()));
       objectNameData.remove(new ObjectNameKey(topic.getId(), Utils.TOPIC));
     }
-    
+  }
+  private void clearCategoryCache(String id) throws Exception {
+    categoryData.remove(new CategoryKey(id));
+  }
+  private void clearCategoryCache(Category category) throws Exception {
+  	if (category != null){
+  		clearCategoryCache(category.getId());
+  		objectNameData.remove(new ObjectNameKey(category.getPath()));
+  		objectNameData.remove(new ObjectNameKey(category.getId(), Utils.CATEGORY));
+  	}
   }
   
   private void clearPostCache(String categoryId, String forumId, String topicId, String postId) throws Exception {
@@ -507,6 +515,9 @@ public class CachedDataStorage implements DataStorage, Startable {
     categoryList.select(new ScopeCacheSelector<CategoryListKey, ListCategoryData>());
     clearLinkListCache();
     clearObjectCache(category, isNew);
+    if(isNew == false){
+    	clearCategoryCache(category);
+    }
   }
 
   public void saveModOfCategory(List<String> moderatorCate, String userId, boolean isAdd) {
