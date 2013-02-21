@@ -290,7 +290,11 @@ public class ForumServiceImpl implements ForumService, Startable {
   public void saveCategory(Category category, boolean isNew) throws Exception {
     storage.saveCategory(category, isNew);
     for (ForumEventLifeCycle f : listeners_) {
-      f.saveCategory(category);
+		try {
+			f.saveCategory(category);
+		} catch (NullPointerException e) {
+			log.error("Error when getting listener " + f.getClass().getName() + " :", e);
+		}
     }
   }
 
@@ -349,7 +353,11 @@ public class ForumServiceImpl implements ForumService, Startable {
   public void saveForum(String categoryId, Forum forum, boolean isNew) throws Exception {
     storage.saveForum(categoryId, forum, isNew);
     for (ForumEventLifeCycle f : listeners_) {
-      f.saveForum(forum);
+		try {
+			f.saveForum(forum);
+		} catch (NullPointerException e) {
+			log.error("Error when getting listener " + f.getClass().getName() + " :", e);
+		}      
     }
   }
 
@@ -414,11 +422,15 @@ public class ForumServiceImpl implements ForumService, Startable {
   public void saveTopic(String categoryId, String forumId, Topic topic, boolean isNew, boolean isMove, MessageBuilder messageBuilder) throws Exception {
     storage.saveTopic(categoryId, forumId, topic, isNew, isMove, messageBuilder);
     for (ForumEventLifeCycle f : listeners_) {
-      if (isNew)
-        f.addTopic(topic, categoryId, forumId);
-      else
-        f.updateTopic(topic, categoryId, forumId);
-    }
+		try {
+			if (isNew)
+				f.addTopic(topic, categoryId, forumId);
+			else
+				f.updateTopic(topic, categoryId, forumId);
+			} catch (NullPointerException e) {
+				log.error("Error when getting listener " + f.getClass().getName() + " :", e);
+			}				
+		}
   }
 
   /**
@@ -551,10 +563,14 @@ public class ForumServiceImpl implements ForumService, Startable {
   public void savePost(String categoryId, String forumId, String topicId, Post post, boolean isNew, MessageBuilder messageBuilder) throws Exception {
     storage.savePost(categoryId, forumId, topicId, post, isNew, messageBuilder);
     for (ForumEventLifeCycle f : listeners_) {
-      if (isNew)
-        f.addPost(post, categoryId, forumId, topicId);
-      else
-        f.updatePost(post, categoryId, forumId, topicId);
+		try {
+			if (isNew)
+				f.addPost(post, categoryId, forumId, topicId);
+			else
+				f.updatePost(post, categoryId, forumId, topicId);
+			} catch (NullPointerException e) {
+			log.error("Error when getting listener " + f.getClass().getName() + " :", e);
+			}
     }
   }
 

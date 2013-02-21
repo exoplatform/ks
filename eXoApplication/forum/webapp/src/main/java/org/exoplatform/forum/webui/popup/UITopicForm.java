@@ -23,6 +23,7 @@ import java.util.List;
 import javax.jcr.PathNotFoundException;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
 import org.exoplatform.forum.ForumUtils;
 import org.exoplatform.forum.service.BufferAttachment;
 import org.exoplatform.forum.service.Forum;
@@ -495,6 +496,8 @@ public class UITopicForm extends BaseForumForm implements UISelector {
   }
 
   static public class SubmitThreadActionListener extends BaseEventListener<UITopicForm> {
+	private Log log;
+	
     public void onEvent(Event<UITopicForm> event, UITopicForm uiForm, final String objectId) throws Exception {
       if (uiForm.isDoubleClickSubmit)
         return;
@@ -650,6 +653,7 @@ public class UITopicForm extends BaseForumForm implements UISelector {
                 uiForm.isDoubleClickSubmit = false;
                 warning("UITopicForm.msg.forum-deleted", false);
                 return;
+              } catch (NullPointerException ne) {
               }
             } else {
               topicNew.setVoteRating(0.0);
@@ -678,6 +682,7 @@ public class UITopicForm extends BaseForumForm implements UISelector {
                 warning("UITopicForm.msg.forum-deleted");
                 uiForm.isDoubleClickSubmit = false;
                 return;
+			  } catch (NullPointerException ne) {                
               }
             }
             uiForm.topic = new Topic();
@@ -717,6 +722,7 @@ public class UITopicForm extends BaseForumForm implements UISelector {
           return;
         }
       } catch (Exception e) {
+		log.error(e);
         forumPortlet.updateIsRendered(ForumUtils.CATEGORIES);
         UICategoryContainer categoryContainer = forumPortlet.getChild(UICategoryContainer.class);
         categoryContainer.updateIsRender(true);

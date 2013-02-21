@@ -425,6 +425,7 @@ public class UIPostForm extends BaseForumForm implements UIPopupComponent {
                     isNew = true;
                   } catch (PathNotFoundException e) {
                     isParentDelete = true;
+                  } catch (NullPointerException ne) {
                   }
                   topicDetail.setIdPostView("lastpost");
                 } else {
@@ -438,6 +439,7 @@ public class UIPostForm extends BaseForumForm implements UIPopupComponent {
                     uiForm.getForumService().savePost(uiForm.categoryId, uiForm.forumId, uiForm.topicId, post, false, messageBuilder);
                   } catch (PathNotFoundException e) {
                     isParentDelete = true;
+                  } catch (NullPointerException ne) {
                   }
                   topicDetail.setIdPostView(uiForm.postId);
                 }
@@ -448,6 +450,7 @@ public class UIPostForm extends BaseForumForm implements UIPopupComponent {
                   isNew = true;
                 } catch (PathNotFoundException e) {
                   isParentDelete = true;
+                } catch (NullPointerException ne) {
                 } catch (Exception ex) {
                   uiForm.log.warn(String.format("Failed to save post %s", post.getName()), ex);
                 }

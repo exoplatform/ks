@@ -146,6 +146,7 @@ public class UIQuickReplyForm extends UIForm {
           }
         } catch (PathNotFoundException e) {
           throw new MessageException(new ApplicationMessage("UIPostForm.msg.isParentDelete", null, ApplicationMessage.WARNING));
+		} catch (NullPointerException ne) {          
         }
         textAreaInput.setValue(ForumUtils.EMPTY_STR);
         if (isOffend || hasTopicMod) {
