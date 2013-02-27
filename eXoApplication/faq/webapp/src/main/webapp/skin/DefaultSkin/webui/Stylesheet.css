@@ -799,6 +799,27 @@
 	list-style-type: inherit;
 }
 
+*+html .UIAnswersPortlet .LeftQuestionContainer .UIDetailContainer ol[type="1"] li {
+ 	list-style-type: decimal;
+}
+
+*+html .UIAnswersPortlet .LeftQuestionContainer .UIDetailContainer ol[type="a"] li {
+ 	list-style-type: lower-alpha;
+}
+
+*+html .UIAnswersPortlet .LeftQuestionContainer .UIDetailContainer ol[type="A"] li {
+ 	list-style-type: upper-alpha;
+}
+
+*+html .UIAnswersPortlet .LeftQuestionContainer .UIDetailContainer ol[type="i"] li {
+ 	list-style-type: lower-roman;
+}
+
+*+html .UIAnswersPortlet .LeftQuestionContainer .UIDetailContainer ol[type="I"] li {
+ 	list-style-type: upper-roman;
+}
+
+
 .UIAnswersPortlet .ProfileContainer .AuthorInfor {
 	margin: 5px auto 0px auto;
 	width: 120px;
