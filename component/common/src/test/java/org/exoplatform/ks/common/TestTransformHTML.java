@@ -91,6 +91,13 @@ public class TestTransformHTML extends TestCase{
     String s =   "Abc\txyz \nHelo everybody <div>xxx</div> BBB.\nStar is 'Ngoi Sao'";
     assertEquals("Abc&nbsp; &nbsp; xyz <br/>Helo everybody &lt;div&gt;xxx&lt;/div&gt; BBB.<br/>Star is &#39;Ngoi Sao&#39;", 
                  TransformHTML.enCodeHTMLContent(s));
+    s = "[color=red\"onmouseover=\"(function(){document.write('I\'m evil');}).call(this)\"]hello world[/color]" +
+        "[size=15\"onmouseover=\"(function(){document.write('I\'m evil');}).call(this)\"]hello world[/size]" +
+        "[url=http://example.com\"onmouseover=\"(function(){document.write('I\'m evil');}).call(this)\"]Example[/url]";
+    assertEquals("[color=red&quot;onmouseover=&quot;(function(){document.write(&#39;I&#39;m evil&#39;);}).call(this)&quot;]hello world[/color][size=15&quot;" +
+    		"onmouseover=&quot;(function(){document.write(&#39;I&#39;m evil&#39;);}).call(this)&quot;]hello world[/size][url=http://example.com&quot;onmouseover=&quot;" +
+    		"(function(){document.write(&#39;I&#39;m evil&#39;);}).call(this)&quot;]Example[/url]",
+                 TransformHTML.enCodeHTMLContent(s));
   }
 
   public void testFixAddBBcodeAction() {

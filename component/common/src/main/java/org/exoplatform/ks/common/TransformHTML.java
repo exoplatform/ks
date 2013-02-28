@@ -165,7 +165,7 @@ public class TransformHTML {
         buffer.append(c);
       }
     }
-    return buffer.toString();
+    return buffer.toString().replaceAll("\"", "&quot;");
   }
 
   public static String enCodeViewSignature(String s) {
