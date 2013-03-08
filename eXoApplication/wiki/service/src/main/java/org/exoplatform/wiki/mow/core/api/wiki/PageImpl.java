@@ -52,6 +52,7 @@ import org.chromattic.api.annotations.WorkspaceName;
 import org.chromattic.ext.ntdef.NTFolder;
 import org.chromattic.ext.ntdef.Resource;
 import org.exoplatform.services.security.ConversationState;
+import org.exoplatform.services.security.Identity;
 import org.exoplatform.wiki.chromattic.ext.ntdef.NTVersion;
 import org.exoplatform.wiki.chromattic.ext.ntdef.VersionableMixin;
 import org.exoplatform.wiki.mow.api.Page;
@@ -129,6 +130,7 @@ public abstract class PageImpl extends NTFolder implements Page {
   }
   
   @Name
+  @Override
   public abstract String getName();
   public abstract void setName(String name);
   
@@ -147,7 +149,8 @@ public abstract class PageImpl extends NTFolder implements Page {
 
   @Create
   protected abstract AttachmentImpl createContent();
-
+  
+  @Override
   public AttachmentImpl getContent() {
     AttachmentImpl content = getContentByChromattic();
     if (content == null) {
@@ -168,11 +171,13 @@ public abstract class PageImpl extends NTFolder implements Page {
   public abstract String getTitleByChromattic();
   public abstract void setTitleByChromattic(String title);
   
+  @Override
   public String getTitle() {
     String title = getTitleByChromattic();
     return (title != null) ? title : getName();
   }
   
+  @Override
   public void setTitle(String title) {
     setTitleByChromattic(title);
   }
@@ -323,7 +328,8 @@ public abstract class PageImpl extends NTFolder implements Page {
   
   @OneToMany
   public abstract Collection<AttachmentImpl> getAttachmentsByChromattic();
-
+  
+  @Override
   public Collection<AttachmentImpl> getAttachments() {
     return getAttachmentsByChromattic();
   }
@@ -393,18 +399,44 @@ public abstract class PageImpl extends NTFolder implements Page {
     return result;
   }
   
+  public Map<String, PageImpl> getChildrenByRootPermission() throws Exception {
+    TreeMap<String, PageImpl> result = new TreeMap<String, PageImpl>(new Comparator<String>() {
+      @Override
+      public int compare(String o1, String o2) {
+        return o1.compareTo(o2);
+      }
+    });
+    List<PageImpl> pages = new ArrayList<PageImpl>(getChildrenContainer().values());
+    
+    for (int i = 0; i < pages.size(); i++) {
+      PageImpl page = pages.get(i);
+      if (page != null) {
+        result.put(page.getTitle(), page);
+      }
+    }
+    return result;
+  }
+  
   @Property(name = WikiNodeType.Definition.OVERRIDEPERMISSION)
   public abstract boolean getOverridePermission();
   public abstract void setOverridePermission(boolean isOverridePermission);
   
+  @Override
   public boolean hasPermission(PermissionType permissionType) throws Exception {
     return permission.hasPermission(permissionType, getPath());
   }
   
+  @Override
+  public boolean hasPermission(PermissionType permissionType, Identity user) throws Exception {
+    return permission.hasPermission(permissionType, getPath(), user);
+  }
+  
+  @Override
   public HashMap<String, String[]> getPermission() throws Exception {
     return permission.getPermission(getPath());
   }
-
+  
+  @Override
   public void setPermission(HashMap<String, String[]> permissions) throws Exception {
     permission.setPermission(permissions, getPath());
   }

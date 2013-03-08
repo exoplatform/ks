@@ -73,6 +73,10 @@ public class UIWikiPageInfoArea extends UIWikiContainer {
     }
     return currentPage;
   }
+  
+  protected boolean isCurrentPagePublic() throws Exception {
+    return Utils.isCurrentPagePublic();
+  }
 
   public static class ToggleAttachmentsActionListener extends EventListener<UIWikiPageInfoArea> {
     @Override

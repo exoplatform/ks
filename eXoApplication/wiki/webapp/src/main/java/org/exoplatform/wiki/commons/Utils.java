@@ -20,6 +20,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +68,7 @@ import org.exoplatform.wiki.mow.core.api.wiki.WikiImpl;
 import org.exoplatform.wiki.rendering.RenderingService;
 import org.exoplatform.wiki.rendering.impl.RenderingServiceImpl;
 import org.exoplatform.wiki.resolver.PageResolver;
+import org.exoplatform.wiki.service.PermissionType;
 import org.exoplatform.wiki.service.Permission;
 import org.exoplatform.wiki.service.PermissionEntry;
 import org.exoplatform.wiki.service.WikiContext;
@@ -120,6 +122,57 @@ public class Utils {
     PageResolver pageResolver = (PageResolver) PortalContainer.getComponent(PageResolver.class);
     Page page = pageResolver.resolve(requestURL, Util.getUIPortal().getSelectedUserNode());
     return page;
+  }
+  
+  public static boolean canModifyPagePermission() throws Exception {
+    WikiService wikiService = (WikiService) PortalContainer.getComponent(WikiService.class);
+    String currentUser = org.exoplatform.wiki.utils.Utils.getCurrentUser();
+    PageImpl currentPage = (PageImpl) Utils.getCurrentWikiPage();
+    if (currentPage == null) {
+      return false;
+    }
+    
+    boolean isPageOwner = currentPage.getOwner().equals(currentUser);
+    String[] permissionOfCurrentUser = currentPage.getPermission().get(currentUser);
+    boolean hasEditPagePermissionOnPage = false;
+    if (permissionOfCurrentUser != null) {
+      for (int i = 0; i < permissionOfCurrentUser.length; i++) {
+        if (org.exoplatform.services.jcr.access.PermissionType.SET_PROPERTY.equals(permissionOfCurrentUser[i])) {
+          hasEditPagePermissionOnPage = true;
+          break;
+        }
+      }
+    }
+    
+    Wiki wiki = currentPage.getWiki();
+    return ((isPageOwner && hasEditPagePermissionOnPage) || wikiService.hasAdminSpacePermission(wiki.getType(), wiki.getOwner()))
+        || wikiService.hasAdminPagePermission(wiki.getType(), wiki.getOwner());
+  }
+  
+  public static boolean canPublicAndRetrictPage() throws Exception {
+    WikiService wikiService = (WikiService) PortalContainer.getComponent(WikiService.class);
+    PageImpl currentPage = (PageImpl) Utils.getCurrentWikiPage();
+    if (currentPage == null) {
+      return false;
+    }
+    Wiki wiki = currentPage.getWiki();
+    
+    boolean hasEditPagePermissionOnPage = false;
+    String[] permissionOfCurrentUser = currentPage.getPermission().get(org.exoplatform.wiki.utils.Utils.getCurrentUser());
+    if (permissionOfCurrentUser != null) {
+      for (int i = 0; i < permissionOfCurrentUser.length; i++) {
+        if (org.exoplatform.services.jcr.access.PermissionType.SET_PROPERTY.equals(permissionOfCurrentUser[i])) {
+          hasEditPagePermissionOnPage = true;
+          break;
+        }
+      }
+    }
+    return wikiService.hasAdminSpacePermission(wiki.getType(), wiki.getOwner()) || hasEditPagePermissionOnPage;
+  }
+  
+  public static boolean isCurrentPagePublic() throws Exception {
+    Page currentPage = Utils.getCurrentWikiPage();
+    return (currentPage != null) && currentPage.hasPermission(PermissionType.VIEWPAGE, new Identity(IdentityConstants.ANONIM));
   }
   
   public static String getURLFromParams(WikiPageParams params) throws Exception {
@@ -296,8 +349,11 @@ public class Utils {
                                   WikiMode mode,
                                   Map<String, String[]> params) throws Exception {
     String redirectLink = Utils.createURLWithMode(pageParams, mode, params);
-    event.getRequestContext().getJavascriptManager().addCustomizedOnLoadScript("ajaxRedirect('"
-        + redirectLink + "');");
+    ajaxRedirect(event, redirectLink);
+  }
+  
+  public static void ajaxRedirect(Event<? extends UIComponent> event, String redirectLink) throws Exception {
+    event.getRequestContext().getJavascriptManager().addCustomizedOnLoadScript("eXo.wiki.UIWikiPortlet.ajaxRedirect('" + redirectLink + "');");
   }
   
   public static String createURLWithMode(WikiPageParams pageParams,

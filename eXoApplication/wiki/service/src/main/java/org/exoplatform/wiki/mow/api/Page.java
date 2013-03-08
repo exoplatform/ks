@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import org.exoplatform.wiki.service.PermissionType;
+import org.exoplatform.services.security.Identity;
 
 /**
  * @author <a href="mailto:patrice.lamarque@exoplatform.com">Patrice
@@ -86,6 +87,16 @@ public interface Page {
   Collection<? extends Attachment> getAttachments() throws Exception;
   
   boolean hasPermission(PermissionType permissionType) throws Exception; 
+  
+  /**
+   * Check if user has permisison on page or not
+   * 
+   * @param permissionType The type of permisison to check {@link PermissionType}}
+   * @param user The user to check
+   * @return User has permisison on page or not
+   * @throws Exception
+   */
+  boolean hasPermission(PermissionType permissionType, Identity user) throws Exception;
   
   /**
    * 

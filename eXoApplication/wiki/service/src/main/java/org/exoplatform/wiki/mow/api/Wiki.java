@@ -87,5 +87,10 @@ public interface Wiki {
   
   
   public Preferences getPreferences();
+  
+  public abstract boolean getDefaultPermissionsInited();
+  
+  public abstract void setDefaultPermissionsInited(boolean isInited);
+  
 
 }

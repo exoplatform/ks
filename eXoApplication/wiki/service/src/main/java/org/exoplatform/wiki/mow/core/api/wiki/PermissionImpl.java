@@ -61,6 +61,18 @@ public class PermissionImpl extends Permission {
 
   @Override
   public boolean hasPermission(PermissionType permissionType, String jcrPath) throws Exception {
+  	ConversationState conversationState = ConversationState.getCurrent();
+    Identity user = null;
+    if (conversationState != null) {
+      user = conversationState.getIdentity();
+    } else {
+      user = new Identity(IdentityConstants.ANONIM);
+    }
+    return hasPermission(permissionType, jcrPath, user);
+  }
+  @Override
+  public boolean hasPermission(PermissionType permissionType, String jcrPath, Identity user) throws Exception {
+    // Convert permissionType to JCR permission
     String[] permission = new String[] {};
     if (PermissionType.VIEWPAGE.equals(permissionType) || PermissionType.VIEW_ATTACHMENT.equals(permissionType)) {
       permission = new String[] { org.exoplatform.services.jcr.access.PermissionType.READ };
@@ -69,16 +81,11 @@ public class PermissionImpl extends Permission {
           org.exoplatform.services.jcr.access.PermissionType.REMOVE,
           org.exoplatform.services.jcr.access.PermissionType.SET_PROPERTY };
     }
-
+    
+    // Get ACL
     ExtendedNode extendedNode = (ExtendedNode) getJCRNode(jcrPath);
     AccessControlList acl = extendedNode.getACL();
-    ConversationState conversationState = ConversationState.getCurrent();
-    Identity user = null;
-    if (conversationState != null) {
-      user = conversationState.getIdentity();
-    } else {
-      user = new Identity(IdentityConstants.ANONIM);
-    }
+    
     return Utils.hasPermission(acl, permission, user);
   }
 

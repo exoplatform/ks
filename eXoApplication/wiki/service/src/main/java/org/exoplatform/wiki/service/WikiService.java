@@ -68,6 +68,8 @@ public interface WikiService {
   public void setWikiPermission(String wikiType, String wikiOwner, List<PermissionEntry> permissionEntries) throws Exception;
 
   public Page getPageById(String wikiType, String wikiOwner, String pageId) throws Exception;
+  
+  public Page getPageByRootPermission(String wikiType, String wikiOwner, String pageId) throws Exception;
 
   public Page getRelatedPage(String wikiType, String wikiOwner, String pageId) throws Exception;
 
@@ -110,6 +112,16 @@ public interface WikiService {
   public void modifyTemplate(WikiPageParams params, Template template, String newName, String newDescription, String newContent, String newSyntaxId) throws Exception;
 
   public boolean isExisting(String wikiType, String wikiOwner, String pageId) throws Exception;
+  
+  /**
+   * Get wiki default permission
+   * 
+   * @param wikiType The type of wiki
+   * @param wikiOwner The owner of wiki
+   * @return The permisison list for wiki
+   * @throws Exception
+   */
+  public List<String> getWikiDefaultPermissions(String wikiType, String wikiOwner) throws Exception;
 
   /**
    * register a {@link PageWikiListener} 
@@ -129,6 +141,45 @@ public interface WikiService {
   public List<Page> getRelatedPage(WikiPageParams pageParams) throws Exception;
 
   public boolean removeRelatedPage(WikiPageParams orginaryPageParams, WikiPageParams relatedPageParams) throws Exception;
-
+  
+  public String getWikiWebappUri();
+  
+  /**
+   * Checks whether a user is a space's member or not.
+   *
+   * @param spaceId  the existing space id
+   * @param userId the remote user id
+   * @return true if that user is a member; otherwise, false
+   */
+  public boolean isSpaceMember(String spaceId, String userId);
+  
+  /**
+   * Check if the space is hidden or not
+   * 
+   * @param groupId The group Id to check
+   * @return the space is hidden or not
+   * @throws Exception
+   */
+  public boolean isHiddenSpace(String groupId) throws Exception;
+   
+  /** 
+   * Check if the current user has admin permission on the space
+   * 
+   * @param wikiType The wiki type of the space
+   * @param owner The owner of the space
+   * @return current user has admin permisison on the space or not
+   * @throws Exception
+   */
+  public boolean hasAdminSpacePermission(String wikiType, String owner) throws Exception;
+  
+  /**
+   * Check if the current user has admin permission on the page
+   * 
+   * @param wikiType The wiki type of the space
+   * @param owner The owner of the space
+   * @return current user has admin permisison on the page or not
+   * @throws Exception
+   */
+  public boolean hasAdminPagePermission(String wikiType, String owner) throws Exception;
 
 }

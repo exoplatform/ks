@@ -20,8 +20,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -31,17 +29,14 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilter;
 import org.exoplatform.webui.ext.filter.UIExtensionFilters;
 import org.exoplatform.wiki.commons.Utils;
 import org.exoplatform.wiki.mow.core.api.wiki.PageImpl;
-import org.exoplatform.wiki.service.IDType;
-import org.exoplatform.wiki.service.Permission;
 import org.exoplatform.wiki.service.PermissionEntry;
-import org.exoplatform.wiki.service.PermissionType;
 import org.exoplatform.wiki.webui.UIWikiPermissionForm;
 import org.exoplatform.wiki.webui.UIWikiPermissionForm.Scope;
 import org.exoplatform.wiki.webui.UIWikiPortlet;
 import org.exoplatform.wiki.webui.UIWikiPortlet.PopupLevel;
 import org.exoplatform.wiki.webui.control.action.core.AbstractEventActionComponent;
-import org.exoplatform.wiki.webui.control.filter.AdminPagesPermissionFilter;
 import org.exoplatform.wiki.webui.control.filter.IsViewModeFilter;
+import org.exoplatform.wiki.webui.control.filter.OwnerPagesOrAdminSpacePermissionFilter;
 import org.exoplatform.wiki.webui.control.listener.MoreContainerActionListener;
 
 /**
@@ -61,7 +56,7 @@ public class PagePermissionActionComponent extends AbstractEventActionComponent 
   public static final String                   ACTION  = "PagePermission";
 
   private static final List<UIExtensionFilter> FILTERS = Arrays.asList(new UIExtensionFilter[] {
-      new IsViewModeFilter(), new AdminPagesPermissionFilter() });
+  		new IsViewModeFilter(), new OwnerPagesOrAdminSpacePermissionFilter() });
 
   @UIExtensionFilters
   public List<UIExtensionFilter> getFilters() {
@@ -88,45 +83,10 @@ public class PagePermissionActionComponent extends AbstractEventActionComponent 
       uiWikiPermissionForm.setScope(Scope.PAGE);
       PageImpl page = (PageImpl) Utils.getCurrentWikiPage();
       HashMap<String, String[]> permissionMap = page.getPermission();
-      List<PermissionEntry> permissionEntries = convertToPermissionEntryList(permissionMap);
+      List<PermissionEntry> permissionEntries = uiWikiPermissionForm.convertToPermissionEntryList(permissionMap);
       uiWikiPermissionForm.setPermission(permissionEntries);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupContainer);
       super.processEvent(event);
-    }
-
-    private List<PermissionEntry> convertToPermissionEntryList(HashMap<String, String[]> permissions) {
-      List<PermissionEntry> permissionEntries = new ArrayList<PermissionEntry>();
-      Set<Entry<String, String[]>> entries = permissions.entrySet();
-      for (Entry<String, String[]> entry : entries) {
-        PermissionEntry permissionEntry = new PermissionEntry();
-        String key = entry.getKey();
-        IDType idType = IDType.USER;
-        if (key.indexOf(":") > 0) {
-          idType = IDType.MEMBERSHIP;
-        } else if (key.indexOf("/") == 0) {
-          idType = IDType.GROUP;
-        }
-        permissionEntry.setIdType(idType);
-        permissionEntry.setId(key);
-        Permission[] perms = new Permission[2];
-        perms[0] = new Permission();
-        perms[0].setPermissionType(PermissionType.VIEWPAGE);
-        perms[1] = new Permission();
-        perms[1].setPermissionType(PermissionType.EDITPAGE);
-        for (String action : entry.getValue()) {
-          if (org.exoplatform.services.jcr.access.PermissionType.READ.equals(action)) {
-            perms[0].setAllowed(true);
-          } else if (org.exoplatform.services.jcr.access.PermissionType.ADD_NODE.equals(action)
-              || org.exoplatform.services.jcr.access.PermissionType.REMOVE.equals(action)
-              || org.exoplatform.services.jcr.access.PermissionType.SET_PROPERTY.equals(action)) {
-            perms[1].setAllowed(true);
-          }
-        }
-        permissionEntry.setPermissions(perms);
-
-        permissionEntries.add(permissionEntry);
-      }
-      return permissionEntries;
     }
   }
 }

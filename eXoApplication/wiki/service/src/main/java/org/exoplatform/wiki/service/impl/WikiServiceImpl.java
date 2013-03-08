@@ -46,6 +46,7 @@ import org.exoplatform.wiki.mow.api.Model;
 import org.exoplatform.wiki.mow.api.Page;
 import org.exoplatform.wiki.mow.api.Wiki;
 import org.exoplatform.wiki.mow.api.WikiNodeType;
+import org.exoplatform.wiki.mow.api.WikiStore;
 import org.exoplatform.wiki.mow.api.WikiType;
 import org.exoplatform.wiki.mow.core.api.MOWService;
 import org.exoplatform.wiki.mow.core.api.WikiStoreImpl;
@@ -107,6 +108,8 @@ public class WikiServiceImpl implements WikiService, Startable {
   private List<WikiTemplatePagePlugin> templatePagePlugins_ = new ArrayList<WikiTemplatePagePlugin>();
 
   private static final Log      log               = ExoLogger.getLogger(WikiServiceImpl.class);
+  
+  private String wikiWebappUri;
 
   public WikiServiceImpl(ConfigurationManager configManager,
                          JCRDataStorage jcrDataStorage,
@@ -144,6 +147,7 @@ public class WikiServiceImpl implements WikiService, Startable {
       creator = conversationState.getIdentity().getUserId();
     }
     page.setOwner(creator);
+    setFullPermissionForOwner(page, creator);
     page.setTitle(title);
     page.getContent().setText("");
     page.makeVersionable();
@@ -166,7 +170,54 @@ public class WikiServiceImpl implements WikiService, Startable {
     
     return page;
   }
+  private void setFullPermissionForOwner(PageImpl page, String owner) throws Exception {
+    ConversationState conversationState = ConversationState.getCurrent();
+
+    if (conversationState != null) {
+      HashMap<String, String[]> permissions = page.getPermission();
+      permissions.put(conversationState.getIdentity().getUserId(), org.exoplatform.services.jcr.access.PermissionType.ALL);
+      page.setPermission(permissions);
+    }
+  }
   
+  @Override
+  public String getWikiWebappUri() {
+    return wikiWebappUri;
+  }
+  
+  @Override
+  public boolean isSpaceMember(String spaceId, String userId) {
+    try {
+      // Get space service
+      Class<?> spaceServiceClass = Class.forName("org.exoplatform.social.core.space.spi.SpaceService");
+      Object spaceService = ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(spaceServiceClass);
+      
+      // Get space by Id
+      Class<?> spaceClass = Class.forName("org.exoplatform.social.core.space.model.Space");
+      Object space = spaceServiceClass.getDeclaredMethod("getSpaceByPrettyName", String.class).invoke(spaceService, spaceId);
+      
+      // Check if user is the member of space or not
+      Boolean bool = Boolean.valueOf(String.valueOf(spaceServiceClass.getDeclaredMethod("isMember", spaceClass, String.class).invoke(spaceService, space, userId)));
+      return bool.booleanValue();
+    } catch (Exception e) {
+      log.debug("Can not check if user is space member", e);
+      return false;
+    }
+  }
+  
+  public boolean isHiddenSpace(String groupId) throws Exception {
+    try {
+      Class spaceServiceClass = Class.forName("org.exoplatform.social.core.space.spi.SpaceService");
+      Object spaceService = ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(spaceServiceClass);
+      Class spaceClass = Class.forName("org.exoplatform.social.core.space.model.Space");
+      Object space = spaceServiceClass.getDeclaredMethod("getSpaceByGroupId", String.class).invoke(spaceService, groupId);
+      String visibility = String.valueOf(spaceClass.getDeclaredMethod("getVisibility").invoke(space));
+      String hiddenValue = String.valueOf(spaceClass.getDeclaredField("HIDDEN").get(space));
+      return hiddenValue.equals(visibility);
+    } catch (ClassNotFoundException e) {
+      return true;
+    }
+  }
   public void createDraftNewPage(String draftNewPageId) throws Exception {
     Model model = getModel();
     WikiStoreImpl wStore = (WikiStoreImpl) model.getWikiStore();
@@ -369,7 +420,7 @@ public class WikiServiceImpl implements WikiService, Startable {
   public List<PermissionEntry> getWikiPermission(String wikiType, String wikiOwner) throws Exception {
     List<PermissionEntry> permissionEntries = new ArrayList<PermissionEntry>();
     Model model = getModel();
-    WikiImpl wiki = (WikiImpl) getWiki(wikiType, wikiOwner, model);
+    Wiki wiki = getWikiWithoutPermission(wikiType, wikiOwner, model);
     if (wiki == null) {
       return permissionEntries;
     }
@@ -483,6 +534,14 @@ public class WikiServiceImpl implements WikiService, Startable {
   }
 
   public Page getPageById(String wikiType, String wikiOwner, String pageId) throws Exception {
+    Page page = getPageByRootPermission(wikiType, wikiOwner, pageId);
+    if (page != null && page.hasPermission(PermissionType.VIEWPAGE)) {
+      return page;
+    }
+    return null;
+  }
+  
+  public Page getPageByRootPermission(String wikiType, String wikiOwner, String pageId) throws Exception {
     PageImpl page = null;
 
     if (WikiNodeType.Definition.WIKI_HOME_NAME.equals(pageId) || pageId == null) {
@@ -501,11 +560,7 @@ public class WikiServiceImpl implements WikiService, Startable {
         }
       }
     }
-    
-    if (page != null && page.hasPermission(PermissionType.VIEWPAGE)) {
-      return page;
-    }
-    return null;
+    return page;
   }
 
   public Page getRelatedPage(String wikiType, String wikiOwner, String pageId) throws Exception {
@@ -797,10 +852,10 @@ public class WikiServiceImpl implements WikiService, Startable {
         wiki = portalWikiContainer.getWiki(owner, true);
       } else if (PortalConfig.GROUP_TYPE.equals(wikiType)) {
         WikiContainer<GroupWiki> groupWikiContainer = wStore.getWikiContainer(WikiType.GROUP);
-        boolean hasPermission = hasPermission(wikiType, owner);
+        boolean hasPermission = hasAdminSpacePermission(wikiType, owner);
         wiki = groupWikiContainer.getWiki(owner, hasPermission);
       } else if (PortalConfig.USER_TYPE.equals(wikiType)) {
-        boolean hasEditWiki = hasPermission(wikiType, owner);
+      	boolean hasEditWiki = hasAdminSpacePermission(wikiType, owner);
         WikiContainer<UserWiki> userWikiContainer = wStore.getWikiContainer(WikiType.USER);
         wiki = userWikiContainer.getWiki(owner, hasEditWiki);
 
@@ -814,25 +869,83 @@ public class WikiServiceImpl implements WikiService, Startable {
     return wiki;
   }
   
+  private Wiki getWikiWithoutPermission(String wikiType, String owner, Model model) {
+    WikiStore wStore = model.getWikiStore();
+    Wiki wiki = null;
+    try {
+      if (PortalConfig.PORTAL_TYPE.equals(wikiType)) {
+        WikiContainer<PortalWiki> portalWikiContainer = wStore.getWikiContainer(WikiType.PORTAL);
+        wiki = portalWikiContainer.getWiki(owner, true);
+      } else if (PortalConfig.GROUP_TYPE.equals(wikiType)) {
+        WikiContainer<GroupWiki> groupWikiContainer = wStore.getWikiContainer(WikiType.GROUP);
+        wiki = groupWikiContainer.getWiki(owner, true);
+      } else if (PortalConfig.USER_TYPE.equals(wikiType)) {
+        WikiContainer<UserWiki> userWikiContainer = wStore.getWikiContainer(WikiType.USER);
+        wiki = userWikiContainer.getWiki(owner, true);
+      }
+      model.save();
+    } catch (Exception e) {
+      if (log.isDebugEnabled()) {
+        log.debug("[WikiService] Cannot get wiki " + wikiType + ":" + owner, e);
+      }
+    }
+    return wiki;
+  }
+  
   private List<AccessControlEntry> getAccessControls(String wikiType, String wikiOwner) throws Exception{
     List<AccessControlEntry> aces = new ArrayList<AccessControlEntry>();
     try {
-      List<String> permissions = getWikiDefaultPermissions(wikiType, wikiOwner);
-      for (String perm : permissions) {
-        String[] actions = perm.substring(0, perm.indexOf(":")).split(",");
-        perm = perm.substring(perm.indexOf(":") + 1);
-        String id = perm.substring(perm.indexOf(":") + 1);
+      List<PermissionEntry> permissionEntries = getWikiPermission(wikiType, wikiOwner);
+      for (PermissionEntry perm : permissionEntries) {
+        Permission[] permissions = perm.getPermissions();
+        List<String> actions = new ArrayList<String>();
+        for (Permission permission : permissions) {
+          if (permission.isAllowed()) {
+            actions.add(permission.getPermissionType().toString());
+          }
+        }
+        
         for (String action : actions) {
-          aces.add(new AccessControlEntry(id, action));
+          aces.add(new AccessControlEntry(perm.getId(), action));
         }
       }
     } catch (Exception e) {
-      log.debug("failed in method getDefaultPermission:", e);
+      if (log.isDebugEnabled()) {
+        log.debug("failed in method getAccessControls:", e);
+      }
     }
     return aces;
   }
   
-  private  boolean hasPermission(String wikiType, String owner) throws Exception {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean hasAdminSpacePermission(String wikiType, String owner) throws Exception {
+    ConversationState conversationState = ConversationState.getCurrent();
+    Identity user = null;
+    if (conversationState != null) {
+      user = conversationState.getIdentity();
+      ExoContainer container = ExoContainerContext.getCurrentContainer();
+      UserACL acl = (UserACL)container.getComponentInstanceOfType(UserACL.class);
+      if(acl != null && acl.getSuperUser().equals(user.getUserId())){
+        return true;
+      }
+    } else {
+      user = new Identity(IdentityConstants.ANONIM);
+    }
+    
+    List<AccessControlEntry> aces = getAccessControls(wikiType, owner);
+    AccessControlList acl = new AccessControlList(owner, aces);
+    String []permission = new String[]{PermissionType.ADMINSPACE.toString()};
+    return Utils.hasPermission(acl, permission, user);
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean hasAdminPagePermission(String wikiType, String owner) throws Exception {
     ConversationState conversationState = ConversationState.getCurrent();
     Identity user = null;
     if (conversationState != null) {
@@ -847,7 +960,7 @@ public class WikiServiceImpl implements WikiService, Startable {
     }
     List<AccessControlEntry> aces = getAccessControls(wikiType, owner);
     AccessControlList acl = new AccessControlList(owner, aces);
-    String []permission = new String[]{PermissionType.ADMINSPACE.toString()};
+    String []permission = new String[]{PermissionType.ADMINPAGE.toString()};
     return Utils.hasPermission(acl, permission, user);
   }
 
@@ -1052,7 +1165,8 @@ public class WikiServiceImpl implements WikiService, Startable {
     }
   }
   
-  private List<String> getWikiDefaultPermissions(String wikiType, String wikiOwner) throws Exception {
+  @Override
+  public List<String> getWikiDefaultPermissions(String wikiType, String wikiOwner) throws Exception {
     String view = new StringBuilder().append(PermissionType.VIEWPAGE).toString();
     String viewEdit = new StringBuilder().append(PermissionType.VIEWPAGE).append(",").append(PermissionType.EDITPAGE).toString();
     String all = new StringBuilder().append(PermissionType.VIEWPAGE)
@@ -1081,7 +1195,7 @@ public class WikiServiceImpl implements WikiService, Startable {
       if (!permissions.contains(portalEditClause)) {
         permissions.add(portalEditClause);
       }
-      permissions.add(new StringBuilder(viewEdit).append(":").append(IDType.USER).append(":any").toString());
+      permissions.add(new StringBuilder(view).append(":").append(IDType.USER).append(":any").toString());
     } else if (PortalConfig.GROUP_TYPE.equals(wikiType)) {
       UserACL userACL = (UserACL) ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(UserACL.class);
       String makableMTClause = new StringBuilder(all).append(":")
@@ -1102,13 +1216,11 @@ public class WikiServiceImpl implements WikiService, Startable {
       if (!permissions.contains(ownerClause)) {
         permissions.add(ownerClause);
       }
-      permissions.add(new StringBuilder(view).append(":").append(IDType.USER).append(":any").toString());
     } else if (PortalConfig.USER_TYPE.equals(wikiType)) {
       String ownerClause = new StringBuilder(all).append(":").append(IDType.USER).append(":").append(wikiOwner).toString();
       if (!permissions.contains(ownerClause)) {
         permissions.add(ownerClause);
       }
-      permissions.add(new StringBuilder(view).append(":").append(IDType.USER).append(":any").toString());
     }
     return permissions;
   }

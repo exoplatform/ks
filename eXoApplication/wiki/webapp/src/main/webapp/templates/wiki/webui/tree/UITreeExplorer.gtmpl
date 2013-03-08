@@ -17,6 +17,10 @@
  boolean isRenderLink = uicomponent.isRenderLink;
  String baseLink = uicomponent.getBaseLink();
  
+ // Reuse the resource bundle
+ String retrictedLabel = _ctx.appRes("UIWikiPageInfoArea.label.Restrict").toLowerCase();
+ String restrictedTitle = _ctx.appRes("UITreeExplorer.label.restricted-node");
+
  boolean isEvent = false;
  if (uicomponent.getEventComponent() != null) {
    isEvent = uicomponent.getEventComponent().getType().equals(EVENTTYPE.EVENT);
@@ -28,7 +32,8 @@
  rcontext.getJavascriptManager().importJavascript('eXo.wiki.UITreeExplorer', '/wiki/javascript/') ;
  if (initParam!=null) {
  	rcontext.getJavascriptManager()
- 	  .addJavascript("eXo.wiki.UITreeExplorer.init('" + uicomponent.id  +"','"+ initParam + "',true," + isRenderLink + ",'" + baseLink + "');");
+ 	  .addJavascript("eXo.wiki.UITreeExplorer.init('" + uicomponent.id  + "','" + initParam + "',true," + isRenderLink + ",'" + baseLink + "','" + retrictedLabel + "',\"" + restrictedTitle + "\");");
+
  } 
 %>
 	 <div class="UITreeExplorer" id="$uicomponent.id">	 

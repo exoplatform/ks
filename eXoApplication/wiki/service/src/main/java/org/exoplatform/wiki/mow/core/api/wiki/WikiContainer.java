@@ -17,11 +17,14 @@
 package org.exoplatform.wiki.mow.core.api.wiki;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.chromattic.api.RelationshipType;
 import org.chromattic.api.annotations.Create;
 import org.chromattic.api.annotations.MappedBy;
 import org.chromattic.api.annotations.OneToMany;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.exoplatform.wiki.mow.api.Wiki;
 import org.exoplatform.wiki.mow.api.WikiNodeType;
 import org.exoplatform.wiki.service.WikiService;
@@ -32,6 +35,8 @@ import org.exoplatform.wiki.service.WikiService;
  * @version $Revision$
  */
 public abstract class WikiContainer<T extends Wiki> {
+	
+	private static final Log      log               = ExoLogger.getLogger(WikiContainer.class);
 
   private WikiService wService;
   
@@ -89,5 +94,18 @@ public abstract class WikiContainer<T extends Wiki> {
     }
     return null;
   } 
+  
+  public void initDefaultPermisisonForWiki(Wiki wiki) {
+    WikiService wikiService = getwService(); 
+    List<String> permissions;
+    try {
+      permissions = wikiService.getWikiDefaultPermissions(wiki.getType(), wiki.getOwner());
+      wiki.setWikiPermissions(permissions);
+      wiki.setDefaultPermissionsInited(true);
+    } catch (Exception e) {
+      log.warn(String.format("Can not initialize the permission for wiki [type: %s, owner: %s]", wiki.getType(), wiki.getOwner()), e);
+    }
+  }
+
 
 }

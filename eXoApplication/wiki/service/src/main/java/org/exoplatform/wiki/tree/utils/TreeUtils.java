@@ -28,6 +28,7 @@ import org.exoplatform.wiki.mow.api.Wiki;
 import org.exoplatform.wiki.mow.core.api.wiki.PageImpl;
 import org.exoplatform.wiki.mow.core.api.wiki.WikiHome;
 import org.exoplatform.wiki.rendering.macro.ExcerptUtils;
+import org.exoplatform.wiki.service.PermissionType;
 import org.exoplatform.wiki.service.WikiPageParams;
 import org.exoplatform.wiki.service.WikiService;
 import org.exoplatform.wiki.tree.JsonNodeData;
@@ -90,47 +91,51 @@ public class TreeUtils {
   }
   
   public static List<JsonNodeData> tranformToJson(TreeNode treeNode, HashMap<String, Object> context) throws Exception {
-    WikiService wikiService = (WikiService) ExoContainerContext.getCurrentContainer()
-                                                               .getComponentInstanceOfType(WikiService.class);
-    List<JsonNodeData> children = new ArrayList<JsonNodeData>();
     int counter = 1;
-    boolean isSelectable = true;
-    boolean isLastNode = false;
     Boolean showExcerpt = false;
-    String excerpt = null;
-    PageImpl page = null;
     PageImpl currentPage = null;
-    WikiPageParams currentPageParams = null;
     String currentPath = null;
+    
     if (context != null) {
       currentPath = (String) context.get(TreeNode.CURRENT_PATH);
+      currentPage = (PageImpl) context.get(TreeNode.CURRENT_PAGE);
       showExcerpt = (Boolean) context.get(TreeNode.SHOW_EXCERPT);
     }
-    currentPageParams = getPageParamsFromPath(currentPath);
-
+    
+    List<JsonNodeData> children = new ArrayList<JsonNodeData>();
     for (TreeNode child : treeNode.getChildren()) {
-      isSelectable = true;
-      isLastNode = false;
+    	boolean isSelectable = true;
+    	boolean isLastNode = false;
       if (counter >= treeNode.getChildren().size()) {
         isLastNode = true;
       }
-      // if (child.getNodeType().equals(TreeNodeType.WIKIHOME)) { isSelectable =
-      // true;}
       if (child.getNodeType().equals(TreeNodeType.WIKI)) {
         isSelectable = false;
-      } else if (currentPath != null && child.getNodeType().equals(TreeNodeType.PAGE)) {
-        page = ((PageTreeNode) child).getPage();
-        currentPage = (PageImpl) wikiService.getPageById(currentPageParams.getType(),
-                                                         currentPageParams.getOwner(),
-                                                         currentPageParams.getPageId());
-        if (currentPage != null
-            && (currentPage.equals(page) || Utils.isDescendantPage(page, currentPage)))
+      } else if (child.getNodeType().equals(TreeNodeType.PAGE)) {
+        PageImpl page = ((PageTreeNode) child).getPage();
+        if (((currentPage != null) && (currentPage.equals(page) || Utils.isDescendantPage(page, currentPage)))) {
           isSelectable = false;
+        }
+        
+        if (!page.hasPermission(PermissionType.VIEWPAGE)) {
+          isSelectable = false;
+          child.setRetricted(true);
+        }
+        
+      } else if (child.getNodeType().equals(TreeNodeType.WIKIHOME)) {
+        PageImpl page = ((WikiHomeTreeNode) child).getWikiHome();
+        if (!page.hasPermission(PermissionType.VIEWPAGE)) {
+          isSelectable = false;
+          child.setRetricted(true);
+        }
       }
+      
+      String excerpt = null;
       if (showExcerpt != null && showExcerpt) {
         WikiPageParams params = getPageParamsFromPath(child.getPath());
         excerpt = ExcerptUtils.getExcerpts(params);
       }
+      
       children.add(new JsonNodeData(child, isLastNode, isSelectable, currentPath, excerpt, context));
       counter++;
     }

@@ -199,4 +199,53 @@
       <js-path>/javascript/eXo/wiki/UIWikiPermissionForm.js</js-path>
     </param>
   </javascript>
+  
+  <module>
+    <name>UIWikiPermissionForm</name>
+    <load-group>wikiView</load-group>
+    <script>
+      <path>/javascript/eXo/wiki/UIWikiPermissionForm.js</path>
+    </script>
+        
+    <depends>
+        <module>base</module>
+    </depends>
+    <depends>
+        <module>uiForm</module>
+    </depends>
+    <depends>
+        <module>webui-ext</module>
+    </depends> 
+    <depends>
+      <module>jquery</module>
+    </depends>   
+  </module>
+   <module>
+    <name>UIWikiPageNotFound</name>
+    <load-group>wikiView</load-group>
+    <script>
+      <path>/javascript/eXo/wiki/UIWikiPageNotFound.js</path>
+    </script>
+    <depends>
+        <module>base</module>
+    </depends>
+    <depends>
+        <module>uiForm</module>
+    </depends>
+    <depends>
+        <module>webui-ext</module>
+    </depends> 
+    <depends>
+      <module>jquery</module>
+    </depends>   
+  </module>
+  
+  <!-- XWiki Explorer JS -->  
+  <module>
+    <name>XWiki</name>
+    <script>      
+      <path>/javascript/eXo/xwiki/xwikiexplorer/xwikiexplorer.js</path>
+    </script>
+  </module>
+  
 </gatein-resources>

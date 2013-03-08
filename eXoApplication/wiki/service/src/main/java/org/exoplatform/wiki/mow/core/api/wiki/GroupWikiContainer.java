@@ -76,6 +76,7 @@ public abstract class GroupWikiContainer extends WikiContainer<GroupWiki> {
     gwiki.setOwner(wikiOwner);
     gwiki.setGroupWikis(this);
     gwiki.getPreferences();
+    initDefaultPermisisonForWiki(gwiki);
     session.save();
     return gwiki;
   }

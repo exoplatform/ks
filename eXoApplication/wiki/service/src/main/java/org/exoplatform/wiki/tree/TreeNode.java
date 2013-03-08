@@ -37,6 +37,8 @@ public class TreeNode {
   protected String           name;
 
   protected String           path;
+  
+  protected boolean          isRetricted     = false;
 
   protected boolean          hasChild;
 
@@ -49,6 +51,10 @@ public class TreeNode {
   final static public String PATH            = "path";
 
   final static public String CURRENT_PATH    = "page";
+  
+  public static final String CURRENT_PAGE    = "currentPage";
+  
+  public static final String SELECTED_PAGE   = "selectedPage";
   
   public static final String SHOW_EXCERPT    = "excerpt";
 
@@ -114,6 +120,14 @@ public class TreeNode {
 
   public String getPath() {
     return path;
+  }
+  
+  public boolean isRetricted() {
+    return isRetricted;
+  }
+
+  public void setRetricted(boolean isRetricted) {
+    this.isRetricted = isRetricted;
   }
     
   @Override
@@ -186,7 +200,7 @@ public class TreeNode {
   
   private void pushChildren(HashMap<String, Object> context) throws Exception {
 
-    Stack<WikiPageParams> paramsStk = (Stack<WikiPageParams>) context.get(this.STACK_PARAMS);
+  	Stack<WikiPageParams> paramsStk = (Stack<WikiPageParams>) context.get(STACK_PARAMS);
 
     if (paramsStk == null) {
       pushChild(context);
@@ -196,7 +210,7 @@ public class TreeNode {
       } else {
         WikiPageParams params = new WikiPageParams();
         params = paramsStk.pop();
-        context.put(this.STACK_PARAMS, paramsStk);
+        context.put(STACK_PARAMS, paramsStk);
         if (this instanceof RootTreeNode) {
           SpaceTreeNode spaceNode = new SpaceTreeNode(params.getType());
           pushChild(spaceNode, context);

@@ -22,6 +22,7 @@ import java.util.HashMap;
 
 import org.exoplatform.wiki.mow.api.Attachment;
 import org.exoplatform.wiki.mow.api.Page;
+import org.exoplatform.services.security.Identity;
 import org.exoplatform.wiki.service.PermissionType;
 
 /**
@@ -157,6 +158,11 @@ public class SimplePageImpl implements Page {
 
   @Override
   public boolean hasPermission(PermissionType permissionType) throws Exception {
+    return hasPermission;
+  }
+  
+  @Override
+  public boolean hasPermission(PermissionType permissionType, Identity user) throws Exception {
     return hasPermission;
   }
 
