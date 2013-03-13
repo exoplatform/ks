@@ -234,4 +234,18 @@ WikiLayout.prototype.heightDelta = function() {
   return this.portal.offsetHeight - document.documentElement.clientHeight;
 };
 
+/*
+ * KS-4755: because target="_blank" is not rendered by rendering service (it's deprecated in xhtml 1.0
+ * and removed in xhtml 1.1), we fix by assign onclick event to open the link in new tab/window 
+ * using javascript for the anchors with attribute rel=__blank
+ */
+WikiLayout.prototype.fixRelBlank = function() {
+  var anchors = document.body.select("a[rel]");
+  for(var i = 0; i < anchors.length; i++) {
+    if(anchors[i].getAttribute("rel") == "__blank") {
+      anchors[i].onclick = function(){window.open(this.getAttribute("href")); return false;};
+    }
+  }
+};
+
 eXo.wiki.WikiLayout = new WikiLayout();

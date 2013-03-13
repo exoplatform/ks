@@ -8,3 +8,8 @@
 <div class="UIWikiPageContentArea" id="$uicomponent.id">
 	<% uicomponent.renderChildren(); %>
 </div>
+
+<%
+// fix anchor with rel="__blank" to open link in new window
+rcontext.getJavascriptManager().addJavascript("eXo.wiki.WikiLayout.fixRelBlank();");
+%>
