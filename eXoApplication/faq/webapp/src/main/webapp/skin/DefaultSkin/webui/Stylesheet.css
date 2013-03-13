@@ -1448,6 +1448,9 @@
 	height:150px;
 	width:530px;
 }
+.UIAnswersPortlet .UIResponseForm p {
+	margin: 0px;
+}
 
 /******************************	UIRAddRelationForm	***************************************/
 .UIAnswersPortlet .ViewQuestionsToSelect{
