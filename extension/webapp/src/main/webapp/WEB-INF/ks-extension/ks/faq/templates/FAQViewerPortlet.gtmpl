@@ -2,7 +2,12 @@
   import org.exoplatform.faq.service.CategoryInfo;
   import org.exoplatform.faq.service.Utils;
   import org.exoplatform.web.application.JavascriptManager;
-  
+  import org.exoplatform.faq.webui.FAQUtils;
+  import org.exoplatform.faq.service.QuestionLanguage;
+  import org.exoplatform.faq.service.Question;
+  import org.exoplatform.faq.service.Answer;
+  import javax.jcr.PathNotFoundException;
+    
   def rcontext = _ctx.getRequestContext();
   JavascriptManager jsmanager = rcontext.getJavascriptManager();
   jsmanager.addJavascript("eXo.faq.UIAnswersPortlet.createLink('UIFAQPortlet','"+uicomponent.useAjax+"');") ;
@@ -67,9 +72,16 @@
   <div class="FAQAnswerInfo">
     <%for(questionCate in questionCates) { 
         String question_ =  questionCate.getQuestion();
-        question_ = question_.replaceAll("<br/>", " ");
-        question_ = uicomponent.render(question_);
         String id_ = questionCate.getId();
+        Question q = FAQUtils.getFAQService().getQuestionById(id_);
+        String questionpath = q.getPath();
+		try {
+			QuestionLanguage questlang = FAQUtils.getFAQService().getQuestionLanguageByLanguage(questionpath,FAQUtils.getDefaultLanguage());
+			question_ = questlang.getQuestion();
+		} catch (PathNotFoundException e) {}
+		
+        question_ = question_.replaceAll("<br/>", " ");
+        question_ = uicomponent.render(question_);		
     %>
     <ul class="FAQViewerQuestionContent"> 
       <li class="FAQViewerIcon"><a class="ActionLinkFAQ" href="#${id_}" name="name${id_}">$question_</a></li>
@@ -108,8 +120,15 @@
         <ul>
           <%for(questionInfo in questionInfos) { 
               String question = questionInfo.getQuestion();
-              question = uicomponent.render(question);
               String id = questionInfo.getId();
+			  Question q = FAQUtils.getFAQService().getQuestionById(id);
+			  String questionpath = q.getPath();
+			  try {
+				  QuestionLanguage questlang = FAQUtils.getFAQService().getQuestionLanguageByLanguage(questionpath,FAQUtils.getDefaultLanguage());
+				  question = questlang.getQuestion();
+			  } catch (PathNotFoundException e) {}              
+			  
+			  question = uicomponent.render(question);
               
           %>
           <li><a class="FAQViewer" href="#${id}">$question</a></li>       
@@ -125,10 +144,20 @@
   <div class="FAQAnswerContainer FAQViewerQuestionContent ClearFix">
   <%for(questionCate in questionCates) { 
       String question_ =  questionCate.getQuestion();
-      question_ = uicomponent.render(question_);
+      String questionDetail_ = questionCate.getDetail();
       String id_ = questionCate.getId();
       List answers_ = questionCate.getAnswers();
-      String questionDetail_ = uicomponent.render(questionCate.getDetail());
+      Question q = FAQUtils.getFAQService().getQuestionById(id_);
+      String questionpath = q.getPath();
+      try {
+		QuestionLanguage questlang = FAQUtils.getFAQService().getQuestionLanguageByLanguage(questionpath,FAQUtils.getDefaultLanguage());
+		question_ = questlang.getQuestion();
+		questionDetail_ = questlang.getDetail();
+		answers_ = (List) questlang.getAnswers();
+	  } catch (PathNotFoundException e) {}      
+      
+      question_ = uicomponent.render(question_);	  
+      questionDetail_ = uicomponent.render(questionDetail_);      
       
   %>
     <div class="FAQAnswerIcon"><h4 name="$id_">$question_</h4>
@@ -139,7 +168,11 @@
     <div class="Answer">
       <ul>
       <%for(answer in answers_){ 
-          answer = uicomponent.render(answer);
+		  try {
+              answer = uicomponent.render(answer);
+		  } catch (Exception) {
+			  answer = uicomponent.render(answer.getResponses());
+		  }
       %>
         <li><div class="TextStyle">${answer}</div></li>
       <%} %>
@@ -162,10 +195,21 @@
   <div class="FAQAnswerContainer">
     <%for(questionInfo in questionInfos) {
         String question = questionInfo.getQuestion();
-        question = uicomponent.render(question);
+        String questionDetail_ = questionInfo.getDetail();
         List answers = questionInfo.getAnswers();
         String qsId = questionInfo.getId();
-        String questionDetail_ = uicomponent.render(questionInfo.getDetail());
+        
+        Question q = FAQUtils.getFAQService().getQuestionById(qsId);
+        String questionpath = q.getPath();
+        try {
+		  QuestionLanguage questlang = FAQUtils.getFAQService().getQuestionLanguageByLanguage(questionpath,FAQUtils.getDefaultLanguage());
+		  question = questlang.getQuestion();
+		  questionDetail_ = questlang.getDetail();
+		  answers = (List) questlang.getAnswers();
+	    } catch (PathNotFoundException e) {}             
+        
+        question = uicomponent.render(question);        
+        questionDetail_ = uicomponent.render(questionDetail_);
     %>
     <div class="QuestionContent">
       
@@ -178,7 +222,11 @@
       <div class="Answer">
         <ul>
         <%for(answer in answers){ 
-            answer = uicomponent.render(answer);
+		  try {
+              answer = uicomponent.render(answer);
+		  } catch (Exception) {
+			  answer = uicomponent.render(answer.getResponses());
+		  }
         %>
           <li><div class="TextStyle">${answer}</div></li>
         <%} %>
