@@ -25,10 +25,12 @@ import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
+import org.exoplatform.wiki.mow.core.api.wiki.PageImpl;
 import org.exoplatform.wiki.rendering.cache.PageRenderingCacheService;
 import org.exoplatform.wiki.rendering.context.MarkupContextManager;
 import org.exoplatform.wiki.service.WikiContext;
 import org.exoplatform.wiki.service.WikiPageParams;
+import org.exoplatform.wiki.service.WikiService;
 import org.exoplatform.wiki.tree.TreeNode;
 import org.exoplatform.wiki.tree.utils.TreeUtils;
 import org.xwiki.component.annotation.Component;
@@ -103,6 +105,16 @@ public class PageTreeMacro extends AbstractMacro<PageTreeMacroParameters> {
     }
     Block root;
     try {
+    //Check if root page exist
+      WikiService wikiService = (WikiService) ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(WikiService.class);
+      PageImpl wikiPage = (PageImpl) wikiService.getPageById(params.getType(), params.getOwner(), params.getPageId());
+      if(wikiPage ==null){
+      	//If root page has been renamed, find it
+      	wikiPage = (PageImpl) wikiService.getRelatedPage(params.getType(), params.getOwner(), params.getPageId());
+      	if (wikiPage != null) {
+      		params = new WikiPageParams(wikiPage.getWiki().getType(), wikiPage.getWiki().getOwner(), wikiPage.getName());
+      	}
+      }
       root = generateTree(params, startDepth);
       PageRenderingCacheService renderingCacheService = (PageRenderingCacheService) ExoContainerContext.getCurrentContainer()
                                                                                                        .getComponentInstanceOfType(PageRenderingCacheService.class);
