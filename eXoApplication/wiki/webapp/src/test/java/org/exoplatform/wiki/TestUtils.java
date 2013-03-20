@@ -46,28 +46,28 @@ public class TestUtils extends TestCase {
     String requestURI = "http://hostname/portal/classic/wiki";
     injectWebRequestContext(requestURI, "/portal/classic/", SiteType.PORTAL, "classic", "wiki");
     WikiPageParams params = new WikiPageParams(PortalConfig.PORTAL_TYPE, "classic", "test");
-    String expectedURL = "http://hostname/portal/classic/wiki/test";
+    String expectedURL = "/portal/classic/wiki/test";
     String actualURL = Utils.getURLFromParams(params);
     assertEquals(expectedURL, actualURL);
 
     requestURI = "http://hostname/portal/acme/wiki";
     injectWebRequestContext(requestURI, "/portal/acme/", SiteType.PORTAL, "acme", "wiki");
     params = new WikiPageParams(PortalConfig.PORTAL_TYPE, "classic", "test");
-    expectedURL = "http://hostname/portal/acme/wiki/portal/classic/test";
+    expectedURL = "/portal/acme/wiki/portal/classic/test";
     actualURL = Utils.getURLFromParams(params);
     assertEquals(expectedURL, actualURL);
 
     requestURI = "http://hostname/portal/u/demo/wiki";
     injectWebRequestContext(requestURI, "/portal/u/demo/", SiteType.USER, "demo", "wiki");
     params = new WikiPageParams(PortalConfig.GROUP_TYPE, ":spaces:test", "test");
-    expectedURL = "http://hostname/portal/u/demo/wiki/group/:spaces:test/test";
+    expectedURL = "/portal/u/demo/wiki/group/:spaces:test/test";
     actualURL = Utils.getURLFromParams(params);
     assertEquals(expectedURL, actualURL);
 
     requestURI = "http://hostname/portal/g/:spaces:test/test/wiki";
     injectWebRequestContext(requestURI, "/portal/g/:spaces:test/", SiteType.GROUP, ":spaces:test", "test/wiki");
     params = new WikiPageParams(PortalConfig.PORTAL_TYPE, "classic", "test");
-    expectedURL = "http://hostname/portal/g/:spaces:test/test/wiki/portal/classic/test";
+    expectedURL = "/portal/g/:spaces:test/test/wiki/portal/classic/test";
     actualURL = Utils.getURLFromParams(params);
     assertEquals(expectedURL, actualURL);
 
@@ -75,28 +75,28 @@ public class TestUtils extends TestCase {
     requestURI = "http://hostname/portal/classic/wiki";
     injectWebRequestContext(requestURI, "/portal/classic/", SiteType.PORTAL, "classic", "wiki");
     params = new WikiPageParams(PortalConfig.GROUP_TYPE, "guest", "test");
-    expectedURL = "http://hostname/portal/classic/wiki/group/guest/test";
+    expectedURL = "/portal/classic/wiki/group/guest/test";
     actualURL = Utils.getURLFromParams(params);
     assertEquals(expectedURL, actualURL);
 
     requestURI = "http://hostname/portal/u/demo/wiki";
     injectWebRequestContext(requestURI, "/portal/u/demo/", SiteType.USER, "demo", "wiki");
     params = new WikiPageParams(PortalConfig.PORTAL_TYPE, "classic", "test");
-    expectedURL = "http://hostname/portal/u/demo/wiki/portal/classic/test";
+    expectedURL = "/portal/u/demo/wiki/portal/classic/test";
     actualURL = Utils.getURLFromParams(params);
     assertEquals(expectedURL, actualURL);
 
     requestURI = "http://hostname/portal/g/:spaces:test/test/wiki";
     injectWebRequestContext(requestURI, "/portal/g/:spaces:test/", SiteType.GROUP, ":spaces:test", "test/wiki");
     params = new WikiPageParams(PortalConfig.GROUP_TYPE, ":spaces:test", "test");
-    expectedURL = "http://hostname/portal/g/:spaces:test/test/wiki/test";
+    expectedURL = "/portal/g/:spaces:test/test/wiki/test";
     actualURL = Utils.getURLFromParams(params);
     assertEquals(expectedURL, actualURL);
 
     requestURI = "http://hostname/portal/g/:spaces:test/test/wiki";
     injectWebRequestContext(requestURI, "/portal/g/:spaces:test/", SiteType.GROUP, ":spaces:test", "test/wiki");
     params = new WikiPageParams(PortalConfig.GROUP_TYPE, "guest", "test");
-    expectedURL = "http://hostname/portal/g/:spaces:test/test/wiki/group/guest/test";
+    expectedURL = "/portal/g/:spaces:test/test/wiki/group/guest/test";
     actualURL = Utils.getURLFromParams(params);
     assertEquals(expectedURL, actualURL);
 
@@ -104,28 +104,28 @@ public class TestUtils extends TestCase {
     requestURI = "http://hostname/portal/classic/wiki";
     injectWebRequestContext(requestURI, "/portal/classic/", SiteType.PORTAL, "classic", "wiki");
     params = new WikiPageParams(PortalConfig.USER_TYPE, "demo", "test");
-    expectedURL = "http://hostname/portal/classic/wiki/user/demo/test";
+    expectedURL = "/portal/classic/wiki/user/demo/test";
     actualURL = Utils.getURLFromParams(params);
     assertEquals(expectedURL, actualURL);
     
     requestURI = "http://hostname/portal/u/demo/wiki";
     injectWebRequestContext(requestURI, "/portal/u/demo/", SiteType.USER, "demo", "wiki");
     params = new WikiPageParams(PortalConfig.USER_TYPE, "demo", "test");
-    expectedURL = "http://hostname/portal/u/demo/wiki/test";
+    expectedURL = "/portal/u/demo/wiki/test";
     actualURL = Utils.getURLFromParams(params);
     assertEquals(expectedURL, actualURL);
     
     requestURI = "http://hostname/portal/u/demo/wiki";
     injectWebRequestContext(requestURI, "/portal/u/demo/", SiteType.USER, "demo", "wiki");
     params = new WikiPageParams(PortalConfig.USER_TYPE, "mary", "test");
-    expectedURL = "http://hostname/portal/u/demo/wiki/user/mary/test";
+    expectedURL = "/portal/u/demo/wiki/user/mary/test";
     actualURL = Utils.getURLFromParams(params);
     assertEquals(expectedURL, actualURL);
     
     requestURI = "http://hostname/portal/g/:spaces:test/test/wiki";
     injectWebRequestContext(requestURI, "/portal/g/:spaces:test/", SiteType.GROUP, ":spaces:test", "test/wiki");
     params = new WikiPageParams(PortalConfig.USER_TYPE, "demo", "test");
-    expectedURL = "http://hostname/portal/g/:spaces:test/test/wiki/user/demo/test";
+    expectedURL = "/portal/g/:spaces:test/test/wiki/user/demo/test";
     actualURL = Utils.getURLFromParams(params);
     assertEquals(expectedURL, actualURL);
     

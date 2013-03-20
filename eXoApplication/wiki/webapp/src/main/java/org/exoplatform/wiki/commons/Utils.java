@@ -126,12 +126,11 @@ public class Utils {
     PortalRequestContext portalRequestContext = Util.getPortalRequestContext();
     String requestURL = portalRequestContext.getControllerContext().getRequest().getRequestURL().toString();
     String portalURI = portalRequestContext.getPortalURI();
-    String domainURL = requestURL.substring(0, requestURL.indexOf(portalURI));
     UIPortal uiPortal = Util.getUIPortal();
     SiteKey siteKey = uiPortal.getSiteKey();
     UserNode userNode = uiPortal.getSelectedUserNode();
     String pageNodeSelected = userNode.getURI();
-    StringBuilder sb = new StringBuilder(domainURL);
+    StringBuilder sb = new StringBuilder();
     sb.append(portalURI);
     sb.append(pageNodeSelected);
     sb.append("/");
