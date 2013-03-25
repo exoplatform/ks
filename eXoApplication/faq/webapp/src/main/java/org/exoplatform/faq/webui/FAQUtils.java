@@ -356,9 +356,12 @@ public class FAQUtils {
   public static void saveFAQPortletPreference(List<String> list, boolean useAjax) throws Exception {
     PortletRequestContext pcontext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance();
     PortletPreferences portletPref = pcontext.getRequest().getPreferences();
-    String str = list.toString();
-    str = str.replace("[", "").replace("]", "").replaceAll(" ", "");
-    portletPref.setValue("displayCategories", str);
+    if(list.size() > 0){
+    	 String str = list.toString();
+       str = str.replace("[", "").replace("]", "").replaceAll(" ", "");
+       portletPref.setValue("displayCategories", str);
+    }
+   
     portletPref.setValue("useAjax", String.valueOf(useAjax));
     portletPref.store();
   }

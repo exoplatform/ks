@@ -17,6 +17,7 @@
 package org.exoplatform.faq.webui.popup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.exoplatform.container.PortalContainer;
@@ -166,6 +167,8 @@ public class UIFAQSettingForm extends BaseUIForm implements UIPopupComponent {
         categoryIds.add(catId);
       }
     }
+    categoryIds = listCate.size() == categoryIds.size() ? Collections.<String>emptyList() : categoryIds;
+    
     UIFormInputWithActions withActions = getChildById(PREFERENCE_TAB);
     UICheckBoxInput useAjaxCheckBox = withActions.getUICheckBoxInput(FIELD_USEAJAX_CHECKBOX);
     useAjax = useAjaxCheckBox.isChecked();
