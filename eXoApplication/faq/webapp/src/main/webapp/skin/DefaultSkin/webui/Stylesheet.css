@@ -1781,6 +1781,10 @@
 	height:24px;
 	width:24px;
 }
+.UIAnswersPortlet .UIQuestionManagerForm .AddIcon {
+	height:16px;
+	width:16px;
+}
 
 .UIAnswersPortlet .CheckIcon {
 	background: url('background/icon.png') no-repeat left;
