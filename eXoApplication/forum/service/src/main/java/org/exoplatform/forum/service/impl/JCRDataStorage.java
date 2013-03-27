@@ -7484,8 +7484,10 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
       profile.setProperty(EXO_LAST_LOGIN_DATE, cal);
       profile.setProperty(EXO_EMAIL, user.getEmail());
       profile.setProperty(EXO_FULL_NAME, user.getFullName());
-      cal.setTime(user.getCreatedDate());
-      profile.setProperty(EXO_JOINED_DATE, cal);
+      if(user.getCreatedDate() != null){
+        cal.setTime(user.getCreatedDate());
+        profile.setProperty(EXO_JOINED_DATE, cal);
+      }
       if (isAdminRole(userName)) {
         profile.setProperty(EXO_USER_TITLE, "Administrator");
         profile.setProperty(EXO_USER_ROLE, UserProfile.ADMIN); // 
