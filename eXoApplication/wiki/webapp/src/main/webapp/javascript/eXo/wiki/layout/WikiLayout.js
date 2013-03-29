@@ -234,4 +234,16 @@ WikiLayout.prototype.heightDelta = function() {
   return this.portal.offsetHeight - document.documentElement.clientHeight;
 };
 
+WikiLayout.prototype.fixAnchorRef = function() {
+  var anchors = document.body.select("a[anchor]");
+  for(var i = 0; i < anchors.length; i++) {
+    var anchorValue = anchors[i].getAttribute("anchor");
+    var hrefValue = anchors[i].getAttribute("href");
+    if(anchorValue != null && anchorValue != "") {
+      hrefValue = hrefValue + '#' + anchorValue;
+      anchors[i].setAttribute("href",hrefValue);
+      anchors[i].removeAttribute('anchor');
+    }
+  }
+};
 eXo.wiki.WikiLayout = new WikiLayout();

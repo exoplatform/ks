@@ -8,3 +8,6 @@
 <div class="UIWikiPageContentArea" id="$uicomponent.id">
 	<% uicomponent.renderChildren(); %>
 </div>
+<%
+rcontext.getJavascriptManager().addJavascript("eXo.wiki.WikiLayout.fixAnchorRef();");
+%>
