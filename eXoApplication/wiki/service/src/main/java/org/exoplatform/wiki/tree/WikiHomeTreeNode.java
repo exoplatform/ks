@@ -25,8 +25,12 @@ import org.exoplatform.wiki.mow.api.Wiki;
 import org.exoplatform.wiki.mow.api.WikiNodeType;
 import org.exoplatform.wiki.mow.core.api.wiki.PageImpl;
 import org.exoplatform.wiki.mow.core.api.wiki.WikiHome;
+import org.exoplatform.wiki.service.PermissionType;
 import org.exoplatform.wiki.service.WikiPageParams;
+import org.exoplatform.wiki.tree.PageTreeNode;
+import org.exoplatform.wiki.tree.TreeNode;
 import org.exoplatform.wiki.tree.utils.TreeUtils;
+import org.exoplatform.wiki.utils.Utils;
 
 /**
  * Created by The eXo Platform SAS
@@ -47,14 +51,18 @@ public class WikiHomeTreeNode extends TreeNode {
   @Override
   protected void addChildren(HashMap<String, Object> context) throws Exception {
 
-    Collection<PageImpl> pages = wikiHome.getChildPages().values();
+	Collection<PageImpl> pages = wikiHome.getChildrenByRootPermission().values();
     Iterator<PageImpl> childPageIterator = pages.iterator();
     int count=0;
     int size = getNumberOfChildren(context, pages.size());
+    PageImpl currentPage = (PageImpl) context.get(TreeNode.SELECTED_PAGE);
     while (childPageIterator.hasNext() && count < size) {
-      PageTreeNode child = new PageTreeNode(childPageIterator.next());
-      this.children.add(child);
-      count++;
+    	PageImpl childPage = childPageIterator.next();
+    	if (childPage.hasPermission(PermissionType.VIEWPAGE) ||  (currentPage != null && Utils.isDescendantPage(currentPage, childPage))) {
+    		PageTreeNode child = new PageTreeNode(childPage);
+    	    this.children.add(child);
+    	  }
+     
     }
     super.addChildren(context);
   }

@@ -242,19 +242,22 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
     try {
       List<JsonNodeData> responseData = new ArrayList<JsonNodeData>();
       HashMap<String, Object> context = new HashMap<String, Object>();
-      path = URLDecoder.decode(path, "utf-8");
       if (currentPath != null){
         currentPath = URLDecoder.decode(currentPath, "utf-8");
         context.put(TreeNode.CURRENT_PATH, currentPath);
+        WikiPageParams currentPageParam = TreeUtils.getPageParamsFromPath(currentPath);
+        PageImpl currentPage = (PageImpl) wikiService.getPageById(currentPageParam.getType(), currentPageParam.getOwner(), currentPageParam.getPageId());
+        context.put(TreeNode.CURRENT_PAGE, currentPage);
       }   
-      context.put(TreeNode.SHOW_EXCERPT, showExcerpt);
-      WikiPageParams pageParam = TreeUtils.getPageParamsFromPath(path);
-      if (type.equalsIgnoreCase(TREETYPE.ALL.toString())) {
       
-        PageImpl page = (PageImpl) wikiService.getPageById(pageParam.getType(),
-                                                           pageParam.getOwner(),
-                                                           pageParam.getPageId());
-        
+      // Put select page to context
+      path = URLDecoder.decode(path, "utf-8");
+      context.put(TreeNode.PATH, path);
+      WikiPageParams pageParam = TreeUtils.getPageParamsFromPath(path);
+      PageImpl page = (PageImpl) wikiService.getPageById(pageParam.getType(), pageParam.getOwner(), pageParam.getPageId());
+      context.put(TreeNode.SELECTED_PAGE, page);
+      context.put(TreeNode.SHOW_EXCERPT, showExcerpt);
+      if (type.equalsIgnoreCase(TREETYPE.ALL.toString())) {
         Stack<WikiPageParams> stk = Utils.getStackParams(page);
         context.put(TreeNode.STACK_PARAMS, stk);
         responseData = getJsonTree(pageParam, context);
@@ -269,8 +272,10 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
                      .cacheControl(cc)
                      .build();
     } catch (Exception e) {
-      log.error("Failed for get tree data by rest service.", e);
-      return Response.serverError().entity(e.getMessage()).cacheControl(cc).build();
+    	if (log.isErrorEnabled()) {
+            log.error("Failed for get tree data by rest service.", e);
+          }
+       return Response.serverError().entity(e.getMessage()).cacheControl(cc).build();
     }
   }
   
@@ -586,7 +591,6 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
  
   private List<JsonNodeData> getJsonTree(WikiPageParams params,HashMap<String, Object> context) throws Exception {
     List<JsonNodeData> responseData = new ArrayList<JsonNodeData>();
-    String currentPath = (String) context.get(TreeNode.CURRENT_PATH);
     Wiki wiki = Utils.getWiki(params);
     WikiTreeNode wikiNode = new WikiTreeNode(wiki);
     wikiNode.pushDescendants(context);

@@ -68,6 +68,8 @@ public interface WikiService {
   public void setWikiPermission(String wikiType, String wikiOwner, List<PermissionEntry> permissionEntries) throws Exception;
 
   public Page getPageById(String wikiType, String wikiOwner, String pageId) throws Exception;
+  
+  public Page getPageByRootPermission(String wikiType, String wikiOwner, String pageId) throws Exception;
 
   public Page getRelatedPage(String wikiType, String wikiOwner, String pageId) throws Exception;
 

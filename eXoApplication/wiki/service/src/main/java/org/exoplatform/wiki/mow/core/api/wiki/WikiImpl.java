@@ -16,6 +16,8 @@
  */
 package org.exoplatform.wiki.mow.core.api.wiki;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.chromattic.api.UndeclaredRepositoryException;
@@ -29,6 +31,8 @@ import org.chromattic.api.annotations.Property;
 import org.exoplatform.wiki.mow.api.Wiki;
 import org.exoplatform.wiki.mow.api.WikiNodeType;
 import org.exoplatform.wiki.mow.api.WikiType;
+import org.exoplatform.wiki.mow.core.api.wiki.WikiHome;
+import org.exoplatform.wiki.service.PermissionType;
 import org.exoplatform.wiki.service.WikiService;
 import org.xwiki.rendering.syntax.Syntax;
 /**
@@ -79,7 +83,7 @@ public abstract class WikiImpl implements Wiki {
       sb.append(".").append("\n* See **[[Sandbox space>>group:sandbox.WikiHome]]** for an example wiki with sample content.\n{{/tip}}");
       content.setText(sb.toString());
       try {
-        home.setNonePermission();
+        initPermisionForWikiHome(home);
         home.checkin();
         home.checkout();
       } catch (Exception e) {
@@ -88,6 +92,34 @@ public abstract class WikiImpl implements Wiki {
     }
     return home;
   }
+  
+  private void initPermisionForWikiHome(WikiHome home) throws Exception {
+	    List<String> wikiPermission = getWikiPermissions();
+	    if (wikiPermission == null) {
+	      home.setNonePermission();
+	      return;
+	    }
+	    
+	    HashMap<String, String[]> permMap = new HashMap<String, String[]>();
+	    for (String perm : wikiPermission) {
+	      String[] actions = perm.substring(0, perm.indexOf(":")).split(",");
+	      perm = perm.substring(perm.indexOf(":") + 1);
+	      String id = perm.substring(perm.indexOf(":") + 1);
+	      List<String> jcrActions = new ArrayList<String>();
+	      for (String action : actions) {
+	        if (PermissionType.VIEWPAGE.toString().equals(action)) {
+	          jcrActions.add(org.exoplatform.services.jcr.access.PermissionType.READ);
+	        } else if (PermissionType.EDITPAGE.toString().equals(action)) {
+	          jcrActions.add(org.exoplatform.services.jcr.access.PermissionType.ADD_NODE);
+	          jcrActions.add(org.exoplatform.services.jcr.access.PermissionType.REMOVE);
+	          jcrActions.add(org.exoplatform.services.jcr.access.PermissionType.SET_PROPERTY);
+	        }
+	      }
+	      permMap.put(id, jcrActions.toArray(new String[jcrActions.size()]));
+	    }
+	    home.setPermission(permMap);
+	  }
+
 
   public LinkRegistry getLinkRegistry() {
     LinkRegistry linkRegistry = getLinkRegistryByChromattic();

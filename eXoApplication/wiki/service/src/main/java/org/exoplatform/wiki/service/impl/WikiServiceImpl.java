@@ -145,6 +145,7 @@ public class WikiServiceImpl implements WikiService, Startable {
     }
     page.setOwner(creator);
     page.setTitle(title);
+    setFullPermissionForOwner(page, creator);
     page.getContent().setText("");
     page.makeVersionable();
     
@@ -166,6 +167,16 @@ public class WikiServiceImpl implements WikiService, Startable {
     
     return page;
   }
+  
+  private void setFullPermissionForOwner(PageImpl page, String owner) throws Exception {
+	    ConversationState conversationState = ConversationState.getCurrent();
+
+	    if (conversationState != null) {
+	      HashMap<String, String[]> permissions = page.getPermission();
+	      permissions.put(conversationState.getIdentity().getUserId(), org.exoplatform.services.jcr.access.PermissionType.ALL);
+	      page.setPermission(permissions);
+	    }
+	  }
   
   public void createDraftNewPage(String draftNewPageId) throws Exception {
     Model model = getModel();
@@ -507,6 +518,28 @@ public class WikiServiceImpl implements WikiService, Startable {
     }
     return null;
   }
+  
+  public Page getPageByRootPermission(String wikiType, String wikiOwner, String pageId) throws Exception {
+	    PageImpl page = null;
+
+	    if (WikiNodeType.Definition.WIKI_HOME_NAME.equals(pageId) || pageId == null) {
+	      page = getWikiHome(wikiType, wikiOwner);
+	    } else {
+	      String statement = new WikiSearchData(wikiType, wikiOwner, pageId).getPageConstraint();
+	      if (statement != null) {
+	        Model model = getModel();
+	        WikiStoreImpl wStore = (WikiStoreImpl) model.getWikiStore();
+	        page = searchPage(statement, wStore.getSession());
+	        if (page == null && (page = getWikiHome(wikiType, wikiOwner)) != null) {
+	          String wikiHomeId = TitleResolver.getId(page.getTitle(), true);
+	          if (!wikiHomeId.equals(pageId)) {
+	            page = null;
+	          }
+	        }
+	      }
+	    }
+	    return page;
+	  }
 
   public Page getRelatedPage(String wikiType, String wikiOwner, String pageId) throws Exception {
     Model model = getModel();

@@ -59,6 +59,7 @@ import org.exoplatform.wiki.mow.api.Permission;
 import org.exoplatform.wiki.mow.api.Wiki;
 import org.exoplatform.wiki.mow.api.WikiNodeType;
 import org.exoplatform.wiki.mow.core.api.MOWService;
+import org.exoplatform.wiki.mow.core.api.wiki.PageImpl;
 import org.exoplatform.wiki.rendering.converter.ConfluenceToXWiki2Transformer;
 import org.exoplatform.wiki.resolver.TitleResolver;
 import org.exoplatform.wiki.service.PermissionType;
@@ -392,6 +393,24 @@ public abstract class PageImpl extends NTFolder implements Page {
     }
     return result;
   }
+  
+  public Map<String, PageImpl> getChildrenByRootPermission() throws Exception {
+	    TreeMap<String, PageImpl> result = new TreeMap<String, PageImpl>(new Comparator<String>() {
+	      @Override
+	      public int compare(String o1, String o2) {
+	        return o1.compareTo(o2);
+	      }
+	    });
+	    List<PageImpl> pages = new ArrayList<PageImpl>(getChildrenContainer().values());
+	    
+	    for (int i = 0; i < pages.size(); i++) {
+	      PageImpl page = pages.get(i);
+	      if (page != null) {
+	        result.put(page.getTitle(), page);
+	      }
+	    }
+	    return result;
+	  }
   
   @Property(name = WikiNodeType.Definition.OVERRIDEPERMISSION)
   public abstract boolean getOverridePermission();
