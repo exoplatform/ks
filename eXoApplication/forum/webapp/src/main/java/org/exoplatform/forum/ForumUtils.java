@@ -125,9 +125,7 @@ public class ForumUtils {
                            .getComponentInstanceOfType(ExoContainerContext.class)).getPortalContainerName();
     String pageNodeSelected = Util.getUIPortal().getSelectedUserNode().getURI();
     PortalRequestContext portalContext = Util.getPortalRequestContext();
-    String fullUrl = ((HttpServletRequest) portalContext.getRequest()).getRequestURL().toString();
-    String host = fullUrl.substring(0, fullUrl.indexOf(containerName) -1);
-    return buildLink((host + portalContext.getPortalURI()), containerName , pageNodeSelected, type, id, isPrivate);
+    return buildLink((portalContext.getPortalURI()), containerName , pageNodeSelected, type, id, isPrivate);
   }
 
   public static String buildLink(String portalURI, String containerName, String selectedNode, String type, String id, boolean isPrivate){
