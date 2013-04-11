@@ -253,11 +253,9 @@ public class UIForumPortlet extends UIPortletApplication {
   }
 
   public String getForumIdOfSpace() {
-    
-    PortletRequestContext pcontext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance();
-    PortletPreferences pref = pcontext.getRequest().getPreferences();
-    if (pref.getValue("SPACE_URL", null) != null && ForumUtils.isEmpty(forumSpId)) {
-      String url = pref.getValue("SPACE_URL", null);
+    String url;
+    url = org.exoplatform.social.webui.Utils.getSpaceUrlByContext();
+    if ( url  != null &&  url != "" && ForumUtils.isEmpty(forumSpId)) {
       SpaceService sService = (SpaceService) PortalContainer.getInstance().getComponentInstanceOfType(SpaceService.class);
       Space space = sService.getSpaceByUrl(url);
       spaceGroupId = space.getGroupId();
