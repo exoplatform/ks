@@ -17,9 +17,10 @@
 package org.exoplatform.faq.webui.viewer;
 
 import javax.portlet.PortletMode;
-import javax.portlet.PortletPreferences;
+
 
 import org.apache.commons.lang.StringUtils;
+import org.exoplatform.container.PortalContainer;
 import org.exoplatform.faq.service.FAQService;
 import org.exoplatform.faq.service.Utils;
 import org.exoplatform.faq.webui.FAQUtils;
@@ -75,12 +76,11 @@ public class UIFAQPortlet extends UIPortletApplication {
   }
   
   public String getPathOfCateSpace() {
+    String url;
     try {
-      PortletRequestContext pcontext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance();
-      PortletPreferences pref = pcontext.getRequest().getPreferences();
-      String url;
-      if ((url = pref.getValue(SpaceUtils.SPACE_URL, null)) != null) {
-        SpaceService sService = (SpaceService) getApplicationComponent(SpaceService.class);
+      url = org.exoplatform.social.webui.Utils.getSpaceUrlByContext();
+      if (url  != null &&  url != "") {
+        SpaceService sService = (SpaceService) PortalContainer.getInstance().getComponentInstanceOfType(SpaceService.class);
         FAQService fService = (FAQService) getApplicationComponent(FAQService.class);
         Space space = sService.getSpaceByUrl(url);
         String pathOfCateSpace = Utils.CATEGORY_HOME + SLASH + Utils.CATE_SPACE_ID_PREFIX + space.getPrettyName();

@@ -19,6 +19,7 @@ package org.exoplatform.faq.webui;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletPreferences;
 
+import org.exoplatform.container.PortalContainer;
 import org.exoplatform.faq.service.FAQService;
 import org.exoplatform.faq.service.FAQSetting;
 import org.exoplatform.faq.service.Question;
@@ -51,7 +52,6 @@ import org.exoplatform.webui.form.UIFormInputInfo;
     template = "app:/templates/faq/webui/UIAnswersPortlet.gtmpl"
 )
 public class UIAnswersPortlet extends UIPortletApplication {
-  private final static String SPACE_URL   = "SPACE_URL".intern();
 
   private final static String SLASH       = "/".intern();
 
@@ -76,13 +76,12 @@ public class UIAnswersPortlet extends UIPortletApplication {
   }
 
   public String getSpaceCategoryId() {
+    String url;
     try {
-      PortletRequestContext pcontext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance();
-      PortletPreferences pref = pcontext.getRequest().getPreferences();
-      if (pref.getValue(SPACE_URL, null) != null) {
-        SpaceService sService = (SpaceService) getApplicationComponent(SpaceService.class);
+      url = org.exoplatform.social.webui.Utils.getSpaceUrlByContext();
+      if (url  != null &&  url != "") {
+        SpaceService sService = (SpaceService) PortalContainer.getInstance().getComponentInstanceOfType(SpaceService.class);
         FAQService fService = (FAQService) getApplicationComponent(FAQService.class);
-        String url = pref.getValue(SPACE_URL, null);
         Space space = sService.getSpaceByUrl(url);
         spaceGroupId = space.getGroupId();
         String categoryId = Utils.CATE_SPACE_ID_PREFIX + space.getPrettyName();

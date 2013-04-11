@@ -206,9 +206,12 @@ public class UIQuestions extends UIContainer {
   }
 
   protected boolean isNotInSpace() {
-    PortletRequestContext pcontext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance();
-    PortletPreferences portletPref = pcontext.getRequest().getPreferences();
-    return (portletPref.getValue("SPACE_URL", null) != null) ? false : true;
+    String url;
+    url = org.exoplatform.social.webui.Utils.getSpaceUrlByContext();
+    if (url  == null ||  url == "") {
+      return true;
+    }
+    return false;
   }
 
   private boolean isCategoryHome() {
