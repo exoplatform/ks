@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Iterator;
 
 import javax.jcr.Node;
 
@@ -34,6 +35,7 @@ import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
+import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.MembershipHandler;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.services.organization.User;
@@ -70,8 +72,14 @@ public class ForumServiceUtils {
     Identity identity = identityRegistry.getIdentity(userId);
     if (identity == null) {
       OrganizationService oService = (OrganizationService) ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(OrganizationService.class);
-      Collection<MembershipEntry> memberships = oService.getMembershipHandler().findMembershipsByUser(userId);
-      identity = new Identity(userId, memberships);
+      Collection<Membership> memberships = oService.getMembershipHandler().findMembershipsByUser(userId);
+      ArrayList<MembershipEntry> membershipEntryList = new ArrayList<MembershipEntry>();
+      if (memberships != null) {
+        for (Membership membership : memberships) {
+          membershipEntryList.add(new MembershipEntry(membership.getGroupId() ,membership.getMembershipType()));
+        }
+      }
+      identity = new Identity(userId, membershipEntryList);
     }
 
     if (userGroupMembership == null || userGroupMembership.length <= 0 || userGroupMembership[0].equals(" "))
