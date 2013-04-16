@@ -1,4 +1,24 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2009 eXo Platform SAS.
+    
+    This is free software; you can redistribute it and/or modify it
+    under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation; either version 2.1 of
+    the License, or (at your option) any later version.
+    
+    This software is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+    Lesser General Public License for more details.
+    
+    You should have received a copy of the GNU Lesser General Public
+    License along with this software; if not, write to the Free
+    Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+    02110-1301 USA, or see the FSF site: http://www.fsf.org.
+
+-->
 <messagebundle>
   <msg name="title">última publicación</msg>
   <msg name="baseurl">Foro portlet</msg>
@@ -7,8 +27,7 @@
   <msg name="format">Formato de fecha</msg>
   <msg name="showall">Foro</msg>
   <msg name="noevent">No hay nueva publicación.</msg>
-  <msg name="urlEmpty"><![CDATA[Es necesario escribir <strong>URL de suscripción</strong> en la configuración del Gadget.<br/> Su formato debe ser: <i>"/{container_name}/{rest_name}/ks/forum/getmessage".</i>]]></msg>
-  <msg name="urlError"><![CDATA[Usted escribió <strong>URL de suscripción</strong> no es correcto. Su formato debe ser:<br/><i>"/{container_name}/{rest_name}/ks/forum/getmessage".</i>]]></msg>
+<msg name="urlEmpty">Es necesario escribir &lt;strong&gt;URL de suscripción&lt;/strong&gt; en la configuración del Gadget.&lt;br/&gt; Su formato debe ser: &lt;i&gt;"/{container_name}/{rest_name}/ks/forum/getmessage".&lt;/i&gt;</msg><msg name="urlError">Usted escribió &lt;strong&gt;URL de suscripción&lt;/strong&gt; no es correcto. Su formato debe ser:&lt;br/&gt;&lt;i&gt;"/{container_name}/{rest_name}/ks/forum/getmessage".&lt;/i&gt;</msg>
   <msg name="setting">Ajuste</msg>
   <msg name="save">Guardar</msg>
   <msg name="cancel">Cancelar</msg>
