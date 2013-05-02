@@ -19,9 +19,6 @@
 
 if(!eXo.wiki) eXo.wiki = {};
 
-function UIForm() {
-};
-
 /*ie bug  you cannot have more than one button tag*/
 /**
  * Submits a form with the given action and the given parameters
