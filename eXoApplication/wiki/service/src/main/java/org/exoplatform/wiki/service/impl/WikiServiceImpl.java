@@ -341,7 +341,7 @@ public class WikiServiceImpl implements WikiService, Startable {
       movePage.setParentPage(destPage);
       
       //update LinkRegistry
-      if (!newLocationParams.getType().equals(currentLocationParams.getType())) {
+      if (!(newLocationParams.getType().equals(currentLocationParams.getType()) && (newLocationParams.getOwner().equals(currentLocationParams.getOwner())))) {
         LinkRegistry sourceLinkRegistry = sourceWiki.getLinkRegistry();
         LinkRegistry destLinkRegistry = destWiki.getLinkRegistry();
         String newEntryName = getLinkEntryName(newLocationParams.getType(), newLocationParams.getOwner(), currentLocationParams.getPageId());

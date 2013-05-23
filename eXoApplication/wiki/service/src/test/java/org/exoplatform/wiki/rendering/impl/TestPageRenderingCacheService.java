@@ -166,8 +166,8 @@ public final class TestPageRenderingCacheService extends AbstractRenderingTestCa
                                                                                  "aca",
                                                                                  "WikiHome"),
                                                               Syntax.XHTML_1_0.toIdString());
-    assertEquals("<p><span class=\"wikicreatelink\"><a href=\"WikiHome?action=AddPage&amp;pageTitle=childaca&amp;wiki=aca&amp;wikiType=portal\"><span class=\"wikigeneratedlinkcontent\">childaca</span></a></span></p>",
-                 acaHomeContent);
+    assertEquals("<p><span class=\"wikilink\"><a href=\"childaca1\"><span class=\"wikigeneratedlinkcontent\">childaca</span></a></span></p>",
+            acaHomeContent);
     
     wikiService.createPage(PortalConfig.PORTAL_TYPE, "aca", "childaca10", "WikiHome");
     acaHome.getContent().setText("[[childaca10]]");
