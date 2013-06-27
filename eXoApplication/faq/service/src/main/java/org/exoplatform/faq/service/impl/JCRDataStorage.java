@@ -409,7 +409,6 @@ public class JCRDataStorage implements DataStorage, FAQNodeTypes {
     List<String> emails = new ArrayList<String>();
     List<String> users = new ArrayList<String>();
     List<String> emailsList = new ArrayList<String>();
-    emailsList.add(question.getEmail());
     try {
       Node cate = getCategoryNode(sProvider, question.getCategoryPath());
       PropertyReader reader = new PropertyReader(cate);
