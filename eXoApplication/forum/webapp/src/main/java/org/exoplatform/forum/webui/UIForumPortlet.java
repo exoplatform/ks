@@ -52,8 +52,10 @@ import org.exoplatform.ks.common.webui.UIPopupAction;
 import org.exoplatform.ks.common.webui.UIPopupContainer;
 import org.exoplatform.ks.common.webui.WebUIUtils;
 import org.exoplatform.portal.application.PortalRequestContext;
+import org.exoplatform.portal.application.RequestNavigationData;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.organization.OrganizationService;
+import org.exoplatform.social.common.router.ExoRouter;
 import org.exoplatform.social.core.space.model.Space;
 import org.exoplatform.social.core.space.spi.SpaceService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -253,28 +255,33 @@ public class UIForumPortlet extends UIPortletApplication {
   }
 
   public String getForumIdOfSpace() {
+    PortalRequestContext plcontext = Util.getPortalRequestContext();
+    String requestPath = plcontext.getControllerContext().getParameter(RequestNavigationData.REQUEST_PATH);
+    ExoRouter.Route er = ExoRouter.route(requestPath);
+    if (er == null){
+      return null;
+    }
     
-    PortletRequestContext pcontext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance();
-    PortletPreferences pref = pcontext.getRequest().getPreferences();
-    if (pref.getValue("SPACE_URL", null) != null && ForumUtils.isEmpty(forumSpId)) {
-      String url = pref.getValue("SPACE_URL", null);
-      SpaceService sService = (SpaceService) PortalContainer.getInstance().getComponentInstanceOfType(SpaceService.class);
-      Space space = sService.getSpaceByUrl(url);
-      spaceGroupId = space.getGroupId();
-      forumSpId = Utils.FORUM_SPACE_ID_PREFIX + space.getPrettyName();
-      spaceDisplayName = space.getDisplayName();
+    String spacePrettyName = er.localArgs.get("spacePrettyName");
+
+    if (spacePrettyName != null && ForumUtils.isEmpty(forumSpId)) {
+      SpaceService sService = getApplicationComponent(SpaceService.class);
+      Space space = sService.getSpaceByPrettyName(spacePrettyName);
       try {
-        OrganizationService service = (OrganizationService) PortalContainer.getInstance()
-                                                                           .getComponentInstanceOfType(OrganizationService.class);
+        spaceGroupId = space.getGroupId();
+        forumSpId = Utils.FORUM_SPACE_ID_PREFIX + spacePrettyName;
+        spaceDisplayName = space.getDisplayName();
+        OrganizationService service = getApplicationComponent(OrganizationService.class);
         String parentGrId = service.getGroupHandler().findGroupById(spaceGroupId).getParentId();
         categorySpId = Utils.CATEGORY + parentGrId.replaceAll(CommonUtils.SLASH, CommonUtils.EMPTY_STR);
       } catch (Exception e) {
         if (log.isDebugEnabled()){
           log.debug("Failed to set category id of space " + space.getPrettyName(), e);
         }
+        return null;
       }
     }
-    return forumSpId;
+    return forumSpId; 
   }
 
   public void updateIsRendered(String selected){

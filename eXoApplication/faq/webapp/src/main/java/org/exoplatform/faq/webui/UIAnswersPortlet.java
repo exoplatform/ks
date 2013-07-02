@@ -26,7 +26,9 @@ import org.exoplatform.faq.service.Utils;
 import org.exoplatform.faq.webui.popup.UISettingForm;
 import org.exoplatform.ks.common.webui.UIPopupAction;
 import org.exoplatform.portal.application.PortalRequestContext;
+import org.exoplatform.portal.application.RequestNavigationData;
 import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.social.common.router.ExoRouter;
 import org.exoplatform.social.core.space.model.Space;
 import org.exoplatform.social.core.space.spi.SpaceService;
 import org.exoplatform.web.application.RequestContext;
@@ -77,15 +79,19 @@ public class UIAnswersPortlet extends UIPortletApplication {
 
   public String getSpaceCategoryId() {
     try {
-      PortletRequestContext pcontext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance();
-      PortletPreferences pref = pcontext.getRequest().getPreferences();
-      if (pref.getValue(SPACE_URL, null) != null) {
-        SpaceService sService = (SpaceService) getApplicationComponent(SpaceService.class);
-        FAQService fService = (FAQService) getApplicationComponent(FAQService.class);
-        String url = pref.getValue(SPACE_URL, null);
-        Space space = sService.getSpaceByUrl(url);
+      PortalRequestContext plcontext = Util.getPortalRequestContext();
+      String requestPath = plcontext.getControllerContext().getParameter(RequestNavigationData.REQUEST_PATH);
+      ExoRouter.Route er = ExoRouter.route(requestPath);
+      if (er == null) {
+        return null;
+      }
+      String spacePrettyName = er.localArgs.get("spacePrettyName");
+      if (spacePrettyName != null) {
+        SpaceService sService = getApplicationComponent(SpaceService.class);
+        Space space = sService.getSpaceByPrettyName(spacePrettyName);
         spaceGroupId = space.getGroupId();
-        String categoryId = Utils.CATE_SPACE_ID_PREFIX + space.getPrettyName();
+        String categoryId = Utils.CATE_SPACE_ID_PREFIX + spacePrettyName;
+        FAQService fService = getApplicationComponent(FAQService.class);
         if (fService.isExisting(Utils.CATEGORY_HOME + SLASH + categoryId)) {
           return categoryId;
         }
@@ -95,7 +101,6 @@ public class UIAnswersPortlet extends UIPortletApplication {
       return null;
     }
   }
-
   public void processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {
     PortletRequestContext portletReqContext = (PortletRequestContext) context;
     portletMode = portletReqContext.getApplicationMode();
