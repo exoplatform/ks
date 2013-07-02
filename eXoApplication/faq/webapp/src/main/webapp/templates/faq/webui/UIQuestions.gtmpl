@@ -907,10 +907,6 @@
                                           	  <span></span>
                                             </a>
 	                                      
-	                                        <a class="ItemIcon Delete" title="<%=_ctx.appRes("UIQuestions.action.DeleteComment")%>" href="<%=uicomponent.event("DeleteComment", comment.getId())%>">
-	                                           <span></span>
-	                                        </a>
-	                                      
 	                                  <%}%>
                                   </div>
 	                                <div class="ResponseItemContainerRight">
