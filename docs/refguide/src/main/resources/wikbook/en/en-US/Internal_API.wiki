@@ -1,50 +1,51 @@
-Applications of eXo Knowledge, such as Forum, Answers and Polls, use REST services to communicate with the server. This section describes REST Services of internal APIs. 
+Applications of the Knowledge function, such as Forum, Answers and Polls, use REST services to communicate with the server. This section describes REST Services of internal APIs.
 
 h1. Forum application {anchor:id=KSref.InternalAPIs.ForumApplication}
 
-The Forum application of eXo Knowledge uses the ForumWebservice to provide all APIs to work with Forum, such as filtering IPs, viewing RSS, and more.
+The Forum application of the Knowledge function uses the ForumWebservice to provide all APIs to work with Forum, such as filtering IPs, viewing RSS, and more.
 
 || Service name || Service URL || Description || Location ||
-| *ForumWebservice* | $portalName/ $restcontextname/ ks/forum/ | To call extended services of the Forum application. | * Maven groupId: org.exoplatform.ks {example}{example} * ArtifactId: exo.ks.web.webservice |
+| *ForumWebservice* | $portalName/ $restcontextname/ ks/forum/ | Call extended services of the Forum application. | * Maven groupId: org.exoplatform.ks {example}{example} * ArtifactId: exo.ks.web.webservice |
 
 * *APIs Usage*
 
 Use the following APIs to build all the functions of the Forum application:
 
 || Name || Description || Service URL endpoint || Parameters ||	Expected values ||
-| *getMessage* | To get all new posts with the number based on the _maxcount_ value. | $portalName/ $restcontextname/ ks/forum/getmessage/ | String maxcount | integer |
-| *filterIps* | To ban IPs with no access to Forum. | $portalName/ $restcontextname/ ks/forum/filter/ | String str | String in the IP format.|
-| *filterIpBanForum* | To ban IPs with no access to a specific Forum. | $portalName/ $restcontextname/ ks/forum/ filterIpBanforum/| String forumId  {example}{example} String str | string in the IP format, string in the Forum format |
-| *filterTagNameForum* | To do quick search for tags that returns the list of tags. | $portalName/ $restcontextname/ ks/forum/ filterTagNameForum/ | String str  {example}{example}  String userAndTopicId | Tag name  {example}{example}  id of user and topic |
-| *viewrss* | To process the request by the user when he/she wants to view RSS. | $portalName/ $restcontextname/ ks/forum/rss/ | String resourceid |category id  {example}{example} forum id  {example}{example} topic id |
-| *userrss* | To process the request by users when they wants to view their own collected RSS. | $portalName /$restcontextname/ ks/forum/rss/user/ | String resourceid | username id |
+| *getMessage* | Get all new posts with the number based on the _maxcount_ value. | $portalName/ $restcontextname/ ks/forum/getmessage/ | String maxcount | integer |
+| *filterIps* | Ban IPs with no access to Forum. | $portalName/ $restcontextname/ ks/forum/filter/ | String str | String in the IP format.|
+| *filterIpBanForum* | Ban IPs with no access to a specific Forum. | $portalName/ $restcontextname/ ks/forum/ filterIpBanforum/| String forumId  {example}{example} String str | string in the IP format, string in the Forum format |
+| *filterTagNameForum* | Do the quick search for tags that returns the list of tags. | $portalName/ $restcontextname/ ks/forum/ filterTagNameForum/ | String str  {example}{example}  String userAndTopicId | Tag name  {example}{example}  id of user and topic |
+| *viewrss* | Process the request by users when they want to view RSS. | $portalName/ $restcontextname/ ks/forum/rss/ | String resourceid |category id  {example}{example} forum id  {example}{example} topic id |
+| *userrss* | Process the request by users when they want to view their own collected RSS. | $portalName /$restcontextname/ ks/forum/rss/user/ | String resourceid | username id |
 
 h1. Answers application {anchor:id=KSref.InternalAPIs.AnswersApplication}
 
-The Answers application of eXo Knowledge uses the FAQWebservice to view RSS.
+The Answers application of the Knowledge function uses the FAQWebservice to view RSS.
 
 || Service name || Service URL || Description || Location ||
-| *FAQWebservice* | $portalName/ $restcontextname/ ks/faq | To call extended services of the Answers application. | * Maven groupId: org.exoplatform.ks {example}{example} * ArtifactId: exo.ks.eXoApplication. faq.service |
+| *FAQWebservice* | $portalName/ $restcontextname/ ks/faq | Call extended services of the Answers application. | Maven groupId: org.exoplatform.ks {example}{example} ArtifactId: exo.ks.eXoApplication. faq.service |
 
 * *APIs Usage*
 
 Use the following APIs to build all the functions of Answers application:
 
 || Name || Description || Service URL endpoint || Parameters ||	Expected values ||
-| *viewrss* | To view RSS | $portalName/ $restcontextname/ ks/faq/rss/| String resourceid | category id, question id |
+| *viewrss* | View RSS | $portalName/ $restcontextname/ ks/faq/rss/| String resourceid | category Id, question Id. |
 
 
 h1. Polls application {anchor:id=KSref.InternalAPIs.PollsApplication}
 
-The Polls application of eXo Knowledge uses the PollWebservice to create and interact with the Polls gadget.
+The Polls application of the Knowledge function uses the PollWebservice to create and interact with the Polls gadget.
+
 || Service name || Service URL || Description || Location ||
-| *PollWebservice* | $portalName/ $restcontextname/ private/ks/poll | To call extended services of the Polls application. | * Maven groupId: org.exoplatform.ks {example}{example} * ArtifactId: exo.ks.eXoApplication. poll.service |
+| *PollWebservice* | $portalName/ $restcontextname/ private/ks/poll | Call extended services of the Polls application. | * Maven groupId: org.exoplatform.ks {example}{example} * ArtifactId: exo.ks.eXoApplication. poll.service |
 
 
 * *APIs Usage*
 
 Use the following APIs to build all functions of the Answers application:
 || Name || Description || Service URL endpoint || Parameters ||	Expected values ||
-| *viewPoll* | To return data of the Polls system | $portalName/ $restcontextname/ private/ks/poll/ viewpoll/| String pollId | id of poll |
-| *votePoll* | To update data for the Polls with the returned id | $portalName/ $restcontextname/ private/ks/poll /votepoll/| String pollId  {example}{example} String indexVote | id of poll  {example}{example} integer |
+| *viewPoll* | Return data of the Polls system | $portalName/ $restcontextname/ private/ks/poll/ viewpoll/| String pollId | Id of poll |
+| *votePoll* | Update data for the Polls with the returned Id | $portalName/ $restcontextname/ private/ks/poll /votepoll/| String pollId  {example}{example} String indexVote | Id of poll  {example}{example} integer |
 

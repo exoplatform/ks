@@ -331,7 +331,8 @@ In particular, at runtime of BBCode Service, the BBCode plug-in component is cal
               <string><![CDATA[<a href="mailto:{option}">{param}</a>]]></string>
             </field>
             <field name="description">
-              <string>The [email=option] tag allows link to an email address and use an optional parameter to 'name' of this link.</string>
+              <string>The [email=option] tag allows link to an email address and use an optional
+              parameter to 'name' of this link.</string>
             </field>
             <field name="example">
               <string>[email=demo@example.com]Click Here to Email me[/email] </string>
@@ -381,7 +382,8 @@ In particular, at runtime of BBCode Service, the BBCode plug-in component is cal
               <string><![CDATA[<a target='_blank' href="{option}">{param}</a>]]></string>
             </field>
             <field name="description">
-              <string>The [url=option] tag allows link to other websites and files and usean optional parameter to 'name' of thislink.</string>
+              <string>The [url=option] tag allows link to other websites and files and use an
+              optional parameter to 'name' of thislink.</string>
             </field>
             <field name="example">
               <string>[URL=http://www.exoplatform.com]Click goto exoplatform website.[/URL]</string>
@@ -406,7 +408,7 @@ In particular, at runtime of BBCode Service, the BBCode plug-in component is cal
               <string><![CDATA[<a href="{option}">{param}</a>]]></string>
             </field>
             <field name="description">
-              <string>Allows goto directly to link instead of open a new window or a new tab. </string>
+              <string>Allows goto directly to link instead of open a new window or a new tab.</string>
             </field>
             <field name="example">
               <string>[goto=http://www.exoplatform.com]Goto this link.[/goto]></string>
@@ -431,7 +433,8 @@ In particular, at runtime of BBCode Service, the BBCode plug-in component is cal
               <string>You can not define this bbcode tag. It is defined by the developer.</string>
             </field>
             <field name="description">
-              <string>The [list] tag allows create simple, each bullet is denoted by the [*] tag.</string>
+              <string>The [list] tag allows create simple, each bullet is denoted by the [*] tag.
+              </string>
             </field>
             <field name="example">
               <string>[list][*]list item 1[*]list item 2[/list]</string>
@@ -456,7 +459,8 @@ In particular, at runtime of BBCode Service, the BBCode plug-in component is cal
               <string>You can not define this bbcode tag. It is defined by the developer.</string>
             </field>
             <field name="description">
-              <string>The [list=option] tag allows create bulleted lists specifying an option. Within the value portion, each bullet is denoted by the [*] tag.</string>
+              <string>The [list=option] tag allows create bulleted lists specifying an option.
+              Within the value portion, each bullet is denoted by the [*] tag.</string>
             </field>
             <field name="example">
               <string>[list=1][*]list item 1[*]list item 2[/list]</string>
@@ -484,7 +488,8 @@ In particular, at runtime of BBCode Service, the BBCode plug-in component is cal
               <string>The [img] tag allows you to shows the image indicated by {url}</string>
             </field>
             <field name="example">
-              <string>[url=http://www.google.com.vn] [img]http://groups.google.com.vn/groups/img/3nb/groups_medium_vi.gif[/img] [/url]</string>
+              <string>[url=http://www.google.com.vn] [img]http://groups.google.com.vn/groups/img/
+               3nb/groups_medium_vi.gif[/img] [/url]</string>
             </field>
             <field name="isOption">
               <string>false</string>
@@ -503,7 +508,8 @@ In particular, at runtime of BBCode Service, the BBCode plug-in component is cal
               <string>QUOTE</string>
             </field>
             <field name="replacement">
-              <string><![CDATA[<div style="background:#ededf7; border:1px solid #d8d8d8; padding:6px 6px 6px 15px; margin:2px 0px;">{param}</div>]]></string>
+              <string><![CDATA[<div style="background:#ededf7; border:1px solid #d8d8d8;
+              padding:6px 6px 6px 15px; margin:2px 0px;">{param}</div>]]></string>
             </field>
             <field name="description">
               <string>The [quote] tag allows attribute content of post.</string>
@@ -528,7 +534,9 @@ In particular, at runtime of BBCode Service, the BBCode plug-in component is cal
               <string>QUOTE</string>
             </field>
             <field name="replacement">
-              <string><![CDATA[<div style="background:#ededf7; border:1px solid #d8d8d8; padding:6px 6px 6px 15px; margin:2px 0px;"><div>Originally Posted by <strong>{option}</strong></div><div>{param}</div></div>]]></string>
+              <string><![CDATA[<div style="background:#ededf7; border:1px solid #d8d8d8;
+              padding:6px 6px 6px 15px; margin:2px 0px;"><div>Originally Posted by <strong>{option}
+              </strong></div><div>{param}</div></div>]]></string>
             </field>
             <field name="description">
               <string>The [quote=option] tag allows attibute content and user name of poster.</string>
@@ -553,7 +561,9 @@ In particular, at runtime of BBCode Service, the BBCode plug-in component is cal
               <string>CODE</string>
             </field>
             <field name="replacement">
-              <string><![CDATA[<div style="background:#ededed; border:1px inset #7b7b7b; margin:5px; overflow:auto;"><pre style="margin: 0px; padding: 0px; overflow: auto; text-align: left;" dir="ltr"><div>{param}</div></pre></div>]]></string>
+              <string><![CDATA[<div style="background:#ededed; border:1px inset #7b7b7b; margin:5px;
+              overflow:auto;"><pre style="margin: 0px; padding: 0px; overflow: auto; text-align: left;
+              " dir="ltr"><div>{param}</div></pre></div>]]></string>
             </field>
             <field name="description">
               <string>The [code] tag allows you to view source code html.</string>
@@ -581,7 +591,8 @@ In particular, at runtime of BBCode Service, the BBCode plug-in component is cal
               <string><![CDATA[<span class="{option}">{param}</span>]]></string>
             </field>
             <field name="description">
-              <string>The [css=option] tag allows you to add div tag and set class Name for this it.</string>
+              <string>The [css=option] tag allows you to add div tag and set class Name for this it.
+              </string>
             </field>
             <field name="example">
               <string>[css=highlight]Text is highlight[/css]</string>
@@ -606,17 +617,21 @@ In particular, at runtime of BBCode Service, the BBCode plug-in component is cal
               <string>
               <![CDATA[<div style="width:425px; height:355px;" align="center">
               <object style="margin:0px" width="425" height="355">
-                <param name="movie" value="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc={option}&rel=0"/>
+                <param name="movie" value="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=
+                {option}&rel=0"/>
                 <param name="allowFullScreen" value="true"/>
                 <param name="allowScriptAccess" value="always"/>
-                <embed src="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc={option}&rel=0" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="355">
+                <embed src="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc={option}&rel=0"
+                type="application/x-shockwave-flash" allowscriptaccess="always"
+                allowfullscreen="true" width="425" height="355">
                 </embed>
               </object>
               <b>{param}</b></div>]]>
               </string>
             </field>
             <field name="description">
-              <string>The [SLIDESHARE=option] tag allows you to run slide in slidesharecdn.com site.</string>
+              <string>The [SLIDESHARE=option] tag allows you to run slide in slidesharecdn.com site.
+              </string>
             </field>
             <field name="example">
               <string>[SLIDESHARE=slideId]My slide[/SLIDESHARE]</string>
@@ -636,9 +651,9 @@ In particular, at runtime of BBCode Service, the BBCode plug-in component is cal
 
 * In which,
 || Name || Set method || Type || Description ||
-| *forum.default.bbcodes* | registerBBCodePlugin | org.exoplatform.ks.bbcode. spi.BBCodePlugin | To define formats for data displayed on UI. |
+| *forum.default.bbcodes* | registerBBCodePlugin | org.exoplatform.ks.bbcode. spi.BBCodePlugin | Define formats for data displayed on UI. |
 
-- The BBCode array is defined by the _org.exoplatform.ks.bbcode.spi.BBCodeData_ object as below:
+* The BBCode array is defined by the _org.exoplatform.ks.bbcode.spi.BBCodeData_ object as below:
 {code:html}
            <object type="org.exoplatform.ks.bbcode.spi.BBCodeData">
             <field name="tagName">
@@ -661,7 +676,7 @@ In particular, at runtime of BBCode Service, the BBCode plug-in component is cal
             </field>
           </object> 
 {code}
-- The BBCode includes basic data which are defined in the field tag with a specific name as below:
+* The BBCode includes basic data which are defined in the {{<field>}} tag with a specific name as below:
 {code:html}
             <field name="tagName">
               <string>I</string>
@@ -685,12 +700,11 @@ In particular, at runtime of BBCode Service, the BBCode plug-in component is cal
 
 In which:
 || Field name || Value || Description ||
-| *tagName* | {{string}} | This is the text for the BBCode, which is put between two square brackets ({noformat}[ ]{noformat}). For example, for the bold tag, if you type {noformat}[b]{noformat}, the BBCode tag will be *b* without any square brackets ({noformat}[ ]{noformat}). |
-| *replacement* | {{string}} | This is the HTML code that replaces the BBCode entered by the user. Make sure that you include {{{'{param}'}}} (without quotes) to insert the text between opening and closing BBCode tags, and {{{'{option}'}}} for the parameter within the BBCode tag. You can only use _{{{option}}}_ if 'Use Option' is selected. |
-| *description* | {{string}} | This is a piece of text to describe the BBCode tag, including HTML tags if you want.|
-| *example* | {{string}} | This is a sample piece of BBCode to use as an example for the particular BBCode. For example, to demonstrate the usage of {noformat}[b]{noformat} tag, enter {noformat}[b]{noformat}text{noformat}[/b]{noformat}. |
-| *isOption* |  {{true}}, {{false}} | To select the {{{[tag=option]}}} {{{[/tag]}}} style tag, rather than just a {noformat}[tag]{noformat}{{{[/tag]}}}style tag. This function will be created if you select this option. |
-| *isActive* | {{true}}, {{false}} | To activate the BBCode tag. |
-
+| *tagName* | {{string}} | The text for the BBCode, which is put between two square brackets (\[ ]). For example, for the bold tag, if you type \[b\], the BBCode tag will be *b* without any square brackets (\[ \]). |
+| *replacement* | {{string}} | The HTML code that replaces the BBCode entered by the user. Make sure that you include {{{'{param}'}}} (without quotes) to insert the text between opening and closing BBCode tags, and {{{'{option}'}}} for the parameter within the BBCode tag. You can only use _{{{option}}}_ if 'Use Option' is selected. |
+| *description* | {{string}} | The piece of text to describe the BBCode tag, including HTML tags if you want.|
+| *example* | {{string}} | The sample piece of BBCode to use as an example for the particular BBCode. For example, to demonstrate the usage of \[b\] tag, enter \[b\]text\[/b\]. |
+| *isOption* |  {{true}}, {{false}} | Select the {{{[tag=option]}}} {{{[/tag]}}} style tag, rather than just a \[tag]\[/tag] style tag. This function will be created if you select this option. |
+| *isActive* | {{true}}, {{false}} | Activate the BBCode tag. |
 
 

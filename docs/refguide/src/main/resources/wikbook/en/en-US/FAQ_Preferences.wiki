@@ -1,10 +1,10 @@
 h1. Overview {anchor:id=KSref.FAQPortlet.Overview}
 
 || *Portlet name* || War name || Description ||
-| FAQPortlet | faq.war | The FAQ portlet is the application to show questions and answers. |
+| *FAQPortlet* | faq.war | The FAQ portlet is the application to show questions and answers. |
 
 h1. Portlet.xml {anchor:id=KSref.FAQPortlet.FAQPortletxml}
-* See the portlet.xml file in the project following this path: /webapps/faq/WEB-INF/portlet.xml
+* See the _portlet.xml_ file in the project following this path: _/webapps/faq/WEB-INF/portlet.xml_
 
 h1. Portlet Preferences {anchor:id=KSref.FAQPortlet.FAQPortletPreferences}
 
@@ -12,11 +12,11 @@ The FAQ portlet includes some portlet preferences that you can configure to alte
 
 At runtime, you can use the EDIT mode portlet to set the preferences: 
 
-!EditModePreference.png!
+!images/EditModePreference.png|align="center" width="150mm" fo:scalefit="1" html:scalefit="0"!
 
 Alternatively, you can configure the portlet in the _portet-preferences.xml_ file.
 
 || Preference name || Possible value || Default value || Description ||
-| *useAjax* | {{true}}, {{false}} | {{false}} | To specify if the ajax load or href load is used. |
+| *useAjax* | {{true}}, {{false}} | {{false}} | Specify if the AJAX load or HREF load is used. |
 
 

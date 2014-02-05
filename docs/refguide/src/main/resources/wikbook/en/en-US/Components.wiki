@@ -1,8 +1,8 @@
-h1. Components of eXo Knowledge {anchor:id=KSref.Components}
+h1. Components of Knowledge function {anchor:id=KSref.Components}
 
 || Key || Data type || Description ||
-| *org.exoplatform.ks.common. jcr.KSDataLocation* | org.exoplatform.ks.common. jcr.KSDataLocation | To hold the JCR storage location for KS data. |
-| *org.exoplatform.services. scheduler.JobSchedulerService* | org.exoplatform.services.scheduler. impl.JobSchedulerServiceImpl | To define a job to execute a given number of times during a given period. It is used to monitor jobs automatically and continously, to schedule event-driven jobs and reports, and to control performance. |
+| *org.exoplatform.ks.common. jcr.KSDataLocation* | org.exoplatform.ks.common. jcr.KSDataLocation | Hold the JCR storage location for the Knowledge data. |
+| *org.exoplatform.services. scheduler.JobSchedulerService* | org.exoplatform.services.scheduler. impl.JobSchedulerServiceImpl | Define a job to execute a given number of times during a given period. It is used to monitor jobs automatically and continuously, to schedule event-driven jobs and reports, and to control performance. |
 
 * Init-params of org.exoplatform.ks.common.jcr.KSDataLocation:
 
@@ -12,20 +12,20 @@ h1. Components of eXo Knowledge {anchor:id=KSref.Components}
 
 h1. Components of Forum {anchor:id=KSref.Components.ForumComponents}
 || Key || Data type || Description ||
-| *org.exoplatform.ks.bbcode. api.BBCodeService* | org.exoplatform.ks.bbcode. core.BBCodeServiceImpl | To manage CRUD operations on BBCodes. |
-| *org.exoplatform.forum. service.DataStorage* | org.exoplatform.forum.service. impl.JCRDataStorage | To store data of Forum via the JCR system. |
-| *org.exoplatform.forum. service.ForumService* | org.exoplatform.forum.service. impl.ForumServiceImpl | To include all public APIs to interact with the UI component and database. |
-| *org.exoplatform.forum.service. ForumStatisticsService* | org.exoplatform.forum.service. impl.ForumStatisticsServiceImpl | To include all public APIs to interact with the database of Statistics system. |
+| *org.exoplatform.ks.bbcode. api.BBCodeService* | org.exoplatform.ks.bbcode. core.BBCodeServiceImpl | Manage CRUD operations on BBCodes. |
+| *org.exoplatform.forum. service.DataStorage* | org.exoplatform.forum.service. impl.JCRDataStorage | Store data of Forum via the JCR system. |
+| *org.exoplatform.forum. service.ForumService* | org.exoplatform.forum.service. impl.ForumServiceImpl | Include all public APIs to interact with the UI component and database. |
+| *org.exoplatform.forum.service. ForumStatisticsService* | org.exoplatform.forum.service. impl.ForumStatisticsServiceImpl | Include all public APIs to interact with the database of the Statistics system. |
 
 h1. Components of Answers {anchor:id=KSref.Components.AnswersComponents}
 || Key || Data type || Description ||
-| *org.exoplatform.faq. service.FAQService* | org.exoplatform.faq.service. impl.FAQServiceImpl | To include all public APIs to interact with the UI component and database. |
-| *org.exoplatform.faq. service.DataStorage* | org.exoplatform.faq.service. impl.JCRDataStorage | To store data of FAQ via the JCR system. |
+| *org.exoplatform.faq. service.FAQService* | org.exoplatform.faq.service. impl.FAQServiceImpl | Include all public APIs to interact with the UI component and database. |
+| *org.exoplatform.faq. service.DataStorage* | org.exoplatform.faq.service. impl.JCRDataStorage | Store data of FAQ via the JCR system. |
 
 h1. Components of Polls {anchor:id=KSref.Components.PollComponents}
 || Key || Data type || Description ||
-| *org.exoplatform.poll. service.DataStorage* | org.exoplatform.poll.service. impl.JCRDataStorage | To include all public APIs to interact with the UI component and database. |
-| *org.exoplatform.poll. service.PollService* | org.exoplatform.poll.service. impl.PollServiceImpl | To store data of Polls via the JCR system. |
+| *org.exoplatform.poll. service.DataStorage* | org.exoplatform.poll.service. impl.JCRDataStorage | Include all public APIs to interact with the UI component and database. |
+| *org.exoplatform.poll. service.PollService* | org.exoplatform.poll.service. impl.PollServiceImpl | Store data of Polls via the JCR system. |
 
 
 

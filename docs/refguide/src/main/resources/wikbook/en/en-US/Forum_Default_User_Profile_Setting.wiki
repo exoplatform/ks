@@ -3,7 +3,7 @@ The default Forum settings are a set of settings for a new account. It contains 
 
 h1. Configuration {anchor:id=KSref.DefaultUserProfileSetting.Configuration}
 
-This configuration is declared in the file named "ks-configuration.xml". Its path is _"\[tomcat source\]/webapps/ks-extension/WEB-INF/ks-extension/ks/ks-configuration.xml"_ if you are running the tomcat and _"\[project source\]/extension/webapp/src/main/webapp/WEB-INF/ks-extension/ks/ks-configuration.xml"_ if you are in the development phrase.
+This configuration is declared in the file named _ks-configuration.xml_. Its path is _\[tomcat source\]/webapps/ks-extension/WEB-INF/ks-extension/ks/ks-configuration.xml_ if you are running the tomcat and _\[project source\]/extension/webapp/src/main/webapp/WEB-INF/ks-extension/ks/ks-configuration.xml_ if you are in the development phrase.
 
 {code:xml}
 
@@ -37,11 +37,10 @@ This configuration is declared in the file named "ks-configuration.xml". Its pat
 In which: 
 
 || Parameter || Possible value  || Default value || Description ||
-| *timeZone* | {{Time zone id}} | {{GMT}} |  Time zone set by user. For example: GMT, GMT-05:00, GMT+07:00, GMT+08:30 ... {{example}}{{example}} Visit the website: http://java.sun.com/j2se/1.4.2/docs/api/java/util/TimeZone.html for more details. |
-| *shortDateFormat* | {{Valid Java Date format}} | {{MM/dd/yyyy}} | The format to display short information of date {{example}}{{example}} Visit the website: http://java.sun.com/j2se/1.4.2/docs/api/java/text/SimpleDateFormat.html to ensure the exact format.) |
-| *longDateFormat* | {{Valid Java Date format}} | {{DDD,MMM dd,yyyy}} | The format to display a date with more information {{example}}{{example}} Visit the website http://java.sun.com/j2se/1.4.2/docs/api/java/text/SimpleDateFormat.html to ensure the exact format. |
-| *timeFormat* | {{valid Java Date format}} | {{hh:mm a}} | The format to view time (for example, hour, minute,) {{example}}{{example}} Visit the website: http://java.sun.com/j2se/1.4.2/docs/api/java/text/SimpleDateFormat.html to ensure the exact format. |
+| *timeZone* | {{Time zone id}} | {{GMT}} |  The time zone set by user. For example: GMT, GMT-05:00, GMT+07:00, GMT+08:30 ... Visit the website: http://java.sun.com/j2se/1.4.2/docs/api/java/util/TimeZone.html for more details. |
+| *shortDateFormat* | {{Valid Java Date format}} | {{MM/dd/yyyy}} | The format to display short information of date. Visit the website: http://java.sun.com/j2se/1.4.2/docs/api/java/text/SimpleDateFormat.html to ensure the exact format.) |
+| *longDateFormat* | {{Valid Java Date format}} | {{DDD,MMM dd,yyyy}} | The format to display a date with more information. Visit the website http://java.sun.com/j2se/1.4.2/docs/api/java/text/SimpleDateFormat.html to ensure the exact format. |
+| *timeFormat* | {{valid Java Date format}} | {{hh:mm a}} | The format to view time (for example, hour, minute,). Visit the website: http://java.sun.com/j2se/1.4.2/docs/api/java/text/SimpleDateFormat.html to ensure the exact format. |
 | *maxTopic* | {{Integer}} | 10 | The maximum number of topics per page. |
 | *maxPost* | {{Integer}} | 10 | The maximum number of posts per page. |
-| *isShowForumJump* | {{true / false}} | {{true}} | To show the forum jump or not. |
-
+| *isShowForumJump* | {{true / false}} | {{true}} | Show the forum jump or not. |

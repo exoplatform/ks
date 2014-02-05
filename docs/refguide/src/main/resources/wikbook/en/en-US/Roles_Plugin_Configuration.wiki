@@ -1,13 +1,13 @@
 h1. Overview {anchor:id=KSref.RolesPluginConfiguration.Overview}
 
-The roles plug-in component defines roles in eXo Platform 3 Knowledge Forum. This convenient application defines access to a set of functions within the application.
+The roles plug-in component defines roles in eXo Platform 3 Knowledge Forum. This convenient application defines the access to a set of functions within the application.
 Currently, it only defines the person who has the _administrator_ role. Administrators can get access to administration functions.
 At runtime, the application gets data from the roles plug-in to decide whether the logged user has the administrative role or not.
 
 h1. Configuration {anchor:id=KSref.RolesPluginConfiguration.Configuration}
 The plug-in is configured in the _roles-configuration.xml_ file.
 
-When the user signs in, his or her username, group and membership will be compared with the user roles defined in the _.xml_ file that is provided by the roles plug-in component.
+When the user signs in, his or her username, group and membership will be compared with the user roles defined in the _.xml_ provided by the roles plug-in component.
 
 In particular, at runtime of ForumService, the roles plug-in component is called. The role plug-in is configured in the _roles-configuration.xml_ file. The plug-in component named _add.role.rules.plugin_ will be referred to _org.exoplatform.ks.common.conf.RoleRulesPlugin_ to create users for Forum corresponding to users who exist in the organization database. In addition, the list of users who have _administration_ roles are also defined.
 
@@ -43,17 +43,17 @@ In particular, at runtime of ForumService, the roles plug-in component is called
 In which:
 
 || Name || Set-method || Type || Description ||
-| *add.role.rules.plugin* | addRolePlugin | org.exoplatform.ks. common.conf. RoleRulesPlugin | To add role rules. |
+| *add.role.rules.plugin* | addRolePlugin | org.exoplatform.ks. common.conf. RoleRulesPlugin | Add role rules. |
 
 * Init-params:
 
 || Name || Possible value || Default value || Description |
-| *role* | {{string}} | {{ADMIN}} | The name of role |
-| *rules* | {{string}} | {{root}} | The rules of role |
+| *role* | {{string}} | {{ADMIN}} | The name of role. |
+| *rules* | {{string}} | {{root}} | The rules of role. |
 
 * When the _role-configuration.xml_ file is executed, the administration role (with {{ADMIN}} value) will be checked and assigned to a matrix of users/groups/memberships defined inside "value" tags as below:
 
-{code}
+{code:xml}
 <value>...</value>
 {code}
  
@@ -69,9 +69,9 @@ For example:
 ...
 {code}
 
-In the example above, the default administrators of Forum include _root_, _john_, users in _/platform/administrators_ group and users who have _member/validator_ memberships in the VIP group. 
+In the example above, the default administrators of Forum include _root_, _john_, and  users in the _/platform/administrators_ group and users who have _member/validator_ memberships in the VIP group.
 
-When _root_, _john_ or any users who belong to the _/platform/administrators_ group or users who have _member/validator_ memberships in the VIP group sign in the Forum, he or she will be identified as the default administrator of Forum. 
+When _root_, _john_ or any users who belong to the _/platform/administrators_ group or users who have the _member/validator_ memberships in the VIP group sign in the Forum, he or she will be identified as the default administrator of Forum.
 
 To add or remove the default administrator of the Forum, simply edit the _roles-configuration.xml_ file, add or remove the relevant "value" tags.
 

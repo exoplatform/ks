@@ -1,11 +1,11 @@
 h1. Overview {anchor:id=KSref.ForumPortlet.Overview}
 
 || Portlet name || War name || Description ||
-| *ForumPortlet* | forum.war | The Forum portlet is the application for users to post and read messages on different topics. |
+| *ForumPortlet* | forum.war | The Forum portlet works like common forums (VBulletin, PHP Forum). This portlet enables users to share and discuss on different topics.  |
 	
 * Declaration template	
 
-{code:language=xml|indent=2}
+{code:xml}
 	<portlet-application>
 	  <portlet>
 		<application-ref>forum</application-ref>
@@ -15,38 +15,38 @@ h1. Overview {anchor:id=KSref.ForumPortlet.Overview}
 {code}	
 
 h1. Portlet.xml {anchor:id=KSref.FoumPortlet.ForumPortletxml}
-* See the portlet.xml file in the project following this path: forum/WEB-INF/portlet.xml.
+* See the _portlet.xml_ file in the project following this path: _forum/WEB-INF/portlet.xml_.
 	
 h1. Preferences {anchor:id=KSref.ForumPortlet.ForumPortletPreferences}
 
 || Preference name || Possible value || Default value || Description ||
-| *useAjax* | {{true}}, {{false}} | {{true}} | To define if links in the Forum will be plain hrefs or javascript ajax (better for SEO) or not. |
-| *showForumActionBar* | {{true}}, {{false}} | {{true}} | This is the UIForumActionBar. If the value is set true, the UIForumActionBar will be shown. If false, the UIForumActionBar will be hidden. |
-| *forumNewPost* | {{day number}} | {{1}} | To specify if a post is new. If the post is created within the set period, it is new in the Forum. |
-| *enableIPLogging* | {{true}}, {{false}} | {{true}} | To enable the IP logging function in the Forum. IP addresses of all posts will be collected. |
-| *enableIPFiltering* | {{true}}, {{false}} | {{true}} | To enable the IP filter function in Forum, enabling IP addresses to be blocked in the Forum. |
-| *invisibleCategories* | {{id categories}} | {{empty}} | To hide some categories. If the value is set empty, all categories of the Forum will be shown. |
-| *invisibleForums* | {{id forums}} | {{empty}} | To hide some Forums. All Forums will be shown if the value is set empty. |
-| *uploadFileSizeLimitMB* | {{integer}} | {{20}} | To limit the size of uploaded files in MB in the Forum. |
-| *isShowForumJump* | {{true}}, {{false}} | {{true}} | To specify if the Forum jump panel is shown or not. |
-| *isShowIconsLegend* | {{true}}, {{false}} | {{true}} | To specify if the icon legends panel is shown or not. |
-| *isShowModerators* | {{true}}, {{false}} | {{true}} | To specify if the moderators panel is shown or not. |
-| *isShowPoll* | {{true}}, {{false}} | {{true}} | To specify if the poll panel is shown or not. |
-| *isShowQuickReply* | {{true}}, {{false}} | {{true}} | To specify if the quick reply panel is shown or not. |
-| *isShowRules* | {{true}}, {{false}} | {{true}} | To specify if the forum rules panel is shown or not. |
-| *isShowStatistics* | {{true}}, {{false}} | {{true}} | To specify if the statistics panel is shown or not. |
+| *useAjax* | {{true}}, {{false}} | {{true}} | Define if links in the Forum will be plain hrefs or javascript ajax (better for SEO) or not. |
+| *showForumActionBar* | {{true}}, {{false}} | {{true}} | This is the UIForumActionBar. If the value is set to "true", the UIForumActionBar will be shown. If false, the UIForumActionBar will be hidden. |
+| *forumNewPost* | {{day number}} | {{1}} | Specify if a post is new. If the post is created within the set period, it is new in the Forum. |
+| *enableIPLogging* | {{true}}, {{false}} | {{true}} | Enable the IP logging function in the Forum. IP addresses of all posts will be collected. |
+| *enableIPFiltering* | {{true}}, {{false}} | {{true}} | Enable the IP filter function in Forum, enabling IP addresses to be blocked in the Forum. |
+| *invisibleCategories* | {{id categories}} | {{empty}} | Hide some categories. If the value is set empty, all categories of the Forum will be shown. |
+| *invisibleForums* | {{id forums}} | {{empty}} | Hide some Forums. All Forums will be shown if the value is set empty. |
+| *uploadFileSizeLimitMB* | {{integer}} | {{20}} | Limit the size of uploaded files in MB in the Forum. |
+| *isShowForumJump* | {{true}}, {{false}} | {{true}} | Specify if the Forum jump panel is shown or not. |
+| *isShowIconsLegend* | {{true}}, {{false}} | {{true}} | Specify if the icon legends panel is shown or not. |
+| *isShowModerators* | {{true}}, {{false}} | {{true}} | Specify if the moderators panel is shown or not. |
+| *isShowPoll* | {{true}}, {{false}} | {{true}} | Specify if the poll panel is shown or not. |
+| *isShowQuickReply* | {{true}}, {{false}} | {{true}} | Specify if the quick reply panel is shown or not. |
+| *isShowRules* | {{true}}, {{false}} | {{true}} | Specify if the forum rules panel is shown or not. |
+| *isShowStatistics* | {{true}}, {{false}} | {{true}} | Specify if the statistics panel is shown or not. |
 
 
 h1. Events {anchor:id=KSref.ForumPortlet.Event}
 
-|| *Name* || *Description* ||
-| *ForumLinkEvent* | To set the render for UIForumLinkPortlet and set values for UIForumLinks. |
-| *ReLoadPortletEvent* | To reload UIForumPortlet. |
-| *OpenLink* | To update values for UIForumLinks. |
-| *ForumPollEvent* | To setRender for UIForumPollPortlet. |
-| *ForumModerateEvent* | To setRender for UIForumModeratorPortlet. |
-| *ForumRuleEvent* | To setRender for UIForumRulePortlet. |
-| *QuickReplyEvent* | To setRender for UIForumQuickReplyPortlet. |
+|| Name || Description ||
+| *ForumLinkEvent* | Set the render for UIForumLinkPortlet and set values for UIForumLinks. |
+| *ReLoadPortletEvent* | Reload UIForumPortlet. |
+| *OpenLink* | Update values for UIForumLinks. |
+| *ForumPollEvent* | Set the render for UIForumPollPortlet. |
+| *ForumModerateEvent* | Set the render for UIForumModeratorPortlet. |
+| *ForumRuleEvent* | Set the render for UIForumRulePortlet. |
+| *QuickReplyEvent* | Set the render for UIForumQuickReplyPortlet. |
 
 h2. ForumLinkEvent {anchor:id=KSref.ForumPortlet.ForumLinkEvent}
 This event is fired through UIForumLinkPortlet. 
@@ -55,7 +55,7 @@ To receive ForumLinkEvent, you must use the _ForumParameter_ class with two prop
 
 || Name || Type || Possible value || Description ||
 | *isRenderForumLink* | {{boolean}} | true/false | If the value is set to true or false, the Forum link is rendered or not respectively. |
-| *path* | {{string}} | The absolute path of the class node (including types: category, forum, topic) defined by JCR | To set data for the UIForumLinkPortlet.|
+| *path* | {{string}} | The absolute path of the class node (including types: category, forum, topic) defined by JCR. | Set data for the UIForumLinkPortlet.|
 
 * *Example:*
 {code:java}
@@ -77,8 +77,8 @@ This event is fired through UIForumPortlet.
 
 To receive ReLoadPortletEvent, you must use the _ForumParameter_ class with two properties:
 || Name || Type || Possible value || Description ||
-| *topicId* | {{string}} | id of topic | To return the id of topic for UIForumPortlet |
-| *isRenderPoll* | {{boolean}} | true/false | If the value is set to true or false, the _UITopicPoll_ component is rendered or not respectively. |
+| *topicId* | {{string}} | id of topic | Return the Id of topic for UIForumPortlet. |
+| *isRenderPoll* | {{boolean}} | true/false | If the value is set to "true" or "false", the _UITopicPoll_ component will be rendered or not respectively. |
 
 * *Example:*
 {code:java}
@@ -91,11 +91,11 @@ To receive ReLoadPortletEvent, you must use the _ForumParameter_ class with two 
 {code}
 
 h2. OpenLink {anchor:id=KSref.ForumPortlet.OpenLink}
-This event is fired through UIForumPortlet. 
+This event is fired through UIForumPortlet.
 
 To receive OpenLink, you must use the _ForumParameter_ class with one property:
 || Name || Type || Possible value || Description ||
-| *path* | {{string}} | The absolute path of the node defined by JCR | To set data for the UIForumPortlet. |
+| *path* | {{string}} | The absolute path of the node defined by JCR | Set data for the UIForumPortlet. |
 
 * *Example:*
 {code:java}
@@ -111,10 +111,10 @@ This event is fired through UIForumPollPortlet.
 
 To receive ForumPollEvent, you must use the _ForumParameter_ class with four properties:
 || Name || Type || Possible value || Description ||
-| *isRenderPoll* | {{boolean}} | true/false | If the value is set to true or false, the _UIForumPollPortlet_ portlet is rendered or not respectively. |
-| *categoryId* | {{string}} | id of category | To return id of category for UIForumPollPortlet |
-| *forumId* | {{string}} | id of forum | To return id of forum for UIForumPollPortlet |
-| *topicId* | {{string}} | id of topic | To return id of topic for UIForumPollPortlet |
+| *isRenderPoll* | {{boolean}} | true/false | If the value is set to "true" or "false", the _UIForumPollPortlet_ portlet will be rendered or not respectively. |
+| *categoryId* | {{string}} |The Id of category | Return the Id of category for UIForumPollPortlet. |
+| *forumId* | {{string}} | The Id of forum | Return the Id of forum for UIForumPollPortlet. |
+| *topicId* | {{string}} | The Id of topic | Return the Id of topic for UIForumPollPortlet. |
 
 * *Example:*
 {code:java}
@@ -132,8 +132,8 @@ This event is fired through UIForumModeratePortlet.
 
 To receive ForumModerateEvent, you must use the _ForumParameter_ class with two properties:
 || Name || Type || Possible value || Description ||
-| *isRenderModerator* | {{boolean}} | true/false | If the value is set to true or false, the _UIForumModeratePortlet_ portlet is rendered or not respectively. |
-| *moderator* | {{list of strings}} | list of user name | To set data for UIForumModeratePortlet. |
+| *isRenderModerator* | {{boolean}} | true/false | If the value is set to "true" or "false", the _UIForumModeratePortlet_ portlet will be rendered or not respectively. |
+| *moderator* | {{list of strings}} | list of user name | Set data for UIForumModeratePortlet. |
 
 * *Example:*
 {code:java}
@@ -151,8 +151,8 @@ This event is fired through UIForumRulePortlet.
 
 To receive ForumRuleEvent, you must use the _ForumParameter_ class with two properties:
 || Name || Type || Possible value || Description ||
-| *isRenderRule* | {{boolean}} | true/false | If the value is set to true or false, the _UIForumRulePortlet_ portlet is rendered or not respectively. |
-| *infoRules* | {{list of strings}} | The list of states: *can create topic*, *can add post* and *topic has lock* | To set permissions for users in UIForumRulePortlet. |
+| *isRenderRule* | {{boolean}} | true/false | If the value is set to "true" or "false", the _UIForumRulePortlet_ portlet will be rendered or not respectively. |
+| *infoRules* | {{list of strings}} | The list of states: *can create topic*, *can add post* and *topic has lock* | Set permissions for users in UIForumRulePortlet. |
 
 * *Example:*
 {code:java}
@@ -178,11 +178,11 @@ This event is fired through UIQuickReplyPortlet.
 
 To receive QuickReplyEvent, you must use the _ForumParameter_ class with five properties:
 || Name || Type || Possible value || Description ||
-| *isRenderQuickReply* | {{boolean}} | true/false | If the value is set to true or false, the _UIQuickReplyPortlet_ portlet is rendered or not respectively. |
-| *isModerator* | {{boolean}} | true/false | To specify if the user is moderator of forum containing the topic with quick reply or not. |
-| *categoryId* | {{string}} | id of category | To return id of category for UIQuickReplyPortlet. |
-| *forumId* | {{string}} | id of forum | To return id of forum for UIQuickReplyPortlet. |
-| *topicId* | {{string}} | id of topic | To return id of topic for UIQuickReplyPortlet. |
+| *isRenderQuickReply* | {{boolean}} | true/false | If the value is set to "true" or "false", the _UIQuickReplyPortlet_ portlet will be rendered or not respectively. |
+| *isModerator* | {{boolean}} | true/false | Specify if the user is moderator of forum containing the topic with quick reply or not. |
+| *categoryId* | {{string}} | The Id of category | Return the Id of category for UIQuickReplyPortlet. |
+| *forumId* | {{string}} | The Id of forum | Return the Id of forum for UIQuickReplyPortlet. |
+| *topicId* | {{string}} | The Id of topic | Return the Id of topic for UIQuickReplyPortlet. |
 
 * *Example:*
 {code:java}

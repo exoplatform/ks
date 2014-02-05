@@ -1,9 +1,9 @@
 h1. Overview {anchor:id=KSref.UpdateStatisticData.Overview}
 
-Update Data Job is used when there are abnormal changes in Forum data(such as migration). By default, Update DataJob is disabled at server start up. When UpdateDataJob is running, it will calculate the statistic data in Forum to make sure that the statistic data are correct.
+UpdateDataJob is used when there are abnormal changes in Forum data (such as migration). By default, UpdateDataJob is disabled at the server start up. When UpdateDataJob is running, it will calculate the statistic data in Forum to make sure that the statistic data are correct.
 
 h1. Configuration {anchor:id=KSref.UpdateStatisticData.Configuration}
-The properties of Forum's UpdateDataJob is configured in {{/WEB-INF/ks-extension/ks/forum/statistics-configuration.xml}} which is located in ks-extension webapp.
+The properties of Forum's UpdateDataJob is configured in _/WEB-INF/ks-extension/ks/forum/statistics-configuration.xml_ which is located in ks-extension webapp.
 
 {code:xml}
 <component-plugin>
@@ -27,9 +27,9 @@ The properties of Forum's UpdateDataJob is configured in {{/WEB-INF/ks-extension
     </component-plugin>
 {code}
 
-- *in which:*
+- *In which:*
 || Name	|| Method || Type || Description ||
-| UpdateDataJob | addPeriodJob | org.exoplatform.services.scheduler.PeriodJob | To add a UpdateDataJob to the JobSchedulerService |
+| UpdateDataJob | addPeriodJob | org.exoplatform.services. scheduler.PeriodJob | Add a UpdateDataJob to the JobSchedulerService |
 
 - The properties for Auto-count Active Members plug-in are defined in the property tag as below:
 {code: xml}
@@ -46,11 +46,11 @@ The properties of Forum's UpdateDataJob is configured in {{/WEB-INF/ks-extension
 || Property name || Possible value || Default value || Description ||
 | *jobname* | {{String}} | {{UpdateDataJob}} | The name of job which will be executed. |
 | *groupname* |{{String}} | {{KnowledgeSuite-forum}} | The name of application which will be executed. |
-| *job* | {{Class path}} | org.exoplatform.forum.service.conf.UpdateDataJob | The reference function of job which will be executed. |
-| *repeatCount* | {{Long}} | 1 | The number of times the job is repeated. If *repeatCount* is set *1*, RecountActiveUserJob is called at runtime only. It does not repeat. If the number is set to *2* or *3*, RecountActiveUserJob  will be called two or three times. |
+| *job* | {{Class path}} | org.exoplatform.forum. service.conf.UpdateDataJob | The reference function of job which will be executed. |
+| *repeatCount* | {{Long}} | 1 | The number of times the job is repeated. If *repeatCount* is set to "1", RecountActiveUserJob is called at runtime only. It does not repeat. If the number is set to "2" or "3", RecountActiveUserJob  will be called two or three times. |
 | *period* | {{Long}} | 30000 (millisecond) (equal to two hours) | The interval time to execute the job. |
 | *starttime* | {{Integer}} | +0 | The start time when the function executes. _starttime_ is +0, meaning that the time to start executing _RecountActiveUserJob_  is the runtime. |
 | *endtime* | {{Integer}} | null | The end time when the function stops executing. _endtime_ is blank, meaning that there is no limitation for the end time for _UpdateDataJob_.|
 
-With start and end time, you can give a specific date in the format: yyyy-mm-dd HH:mm:ss.sss to define the start and end time for UpdateDataJob.
+With the start and end time, you can give a specific date in the {{yyyy-mm-dd HH:mm:ss.sss}} format to define the start and end time for UpdateDataJob.
 

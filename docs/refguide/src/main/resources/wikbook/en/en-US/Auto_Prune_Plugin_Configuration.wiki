@@ -6,7 +6,7 @@ When the Job Scheduler runs, it will get values returned from the Auto-prune plu
 
 h1. Configuration {anchor:id=KSref.AutoPrune.Configuration}
 
-The properties of Auto-prune plug-in are configured in the _war:webapp/WEB-INF/ks-extension/ks/forum/prune-configuration.xml_ file.
+The properties of Auto-prune plug-in are configured in the _war:webapp/WEB-INF/ks\-extension/ks/forum/prune-configuration.xml_ file.
 
 In particular, at runtime of Job Scheduler, the Auto-prune plug-in component is called. Then, the _prune-configuration.xml_ file will be executed. The component-plugin named _ForumDeactiveJob_ will refer to _org.exoplatform.forum.service.conf.DeactivePeriodJob_ to inactivate topics in the Forum which meets predefined inactivation properties.
 
@@ -40,7 +40,7 @@ In particular, at runtime of Job Scheduler, the Auto-prune plug-in component is 
 
 * In which,
 || Name || Set-method || Type || Description ||
-| *ForumDeactiveJob* | addPeriodJob | org.exoplatform.forum. service.conf. DeactivePeriodJob | To add a DeactiveJob to the JobSchedulerService. |
+| *ForumDeactiveJob* | addPeriodJob | org.exoplatform.forum. service.conf. DeactivePeriodJob | Add a DeactiveJob to the JobSchedulerService. |
 
 * The properties for the Auto-prune plug-in are defined in the _property_ tag with the format as below:
 
@@ -65,19 +65,19 @@ In details:
 | *jobname* | {{String}} | {{DeactiveJob}} | The name of job which will be executed. |
 | *groupname* | {{String}} | {{KnowlegedSuite}} | The name of application which will be executed. |
 | *job* | {{Class path}} | org.exoplatform.forum. service.conf.DeactiveJob | The reference function of the job which will be executed. |
-| *repeatCount* | {{Long}} | {{0 }} | The repeating time for the job. It means that how many times the job will be executed. It means that _DecactiveJob_  is called at runtime only. It does not repeat. If the value is set *2* or *3*, _DecactiveJob_  will be called two or three times correspondingly.|
+| *repeatCount* | {{Long}} | {{0}} | The repeating time for the job, meaning that how many times the job will be executed. The {{0}} value means that _DecactiveJob_ is called at runtime only without repeating. If the value is set to *2* or *3*, _DecactiveJob_  will be called two or three times correspondingly.|
 | *period* | {{Long}} | {{72000000}} | The interval between job executions. |
-| *starttime* | {{Integer}} | {{+0}} | The start time when the function executes. {{example}}{{example}} the_starttime_ is +0, meaning that the time to start executing _DecactiveJob_ is the runtime. |
-| *endtime* | {{Integer}} | {{ null}} | The end time when the function stops executing. {{example}}{{example}}_endtime_ is blank, meaning that there is no limitation for the end time for _DecactiveJob_. |
+| *starttime* | {{Integer}} | {{+0}} | The start time when the function executes. The _starttime_ is +0, meaning that the time to start executing _DecactiveJob_ is the runtime. |
+| *endtime* | {{Integer}} | {{ null}} | The end time when the function stops executing. The _endtime_ is blank, meaning that there is no limitation for the end time for _DecactiveJob_. |
 
-With start and end time, you can give a specific date in the format: yyyy-mm-dd HH:mm:ss.sss to define the start and end time for _DecactiveJob_.
+With the start and end time, you can give a specific date in the {{yyyy-mm-dd HH:mm:ss.sss}} format to define the start and end time for _DecactiveJob_.
  
-Besides, deactive information is also defined:
+Besides, inactive information is also defined:
 
 || Property name || Possible value || Default value || Description ||
-| *inactiveDays* | {{Integer}} | {{15}} | The number of days the topic has not been activated. {{example}}{{example}} _inactivateDays_ is set *1*, meaning that all the topics, which have one inactivated day, will be set as inactivated status. They will be invisible. |
+| *inactiveDays* | {{Integer}} | {{15}} | The number of days the topic has not been activated. {example}{example} _inactivateDays_ is set to "1", meaning that all the topics, which have one inactivated day, will be set as inactivated status. They will be invisible. |
 | *forumname* | {{String}} | {{Live Demo}} | The name of Forum which will be checked for Auto-prune. In case, _forumname_ is blank. It means that all forums will be checked for the Auto-prune. The _forumname_ is Live demo. It means that only the Forum named 'Live demo' is checked for the Auto-prune. |
 
-By fault, the default properties can only be changed by editing its value in the _prune-configuration.xml_ file.
+By default, the default properties can only be changed by editing its value in the _prune-configuration.xml_ file.
 
-At the runtime, the new changes in the _prune-configuration.xml_ file are executed and updated. After that, the Auto-prune plug-in will be executed, depending on its properties.
+At runtime, the new changes in the _prune-configuration.xml_ file are executed and updated. After that, the Auto-prune plug-in will be executed, depending on its properties.

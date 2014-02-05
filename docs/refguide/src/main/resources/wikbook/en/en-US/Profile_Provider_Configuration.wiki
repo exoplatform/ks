@@ -1,7 +1,7 @@
 h1. Overview {anchor:id=KSref.ProfileProviderConfiguration.Overview}
 
 Forum and FAQ applications are to show some information about posters. 
-The way we retrieve that information is pluggable through the _ContactProvider_ component.
+The way to retrieve that information is pluggable through the _ContactProvider_ component.
 
 For public internet websites, users can provide personal information, such as personal email address and location. To enable, simply override the _ContactProvider_ component in your configuration.
 
@@ -49,22 +49,22 @@ public CommonContact getCommonContact(String userId) {
 - The information which is get by the user includes:
 
 ||Name || Type || Description ||
-| *email* |{{String}}| Email of user. |
-| *firstName* |{{String}}| First name of user. |
-| *lastName* |{{String}}| Last name of user. |
+| *email* |{{String}}| The email of the user. |
+| *firstName* |{{String}}|The first name of the user. |
+| *lastName* |{{String}}|The last name of the user. |
 
 - The information which is get via _UserProfile_ includes:
 
-||Attribute || Type || Description ||
+|| Attribute || Type || Description ||
 | *user.other-info.avatar.url* | {{String}} | The path containing the user's avatar. |
-| *user.bdate* | {{String}} | The user's birthday |
-| *user.home-info.postal.city* | {{String}} | The home city of user. |
-| *user.home-info.postal.country* | {{String}} | The home country of user. |
+| *user.bdate* | {{String}} | The user's birthday. |
+| *user.home-info.postal.city* | {{String}} | The home city of the user. |
+| *user.home-info.postal.country* | {{String}} | The home country of the user. |
 | *user.gender* | {{String}} | The user's gender.|
 | *user.jobtitle* | {{String}} | The user's job. |
-| *user.home-info.telecom. mobile.number* | {{String}} | The home phone number of user. |
-| *user.business-info.telecom. telephone.number* | {{String}} | The mobile number of user. |
-| *user.home-info.online.uri* | {{String}} | The individual websites of user. |
+| *user.home-info.telecom. mobile.number* | {{String}} | The home phone number of the user. |
+| *user.business-info.telecom. telephone.number* | {{String}} | The mobile number of the user. |
+| *user.home-info.online.uri* | {{String}} | The individual websites of the user. |
 
 - You can get the _ContactProvider_ as follows:
 
