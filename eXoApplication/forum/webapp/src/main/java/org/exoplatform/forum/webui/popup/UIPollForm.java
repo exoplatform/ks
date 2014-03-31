@@ -39,6 +39,7 @@ import org.exoplatform.poll.service.Poll;
 import org.exoplatform.poll.service.PollService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
@@ -46,6 +47,7 @@ import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.input.UICheckBoxInput;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 import org.exoplatform.webui.form.validator.PositiveNumberFormatValidator;
 
 /**
@@ -96,7 +98,7 @@ public class UIPollForm extends BaseForumForm implements UIPopupComponent {
     timeOut.addValidator(PositiveNumberFormatValidator.class);
     UICheckBoxInput VoteAgain = new UICheckBoxInput(FIELD_AGAINVOTE_CHECKBOX, FIELD_AGAINVOTE_CHECKBOX, false);
     UICheckBoxInput MultiVote = new UICheckBoxInput(FIELD_MULTIVOTE_CHECKBOX, FIELD_MULTIVOTE_CHECKBOX, false);
-    addUIFormInput(question);
+    addUIFormInput(question.addValidator(MandatoryValidator.class));
     addUIFormInput(timeOut);
     addUIFormInput(VoteAgain);
     addUIFormInput(MultiVote);
@@ -107,6 +109,7 @@ public class UIPollForm extends BaseForumForm implements UIPopupComponent {
     if (uiFormMultiValue != null)
       removeChildById(FIELD_OPTIONS);
     uiFormMultiValue = createUIComponent(UIFormMultiValueInputSet.class, null, null);
+    uiFormMultiValue.addValidator(MandatoryValidator.class);
     uiFormMultiValue.setId(FIELD_OPTIONS);
     uiFormMultiValue.setName(FIELD_OPTIONS);
     uiFormMultiValue.setType(UIFormStringInput.class);
@@ -188,8 +191,13 @@ public class UIPollForm extends BaseForumForm implements UIPopupComponent {
       boolean isAgainVote = uiForm.getUICheckBoxInput(FIELD_AGAINVOTE_CHECKBOX).isChecked();
       boolean isMultiVote = uiForm.getUICheckBoxInput(FIELD_MULTIVOTE_CHECKBOX).isChecked();
       String sms = ForumUtils.EMPTY_STR;
+      List<UIComponent> childs = uiForm.uiFormMultiValue.getChildren();
       List<String> values = (List<String>) uiForm.uiFormMultiValue.getValue();
       List<String> values_ = new ArrayList<String>();
+      if (childs.size() != values.size()) {
+    	  uiForm.warning("UIPollForm.msg.FillAllOptions",false);
+    	  return;
+      }
       int i = 1;
       for (String value : values) {
         if (!ForumUtils.isEmpty(value)) {
