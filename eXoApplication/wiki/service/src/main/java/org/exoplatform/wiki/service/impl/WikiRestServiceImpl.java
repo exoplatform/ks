@@ -69,6 +69,7 @@ import org.exoplatform.wiki.mow.core.api.wiki.AttachmentImpl;
 import org.exoplatform.wiki.mow.core.api.wiki.PageImpl;
 import org.exoplatform.wiki.rendering.RenderingService;
 import org.exoplatform.wiki.rendering.impl.RenderingServiceImpl;
+import org.exoplatform.wiki.resolver.TitleResolver;
 import org.exoplatform.wiki.service.PermissionType;
 import org.exoplatform.wiki.service.Relations;
 import org.exoplatform.wiki.service.WikiContext;
@@ -445,13 +446,14 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
                            @QueryParam("width") Integer width) {
     InputStream result = null;
     try {
+    	String imageAfterEncode = TitleResolver.encodeSpecialCharacters(imageId);
       ResizeImageService resizeImgService = (ResizeImageService) ExoContainerContext.getCurrentContainer()
                                                                                     .getComponentInstanceOfType(ResizeImageService.class);
       PageImpl page = (PageImpl) wikiService.getPageById(wikiType, wikiOwner, pageId);
-      AttachmentImpl att = page.getAttachment(imageId);
+      AttachmentImpl att = page.getAttachment(imageAfterEncode);
       ByteArrayInputStream bis = new ByteArrayInputStream(att.getContentResource().getData());
       if (width != null) {
-        result = resizeImgService.resizeImageByWidth(imageId, bis, width);
+        result = resizeImgService.resizeImageByWidth(imageAfterEncode, bis, width);
       } else {
         result = bis;
       }      

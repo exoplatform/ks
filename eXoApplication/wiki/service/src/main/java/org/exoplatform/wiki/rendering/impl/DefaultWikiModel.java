@@ -146,7 +146,10 @@ public class DefaultWikiModel implements WikiModel {
         sb.append(page.getWorkspace());
         sb.append(page.getPath());
         sb.append("/");
-        AttachmentImpl att = page.getAttachment(TitleResolver.getId(wikiMarkupContext.getAttachmentName(), false));
+        AttachmentImpl attWithNameEncoded = page.getAttachment(TitleResolver.encodeSpecialCharacters(wikiMarkupContext.getAttachmentName()));
+        AttachmentImpl attWithName = page.getAttachment(wikiMarkupContext.getAttachmentName());
+        AttachmentImpl att = (attWithName == null) ? attWithNameEncoded : attWithName;
+
         if (att != null) {
           sb.append(URLEncoder.encode(att.getName(), "UTF-8"));
         }

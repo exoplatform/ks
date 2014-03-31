@@ -91,20 +91,6 @@ public class UIWikiUploadAttachment extends UIWikiForm {
       UIWikiFormUploadInput input = (UIWikiFormUploadInput) wikiAttachmentArea.getUIInput(FIELD_UPLOAD);
       UploadResource uploadResource = input.getUploadResource();
       
-      try {
-        if (uploadResource != null) {
-          String fileName = uploadResource.getFileName();
-          if (fileName != null) {            
-            WikiNameValidator.validateFileName(fileName);
-          }
-        }
-      } catch (IllegalNameException ex) {
-        event.getRequestContext()
-             .getUIApplication()
-             .addMessage(new ApplicationMessage("AttachmentNameValidator.msg.Invalid-char", null, ApplicationMessage.WARNING));        
-        event.getRequestContext().setProcessRender(true);
-      }
-      
       if (event.getRequestContext().getProcessRender()) {        
         resetUploadInput(event);
         return;
