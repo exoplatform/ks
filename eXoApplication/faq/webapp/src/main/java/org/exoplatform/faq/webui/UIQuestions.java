@@ -63,12 +63,16 @@ import org.exoplatform.ks.common.UserHelper;
 import org.exoplatform.ks.common.webui.UIPopupAction;
 import org.exoplatform.ks.common.webui.UIPopupContainer;
 import org.exoplatform.ks.common.webui.WebUIUtils;
+import org.exoplatform.social.common.router.ExoRouter;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.services.organization.User;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
+import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.portal.application.PortalRequestContext;
+import org.exoplatform.portal.application.RequestNavigationData;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
@@ -206,9 +210,13 @@ public class UIQuestions extends UIContainer {
   }
 
   protected boolean isNotInSpace() {
-    PortletRequestContext pcontext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance();
-    PortletPreferences portletPref = pcontext.getRequest().getPreferences();
-    return (portletPref.getValue("SPACE_URL", null) != null) ? false : true;
+    PortalRequestContext plcontext = Util.getPortalRequestContext();
+    String requestPath = plcontext.getControllerContext().getParameter(RequestNavigationData.REQUEST_PATH);
+    ExoRouter.Route er = ExoRouter.route(requestPath);
+    if (er == null) {
+      return true;
+    }
+    return (er.localArgs.get("spacePrettyName") != null) ? false : true;
   }
 
   private boolean isCategoryHome() {
