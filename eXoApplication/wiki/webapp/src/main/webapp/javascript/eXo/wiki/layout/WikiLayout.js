@@ -79,7 +79,9 @@ WikiLayout.prototype.init = function(prtId) {
     }
     
     if(this.layoutContainer) {
-      this.processeWithHeight();
+      $(window).load(function(){
+        eXo.wiki.WikiLayout.processeWithHeight();
+      });
       eXo.core.Browser.addOnResizeCallback("WikiLayout", eXo.wiki.WikiLayout.processeWithHeight);
     }
   } catch(e) {
