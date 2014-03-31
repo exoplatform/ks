@@ -166,6 +166,6 @@
   </div>
 </div>
   <%} else {%>
-    <%=_ctx.appRes("UIPoll.label.NotPermission"); %>
+    <%=_ctx.appRes("UIPoll.lable.NoPoll"); %>
   <%} %>
   <%uiform.end() ;%>
