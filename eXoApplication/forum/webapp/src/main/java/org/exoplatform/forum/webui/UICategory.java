@@ -311,10 +311,14 @@ public class UICategory extends BaseForumForm {
 
   static public class DeleteCategoryActionListener extends BaseEventListener<UICategory> {
     public void onEvent(Event<UICategory> event, UICategory uiCategory, final String objectId) throws Exception {
-      uiCategory.getForumService().removeCategory(uiCategory.categoryId);
-      UIForumPortlet forumPortlet = uiCategory.getAncestorOfType(UIForumPortlet.class);
-      forumPortlet.renderForumHome();
-      event.getRequestContext().addUIComponentToUpdateByAjax(forumPortlet);
+      try {
+        uiCategory.getForumService().removeCategory(uiCategory.categoryId);
+        UIForumPortlet forumPortlet = uiCategory.getAncestorOfType(UIForumPortlet.class);
+        forumPortlet.renderForumHome();
+        event.getRequestContext().addUIComponentToUpdateByAjax(forumPortlet);
+      } catch (Exception e) {
+        warning("UICategory.msg.fail-remove-category");
+      }
     }
   }
 
