@@ -119,6 +119,8 @@ public class Utils implements ForumNodeTypes {
   public static final int    VOTE_RATING           = 8;
 
   public static final int    HIDDEN                = 9;
+  
+  public static final int    CHANGE_ID             = 10;
 
   public static final String SPACE                 = " ".intern();
 

@@ -1289,10 +1289,19 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
         forumNode.setProperty(EXO_IS_LOCK, forum.getIsLock());
         break;
       }
+      case Utils.CHANGE_ID: {
+        forumNode.setProperty(EXO_ID, forum.getId());
+        break;
+      }
       default:
         break;
       }
-      if (forumNode.isNew()) {
+      
+      if (type == Utils.CHANGE_ID) {
+        forumNode.save();
+        forumNode.getSession().move(forumNode.getPath(), forumNode.getParent().getPath() + "/" + forum.getId());
+        forumNode.getSession().save();
+      } else if (forumNode.isNew()) {
         forumNode.getSession().save();
       } else {
         forumNode.save();
