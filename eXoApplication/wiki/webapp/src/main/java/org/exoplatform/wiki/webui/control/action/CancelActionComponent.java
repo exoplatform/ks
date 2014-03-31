@@ -53,4 +53,7 @@ public class CancelActionComponent extends UIComponent {
   protected String getCurrentPageURL() throws Exception {
     return Utils.getURLFromParams(Utils.getCurrentWikiPageParams());
   }
+  protected boolean isEditTemplate() {
+    return WikiMode.EDITTEMPLATE.equals(getAncestorOfType(UIWikiPortlet.class).getWikiMode());
+  }
 }

@@ -4,7 +4,14 @@
   String titleMessage = _ctx.appRes("UIConfirmBox.label.Confirmation");
   String exitMessage = _ctx.appRes("UIConfirmBox.label.ConfirmExit");
   String okLabel = _ctx.appRes("UIConfirmBox.label.Ok");
-  String cancelLink = uicomponent.isNewMode() ? uicomponent.getCurrentPageURL() : "javascript:eXo.wiki.UIWikiAjaxRequest.makeNewHash('#');";
+  String cancelLink = "";
+  if(uicomponent.isNewMode()){
+  	cancelLink=uicomponent.getCurrentPageURL();
+  }else if(uicomponent.isEditTemplate()){
+  	cancelLink= "javascript:eXo.wiki.UIWikiAjaxRequest.makeNewHash('#SpaceSetting');"
+  }else{
+  	cancelLink="javascript:eXo.wiki.UIWikiAjaxRequest.makeNewHash('#');";
+  }
   rcontext.getJavascriptManager().importJavascript("eXo.wiki.UIConfirmBox", "/wiki/javascript/") ;
   rcontext.getJavascriptManager().addJavascript("eXo.wiki.UIConfirmBox.init();");
  %>
