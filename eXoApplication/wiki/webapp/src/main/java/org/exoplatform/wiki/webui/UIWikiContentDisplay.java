@@ -16,10 +16,20 @@
  */
 package org.exoplatform.wiki.webui;
 
+import java.util.ResourceBundle;
+
+import org.exoplatform.container.PortalContainer;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.lifecycle.Lifecycle;
+import org.exoplatform.wiki.commons.Utils;
+import org.exoplatform.wiki.mow.api.WikiType;
+import org.exoplatform.wiki.mow.core.api.wiki.PageImpl;
+import org.exoplatform.wiki.mow.core.api.wiki.WikiHome;
+import org.exoplatform.wiki.rendering.RenderingService;
 import org.exoplatform.wiki.utils.WikiNameValidator;
+import org.xwiki.rendering.syntax.Syntax;
 
 /**
  * Created by The eXo Platform SAS
@@ -42,5 +52,38 @@ public class UIWikiContentDisplay extends UIContainer {
 
   public void setHtmlOutput(String htmlOutput) {
     this.htmlOutput = htmlOutput;
+  }
+  
+  public boolean isWelcomePage() throws Exception {
+    PageImpl wikipage = (PageImpl) Utils.getCurrentWikiPage();
+    if(wikipage instanceof WikiHome) {
+      int versionTotals = wikipage.getVersionableMixin().getVersionHistory().getChildren().size() - 1;
+      if(versionTotals == 1) return true;
+    }
+    return false;    
+  }
+  
+  public String getWelcomeMessage() throws Exception {
+    String welcomeMessage = "";
+    PageImpl wikipage = (PageImpl) Utils.getCurrentWikiPage();
+    String portalOwner = wikipage.getWiki().getOwner();
+    WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();
+    ResourceBundle res = context.getApplicationResourceBundle();
+    StringBuilder sb = new StringBuilder("{{tip}}\n" + res.getString("UIWikiWelcomePage.label.welcome") +" ");
+    sb.append(portalOwner).append(" ");
+    if (WikiType.PORTAL.toString().equals(wikipage.getWiki().getType().toUpperCase())) {
+      sb.append("portal.");
+    } else {
+      sb.append("group.");
+    }
+    String sandboxMessage = res.getString("UIWikiWelcomePage.label.sandbox");
+    sandboxMessage = sandboxMessage.replaceFirst("sandbox", "**[[Sandbox space>>group:sandbox.WikiHome]]**");
+    sb.append("\n* " + sandboxMessage + "\n{{/tip}}");
+    RenderingService renderingService = (RenderingService) PortalContainer.getComponent(RenderingService.class);
+    //Setup wiki context
+    UIWikiPortlet wikiPortlet = getAncestorOfType(UIWikiPortlet.class);
+    Utils.setUpWikiContext(wikiPortlet);
+    welcomeMessage = renderingService.render(sb.toString(), wikipage.getSyntax(), Syntax.XHTML_1_0.toIdString(), false);  	
+    return welcomeMessage;
   }
 }

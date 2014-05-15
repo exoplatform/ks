@@ -3,11 +3,16 @@
   rcontext.getJavascriptManager().addJavascript("eXo.wiki.UIWikiPortlet.makeRenderingErrorsExpandable('"+uicomponent.id+ "');");
   rcontext.getJavascriptManager().addJavascript("eXo.wiki.UIWikiPortlet.decorateSpecialLink('"+uicomponent.id+ "');");
   String msg = _ctx.appRes("UIWikiContentDisplay.msg.invalid-characters-in-link");
-  msg = msg.replace("{0}",uicomponent.INVALID_CHARACTERS);  
+  msg = msg.replace("{0}",uicomponent.INVALID_CHARACTERS); 
+   
 %>
 <div class="UIWikiContentDisplay" id="$uicomponent.id">
   <div class="InvalidChars" style="display:none">$msg</div>
   <div class="WikiContent">
+  <% if(uicomponent.welcomePage) {%>    
+    ${uicomponent.welcomeMessage}       
+  <% } else {%>
     ${uicomponent.htmlOutput}
+  <% }%>  
   </div>
 </div>
