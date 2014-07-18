@@ -134,7 +134,7 @@ public class WikiRestServiceImpl implements WikiRestService, ResourceContainer {
   public Response getWikiPageContent(@QueryParam("sessionKey") String sessionKey,
                                      @QueryParam("wikiContext") String wikiContextKey,
                                      @QueryParam("markup") boolean isMarkup,
-                                     @FormParam("html") String data) {
+                                     @FormParam("source") String data) {
     EnvironmentContext env = EnvironmentContext.getCurrent();
     WikiContext wikiContext = new WikiContext();
     String currentSyntax = Syntax.XWIKI_2_0.toIdString();
