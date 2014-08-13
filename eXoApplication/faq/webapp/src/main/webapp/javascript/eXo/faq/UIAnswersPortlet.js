@@ -654,6 +654,51 @@ UIAnswersPortlet.prototype.submitOnKey = function (event) {
   }
 };
 
+UIAnswersPortlet.prototype.handleQuestionAttachment = function (params) {
+  var checkUploadStatusTimer = setInterval(function() {
+    var attachmentForm = document.getElementById('UIAttachmentForm');
+    if (!attachmentForm) {
+      clearInterval(checkUploadStatusTimer);
+      return;
+    }
+    
+    var DOMUtil = eXo.core.DOMUtil;
+    var saveButton = DOMUtil.findFirstDescendantByClass(attachmentForm, 'a', 'ActionButton');
+    var uploadInputNum = params.uploadInputNum || 5;
+    
+    // Check whether the user has chosen any file to be uploaded or not
+    var uploadInputs = DOMUtil.getElemementsByClass(attachmentForm, 'UploadInput');
+    var uploadInputCounter = 0;
+    for (var i = 0; i < uploadInputs.length; i++) {
+      var inputFile = DOMUtil.findFirstDescendantByClass(uploadInputs[i], 'input', 'file');
+      if (uploadInputs[i].style.display == 'block' && !inputFile.value)
+        uploadInputCounter++;
+    }
+    var hasAttachedFile = !(uploadInputNum == uploadInputCounter);
+    if (!hasAttachedFile) {
+      document.body.style.cursor = 'default';
+      clearInterval(checkUploadStatusTimer);
+      return;
+    }
+    
+    // Check for upload action status
+    var fileUploadeds = DOMUtil.getElemementsByClass(attachmentForm, 'SelectFileFrame');
+    var uploadedFilesCounter = 0;
+    for (var i = 0; i < fileUploadeds.length; i++) {
+      if (fileUploadeds[i].style.display == 'block')
+        uploadedFilesCounter++;
+    } 
+    var isUploading = (uploadInputCounter + uploadedFilesCounter != uploadInputNum);
+    if (isUploading) {
+      document.body.style.cursor = 'wait';
+    } else {
+      document.body.style.cursor = 'default';
+      window.location.href = saveButton.href;
+    }
+  }, 1000);
+  return false;
+};
+
 eXo.faq.UIAnswersPortlet = new UIAnswersPortlet();
 
 eXo.faq.DragDrop = {

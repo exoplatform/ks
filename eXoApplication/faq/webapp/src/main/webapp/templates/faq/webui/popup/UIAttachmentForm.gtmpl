@@ -1,4 +1,10 @@
-<% String fieldName; %>
+<%
+  def params = """
+    {
+      uploadInputNum: ${uicomponent.getNumberOfUploadInput()}
+    }
+  """
+%>
 <div class="UIForm $uicomponent.id">
   <%uiform.begin()%>
   <div class="HorizontalLayout">
@@ -26,12 +32,17 @@
 	      </table>
       </div>
       <div class="UIAction">
-      <% for(action in uicomponent.getActions()) { 
-                	 String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) ;
-                   String link = uicomponent.event(action) ;
-          		%>
-        <a href="javascript:void(0);" onclick="$link" class="ActionButton LightBlueStyle">$actionLabel</a>
-        <%}%>
+      <% 
+         for(action in uicomponent.getActions()) { 
+           String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action);
+           String link = uicomponent.event(action);
+           if ("Save".equals(action)) {
+      %>
+                  <a href="$link" onclick="return eXo.faq.UIAnswersPortlet.handleQuestionAttachment($params);" class="ActionButton LightBlueStyle">$actionLabel</a>
+           <% } else { %>
+                  <a href="javascript:void(0);" onclick="$link" class="ActionButton LightBlueStyle">$actionLabel</a>
+           <% }%>
+      <% } %>
       </div>
       
     </div>
