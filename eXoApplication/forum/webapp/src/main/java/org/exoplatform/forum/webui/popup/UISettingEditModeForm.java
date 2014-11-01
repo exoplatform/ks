@@ -125,7 +125,12 @@ public class UISettingEditModeForm extends BaseForumForm implements UIPopupCompo
     EnabledPanel.getUICheckBoxInput(FIELD_ISQUICKREPLY_CHECKBOX).setChecked(portletPreference.isShowQuickReply());
     EnabledPanel.getUICheckBoxInput(FIELD_ISICONSLEGEND_CHECKBOX).setChecked(portletPreference.isShowIconsLegend());
     EnabledPanel.getUICheckBoxInput(FIELD_ISRULES_CHECKBOX).setChecked(portletPreference.isShowRules());
-    EnabledPanel.getUICheckBoxInput(FIELD_ISSTATISTIC_CHECKBOX).setChecked(portletPreference.isShowStatistics());
+    if (Boolean.parseBoolean(System.getProperty("ks.forum.alwaysHideStatisticsPanel"))) {
+      EnabledPanel.getUICheckBoxInput(FIELD_ISSTATISTIC_CHECKBOX).setChecked(false);
+      EnabledPanel.getUICheckBoxInput(FIELD_ISSTATISTIC_CHECKBOX).setDisabled(true);
+    } else {
+      EnabledPanel.getUICheckBoxInput(FIELD_ISSTATISTIC_CHECKBOX).setChecked(portletPreference.isShowStatistics());
+    }
     EnabledPanel.getUICheckBoxInput(FIELD_ISMODERATOR_CHECKBOX).setChecked(portletPreference.isShowModerators());
 
     ForumPreference.getUICheckBoxInput(FIELD_ISUSEAJAX_CHECKBOX).setChecked(portletPreference.isUseAjax());
