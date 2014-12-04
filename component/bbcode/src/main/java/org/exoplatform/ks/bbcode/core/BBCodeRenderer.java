@@ -18,7 +18,9 @@ package org.exoplatform.ks.bbcode.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.ExoContainerContext;
@@ -251,15 +253,18 @@ public class BBCodeRenderer implements Renderer {
   }
 
   public List<BBCode> getBbcodes() {
-    List<BBCode> result = new ArrayList<BBCode>();
+    List<BBCode> result = new CopyOnWriteArrayList<BBCode>();
     Collection<String> supported = getBbCodeProvider().getSupportedBBCodes();
+
     if (supported == null) {
       log.warn("No BBCode supported by this renderer");
       return result;
     }
-    for (String tag : supported) {
-      result.add(getBbCodeProvider().getBBCode(tag));
+    Iterator<String> itor = supported.iterator();
+    while(itor.hasNext()) {
+      result.add(getBbCodeProvider().getBBCode(itor.next()));
     }
+
     return result;
   }
 
